@@ -1,0 +1,60 @@
+{
+	"authors": [
+		{
+			"email": "dn@phantasie-schmiede.de",
+			"name": "Daniel Ablass",
+			"role": "Developer"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"PSB\\PsbContacs\\": "Classes"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"PSB\\PsbContacs\\Tests\\": "Tests"
+		}
+	},
+	"config": {
+		"allow-plugins": {
+			"typo3/class-alias-loader": true,
+			"typo3/cms-composer-installers": true
+		},
+		"bin-dir": ".Build/bin",
+		"sort-packages": true,
+		"vendor-dir": ".Build/vendor"
+	},
+	"description": "Comprehensive cntact management",
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "psb_contacts",
+			"web-dir": ".Build/public"
+		}
+	},
+	"keywords": [
+		"organizing",
+		"plugin",
+		"typo3"
+	],
+	"license": "GPL-3.0-or-later",
+	"name": "psb/psb-contacts",
+	"require": {
+		"php": "^8.1",
+		"typo3/cms-core": "^12.4"
+	},
+	"require-dev": {
+		"roave/security-advisories": "dev-latest",
+	},
+	"scripts": {
+		"prepare-release": [
+			"rm -rf .Build",
+			"rm -rf .github",
+			"rm -rf Tests",
+			"rm .editorconfig",
+			"rm .gitattributes",
+			"rm .gitignore"
+		]
+	},
+	"type": "typo3-cms-extension"
+}
