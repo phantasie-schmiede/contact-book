@@ -10,9 +10,7 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Data;
 
-use PSB\PsbFoundation\Controller\Backend\AnalyzeLocalLangController;
 use PSB\PsbFoundation\Data\AbstractExtensionInformation;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class ExtensionInformation
