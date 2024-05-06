@@ -32,15 +32,18 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 ])]
 class Contact extends AbstractEntity
 {
+    /** @var ObjectStorage<Address> */
     #[Inline(linkedModel: Address::class)]
     protected ObjectStorage $addresses;
 
     #[Input]
     protected string $companyName = '';
 
+    /** @var ObjectStorage<EMail> */
     #[Inline(linkedModel: EMail::class)]
     protected ObjectStorage $eMails;
 
+    /** @var ObjectStorage<Event> */
     #[Inline(linkedModel: Event::class)]
     protected ObjectStorage $events;
 
@@ -56,15 +59,67 @@ class Contact extends AbstractEntity
     #[Text]
     protected string $notes = '';
 
+    /** @var ObjectStorage<PhoneNumber> */
     #[Inline(linkedModel: PhoneNumber::class)]
     protected ObjectStorage $phoneNumbers;
 
+    /** @var ObjectStorage<Website> */
     #[Inline(linkedModel: Website::class)]
     protected ObjectStorage $websites;
 
     public function __construct()
     {
         $this->initializeObject();
+    }
+
+    public function getAddresses(): ObjectStorage
+    {
+        return $this->addresses;
+    }
+
+    public function getCompanyName(): string
+    {
+        return $this->companyName;
+    }
+
+    public function getEMails(): ObjectStorage
+    {
+        return $this->eMails;
+    }
+
+    public function getEvents(): ObjectStorage
+    {
+        return $this->events;
+    }
+
+    public function getFirstName(): string
+    {
+        return $this->firstName;
+    }
+
+    public function getLastName(): string
+    {
+        return $this->lastName;
+    }
+
+    public function getMiddleNames(): string
+    {
+        return $this->middleNames;
+    }
+
+    public function getNotes(): string
+    {
+        return $this->notes;
+    }
+
+    public function getPhoneNumbers(): ObjectStorage
+    {
+        return $this->phoneNumbers;
+    }
+
+    public function getWebsites(): ObjectStorage
+    {
+        return $this->websites;
     }
 
     public function initializeObject(): void
