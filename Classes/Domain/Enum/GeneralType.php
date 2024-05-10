@@ -20,4 +20,15 @@ enum GeneralType: string
     case Business = 'business';
     case Other    = 'other';
     case Private  = 'private';
+
+    public static function toArray(): array
+    {
+        $result = [];
+
+        foreach (self::cases() as $case) {
+            $result[$case->value] = $case->name;
+        }
+
+        return $result;
+    }
 }

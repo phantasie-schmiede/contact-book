@@ -1,0 +1,28 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+<f:form
+    action="create"
+    class="g-3 row"
+    enctype="multipart/form-data"
+    method="post"
+    name="contact"
+    object="{contact}">
+    <f:render
+        arguments="{companies: companies, contact: contact, types: types}"
+        partial="FormFields/Contact" />
+
+    <div class="col-12 mt-3">
+        <f:link.action
+            action="list"
+            class="btn btn-secondary">
+            Abbrechen
+        </f:link.action>
+        <button
+            class="btn btn-primary"
+            type="submit">
+            Speichern
+        </button>
+    </div>
+</f:form>
+</html>

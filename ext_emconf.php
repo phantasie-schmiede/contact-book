@@ -8,12 +8,12 @@ $EM_CONF[$_EXTKEY] = [
     'constraints'      => [
         'conflicts' => [],
         'depends'   => [
-            'php'   => '8.1',
+            'php'            => '8.1',
             'psb_foundation' => '2.2.1',
         ],
         'suggests'  => [],
     ],
-    'description'      => 'Comprehensive cntact management',
+    'description'      => 'Comprehensive contact management',
     'state'            => 'alpha',
     'title'            => 'PSbits | Contacts',
     'version'          => '0.0.0',

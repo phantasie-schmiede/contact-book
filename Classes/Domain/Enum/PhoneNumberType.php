@@ -21,4 +21,15 @@ enum PhoneNumberType: string
     case Landline = 'landline';
     case Mobile   = 'mobile';
     case Other    = 'other';
+
+    public static function toArray(): array
+    {
+        $result = [];
+
+        foreach (self::cases() as $case) {
+            $result[$case->value] = $case->name;
+        }
+
+        return $result;
+    }
 }

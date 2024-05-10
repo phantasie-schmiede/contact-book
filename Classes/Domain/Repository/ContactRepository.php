@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Domain\Repository;
 
+use PSB\PsbContacts\Domain\Enum\ContactType;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
@@ -19,4 +21,11 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class ContactRepository extends Repository
 {
+    public function findByType(ContactType $type): QueryResultInterface
+    {
+        $query = $this->createQuery();
+        $query->matching($query->equals('type', $type->value));
+
+        return $query->execute();
+    }
 }

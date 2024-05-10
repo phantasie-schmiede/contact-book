@@ -10,7 +10,11 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Data;
 
+use PSB\PsbContacts\Controller\ContactController;
 use PSB\PsbFoundation\Data\AbstractExtensionInformation;
+use PSB\PsbFoundation\Data\PluginConfiguration;
+use PSB\PsbFoundation\Enum\ContentType;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class ExtensionInformation
@@ -19,4 +23,24 @@ use PSB\PsbFoundation\Data\AbstractExtensionInformation;
  */
 class ExtensionInformation extends AbstractExtensionInformation
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->addPlugin(
+            GeneralUtility::makeInstance(
+                PluginConfiguration::class,
+                controllers: [ContactController::class],
+                name       : 'ContactList'
+            )
+        );
+        $this->addPlugin(
+            GeneralUtility::makeInstance(
+                PluginConfiguration::class,
+                controllers       : [ContactController::class],
+                name              : 'CreateEntry',
+                typeNum           : 1715345584,
+                typeNumContentType: ContentType::JSON
+            )
+        );
+    }
 }

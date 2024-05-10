@@ -11,12 +11,12 @@ declare(strict_types=1);
 namespace PSB\PsbContacts\Domain\Model;
 
 use DateTime;
-use PSB\PsbContacts\Domain\Enum\EventType;
+use PSB\PsbContacts\Domain\Enum\Type;
+use PSB\PsbFoundation\Attribute\TCA\ColumnType\Check;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Datetime as TcaDatetime;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
-use PSB\PsbFoundation\Enum\SelectRenderType;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -29,13 +29,22 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 class Event extends AbstractEntity
 {
     /** @var ObjectStorage<Contact> */
-    #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_events', mmOppositeField: 'events', renderType: SelectRenderType::selectMultipleSideBySide)]
+    #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_events', mmOppositeField: 'events')]
     protected ObjectStorage $contacts;
 
     #[TcaDatetime]
     protected DateTime $date;
 
-    #[Select(items      : [
+    #[Text]
+    protected string $notes = '';
+
+    #[Check]
+    protected bool $showAnniversaries = false;
+
+    #[Check]
+    protected bool $showInCalendar = false;
+
+    #[Select(items   : [
         'Baptism'      => 'baptism',
         'Birthday'     => 'birthday',
         'Confirmation' => 'confirmation',
@@ -43,11 +52,8 @@ class Event extends AbstractEntity
         'Divorce'      => 'divorce',
         'Wedding'      => 'wedding',
         'Other'        => 'other',
-    ],       prependItem: Select::EMPTY_DEFAULT_ITEM)]
-    protected EventType $eventType = EventType::Birthday;
-
-    #[Text]
-    protected string $notes = '';
+    ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
+    protected string $type = 'birthday';
 
     public function __construct()
     {
@@ -64,18 +70,58 @@ class Event extends AbstractEntity
         return $this->date;
     }
 
-    public function getEventType(): EventType
-    {
-        return $this->eventType;
-    }
-
     public function getNotes(): string
     {
         return $this->notes;
     }
 
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
     public function initializeObject(): void
     {
         $this->contacts = new ObjectStorage();
+    }
+
+    public function isShowAnniversaries(): bool
+    {
+        return $this->showAnniversaries;
+    }
+
+    public function isShowInCalendar(): bool
+    {
+        return $this->showInCalendar;
+    }
+
+    public function setContacts(ObjectStorage $contacts): void
+    {
+        $this->contacts = $contacts;
+    }
+
+    public function setDate(DateTime $date): void
+    {
+        $this->date = $date;
+    }
+
+    public function setNotes(string $notes): void
+    {
+        $this->notes = $notes;
+    }
+
+    public function setShowAnniversaries(bool $showAnniversaries): void
+    {
+        $this->showAnniversaries = $showAnniversaries;
+    }
+
+    public function setShowInCalendar(bool $showInCalendar): void
+    {
+        $this->showInCalendar = $showInCalendar;
+    }
+
+    public function setType(string $type): void
+    {
+        $this->type = $type;
     }
 }

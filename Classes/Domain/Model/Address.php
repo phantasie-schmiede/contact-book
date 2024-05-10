@@ -10,12 +10,10 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Domain\Model;
 
-use PSB\PsbContacts\Domain\Enum\GeneralType;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
-use PSB\PsbFoundation\Enum\SelectRenderType;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -41,7 +39,7 @@ class Address extends AbstractEntity
     protected string $city = '';
 
     /** @var ObjectStorage<Contact> */
-    #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_address_contacts', mmOppositeField: 'addresses', renderType: SelectRenderType::selectMultipleSideBySide)]
+    #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_address_contacts', mmOppositeField: 'addresses')]
     protected ObjectStorage $contacts;
 
     #[Input]
@@ -59,12 +57,12 @@ class Address extends AbstractEntity
     #[Input]
     protected string $street = '';
 
-    #[Select(items      : [
+    #[Select(items   : [
         'Private'  => 'private',
         'Business' => 'business',
         'Other'    => 'other',
-    ],       prependItem: Select::EMPTY_DEFAULT_ITEM)]
-    protected GeneralType $type = GeneralType::Private;
+    ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
+    protected string $type = 'private';
 
     #[Input]
     protected string $zipCode = '';
@@ -109,7 +107,7 @@ class Address extends AbstractEntity
         return $this->street;
     }
 
-    public function getType(): GeneralType
+    public function getType(): string
     {
         return $this->type;
     }
@@ -122,5 +120,50 @@ class Address extends AbstractEntity
     public function initializeObject(): void
     {
         $this->contacts = new ObjectStorage();
+    }
+
+    public function setCity(string $city): void
+    {
+        $this->city = $city;
+    }
+
+    public function setContacts(ObjectStorage $contacts): void
+    {
+        $this->contacts = $contacts;
+    }
+
+    public function setCountry(string $country): void
+    {
+        $this->country = $country;
+    }
+
+    public function setCounty(string $county): void
+    {
+        $this->county = $county;
+    }
+
+    public function setHouseNumber(string $houseNumber): void
+    {
+        $this->houseNumber = $houseNumber;
+    }
+
+    public function setNotes(string $notes): void
+    {
+        $this->notes = $notes;
+    }
+
+    public function setStreet(string $street): void
+    {
+        $this->street = $street;
+    }
+
+    public function setType(string $type): void
+    {
+        $this->type = $type;
+    }
+
+    public function setZipCode(string $zipCode): void
+    {
+        $this->zipCode = $zipCode;
     }
 }

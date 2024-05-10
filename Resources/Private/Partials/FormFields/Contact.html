@@ -1,0 +1,75 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+<f:asset.script identifier="psbContactsFormFields" src="EXT:psb_contacts/Resources/Public/JavaScript/app.js" />
+
+<div class="col-md-6">
+    <label
+        class="form-label"
+        for="type">
+        Art des Eintrags
+    </label>
+    <f:form.select
+        class="form-control"
+        id="type"
+        options="{types}"
+        property="type" />
+</div>
+<div class="col-md-6">
+    <label
+        class="form-label"
+        for="companyName">
+        Unternehmensname
+    </label>
+    <f:form.textfield
+        class="form-control"
+        id="companyName"
+        property="companyName" />
+</div>
+<div class="col-md-6">
+    <label
+        class="form-label"
+        for="companies">
+        Unternehmen
+    </label>
+    <f:form.select
+        class="form-control"
+        id="companies"
+        options="{companies}"
+        property="companies" />
+</div>
+
+<div class="col-md-4">
+    <label
+        class="form-label"
+        for="firstName">
+        Vorname
+    </label>
+    <f:form.textfield
+        class="form-control"
+        id="firstName"
+        property="firstName" />
+</div>
+<div class="col-md-4">
+    <label
+        class="form-label"
+        for="middleNames">
+        weitere Vornamen
+    </label>
+    <f:form.textfield
+        class="form-control"
+        id="middleNames"
+        property="middleNames" />
+</div>
+<div class="col-md-4">
+    <label
+        class="form-label"
+        for="lastName">
+        Nachname
+    </label>
+    <f:form.textfield
+        class="form-control"
+        id="lastName"
+        property="lastName" />
+</div>
+</html>

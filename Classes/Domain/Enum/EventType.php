@@ -24,4 +24,15 @@ enum EventType: string
     case Divorce      = 'divorce';
     case Other        = 'other';
     case Wedding      = 'wedding';
+
+    public static function toArray(): array
+    {
+        $result = [];
+
+        foreach (self::cases() as $case) {
+            $result[$case->value] = $case->name;
+        }
+
+        return $result;
+    }
 }

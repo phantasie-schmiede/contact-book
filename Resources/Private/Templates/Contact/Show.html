@@ -1,0 +1,97 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+<div class="row">
+    <div class="col-12">
+        <dl class="row">
+            <f:if condition="{contact.firstName}">
+                <dt class="col-3">Vorname</dt>
+                <dd class="col-9">{contact.firstName}</dd>
+            </f:if>
+
+            <f:if condition="{contact.middleNames}">
+                <dt class="col-3">weitere Vornamen</dt>
+                <dd class="col-9">{contact.middleNames}</dd>
+            </f:if>
+
+            <f:if condition="{contact.lastName}">
+                <dt class="col-3">Nachname</dt>
+                <dd class="col-9">{contact.lastName}</dd>
+            </f:if>
+
+            <f:if condition="{contact.companyName}">
+                <dt class="col-3">Unternehmensname</dt>
+                <dd class="col-9">{contact.companyName}</dd>
+            </f:if>
+
+        </dl>
+    </div>
+</div>
+
+<div class="row">
+    <div class="bg-secondary col-md-4 d-flex justify-content-center position-relative p-2">
+        <f:link.action
+            action="list"
+            class="link-light link-underline-opacity-0 link-underline-opacity-100-hover stretched-link">
+            Zurück zur Liste
+        </f:link.action>
+    </div>
+
+    <div class="bg-primary col-md-4 d-flex justify-content-center position-relative p-2">
+        <f:link.action
+            action="edit"
+            arguments="{contact: contact}"
+            class="link-light link-underline-opacity-0 link-underline-opacity-100-hover stretched-link">
+            Bearbeiten
+        </f:link.action>
+    </div>
+
+    <div class="bg-danger col-md-4 d-flex justify-content-center position-relative p-2">
+        <a
+            class="link-light link-underline-opacity-0 link-underline-opacity-100-hover stretched-link"
+            data-bs-target="#deleteModal"
+            data-bs-toggle="modal">
+            Löschen
+        </a>
+    </div>
+</div>
+
+<div
+    aria-hidden="true"
+    aria-labelledby="deleteModalLabel"
+    class="fade modal"
+    id="deleteModal"
+    tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1
+                    class="modal-title fs-5"
+                    id="exampleModalLabel">Löschen bestätigen</h1>
+                <button
+                    aria-label="Close"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    type="button"></button>
+            </div>
+            <div class="modal-body">
+                {contact.displayName} wirklich löschen?
+            </div>
+            <div class="modal-footer">
+                <button
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                    type="button">Abbrechen
+                </button>
+                <f:link.action
+                    action="delete"
+                    arguments="{contact: contact}"
+                    class="btn btn-danger">
+                    Löschen!
+                </f:link.action>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

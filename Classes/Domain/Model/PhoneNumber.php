@@ -10,13 +10,11 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Domain\Model;
 
-use PSB\PsbContacts\Domain\Enum\GeneralType;
 use PSB\PsbContacts\Domain\Enum\PhoneNumberType;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
-use PSB\PsbFoundation\Enum\SelectRenderType;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -37,15 +35,15 @@ class PhoneNumber extends AbstractEntity
     protected string $connectionIdentifier = '';
 
     /** @var ObjectStorage<Contact> */
-    #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_phonenumbers', mmOppositeField: 'phoneNumbers', renderType: SelectRenderType::selectMultipleSideBySide)]
+    #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_phonenumbers', mmOppositeField: 'phoneNumbers')]
     protected ObjectStorage $contacts;
 
-    #[Select(items      : [
+    #[Select(items   : [
         'Private'  => 'private',
         'Business' => 'business',
         'Other'    => 'other',
-    ],       prependItem: Select::EMPTY_DEFAULT_ITEM)]
-    protected GeneralType $generalType = GeneralType::Private;
+    ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
+    protected string $generalType = 'private';
 
     #[Input]
     protected string $internationalDiallingCode = '';
@@ -53,12 +51,12 @@ class PhoneNumber extends AbstractEntity
     #[Text]
     protected string $notes = '';
 
-    #[Select(items      : [
+    #[Select(items   : [
         'Landline' => 'landline',
         'Mobile'   => 'mobile',
         'Fax'      => 'fax',
         'Other'    => 'other',
-    ],       prependItem: Select::EMPTY_DEFAULT_ITEM)]
+    ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
     protected PhoneNumberType $phoneNumberType = PhoneNumberType::Mobile;
 
     public function __construct()
@@ -81,7 +79,7 @@ class PhoneNumber extends AbstractEntity
         return $this->contacts;
     }
 
-    public function getGeneralType(): GeneralType
+    public function getGeneralType(): string
     {
         return $this->generalType;
     }
@@ -104,5 +102,40 @@ class PhoneNumber extends AbstractEntity
     public function initializeObject(): void
     {
         $this->contacts = new ObjectStorage();
+    }
+
+    public function setAreaCode(string $areaCode): void
+    {
+        $this->areaCode = $areaCode;
+    }
+
+    public function setConnectionIdentifier(string $connectionIdentifier): void
+    {
+        $this->connectionIdentifier = $connectionIdentifier;
+    }
+
+    public function setContacts(ObjectStorage $contacts): void
+    {
+        $this->contacts = $contacts;
+    }
+
+    public function setGeneralType(string $generalType): void
+    {
+        $this->generalType = $generalType;
+    }
+
+    public function setInternationalDiallingCode(string $internationalDiallingCode): void
+    {
+        $this->internationalDiallingCode = $internationalDiallingCode;
+    }
+
+    public function setNotes(string $notes): void
+    {
+        $this->notes = $notes;
+    }
+
+    public function setPhoneNumberType(PhoneNumberType $phoneNumberType): void
+    {
+        $this->phoneNumberType = $phoneNumberType;
     }
 }

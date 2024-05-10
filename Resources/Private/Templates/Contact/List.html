@@ -1,0 +1,41 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+<div class="row">
+    <div class="col-12">
+        <f:if condition="{contacts}">
+            <f:then>
+                <div class="list-group list-group-flush">
+                    <f:for
+                        as="contact"
+                        each="{contacts}">
+                        <f:link.action
+                            action="show"
+                            arguments="{contact: contact}"
+                            class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                {contact.displayName}
+                            </div>
+                        </f:link.action>
+                    </f:for>
+                </div>
+            </f:then>
+            <f:else>
+                Es sind noch keine Kontakte vorhanden.
+            </f:else>
+        </f:if>
+    </div>
+
+    <div class="col-12 mt-3">
+        <f:link.action
+            action="new"
+            class="btn btn-primary">
+            <core:icon
+                alternativeMarkupIdentifier="inline"
+                identifier="psb-templates-person-add" />
+            Neuen Kontakt anlegen
+        </f:link.action>
+    </div>
+</div>
+</html>
