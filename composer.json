@@ -8,12 +8,12 @@
 	],
 	"autoload": {
 		"psr-4": {
-			"PSB\\PsbContacs\\": "Classes"
+			"PSB\\PsbContacts\\": "Classes"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"PSB\\PsbContacs\\Tests\\": "Tests"
+			"PSB\\PsbContacts\\Tests\\": "Tests"
 		}
 	},
 	"config": {
@@ -25,7 +25,7 @@
 		"sort-packages": true,
 		"vendor-dir": ".Build/vendor"
 	},
-	"description": "Comprehensive cntact management",
+	"description": "Comprehensive contact management",
 	"extra": {
 		"typo3/cms": {
 			"extension-key": "psb_contacts",
