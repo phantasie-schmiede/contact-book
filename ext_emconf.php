@@ -10,6 +10,7 @@ $EM_CONF[$_EXTKEY] = [
         'depends'   => [
             'php'            => '8.1',
             'psb_foundation' => '2.2.1',
+            'psb_templates'  => '',
         ],
         'suggests'  => [],
     ],

@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace PSB\PsbContacts\Data;
 
 use PSB\PsbContacts\Controller\ContactController;
+use PSB\PsbContacts\Controller\EventController;
 use PSB\PsbFoundation\Data\AbstractExtensionInformation;
 use PSB\PsbFoundation\Data\PluginConfiguration;
 use PSB\PsbFoundation\Enum\ContentType;
@@ -36,8 +37,8 @@ class ExtensionInformation extends AbstractExtensionInformation
         $this->addPlugin(
             GeneralUtility::makeInstance(
                 PluginConfiguration::class,
-                controllers       : [ContactController::class],
-                name              : 'CreateEntry',
+                controllers       : [EventController::class],
+                name              : 'AjaxJson',
                 typeNum           : 1715345584,
                 typeNumContentType: ContentType::JSON
             )
