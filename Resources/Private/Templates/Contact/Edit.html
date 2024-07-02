@@ -12,7 +12,7 @@
         arguments="{companies: companies, contact: contact, types: types}"
         partial="FormFields/Contact" />
 
-    <div class="col-12 mt-3">
+    <div class="mt-3">
         <f:link.action
             action="show"
             arguments="{contact: contact}"
@@ -26,4 +26,23 @@
         </button>
     </div>
 </f:form>
+
+<div
+    class="visually-hidden"
+    id="event-template">
+    <f:render
+        arguments="{contacts: allContacts, eventTypes: eventTypes}"
+        partial="FormFields/Event" />
+</div>
+
+<f:section name="FooterAssets">
+    <f:asset.script
+        identifier="copyContent"
+        src="EXT:psb_templates/Resources/Public/JavaScript/copyContent.js"
+        type="module" />
+    <f:asset.script
+        identifier="deleteContent"
+        src="EXT:psb_templates/Resources/Public/JavaScript/deleteContent.js"
+        type="module" />
+</f:section>
 </html>

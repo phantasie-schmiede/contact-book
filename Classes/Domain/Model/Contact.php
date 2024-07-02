@@ -87,6 +87,11 @@ class Contact extends AbstractEntity
         $this->initializeObject();
     }
 
+    public function addEvent(Event $event): void
+    {
+        $this->events->attach($event);
+    }
+
     public function getAddresses(): ObjectStorage
     {
         return $this->addresses;

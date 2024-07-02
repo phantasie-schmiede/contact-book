@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace PSB\PsbContacts\Data;
 
 use PSB\PsbContacts\Controller\ContactController;
-use PSB\PsbContacts\Controller\EventController;
 use PSB\PsbFoundation\Data\AbstractExtensionInformation;
 use PSB\PsbFoundation\Data\PluginConfiguration;
 use PSB\PsbFoundation\Enum\ContentType;
@@ -24,23 +23,27 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ExtensionInformation extends AbstractExtensionInformation
 {
+    public const TYPE_NUMS = [
+        'ConfirmDeleteContact' => 1715345584,
+    ];
+
     public function __construct()
     {
         parent::__construct();
         $this->addPlugin(
             GeneralUtility::makeInstance(
                 PluginConfiguration::class,
-                controllers: [ContactController::class],
-                name       : 'ContactList'
+                controllers       : [ContactController::class => ['confirmDelete']],
+                name              : 'ConfirmDeleteContact',
+                typeNum           : self::TYPE_NUMS['ConfirmDeleteContact'],
+                typeNumContentType: ContentType::JSON
             )
         );
         $this->addPlugin(
             GeneralUtility::makeInstance(
                 PluginConfiguration::class,
-                controllers       : [EventController::class],
-                name              : 'AjaxJson',
-                typeNum           : 1715345584,
-                typeNumContentType: ContentType::JSON
+                controllers: [ContactController::class],
+                name       : 'ContactList'
             )
         );
     }

@@ -1,10 +1,6 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
-<f:asset.script
-    identifier="psbContactsFormFields"
-    src="EXT:psb_contacts/Resources/Public/JavaScript/app.js" />
-
 <div class="col-md-6">
     <label
         class="form-label"
@@ -12,7 +8,7 @@
         Art des Eintrags
     </label>
     <f:form.select
-        class="form-control"
+        class="form-select"
         id="type"
         options="{types}"
         property="type" />
@@ -81,51 +77,12 @@
     each="{contact.events}">
     {event.type} am {event.date -> f:format.date(format: 'd.m.Y')}
 </f:for>
-<f:link.action
-    action="create"
-    additionalAttributes="{data-bs-target: '#dynamicModal', data-bs-toggle: 'modal'}"
+<div id="new-events"></div>
+<span
     class="btn btn-secondary"
-    controller="Event"
-    pageType="1715669160">
+    data-psb-copy-mode="append"
+    data-psb-copy-source="#event-template"
+    data-psb-copy-target="#new-events">
     Neues Ereignis hinzufügen
-</f:link.action>
-
-<div
-    aria-hidden="true"
-    aria-labelledby="htmlModalLabel"
-    class="fade modal"
-    id="htmlModal"
-    tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1
-                    class="modal-title fs-5"
-                    id="htmlModalLabel">Löschen bestätigen</h1>
-                <button
-                    aria-label="Close"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                    type="button"></button>
-            </div>
-            <div class="modal-body">
-                {contact.displayName} wirklich löschen?
-            </div>
-            <div class="modal-footer">
-                <button
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal"
-                    type="button">Abbrechen
-                </button>
-                <f:link.action
-                    action="delete"
-                    arguments="{contact: contact}"
-                    class="btn btn-danger">
-                    Löschen!
-                </f:link.action>
-            </div>
-        </div>
-    </div>
-</div>
-
+</span>
 </html>
