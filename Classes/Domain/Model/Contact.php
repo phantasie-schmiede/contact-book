@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Domain\Model;
 
+use InvalidArgumentException;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Check;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Inline;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
@@ -50,7 +51,7 @@ class Contact extends AbstractEntity
     protected ObjectStorage $eMails;
 
     /** @var ObjectStorage<Event> */
-    #[Inline(linkedModel: Event::class)]
+    #[Select(linkedModel: Event::class, mm: 'tx_psbcontacts_contacts_events')]
     protected ObjectStorage $events;
 
     #[Input]
@@ -131,6 +132,17 @@ class Contact extends AbstractEntity
         return $this->eMails;
     }
 
+    public function getEventByUid(int $uid): Event
+    {
+        foreach ($this->events as $event) {
+            if ($uid === $event->getUid()) {
+                return $event;
+            }
+        }
+
+        throw new InvalidArgumentException(__CLASS__ . ': Event with UID ' . $uid . ' not found!', 1720095212);
+    }
+
     public function getEvents(): ObjectStorage
     {
         return $this->events;
@@ -179,6 +191,11 @@ class Contact extends AbstractEntity
         $this->events = new ObjectStorage();
         $this->phoneNumbers = new ObjectStorage();
         $this->websites = new ObjectStorage();
+    }
+
+    public function removeEvent(Event $event): void
+    {
+        $this->events->detach($event);
     }
 
     public function setAddresses(ObjectStorage $addresses): void

@@ -1,6 +1,19 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+<f:if condition="{event}">
+    <f:then>
+        <f:variable
+            name="uid"
+            value="{event.uid}" />
+    </f:then>
+    <f:else>
+        <f:variable
+            name="uid"
+            value="###uid###" />
+    </f:else>
+</f:if>
+
 <fieldset class="border border-light-subtle mb-3">
     <div class="col-md-6">
         <label
@@ -9,8 +22,9 @@
         </label>
         <f:form.select
             class="form-select"
-            name="event[type][]"
-            options="{eventTypes}" />
+            name="event[{uid}][type]"
+            options="{eventTypes}"
+            value="{event.type}" />
     </div>
     <div class="col-md-6">
         <label
@@ -19,8 +33,9 @@
         </label>
         <f:form.textfield
             class="form-control"
-            name="event[date][]"
-            type="date" />
+            name="event[{uid}][date]"
+            type="date"
+            value="{event.date -> f:format.date(format: 'Y-m-d')}" />
     </div>
     <div class="col-md-6">
         <label
@@ -29,7 +44,8 @@
         </label>
         <f:form.textarea
             class="form-control"
-            name="event[notes][]" />
+            name="event[{uid}][notes]"
+            value="{event.notes}" />
     </div>
     <div class="col-md-6">
         <label
@@ -37,8 +53,9 @@
             Jubiläen anzeigen
         </label>
         <f:form.checkbox
+            checked="{f:if(condition: event.showAnniversaries, then: '1', else: '0')}"
             class="form-check-input"
-            name="event[showAnniversaries]"
+            name="event[{uid}][showAnniversaries]"
             value="1" />
     </div>
     <div class="col-md-6">
@@ -47,8 +64,9 @@
             im Kalender anzeigen
         </label>
         <f:form.checkbox
+            checked="{f:if(condition: event.showInCalendar, then: '1', else: '0')}"
             class="form-check-input"
-            name="event[showInCalendar]"
+            name="event[{uid}][showInCalendar]"
             value="1" />
     </div>
     <div

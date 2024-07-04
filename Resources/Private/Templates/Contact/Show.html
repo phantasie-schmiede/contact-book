@@ -25,6 +25,19 @@
                 <dd class="col-9">{contact.companyName}</dd>
             </f:if>
 
+            <f:if condition="{contact.events}">
+                <dt class="col-3">Events</dt>
+                <dd class="col-9">
+                    <ul>
+                        <f:for each="{contact.events}" as="event">
+                            <li>
+                                <strong>{event.type}</strong>
+                                <span>{event.date -> f:format.date(format: 'd.m.Y')}</span>
+                            </li>
+                        </f:for>
+                    </ul>
+                </dd>
+            </f:if>
         </dl>
     </div>
 </div>

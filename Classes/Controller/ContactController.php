@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Controller;
 
+use DateTime;
+use Exception;
 use JsonException;
 use PSB\PsbContacts\Domain\Enum\ContactType;
 use PSB\PsbContacts\Domain\Enum\EventType;
@@ -23,7 +25,6 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
-use function count;
 use function is_array;
 
 /**
@@ -53,7 +54,10 @@ class ContactController extends ActionController
         ], JSON_THROW_ON_ERROR));
     }
 
-    /** @throws IllegalObjectTypeException */
+    /**
+     * @throws Exception
+     * @throws IllegalObjectTypeException
+     */
     #[PluginAction(uncached: true)]
     public function createAction(Contact $contact): ResponseInterface
     {
@@ -105,6 +109,7 @@ class ContactController extends ActionController
     }
 
     /**
+     * @throws Exception
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */
@@ -130,22 +135,48 @@ class ContactController extends ActionController
         ]);
     }
 
+    /**
+     * @throws Exception
+     */
     private function processEvents(Contact $contact): void
     {
-        $events = GlobalVariableService::get(RequestParameterProvider::class . '.event', false);
+        $existingEvents = clone $contact->getEvents();
+        $updatedEvents = $this->request->hasArgument('event') ? $this->request->getArgument('event') : [];
+        $newEvents = GlobalVariableService::get(RequestParameterProvider::class . '.event', false);
 
-        if (is_array($events)) {
-            $itemCount = count($events);
-
-            for ($i = 0; $i < $itemCount; $i++) {
-                $newEvent = new Event();
-                $newEvent->setDate($events['date'][$i]);
-                $newEvent->setNotes($events['notes'][$i]);
-                // $newEvent->setShowAnniversaries((bool)($events['showAnniversaries'][$i] ?? false));
-                // $newEvent->setShowInCalendar((bool)($events['showInCalendar'][$i] ?? false));
-                $newEvent->setType($events['type'][$i]);
-                $contact->addEvent($newEvent);
+        if (is_array($updatedEvents)) {
+            foreach ($updatedEvents as $uid => $eventData) {
+                $event = $contact->getEventByUid($uid);
+                $this->updateEventProperties($event, $eventData);
+                $existingEvents->detach($event);
             }
         }
+
+        if (0 < $existingEvents->count()) {
+            // Delete events that were removed.
+            foreach ($existingEvents as $event) {
+                $contact->removeEvent($event);
+            }
+        }
+
+        if (is_array($newEvents)) {
+            foreach ($newEvents as $eventData) {
+                $event = new Event();
+                $this->updateEventProperties($event, $eventData);
+                $contact->addEvent($event);
+            }
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function updateEventProperties(Event $event, array $eventData): void
+    {
+        $event->setDate(new DateTime($eventData['date']));
+        $event->setNotes($eventData['notes']);
+        $event->setShowAnniversaries((bool)$eventData['showAnniversaries']);
+        $event->setShowInCalendar((bool)$eventData['showInCalendar']);
+        $event->setType($eventData['type']);
     }
 }

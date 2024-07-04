@@ -75,7 +75,9 @@
 <f:for
     as="event"
     each="{contact.events}">
-    {event.type} am {event.date -> f:format.date(format: 'd.m.Y')}
+    <f:render
+        arguments="{_all}"
+        partial="FormFields/Event" />
 </f:for>
 <div id="new-events"></div>
 <span
