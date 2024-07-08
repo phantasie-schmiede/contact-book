@@ -33,6 +33,7 @@ class ExtensionInformation extends AbstractExtensionInformation
         $this->addPlugin(
             GeneralUtility::makeInstance(
                 PluginConfiguration::class,
+                addToElementWizard: false,
                 controllers       : [ContactController::class => ['confirmDelete']],
                 name              : 'ConfirmDeleteContact',
                 typeNum           : self::TYPE_NUMS['ConfirmDeleteContact'],
