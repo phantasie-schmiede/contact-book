@@ -1,6 +1,7 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbTemplates="http://typo3.org/ns/PSB/PsbTemplates/ViewHelpers"
     xmlns:psbvh="http://typo3.org/ns/PSB/PsbViewHelpers/ViewHelpers">
 <div class="row">
     <div class="col-12">
@@ -29,7 +30,9 @@
                 <dt class="col-3">Events</dt>
                 <dd class="col-9">
                     <ul>
-                        <f:for each="{contact.events}" as="event">
+                        <f:for
+                            as="event"
+                            each="{contact.events}">
                             <li>
                                 <strong>{event.type}</strong>
                                 <span>{event.date -> f:format.date(format: 'd.m.Y')}</span>
@@ -39,6 +42,10 @@
                 </dd>
             </f:if>
         </dl>
+
+        <psbTemplates:additionalContent
+            eventClass="{psbvh:variable.convertString(string: 'PSB\PsbContacts\Event\AdditionalContactContentEvent::class')}"
+            parameters="{contact: contact}" />
     </div>
 </div>
 
