@@ -131,7 +131,7 @@ class ContactController extends ActionController
             'contact'     => $contact,
             'allContacts' => $this->contactRepository->findAll(),
             'eventTypes'  => EventType::toArray(),
-            'types'       => ContactType::toArray(),
+            'types'       => ContactType::toArray(ContactType::Person),
         ]);
     }
 

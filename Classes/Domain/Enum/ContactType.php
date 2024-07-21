@@ -20,12 +20,16 @@ enum ContactType: string
     case Company = 'company';
     case Person  = 'person';
 
-    public static function toArray(): array
+    public static function toArray(ContactType $firstValue = null): array
     {
         $result = [];
 
         foreach (self::cases() as $case) {
-            $result[$case->value] = $case->name;
+            if (null !== $firstValue && $case->value === $firstValue->value) {
+                $result = [$case->value => $case->name] + $result;
+            } else {
+                $result[$case->value] = $case->name;
+            }
         }
 
         return $result;
