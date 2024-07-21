@@ -51,23 +51,23 @@
         <label
             class="form-check-label">
             Jubiläen anzeigen
+            <f:form.checkbox
+                checked="{f:if(condition: event.showAnniversaries, then: '1', else: '0')}"
+                class="form-check-input"
+                name="event[{uid}][showAnniversaries]"
+                value="1" />
         </label>
-        <f:form.checkbox
-            checked="{f:if(condition: event.showAnniversaries, then: '1', else: '0')}"
-            class="form-check-input"
-            name="event[{uid}][showAnniversaries]"
-            value="1" />
     </div>
     <div class="col-md-6">
         <label
             class="form-check-label">
             im Kalender anzeigen
+            <f:form.checkbox
+                checked="{f:if(condition: event.showInCalendar, then: '1', else: '0')}"
+                class="form-check-input"
+                name="event[{uid}][showInCalendar]"
+                value="1" />
         </label>
-        <f:form.checkbox
-            checked="{f:if(condition: event.showInCalendar, then: '1', else: '0')}"
-            class="form-check-input"
-            name="event[{uid}][showInCalendar]"
-            value="1" />
     </div>
     <div
         class="btn btn-danger"
