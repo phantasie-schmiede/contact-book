@@ -27,13 +27,9 @@
     </div>
 </f:form>
 
-<div
-    class="visually-hidden"
-    id="event-template">
-    <f:render
-        arguments="{_all}"
-        partial="FormFields/Event" />
-</div>
+<f:render
+    arguments="{_all}"
+    partial="FieldSetTemplates" />
 
 <f:section name="FooterAssets">
     <f:asset.script

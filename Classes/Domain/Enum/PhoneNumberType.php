@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Domain\Enum;
 
+use PSB\PsbContacts\Trait\EnumToArrayTrait;
+
 /**
  * Class PhoneNumberType
  *
@@ -17,19 +19,10 @@ namespace PSB\PsbContacts\Domain\Enum;
  */
 enum PhoneNumberType: string
 {
+    use EnumToArrayTrait;
+
     case Fax      = 'fax';
     case Landline = 'landline';
     case Mobile   = 'mobile';
     case Other    = 'other';
-
-    public static function toArray(): array
-    {
-        $result = [];
-
-        foreach (self::cases() as $case) {
-            $result[$case->value] = $case->name;
-        }
-
-        return $result;
-    }
 }

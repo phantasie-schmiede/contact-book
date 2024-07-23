@@ -9,7 +9,7 @@
     name="contact"
     object="{contact}">
     <f:render
-        arguments="{companies: companies, contact: contact, types: types}"
+        arguments="{_all}"
         partial="FormFields/Contact" />
 
     <div class="col-12 mt-3">
@@ -26,13 +26,9 @@
     </div>
 </f:form>
 
-<div
-    class="visually-hidden"
-    id="event-template">
-    <f:render
-        arguments="{contacts: allContacts, eventTypes: eventTypes}"
-        partial="FormFields/Event" />
-</div>
+<f:render
+    arguments="{_all}"
+    partial="FieldSetTemplates" />
 
 <f:section name="FooterAssets">
     <f:asset.script

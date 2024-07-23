@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Domain\Enum;
 
+use PSB\PsbContacts\Trait\EnumToArrayTrait;
+
 /**
  * Class ContactType
  *
@@ -17,21 +19,8 @@ namespace PSB\PsbContacts\Domain\Enum;
  */
 enum ContactType: string
 {
+    use EnumToArrayTrait;
+
     case Company = 'company';
     case Person  = 'person';
-
-    public static function toArray(ContactType $firstValue = null): array
-    {
-        $result = [];
-
-        foreach (self::cases() as $case) {
-            if (null !== $firstValue && $case->value === $firstValue->value) {
-                $result = [$case->value => $case->name] + $result;
-            } else {
-                $result[$case->value] = $case->name;
-            }
-        }
-
-        return $result;
-    }
 }

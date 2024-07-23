@@ -26,6 +26,82 @@
                 <dd class="col-9">{contact.companyName}</dd>
             </f:if>
 
+            <f:if condition="{contact.addresses}">
+                <dt class="col-3">Addresses</dt>
+                <dd class="col-9">
+                    <ul>
+                        <f:for
+                            as="address"
+                            each="{contact.addresses}">
+                            <li>
+                                <strong>{address.type}</strong>
+                                {address.street} {address.houseNumber}<br>
+
+                                <f:if condition="{address.zipCode}">
+                                    {address.zipCode}
+                                </f:if>
+
+                                {address.city}<br>
+
+                                <f:if condition="{address.county}">
+                                    {address.county},
+                                </f:if>
+
+                                {address.country}
+                            </li>
+                        </f:for>
+                    </ul>
+                </dd>
+            </f:if>
+
+            <f:if condition="{contact.phoneNumbers}">
+                <dt class="col-3">Phone Numbers</dt>
+                <dd class="col-9">
+                    <ul>
+                        <f:for
+                            as="phoneNumber"
+                            each="{contact.phoneNumbers}">
+                            <li>
+                                <strong>{phoneNumber.generalType} ({phoneNumber.phoneNumberType})</strong>
+                                <span>{phoneNumber.internationalDiallingCode} {phoneNumber.areaCode} {phoneNumber.connectionIdentifier}</span>
+                            </li>
+                        </f:for>
+                    </ul>
+                </dd>
+            </f:if>
+
+            <f:if condition="{contact.eMails}">
+                <dt class="col-3">E-mails</dt>
+                <dd class="col-9">
+                    <ul>
+                        <f:for
+                            as="eMail"
+                            each="{contact.eMails}">
+                            <li>
+                                <strong>{eMail.type}</strong>
+                                <span>{eMail.eMailAddress}</span>
+                            </li>
+                        </f:for>
+                    </ul>
+                </dd>
+            </f:if>
+
+            <f:if condition="{contact.websites}">
+                <dt class="col-3">Websites</dt>
+                <dd class="col-9">
+                    <ul>
+                        <f:for
+                            as="website"
+                            each="{contact.websites}">
+                            <li>
+                                <strong>{website.type}</strong>
+                                <span>{website.url}</span>
+                            </li>
+                        </f:for>
+                    </ul>
+                </dd>
+            </f:if>
+
             <f:if condition="{contact.events}">
                 <dt class="col-3">Events</dt>
                 <dd class="col-9">

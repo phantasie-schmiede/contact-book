@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Domain\Enum;
 
+use PSB\PsbContacts\Trait\EnumToArrayTrait;
+
 /**
  * Class EventType
  *
@@ -17,6 +19,8 @@ namespace PSB\PsbContacts\Domain\Enum;
  */
 enum EventType: string
 {
+    use EnumToArrayTrait;
+
     case Baptism      = 'baptism';
     case Birthday     = 'birthday';
     case Confirmation = 'confirmation';
@@ -24,15 +28,4 @@ enum EventType: string
     case Divorce      = 'divorce';
     case Other        = 'other';
     case Wedding      = 'wedding';
-
-    public static function toArray(): array
-    {
-        $result = [];
-
-        foreach (self::cases() as $case) {
-            $result[$case->value] = $case->name;
-        }
-
-        return $result;
-    }
 }

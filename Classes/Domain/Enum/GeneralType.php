@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Domain\Enum;
 
+use PSB\PsbContacts\Trait\EnumToArrayTrait;
+
 /**
  * Class GeneralType
  *
@@ -17,18 +19,9 @@ namespace PSB\PsbContacts\Domain\Enum;
  */
 enum GeneralType: string
 {
+    use EnumToArrayTrait;
+
     case Business = 'business';
     case Other    = 'other';
     case Private  = 'private';
-
-    public static function toArray(): array
-    {
-        $result = [];
-
-        foreach (self::cases() as $case) {
-            $result[$case->value] = $case->name;
-        }
-
-        return $result;
-    }
 }

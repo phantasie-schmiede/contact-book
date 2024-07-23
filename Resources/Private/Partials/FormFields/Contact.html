@@ -10,7 +10,7 @@
     <f:form.select
         class="form-select"
         id="type"
-        options="{types}"
+        options="{contactTypes}"
         property="type" />
 </div>
 <div
@@ -92,6 +92,76 @@
         id="lastName"
         property="lastName" />
 </div>
+
+<h5>Adressen</h5>
+
+<f:for
+    as="address"
+    each="{contact.addresses}">
+    <f:render
+        arguments="{_all}"
+        partial="FormFields/Address" />
+</f:for>
+
+<div id="new-addresses"></div>
+<span
+    class="btn btn-secondary"
+    data-psb-copy-mode="append"
+    data-psb-copy-source="#address-template"
+    data-psb-copy-target="#new-addresses">
+    Neue Adresse hinzufügen
+</span>
+
+<h5>Telefonnummern</h5>
+<f:for
+    as="phoneNumber"
+    each="{contact.phoneNumbers}">
+    <f:render
+        arguments="{_all}"
+        partial="FormFields/PhoneNumber" />
+</f:for>
+<div id="new-phone-numbers"></div>
+<span
+    class="btn btn-secondary"
+    data-psb-copy-mode="append"
+    data-psb-copy-source="#phone-number-template"
+    data-psb-copy-target="#new-phone-numbers">
+    Neue Telefonnummer hinzufügen
+</span>
+
+<h5>E-Mail-Adressen</h5>
+<f:for
+    as="eMail"
+    each="{contact.eMails}">
+    <f:render
+        arguments="{_all}"
+        partial="FormFields/EMail" />
+</f:for>
+<div id="new-e-mails"></div>
+<span
+    class="btn btn-secondary"
+    data-psb-copy-mode="append"
+    data-psb-copy-source="#e-mail-template"
+    data-psb-copy-target="#new-e-mails">
+    Neue E-Mail-Adresse hinzufügen
+</span>
+
+<h5>Webseiten</h5>
+<f:for
+    as="website"
+    each="{contact.websites}">
+    <f:render
+        arguments="{_all}"
+        partial="FormFields/Website" />
+</f:for>
+<div id="new-websites"></div>
+<span
+    class="btn btn-secondary"
+    data-psb-copy-mode="append"
+    data-psb-copy-source="#website-template"
+    data-psb-copy-target="#new-websites">
+    Neue Website hinzufügen
+</span>
 
 <h5>Ereignisse</h5>
 <f:for

@@ -15,6 +15,8 @@ use Exception;
 use JsonException;
 use PSB\PsbContacts\Domain\Enum\ContactType;
 use PSB\PsbContacts\Domain\Enum\EventType;
+use PSB\PsbContacts\Domain\Enum\GeneralType;
+use PSB\PsbContacts\Domain\Enum\PhoneNumberType;
 use PSB\PsbContacts\Domain\Model\Contact;
 use PSB\PsbContacts\Domain\Model\Event;
 use PSB\PsbContacts\Domain\Repository\ContactRepository;
@@ -127,11 +129,13 @@ class ContactController extends ActionController
     private function prepareFormView(?Contact $contact = null): void
     {
         $this->view->assignMultiple([
-            'companies'   => $this->contactRepository->findByType(ContactType::Company),
-            'contact'     => $contact,
-            'allContacts' => $this->contactRepository->findAll(),
-            'eventTypes'  => EventType::toArray(),
-            'types'       => ContactType::toArray(ContactType::Person),
+            'generalTypes'     => GeneralType::toArray(GeneralType::Private),
+            'companies'        => $this->contactRepository->findByType(ContactType::Company),
+            'contact'          => $contact,
+            'allContacts'      => $this->contactRepository->findAll(),
+            'eventTypes'       => EventType::toArray(EventType::Birthday),
+            'contactTypes'     => ContactType::toArray(ContactType::Person),
+            'phoneNumberTypes' => PhoneNumberType::toArray(PhoneNumberType::Mobile),
         ]);
     }
 
