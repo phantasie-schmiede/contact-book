@@ -40,6 +40,34 @@
     <div class="col-md-6">
         <label
             class="form-label">
+            Kontakte
+        </label>
+        <input
+            autocomplete="off"
+            class="form-control"
+            data-psb-autocomplete-items="{allContacts}"
+            data-psb-autocomplete-selection-target="#contact-selection-{uid}",
+            data-psb-autocomplete-value-target="#contact-value-{uid}"
+            type="text" />
+        <ul
+            class="list-group list-group-flush"
+            id="contact-selection-{uid}">
+            <f:for as="additionalContact" each="{event.contacts}">
+                <f:if condition="{additionalContact} != {contact}">
+                    <li
+                        class="list-group-item">
+                        {additionalContact.displayName}
+                    </li>
+                </f:if>
+            </f:for>
+        </ul>
+        <f:form.hidden
+            id="contact-value-{uid}"
+            name="event[{uid}][contacts]" />
+    </div>
+    <div class="col-md-6">
+        <label
+            class="form-label">
             Notizen
         </label>
         <f:form.textarea

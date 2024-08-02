@@ -78,6 +78,9 @@ class ContactController extends ActionController
         return $this->redirect('list');
     }
 
+    /**
+     * @throws JsonException
+     */
     #[PluginAction(uncached: true)]
     public function editAction(Contact $contact): ResponseInterface
     {
@@ -94,6 +97,9 @@ class ContactController extends ActionController
         return $this->htmlResponse();
     }
 
+    /**
+     * @throws JsonException
+     */
     #[PluginAction(uncached: true)]
     public function newAction(Contact $contact = null): ResponseInterface
     {
@@ -126,13 +132,26 @@ class ContactController extends ActionController
         );
     }
 
+    /**
+     * @throws JsonException
+     */
     private function prepareFormView(?Contact $contact = null): void
     {
         $this->view->assignMultiple([
             'generalTypes'     => GeneralType::toArray(GeneralType::Private),
             'companies'        => $this->contactRepository->findByType(ContactType::Company),
             'contact'          => $contact,
-            'allContacts'      => $this->contactRepository->findAll(),
+            'allContacts'      => json_encode(
+                array_map(
+                    static fn(Contact $contact) => [
+                        'label' => $contact->getDisplayName(),
+                        'value' => $contact->getUid(),
+                    ],
+                    $this->contactRepository->findAll()
+                        ->toArray()
+                ),
+                JSON_THROW_ON_ERROR
+            ),
             'eventTypes'       => EventType::toArray(EventType::Birthday),
             'contactTypes'     => ContactType::toArray(ContactType::Person),
             'phoneNumberTypes' => PhoneNumberType::toArray(PhoneNumberType::Mobile),
@@ -151,7 +170,7 @@ class ContactController extends ActionController
         if (is_array($updatedEvents)) {
             foreach ($updatedEvents as $uid => $eventData) {
                 $event = $contact->getEventByUid($uid);
-                $this->updateEventProperties($event, $eventData);
+                $this->updateEventProperties($contact, $event, $eventData);
                 $existingEvents->detach($event);
             }
         }
@@ -166,7 +185,7 @@ class ContactController extends ActionController
         if (is_array($newEvents)) {
             foreach ($newEvents as $eventData) {
                 $event = new Event();
-                $this->updateEventProperties($event, $eventData);
+                $this->updateEventProperties($contact, $event, $eventData);
                 $contact->addEvent($event);
             }
         }
@@ -175,8 +194,23 @@ class ContactController extends ActionController
     /**
      * @throws Exception
      */
-    private function updateEventProperties(Event $event, array $eventData): void
+    private function updateEventProperties(Contact $contact, Event $event, array $eventData): void
     {
+        $event->removeAllContacts();
+        $event->addContact($contact);
+
+        if (!empty($eventData['contacts'])) {
+            $contactIds = array_map('\intval', json_decode($eventData['contacts'], false, 512, JSON_THROW_ON_ERROR));
+
+            foreach ($contactIds as $contactId) {
+                $additionalContact = $this->contactRepository->findByUid($contactId);
+
+                if (null !== $additionalContact) {
+                    $event->addContact($additionalContact);
+                }
+            }
+        }
+
         $event->setDate(new DateTime($eventData['date']));
         $event->setNotes($eventData['notes']);
         $event->setShowAnniversaries((bool)$eventData['showAnniversaries']);

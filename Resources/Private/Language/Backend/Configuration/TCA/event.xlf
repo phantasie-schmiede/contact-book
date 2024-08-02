@@ -9,6 +9,30 @@
             <trans-unit id="ctrl.title">
                 <source>Event</source>
             </trans-unit>
+            <trans-unit id="type">
+                <source>Typ</source>
+            </trans-unit>
+            <trans-unit id="type.baptism">
+                <source>Baptism</source>
+            </trans-unit>
+            <trans-unit id="type.birthday">
+                <source>Birthday</source>
+            </trans-unit>
+            <trans-unit id="type.confirmation">
+                <source>Confirmation</source>
+            </trans-unit>
+            <trans-unit id="type.death">
+                <source>Death</source>
+            </trans-unit>
+            <trans-unit id="type.divorce">
+                <source>Divorce</source>
+            </trans-unit>
+            <trans-unit id="type.other">
+                <source>Other</source>
+            </trans-unit>
+            <trans-unit id="type.wedding">
+                <source>Wedding</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

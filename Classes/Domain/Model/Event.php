@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace PSB\PsbContacts\Domain\Model;
 
 use DateTime;
-use PSB\PsbContacts\Domain\Enum\Type;
+use PSB\PsbContacts\Domain\Enum\EventType;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Check;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Datetime as TcaDatetime;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
@@ -61,6 +61,11 @@ class Event extends AbstractEntity
         $this->initializeObject();
     }
 
+    public function addContact(Contact $contact): void
+    {
+        $this->contacts->attach($contact);
+    }
+
     public function getContacts(): ObjectStorage
     {
         return $this->contacts;
@@ -69,6 +74,15 @@ class Event extends AbstractEntity
     public function getDate(): DateTime
     {
         return $this->date;
+    }
+
+    public function getLabel(): string
+    {
+        if (EventType::Other->value === $this->type) {
+            return $this->notes;
+        }
+
+        return $this->type;
     }
 
     public function getNotes(): string
@@ -94,6 +108,16 @@ class Event extends AbstractEntity
     public function isShowInCalendar(): bool
     {
         return $this->showInCalendar;
+    }
+
+    public function removeAllContacts(): void
+    {
+        $this->contacts = new ObjectStorage();
+    }
+
+    public function removeContact(Contact $contact): void
+    {
+        $this->contacts->detach($contact);
     }
 
     public function setContacts(ObjectStorage $contacts): void
