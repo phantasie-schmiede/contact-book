@@ -290,8 +290,8 @@ class ContactController extends ActionController
         $entity->removeAllContacts();
         $entity->addContact($contact);
 
-        if (!empty($eventData['contacts'])) {
-            $contactIds = array_map('\intval', json_decode($eventData['contacts'], false, 512, JSON_THROW_ON_ERROR));
+        if (!empty($entityData['contacts'])) {
+            $contactIds = array_map('\intval', json_decode($entityData['contacts'], false, 512, JSON_THROW_ON_ERROR));
 
             foreach ($contactIds as $contactId) {
                 $additionalContact = $this->contactRepository->findByUid($contactId);

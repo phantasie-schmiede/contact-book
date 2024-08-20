@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Domain\Model;
 
-use PSB\PsbContacts\Domain\Enum\PhoneNumberType;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
+use PSB\PsbFoundation\Enum\SelectRenderType;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
@@ -34,7 +34,7 @@ class PhoneNumber extends AbstractContactRelatedEntity
     protected string $connectionIdentifier = '';
 
     /** @var ObjectStorage<Contact> */
-    #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_phonenumbers', mmOppositeField: 'phoneNumbers')]
+    #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_phonenumbers', mmOppositeField: 'phoneNumbers', renderType: SelectRenderType::selectMultipleSideBySide)]
     protected ObjectStorage $contacts;
 
     #[Select(items   : [
@@ -56,7 +56,7 @@ class PhoneNumber extends AbstractContactRelatedEntity
         'Fax'      => 'fax',
         'Other'    => 'other',
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
-    protected PhoneNumberType $phoneNumberType = PhoneNumberType::Mobile;
+    protected string $phoneNumberType = 'mobile';
 
     public function getAreaCode(): string
     {
@@ -83,7 +83,7 @@ class PhoneNumber extends AbstractContactRelatedEntity
         return $this->notes;
     }
 
-    public function getPhoneNumberType(): PhoneNumberType
+    public function getPhoneNumberType(): string
     {
         return $this->phoneNumberType;
     }
@@ -113,7 +113,7 @@ class PhoneNumber extends AbstractContactRelatedEntity
         $this->notes = $notes;
     }
 
-    public function setPhoneNumberType(PhoneNumberType $phoneNumberType): void
+    public function setPhoneNumberType(string $phoneNumberType): void
     {
         $this->phoneNumberType = $phoneNumberType;
     }

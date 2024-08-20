@@ -36,7 +36,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 class Contact extends AbstractEntity
 {
     /** @var ObjectStorage<Address> */
-    #[Inline(linkedModel: Address::class)]
+    #[Inline(linkedModel: Address::class, mm: 'tx_psbcontacts_address_contacts')]
     protected ObjectStorage $addresses;
 
     /** @var ObjectStorage<Contact> */
@@ -47,11 +47,11 @@ class Contact extends AbstractEntity
     protected string $companyName = '';
 
     /** @var ObjectStorage<EMail> */
-    #[Inline(linkedModel: EMail::class)]
+    #[Inline(linkedModel: EMail::class, mm: 'tx_psbcontacts_contacts_emails')]
     protected ObjectStorage $eMails;
 
     /** @var ObjectStorage<Event> */
-    #[Select(linkedModel: Event::class, mm: 'tx_psbcontacts_contacts_events')]
+    #[Inline(linkedModel: Event::class, mm: 'tx_psbcontacts_contacts_events')]
     protected ObjectStorage $events;
 
     #[Input]
@@ -67,7 +67,7 @@ class Contact extends AbstractEntity
     protected string $notes = '';
 
     /** @var ObjectStorage<PhoneNumber> */
-    #[Inline(linkedModel: PhoneNumber::class)]
+    #[Inline(linkedModel: PhoneNumber::class, mm: 'tx_psbcontacts_contacts_phonenumbers')]
     protected ObjectStorage $phoneNumbers;
 
     #[Check]
@@ -80,7 +80,7 @@ class Contact extends AbstractEntity
     protected string $type = 'person';
 
     /** @var ObjectStorage<Website> */
-    #[Inline(linkedModel: Website::class)]
+    #[Inline(linkedModel: Website::class, mm: 'tx_psbcontacts_contacts_websites')]
     protected ObjectStorage $websites;
 
     public function __construct()
