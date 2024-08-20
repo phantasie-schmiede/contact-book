@@ -34,6 +34,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use function is_array;
+use function is_string;
 
 /**
  * Class ContactController
@@ -268,11 +269,11 @@ class ContactController extends ActionController
         $entity->setCity($entityData['city']);
         $entity->setCountry($entityData['country']);
         $entity->setCounty($entityData['county']);
-        $entity->setHouseNumber($entityData['houseNumber']);
+        $entity->setHouseNumber((string)$entityData['houseNumber']);
         $entity->setNotes($entityData['notes']);
         $entity->setStreet($entityData['street']);
         $entity->setType($entityData['type']);
-        $entity->setZipCode($entityData['zipCode']);
+        $entity->setZipCode((string)$entityData['zipCode']);
     }
 
     private function updateEMailProperties(EMail $entity, array $entityData): void
@@ -291,7 +292,11 @@ class ContactController extends ActionController
         $entity->addContact($contact);
 
         if (!empty($entityData['contacts'])) {
-            $contactIds = array_map('\intval', json_decode($entityData['contacts'], false, 512, JSON_THROW_ON_ERROR));
+            if (is_string($entityData['contacts'])) {
+                $entityData['contacts'] = json_decode($entityData['contacts'], true, 512, JSON_THROW_ON_ERROR);
+            }
+
+            $contactIds = array_map('\intval', $entityData['contacts']);
 
             foreach ($contactIds as $contactId) {
                 $additionalContact = $this->contactRepository->findByUid($contactId);

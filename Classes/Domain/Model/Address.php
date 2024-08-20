@@ -14,6 +14,7 @@ use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
+use PSB\PsbFoundation\Enum\SelectRenderType;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
@@ -38,7 +39,7 @@ class Address extends AbstractContactRelatedEntity
     protected string $city = '';
 
     /** @var ObjectStorage<Contact> */
-    #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_address_contacts', mmOppositeField: 'addresses')]
+    #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_addresses', mmOppositeField: 'addresses', renderType: SelectRenderType::selectMultipleSideBySide)]
     protected ObjectStorage $contacts;
 
     #[Input]

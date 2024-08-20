@@ -36,7 +36,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 class Contact extends AbstractEntity
 {
     /** @var ObjectStorage<Address> */
-    #[Inline(linkedModel: Address::class, mm: 'tx_psbcontacts_address_contacts')]
+    #[Inline(linkedModel: Address::class, mm: 'tx_psbcontacts_contacts_addresses')]
     protected ObjectStorage $addresses;
 
     /** @var ObjectStorage<Contact> */
