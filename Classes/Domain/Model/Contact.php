@@ -88,9 +88,40 @@ class Contact extends AbstractEntity
         $this->initializeObject();
     }
 
+    public function addAddress(Address $address): void
+    {
+        $this->addresses->attach($address);
+    }
+
+    public function addEMail(EMail $eMail): void
+    {
+        $this->eMails->attach($eMail);
+    }
+
     public function addEvent(Event $event): void
     {
         $this->events->attach($event);
+    }
+
+    public function addPhoneNumber(PhoneNumber $phoneNumber): void
+    {
+        $this->phoneNumbers->attach($phoneNumber);
+    }
+
+    public function addWebsite(Website $website): void
+    {
+        $this->websites->attach($website);
+    }
+
+    public function getAddressByUid(int $uid): Address
+    {
+        foreach ($this->addresses as $address) {
+            if ($uid === $address->getUid()) {
+                return $address;
+            }
+        }
+
+        throw new InvalidArgumentException(__CLASS__ . ': Address with UID ' . $uid . ' not found!', 1724164780);
     }
 
     public function getAddresses(): ObjectStorage
@@ -125,6 +156,17 @@ class Contact extends AbstractEntity
         }
 
         return $displayName;
+    }
+
+    public function getEMailByUid(int $uid): EMail
+    {
+        foreach ($this->eMails as $eMail) {
+            if ($uid === $eMail->getUid()) {
+                return $eMail;
+            }
+        }
+
+        throw new InvalidArgumentException(__CLASS__ . ': E-Mail with UID ' . $uid . ' not found!', 1724164830);
     }
 
     public function getEMails(): ObjectStorage
@@ -168,6 +210,17 @@ class Contact extends AbstractEntity
         return $this->notes;
     }
 
+    public function getPhoneNumberByUid(int $uid): PhoneNumber
+    {
+        foreach ($this->phoneNumbers as $phoneNumber) {
+            if ($uid === $phoneNumber->getUid()) {
+                return $phoneNumber;
+            }
+        }
+
+        throw new InvalidArgumentException(__CLASS__ . ': Phone number with UID ' . $uid . ' not found!', 1724164856);
+    }
+
     public function getPhoneNumbers(): ObjectStorage
     {
         return $this->phoneNumbers;
@@ -176,6 +229,17 @@ class Contact extends AbstractEntity
     public function getType(): string
     {
         return $this->type;
+    }
+
+    public function getWebsiteByUid(int $uid): Website
+    {
+        foreach ($this->websites as $website) {
+            if ($uid === $website->getUid()) {
+                return $website;
+            }
+        }
+
+        throw new InvalidArgumentException(__CLASS__ . ': Website with UID ' . $uid . ' not found!', 1724164873);
     }
 
     public function getWebsites(): ObjectStorage
@@ -193,9 +257,29 @@ class Contact extends AbstractEntity
         $this->websites = new ObjectStorage();
     }
 
+    public function removeAddress(Address $address): void
+    {
+        $this->addresses->detach($address);
+    }
+
+    public function removeEMail(EMail $eMail): void
+    {
+        $this->eMails->detach($eMail);
+    }
+
     public function removeEvent(Event $event): void
     {
         $this->events->detach($event);
+    }
+
+    public function removePhoneNumber(PhoneNumber $phoneNumber): void
+    {
+        $this->phoneNumbers->detach($phoneNumber);
+    }
+
+    public function removeWebsite(Website $website): void
+    {
+        $this->websites->detach($website);
     }
 
     public function setAddresses(ObjectStorage $addresses): void

@@ -19,5 +19,13 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  */
 interface ContactRelationInterface
 {
+    public function addContact(Contact $contact): void;
+
     public function getContacts(): ObjectStorage;
+
+    public function removeAllContacts(): void;
+
+    public function removeContact(Contact $contact): void;
+
+    public function setContacts(ObjectStorage $contacts): void;
 }

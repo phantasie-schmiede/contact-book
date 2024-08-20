@@ -14,7 +14,6 @@ use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
@@ -23,7 +22,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * @package PSB\PsbContacts\Domain\Model
  */
 #[Ctrl]
-class EMail extends AbstractEntity implements ContactRelationInterface
+class EMail extends AbstractContactRelatedEntity
 {
     /** @var ObjectStorage<Contact> */
     #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_emails', mmOppositeField: 'eMails')]
@@ -42,16 +41,6 @@ class EMail extends AbstractEntity implements ContactRelationInterface
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
     protected string $type = 'private';
 
-    public function __construct()
-    {
-        $this->initializeObject();
-    }
-
-    public function getContacts(): ObjectStorage
-    {
-        return $this->contacts;
-    }
-
     public function getEMailAddress(): string
     {
         return $this->eMailAddress;
@@ -65,16 +54,6 @@ class EMail extends AbstractEntity implements ContactRelationInterface
     public function getType(): string
     {
         return $this->type;
-    }
-
-    public function initializeObject(): void
-    {
-        $this->contacts = new ObjectStorage();
-    }
-
-    public function setContacts(ObjectStorage $contacts): void
-    {
-        $this->contacts = $contacts;
     }
 
     public function setEMailAddress(string $eMailAddress): void

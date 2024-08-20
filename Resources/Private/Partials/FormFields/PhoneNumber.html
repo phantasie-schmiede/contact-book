@@ -1,0 +1,108 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbContacts="http://typo3.org/ns/PSB/PsbContacts/ViewHelpers">
+<f:if condition="{phoneNumber}">
+    <f:then>
+        <f:variable
+            name="uid"
+            value="{phoneNumber.uid}" />
+    </f:then>
+    <f:else>
+        <f:variable
+            name="uid"
+            value="###uid###" />
+    </f:else>
+</f:if>
+
+<fieldset class="border border-light-subtle mb-3">
+    <div class="col-md-6">
+        <label
+            class="form-label">
+            Typ 1
+        </label>
+        <f:form.select
+            class="form-select"
+            name="phoneNumber[{uid}][generalType]"
+            options="{generalTypes}"
+            value="{phoneNumber.generalType}" />
+    </div>
+    <div class="col-md-6">
+        <label
+            class="form-label">
+            Typ 2
+        </label>
+        <f:form.select
+            class="form-select"
+            name="phoneNumber[{uid}][phoneNumberType]"
+            options="{phoneNumberTypes}"
+            value="{phoneNumber.phoneNumberType}" />
+    </div>
+    <div class="col-md-6">
+        <label
+            class="form-label">
+            Telefonnummer
+        </label>
+        <div class="input-group mb-3">
+            <span class="input-group-text">+</span>
+            <f:form.textfield
+                class="form-control"
+                name="phoneNumber[{uid}][internationalDiallingCode]"
+                placeholder="Ländervorwahl"
+                type="number"
+                value="{phoneNumber.internationalDiallingCode}" />
+            <span class="input-group-text">0</span>
+            <f:form.textfield
+                class="form-control"
+                name="phoneNumber[{uid}][areaCode]"
+                placeholder="Vorwahl ohne 0"
+                type="number"
+                value="{phoneNumber.areaCode}" />
+            <span class="input-group-text">/</span>
+            <f:form.textfield
+                class="form-control"
+                name="phoneNumber[{uid}][connectionIdentifier]"
+                placeholder="Anschlussnummer"
+                type="number"
+                value="{phoneNumber.connectionIdentifier}" />
+        </div>
+    </div>
+    <div class="col-md-6">
+        <label
+            class="form-label">
+            weitere Kontakte
+        </label>
+        <input
+            autocomplete="off"
+            class="form-control"
+            data-psb-autocomplete-items="{allContacts}"
+            data-psb-autocomplete-preselection="{psbContacts:json.relatedContacts(relatedEntity: phoneNumber, contact: contact)}"
+            data-psb-autocomplete-selection-target="#contact-selection-{uid}"
+            data-psb-autocomplete-value-target="#contact-value-{uid}"
+            type="text" />
+        <ul
+            class="list-group list-group-flush"
+            id="contact-selection-{uid}">
+        </ul>
+        <f:form.hidden
+            id="contact-value-{uid}"
+            name="phoneNumber[{uid}][contacts]" />
+    </div>
+    <div class="col-md-6">
+        <label
+            class="form-label">
+            Notizen
+        </label>
+        <f:form.textarea
+            class="form-control"
+            name="phoneNumber[{uid}][notes]"
+            value="{phoneNumber.notes}" />
+    </div>
+    <div
+        class="btn btn-danger"
+        data-psb-delete-mode="closest"
+        data-psb-delete-target="fieldset">
+        Entfernen
+    </div>
+</fieldset>
+</html>

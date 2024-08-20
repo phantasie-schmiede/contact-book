@@ -18,8 +18,13 @@ use PSB\PsbContacts\Domain\Enum\ContactType;
 use PSB\PsbContacts\Domain\Enum\EventType;
 use PSB\PsbContacts\Domain\Enum\GeneralType;
 use PSB\PsbContacts\Domain\Enum\PhoneNumberType;
+use PSB\PsbContacts\Domain\Model\Address;
 use PSB\PsbContacts\Domain\Model\Contact;
+use PSB\PsbContacts\Domain\Model\ContactRelationInterface;
+use PSB\PsbContacts\Domain\Model\EMail;
 use PSB\PsbContacts\Domain\Model\Event;
+use PSB\PsbContacts\Domain\Model\PhoneNumber;
+use PSB\PsbContacts\Domain\Model\Website;
 use PSB\PsbContacts\Domain\Repository\ContactRepository;
 use PSB\PsbFoundation\Attribute\PluginAction;
 use PSB\PsbFoundation\Service\GlobalVariableProviders\RequestParameterProvider;
@@ -64,7 +69,7 @@ class ContactController extends ActionController
     #[PluginAction(uncached: true)]
     public function createAction(Contact $contact): ResponseInterface
     {
-        $this->processEvents($contact);
+        $this->processRelations($contact);
         $this->contactRepository->add($contact);
 
         return $this->redirect('list');
@@ -125,7 +130,7 @@ class ContactController extends ActionController
     #[PluginAction(uncached: true)]
     public function updateAction(Contact $contact): ResponseInterface
     {
-        $this->processEvents($contact);
+        $this->processRelations($contact);
         $this->contactRepository->update($contact);
 
         return $this->redirect(
@@ -165,43 +170,125 @@ class ContactController extends ActionController
     /**
      * @throws Exception
      */
-    private function processEvents(Contact $contact): void
+    private function processRelations(Contact $contact): void
     {
-        $existingEvents = clone $contact->getEvents();
-        $updatedEvents = $this->request->hasArgument('event') ? $this->request->getArgument('event') : [];
-        $newEvents = GlobalVariableService::get(RequestParameterProvider::class . '.event', false);
+        foreach ([
+                     'address',
+                     'eMail',
+                     'event',
+                     'phoneNumber',
+                     'website',
+                 ] as $relationType) {
+            $existingEntities = match ($relationType) {
+                'address'     => clone $contact->getAddresses(),
+                'eMail'       => clone $contact->getEMails(),
+                'event'       => clone $contact->getEvents(),
+                'phoneNumber' => clone $contact->getPhoneNumbers(),
+                'website'     => clone $contact->getWebsites(),
+            };
 
-        if (is_array($updatedEvents)) {
-            foreach ($updatedEvents as $uid => $eventData) {
-                $event = $contact->getEventByUid($uid);
-                $this->updateEventProperties($contact, $event, $eventData);
-                $existingEvents->detach($event);
+            $updatedEntities = $this->request->hasArgument($relationType) ? $this->request->getArgument(
+                $relationType
+            ) : [];
+            $newEntities = GlobalVariableService::get(RequestParameterProvider::class . '.' . $relationType, false);
+
+            if (is_array($updatedEntities)) {
+                foreach ($updatedEntities as $uid => $entityData) {
+                    $entity = match ($relationType) {
+                        'address'     => $contact->getAddressByUid($uid),
+                        'eMail'       => $contact->getEMailByUid($uid),
+                        'event'       => $contact->getEventByUid($uid),
+                        'phoneNumber' => $contact->getPhoneNumberByUid($uid),
+                        'website'     => $contact->getWebsiteByUid($uid),
+                    };
+                    $this->updateEntityProperties($contact, $entity, $entityData);
+                    $existingEntities->detach($entity);
+                }
+            }
+
+            if (0 < $existingEntities->count()) {
+                // Detach entities that were removed.
+                foreach ($existingEntities as $entity) {
+                    switch ($relationType) {
+                        case 'address':
+                            $contact->removeAddress($entity);
+                            break;
+                        case 'eMail':
+                            $contact->removeEMail($entity);
+                            break;
+                        case 'event':
+                            $contact->removeEvent($entity);
+                            break;
+                        case 'phoneNumber':
+                            $contact->removePhoneNumber($entity);
+                            break;
+                        case 'website':
+                            $contact->removeWebsite($entity);
+                            break;
+                    }
+                }
+            }
+
+            if (is_array($newEntities)) {
+                foreach ($newEntities as $entityData) {
+                    switch ($relationType) {
+                        case 'address':
+                            $address = new Address();
+                            $this->updateEntityProperties($contact, $address, $entityData);
+                            $contact->addAddress($address);
+                            break;
+                        case 'eMail':
+                            $eMail = new EMail();
+                            $this->updateEntityProperties($contact, $eMail, $entityData);
+                            $contact->addEMail($eMail);
+                            break;
+                        case 'event':
+                            $event = new Event();
+                            $this->updateEntityProperties($contact, $event, $entityData);
+                            $contact->addEvent($event);
+                            break;
+                        case 'phoneNumber':
+                            $phoneNumber = new PhoneNumber();
+                            $this->updateEntityProperties($contact, $phoneNumber, $entityData);
+                            $contact->addPhoneNumber($phoneNumber);
+                            break;
+                        case 'website':
+                            $website = new Website();
+                            $this->updateEntityProperties($contact, $website, $entityData);
+                            $contact->addWebsite($website);
+                            break;
+                    }
+                }
             }
         }
+    }
 
-        if (0 < $existingEvents->count()) {
-            // Delete events that were removed.
-            foreach ($existingEvents as $event) {
-                $contact->removeEvent($event);
-            }
-        }
+    private function updateAddressProperties(Address $entity, array $entityData): void
+    {
+        $entity->setCity($entityData['city']);
+        $entity->setCountry($entityData['country']);
+        $entity->setCounty($entityData['county']);
+        $entity->setHouseNumber($entityData['houseNumber']);
+        $entity->setNotes($entityData['notes']);
+        $entity->setStreet($entityData['street']);
+        $entity->setType($entityData['type']);
+        $entity->setZipCode($entityData['zipCode']);
+    }
 
-        if (is_array($newEvents)) {
-            foreach ($newEvents as $eventData) {
-                $event = new Event();
-                $this->updateEventProperties($contact, $event, $eventData);
-                $contact->addEvent($event);
-            }
-        }
+    private function updateEMailProperties(EMail $entity, array $entityData): void
+    {
+        $entity->setEMailAddress($entityData['eMailAddress']);
+        $entity->setNotes($entityData['notes']);
+        $entity->setType($entityData['type']);
     }
 
     /**
      * @throws Exception
      */
-    private function updateEventProperties(Contact $contact, Event $event, array $eventData): void
+    private function updateEntityProperties(Contact $contact, ContactRelationInterface $entity, array $entityData): void
     {
-        $event->removeAllContacts();
-        $event->addContact($contact);
+        $entity->removeAllContacts();
+        $entity->addContact($contact);
 
         if (!empty($eventData['contacts'])) {
             $contactIds = array_map('\intval', json_decode($eventData['contacts'], false, 512, JSON_THROW_ON_ERROR));
@@ -210,15 +297,56 @@ class ContactController extends ActionController
                 $additionalContact = $this->contactRepository->findByUid($contactId);
 
                 if (null !== $additionalContact) {
-                    $event->addContact($additionalContact);
+                    $entity->addContact($additionalContact);
                 }
             }
         }
 
-        $event->setDate(new DateTime($eventData['date']));
-        $event->setNotes($eventData['notes']);
-        $event->setShowAnniversaries((bool)$eventData['showAnniversaries']);
-        $event->setShowInCalendar((bool)$eventData['showInCalendar']);
-        $event->setType($eventData['type']);
+        switch (true) {
+            case $entity instanceof Address:
+                $this->updateAddressProperties($entity, $entityData);
+                break;
+            case $entity instanceof EMail:
+                $this->updateEMailProperties($entity, $entityData);
+                break;
+            case $entity instanceof Event:
+                $this->updateEventProperties($entity, $entityData);
+                break;
+            case $entity instanceof PhoneNumber:
+                $this->updatePhoneNumberProperties($entity, $entityData);
+                break;
+            case $entity instanceof Website:
+                $this->updateWebsiteProperties($entity, $entityData);
+                break;
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function updateEventProperties(Event $entity, array $entityData): void
+    {
+        $entity->setDate(new DateTime($entityData['date']));
+        $entity->setNotes($entityData['notes']);
+        $entity->setShowAnniversaries((bool)$entityData['showAnniversaries']);
+        $entity->setShowInCalendar((bool)$entityData['showInCalendar']);
+        $entity->setType($entityData['type']);
+    }
+
+    private function updatePhoneNumberProperties(PhoneNumber $entity, array $entityData): void
+    {
+        $entity->setAreaCode($entityData['areaCode']);
+        $entity->setConnectionIdentifier($entityData['connectionIdentifier']);
+        $entity->setGeneralType($entityData['generalType']);
+        $entity->setInternationalDiallingCode($entityData['internationalDiallingCode']);
+        $entity->setNotes($entityData['notes']);
+        $entity->setPhoneNumberType($entityData['phoneNumberType']);
+    }
+
+    private function updateWebsiteProperties(Website $entity, array $entityData): void
+    {
+        $entity->setNotes($entityData['notes']);
+        $entity->setType($entityData['type']);
+        $entity->setUrl($entityData['url']);
     }
 }

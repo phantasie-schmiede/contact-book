@@ -14,7 +14,6 @@ use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
@@ -33,7 +32,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
     'street',
     'zipCode',
 ])]
-class Address extends AbstractEntity implements ContactRelationInterface
+class Address extends AbstractContactRelatedEntity
 {
     #[Input]
     protected string $city = '';
@@ -67,19 +66,9 @@ class Address extends AbstractEntity implements ContactRelationInterface
     #[Input]
     protected string $zipCode = '';
 
-    public function __construct()
-    {
-        $this->initializeObject();
-    }
-
     public function getCity(): string
     {
         return $this->city;
-    }
-
-    public function getContacts(): ObjectStorage
-    {
-        return $this->contacts;
     }
 
     public function getCountry(): string
@@ -117,19 +106,9 @@ class Address extends AbstractEntity implements ContactRelationInterface
         return $this->zipCode;
     }
 
-    public function initializeObject(): void
-    {
-        $this->contacts = new ObjectStorage();
-    }
-
     public function setCity(string $city): void
     {
         $this->city = $city;
-    }
-
-    public function setContacts(ObjectStorage $contacts): void
-    {
-        $this->contacts = $contacts;
     }
 
     public function setCountry(string $country): void

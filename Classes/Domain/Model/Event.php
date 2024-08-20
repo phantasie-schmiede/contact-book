@@ -18,7 +18,6 @@ use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
 use PSB\PsbFoundation\Enum\SelectRenderType;
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
@@ -27,7 +26,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * @package PSB\PsbContacts\Domain\Model
  */
 #[Ctrl(label: 'date')]
-class Event extends AbstractEntity implements ContactRelationInterface
+class Event extends AbstractContactRelatedEntity
 {
     /** @var ObjectStorage<Contact> */
     #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_events', mmOppositeField: 'events', renderType: SelectRenderType::selectMultipleSideBySide)]
@@ -56,21 +55,6 @@ class Event extends AbstractEntity implements ContactRelationInterface
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
     protected string $type = 'birthday';
 
-    public function __construct()
-    {
-        $this->initializeObject();
-    }
-
-    public function addContact(Contact $contact): void
-    {
-        $this->contacts->attach($contact);
-    }
-
-    public function getContacts(): ObjectStorage
-    {
-        return $this->contacts;
-    }
-
     public function getDate(): DateTime
     {
         return $this->date;
@@ -95,11 +79,6 @@ class Event extends AbstractEntity implements ContactRelationInterface
         return $this->type;
     }
 
-    public function initializeObject(): void
-    {
-        $this->contacts = new ObjectStorage();
-    }
-
     public function isShowAnniversaries(): bool
     {
         return $this->showAnniversaries;
@@ -108,21 +87,6 @@ class Event extends AbstractEntity implements ContactRelationInterface
     public function isShowInCalendar(): bool
     {
         return $this->showInCalendar;
-    }
-
-    public function removeAllContacts(): void
-    {
-        $this->contacts = new ObjectStorage();
-    }
-
-    public function removeContact(Contact $contact): void
-    {
-        $this->contacts->detach($contact);
-    }
-
-    public function setContacts(ObjectStorage $contacts): void
-    {
-        $this->contacts = $contacts;
     }
 
     public function setDate(DateTime $date): void

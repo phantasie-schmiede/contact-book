@@ -15,7 +15,6 @@ use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
@@ -26,7 +25,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * @package PSB\PsbContacts\Domain\Model
  */
 #[Ctrl]
-class PhoneNumber extends AbstractEntity implements ContactRelationInterface
+class PhoneNumber extends AbstractContactRelatedEntity
 {
     #[Input]
     protected string $areaCode = '';
@@ -59,11 +58,6 @@ class PhoneNumber extends AbstractEntity implements ContactRelationInterface
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
     protected PhoneNumberType $phoneNumberType = PhoneNumberType::Mobile;
 
-    public function __construct()
-    {
-        $this->initializeObject();
-    }
-
     public function getAreaCode(): string
     {
         return $this->areaCode;
@@ -72,11 +66,6 @@ class PhoneNumber extends AbstractEntity implements ContactRelationInterface
     public function getConnectionIdentifier(): string
     {
         return $this->connectionIdentifier;
-    }
-
-    public function getContacts(): ObjectStorage
-    {
-        return $this->contacts;
     }
 
     public function getGeneralType(): string
@@ -99,11 +88,6 @@ class PhoneNumber extends AbstractEntity implements ContactRelationInterface
         return $this->phoneNumberType;
     }
 
-    public function initializeObject(): void
-    {
-        $this->contacts = new ObjectStorage();
-    }
-
     public function setAreaCode(string $areaCode): void
     {
         $this->areaCode = $areaCode;
@@ -112,11 +96,6 @@ class PhoneNumber extends AbstractEntity implements ContactRelationInterface
     public function setConnectionIdentifier(string $connectionIdentifier): void
     {
         $this->connectionIdentifier = $connectionIdentifier;
-    }
-
-    public function setContacts(ObjectStorage $contacts): void
-    {
-        $this->contacts = $contacts;
     }
 
     public function setGeneralType(string $generalType): void

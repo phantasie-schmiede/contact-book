@@ -14,7 +14,6 @@ use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
@@ -23,7 +22,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * @package PSB\PsbContacts\Domain\Model
  */
 #[Ctrl]
-class Website extends AbstractEntity implements ContactRelationInterface
+class Website extends AbstractContactRelatedEntity
 {
     /** @var ObjectStorage<Contact> */
     #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_websites', mmOppositeField: 'websites')]
@@ -42,16 +41,6 @@ class Website extends AbstractEntity implements ContactRelationInterface
     #[Input]
     protected string $url = '';
 
-    public function __construct()
-    {
-        $this->initializeObject();
-    }
-
-    public function getContacts(): ObjectStorage
-    {
-        return $this->contacts;
-    }
-
     public function getNotes(): string
     {
         return $this->notes;
@@ -65,16 +54,6 @@ class Website extends AbstractEntity implements ContactRelationInterface
     public function getUrl(): string
     {
         return $this->url;
-    }
-
-    public function initializeObject(): void
-    {
-        $this->contacts = new ObjectStorage();
-    }
-
-    public function setContacts(ObjectStorage $contacts): void
-    {
-        $this->contacts = $contacts;
     }
 
     public function setNotes(string $notes): void
