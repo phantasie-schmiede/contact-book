@@ -33,7 +33,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
     'street',
     'zipCode',
 ])]
-class Address extends AbstractEntity
+class Address extends AbstractEntity implements ContactRelationInterface
 {
     #[Input]
     protected string $city = '';

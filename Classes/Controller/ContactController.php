@@ -13,6 +13,7 @@ namespace PSB\PsbContacts\Controller;
 use DateTime;
 use Exception;
 use JsonException;
+use PSB\PsbContacts\Domain\Demand\ContactDemand;
 use PSB\PsbContacts\Domain\Enum\ContactType;
 use PSB\PsbContacts\Domain\Enum\EventType;
 use PSB\PsbContacts\Domain\Enum\GeneralType;
@@ -137,6 +138,9 @@ class ContactController extends ActionController
      */
     private function prepareFormView(?Contact $contact = null): void
     {
+        $contactDemand = new ContactDemand();
+        $contactDemand->addExcludedContact($contact);
+
         $this->view->assignMultiple([
             'generalTypes'     => GeneralType::toArray(GeneralType::Private),
             'companies'        => $this->contactRepository->findByType(ContactType::Company),
@@ -147,7 +151,7 @@ class ContactController extends ActionController
                         'label' => $contact->getDisplayName(),
                         'value' => $contact->getUid(),
                     ],
-                    $this->contactRepository->findAll()
+                    $this->contactRepository->findByDemand($contactDemand)
                         ->toArray()
                 ),
                 JSON_THROW_ON_ERROR

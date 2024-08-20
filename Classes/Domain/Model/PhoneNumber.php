@@ -26,7 +26,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * @package PSB\PsbContacts\Domain\Model
  */
 #[Ctrl]
-class PhoneNumber extends AbstractEntity
+class PhoneNumber extends AbstractEntity implements ContactRelationInterface
 {
     #[Input]
     protected string $areaCode = '';

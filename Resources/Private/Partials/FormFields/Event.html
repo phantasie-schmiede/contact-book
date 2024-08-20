@@ -1,6 +1,7 @@
 <html
     data-namespace-typo3-fluid="true"
-    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbContacts="http://typo3.org/ns/PSB/PsbContacts/ViewHelpers">
 <f:if condition="{event}">
     <f:then>
         <f:variable
@@ -40,26 +41,19 @@
     <div class="col-md-6">
         <label
             class="form-label">
-            Kontakte
+            weitere Kontakte
         </label>
         <input
             autocomplete="off"
             class="form-control"
             data-psb-autocomplete-items="{allContacts}"
-            data-psb-autocomplete-selection-target="#contact-selection-{uid}",
+            data-psb-autocomplete-preselection="{psbContacts:json.relatedContacts(relatedEntity: event, contact: contact)}"
+            data-psb-autocomplete-selection-target="#contact-selection-{uid}"
             data-psb-autocomplete-value-target="#contact-value-{uid}"
             type="text" />
         <ul
             class="list-group list-group-flush"
             id="contact-selection-{uid}">
-            <f:for as="additionalContact" each="{event.contacts}">
-                <f:if condition="{additionalContact} != {contact}">
-                    <li
-                        class="list-group-item">
-                        {additionalContact.displayName}
-                    </li>
-                </f:if>
-            </f:for>
         </ul>
         <f:form.hidden
             id="contact-value-{uid}"

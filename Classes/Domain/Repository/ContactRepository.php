@@ -10,7 +10,9 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Domain\Repository;
 
+use PSB\PsbContacts\Domain\Demand\ContactDemand;
 use PSB\PsbContacts\Domain\Enum\ContactType;
+use PSB\PsbFoundation\Utility\QueryUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
@@ -21,6 +23,22 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class ContactRepository extends Repository
 {
+    public function findByDemand(ContactDemand $demand): QueryResultInterface
+    {
+        $constraints = [];
+        $query = $this->createQuery();
+
+        if ([] !== $demand->getExcludedContacts()) {
+            foreach ($demand->getExcludedContacts() as $excludedContact) {
+                $constraints[] = $query->logicalNot($query->equals('uid', $excludedContact));
+            }
+        }
+
+        QueryUtility::applyConstraints($constraints, $query);
+
+        return $query->execute();
+    }
+
     public function findByType(ContactType $type): QueryResultInterface
     {
         $query = $this->createQuery();
