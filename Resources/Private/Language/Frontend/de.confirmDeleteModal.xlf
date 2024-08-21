@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2024-08-21T08:59:00+01:00"
+        original="messages"
+        product-name="psb_contacts"
+        source-language="en"
+        target-language="de">
+        <body>
+            <trans-unit id="body">
+                <source>Really delete {name}?</source>
+                <target>{name} wirklich löschen?</target>
+            </trans-unit>
+            <trans-unit id="cancel">
+                <source>Cancel</source>
+                <target>Abbrechen</target>
+            </trans-unit>
+            <trans-unit id="delete">
+                <source>Delete!</source>
+                <target>Löschen!</target>
+            </trans-unit>
+            <trans-unit id="title">
+                <source>Confirm deletion</source>
+                <target>Löschen bestätigen</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

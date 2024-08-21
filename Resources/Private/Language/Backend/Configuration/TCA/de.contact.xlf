@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2024-08-20T21:27:00+01:00"
+        original="messages"
+        product-name="psb_contacts"
+        source-language="en"
+        target-language="de">
+        <body>
+            <trans-unit id="addresses">
+                <source>Addresses</source>
+                <target>Adressen</target>
+            </trans-unit>
+            <trans-unit id="companies">
+                <source>Companies</source>
+                <target>Unternehmen</target>
+            </trans-unit>
+            <trans-unit id="companyName">
+                <source>Company name</source>
+                <target>Unternehmensname</target>
+            </trans-unit>
+            <trans-unit id="ctrl.title">
+                <source>Contact</source>
+                <target>Kontakt</target>
+            </trans-unit>
+            <trans-unit id="eMails">
+                <source>E-mail addresses</source>
+                <target>E-Mail-Adressen</target>
+            </trans-unit>
+            <trans-unit id="events">
+                <source>Events</source>
+                <target>Ereignisse</target>
+            </trans-unit>
+            <trans-unit id="firstName">
+                <source>First name</source>
+                <target>Vorname</target>
+            </trans-unit>
+            <trans-unit id="lastName">
+                <source>Last name</source>
+                <target>Nachname</target>
+            </trans-unit>
+            <trans-unit id="middleNames">
+                <source>Middle Names</source>
+                <target>weitere Vornamen</target>
+            </trans-unit>
+            <trans-unit id="notes">
+                <source>Notes</source>
+                <target>Notizen</target>
+            </trans-unit>
+            <trans-unit id="phoneNumbers">
+                <source>Phone numbers</source>
+                <target>Rufnummern</target>
+            </trans-unit>
+            <trans-unit id="showInAddressBook">
+                <source>Show in address book</source>
+                <target>Im Adressbuch anzeigen</target>
+            </trans-unit>
+            <trans-unit id="type">
+                <source>Type</source>
+                <target>Typ</target>
+            </trans-unit>
+            <trans-unit id="type.company">
+                <source>Company</source>
+                <target>Unternehmen</target>
+            </trans-unit>
+            <trans-unit id="type.person">
+                <source>Person</source>
+                <target>Person</target>
+            </trans-unit>
+            <trans-unit id="websites">
+                <source>Websites</source>
+                <target>Webseiten</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

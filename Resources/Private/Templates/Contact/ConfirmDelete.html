@@ -1,16 +1,21 @@
 <html
     data-namespace-typo3-fluid="true"
-    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+<psbFoundation:translation.registerLanguageFile
+    file="EXT:psb_contacts/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
+    name="modal" />
+
 <button
     class="btn btn-secondary"
     data-bs-dismiss="modal"
     type="button">
-    Abbrechen
+    <psbFoundation:translate id="modal:cancel" />
 </button>
 <f:link.action
     action="delete"
     arguments="{contact: contact}"
     class="btn btn-danger">
-    Löschen!
+    <psbFoundation:translate id="modal:delete" />
 </f:link.action>
 </html>

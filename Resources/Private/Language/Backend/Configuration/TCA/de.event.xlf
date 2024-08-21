@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2024-08-20T21:27:00+01:00"
+        original="messages"
+        product-name="psb_contacts"
+        source-language="en"
+        target-language="de">
+        <body>
+            <trans-unit id="contacts">
+                <source>Contacts</source>
+                <target>Kontakte</target>
+            </trans-unit>
+            <trans-unit id="ctrl.title">
+                <source>Event</source>
+                <target>Ereignis</target>
+            </trans-unit>
+            <trans-unit id="date">
+                <source>Date</source>
+                <target>Datum</target>
+            </trans-unit>
+            <trans-unit id="notes">
+                <source>Notes</source>
+                <target>Notizen</target>
+            </trans-unit>
+            <trans-unit id="showAnniversaries">
+                <source>Show anniversaries</source>
+                <target>Jahrestage anzeigen</target>
+            </trans-unit>
+            <trans-unit id="showInCalendar">
+                <source>Show in calendar</source>
+                <target>In Kalender anzeigen</target>
+            </trans-unit>
+            <trans-unit id="type">
+                <source>Type</source>
+                <target>Typ</target>
+            </trans-unit>
+            <trans-unit id="type.baptism">
+                <source>Baptism</source>
+                <target>Taufe</target>
+            </trans-unit>
+            <trans-unit id="type.birthday">
+                <source>Birthday</source>
+                <target>Geburtstag</target>
+            </trans-unit>
+            <trans-unit id="type.confirmation">
+                <source>Confirmation</source>
+                <target>Konfirmation</target>
+            </trans-unit>
+            <trans-unit id="type.death">
+                <source>Death</source>
+                <target>Tod</target>
+            </trans-unit>
+            <trans-unit id="type.divorce">
+                <source>Divorce</source>
+                <target>Scheidung</target>
+            </trans-unit>
+            <trans-unit id="type.other">
+                <source>Other</source>
+                <target>Anderes</target>
+            </trans-unit>
+            <trans-unit id="type.wedding">
+                <source>Wedding</source>
+                <target>Hochzeit</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -1,7 +1,11 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbContacts="http://typo3.org/ns/PSB/PsbContacts/ViewHelpers">
+    xmlns:psbContacts="http://typo3.org/ns/PSB/PsbContacts/ViewHelpers"
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/phoneNumber.xlf" />
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/Contact/edit.xlf" />
+
 <f:if condition="{phoneNumber}">
     <f:then>
         <f:variable
@@ -19,7 +23,7 @@
     <div class="col-md-6">
         <label
             class="form-label">
-            Typ 1
+            <psbFoundation:translate id="phoneNumber:generalType" />
         </label>
         <f:form.select
             class="form-select"
@@ -30,7 +34,7 @@
     <div class="col-md-6">
         <label
             class="form-label">
-            Typ 2
+            <psbFoundation:translate id="phoneNumber:phoneNumberType" />
         </label>
         <f:form.select
             class="form-select"
@@ -91,7 +95,7 @@
     <div class="col-md-6">
         <label
             class="form-label">
-            Notizen
+            <psbFoundation:translate id="phoneNumber:notes" />
         </label>
         <f:form.textarea
             class="form-control"
@@ -102,7 +106,7 @@
         class="btn btn-danger"
         data-psb-delete-mode="closest"
         data-psb-delete-target="fieldset">
-        Entfernen
+        <psbFoundation:translate id="edit:remove" />
     </div>
 </fieldset>
 </html>

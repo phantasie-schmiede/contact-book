@@ -6,8 +6,50 @@
         product-name="psb_contacts"
         source-language="en">
         <body>
+            <trans-unit id="areaCode">
+                <source>Area code</source>
+            </trans-unit>
+            <trans-unit id="connectionIdentifier">
+                <source>Connection identifier</source>
+            </trans-unit>
+            <trans-unit id="contacts">
+                <source>Subscribers</source>
+            </trans-unit>
             <trans-unit id="ctrl.title">
                 <source>Phone number</source>
+            </trans-unit>
+            <trans-unit id="generalType">
+                <source>General type</source>
+            </trans-unit>
+            <trans-unit id="generalType.business">
+                <source>Business</source>
+            </trans-unit>
+            <trans-unit id="generalType.other">
+                <source>Other</source>
+            </trans-unit>
+            <trans-unit id="generalType.private">
+                <source>Private</source>
+            </trans-unit>
+            <trans-unit id="internationalDiallingCode">
+                <source>International dialling code</source>
+            </trans-unit>
+            <trans-unit id="notes">
+                <source>Notes</source>
+            </trans-unit>
+            <trans-unit id="phoneNumberType">
+                <source>Phone number type</source>
+            </trans-unit>
+            <trans-unit id="phoneNumberType.fax">
+                <source>Fax</source>
+            </trans-unit>
+            <trans-unit id="phoneNumberType.landline">
+                <source>Landline</source>
+            </trans-unit>
+            <trans-unit id="phoneNumberType.mobile">
+                <source>Mobile</source>
+            </trans-unit>
+            <trans-unit id="phoneNumberType.other">
+                <source>Other</source>
             </trans-unit>
         </body>
     </file>

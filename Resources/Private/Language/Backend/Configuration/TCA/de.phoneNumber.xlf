@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2024-08-20T21:28:00+01:00"
+        original="messages"
+        product-name="psb_contacts"
+        source-language="en"
+        target-language="de">
+        <body>
+            <trans-unit id="areaCode">
+                <source>Area code</source>
+                <target>Ortsvorwahl</target>
+            </trans-unit>
+            <trans-unit id="connectionIdentifier">
+                <source>Connection identifier</source>
+                <target>Anschlusskennung</target>
+            </trans-unit>
+            <trans-unit id="contacts">
+                <source>Subscribers</source>
+                <target>Teilnehmer</target>
+            </trans-unit>
+            <trans-unit id="ctrl.title">
+                <source>Phone number</source>
+                <target>Rufnummer</target>
+            </trans-unit>
+            <trans-unit id="generalType">
+                <source>General type</source>
+                <target>Allgemeiner Typ</target>
+            </trans-unit>
+            <trans-unit id="generalType.business">
+                <source>Business</source>
+                <target>Geschäftlich</target>
+            </trans-unit>
+            <trans-unit id="generalType.other">
+                <source>Other</source>
+                <target>Anderer</target>
+            </trans-unit>
+            <trans-unit id="generalType.private">
+                <source>Private</source>
+                <target>Privat</target>
+            </trans-unit>
+            <trans-unit id="internationalDiallingCode">
+                <source>International dialling code</source>
+                <target>Ländervorwahl</target>
+            </trans-unit>
+            <trans-unit id="notes">
+                <source>Notes</source>
+                <target>Notizen</target>
+            </trans-unit>
+            <trans-unit id="phoneNumberType">
+                <source>Phone number type</source>
+                <target>Anschlusstyp</target>
+            </trans-unit>
+            <trans-unit id="phoneNumberType.fax">
+                <source>Fax</source>
+                <target>Fax</target>
+            </trans-unit>
+            <trans-unit id="phoneNumberType.landline">
+                <source>Landline</source>
+                <target>Festnetz</target>
+            </trans-unit>
+            <trans-unit id="phoneNumberType.mobile">
+                <source>Mobile</source>
+                <target>Mobil</target>
+            </trans-unit>
+            <trans-unit id="phoneNumberType.other">
+                <source>Other</source>
+                <target>Anderer</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

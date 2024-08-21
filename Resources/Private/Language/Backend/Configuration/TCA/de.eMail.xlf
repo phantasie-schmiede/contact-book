@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2024-08-20T21:27:00+01:00"
+        original="messages"
+        product-name="psb_contacts"
+        source-language="en"
+        target-language="de">
+        <body>
+            <trans-unit id="contacts">
+                <source>Subscribers</source>
+                <target>Teilnehmer</target>
+            </trans-unit>
+            <trans-unit id="ctrl.title">
+                <source>E-mail</source>
+                <target>E-Mail</target>
+            </trans-unit>
+            <trans-unit id="eMailAddress">
+                <source>E-mail address</source>
+                <target>E-Mail-Adresse</target>
+            </trans-unit>
+            <trans-unit id="notes">
+                <source>Notes</source>
+                <target>Notizen</target>
+            </trans-unit>
+            <trans-unit id="type">
+                <source>Type</source>
+                <target>Typ</target>
+            </trans-unit>
+            <trans-unit id="type.business">
+                <source>Business</source>
+                <target>Geschäftlich</target>
+            </trans-unit>
+            <trans-unit id="type.other">
+                <source>Other</source>
+                <target>Anderer</target>
+            </trans-unit>
+            <trans-unit id="type.private">
+                <source>Private</source>
+                <target>Privat</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

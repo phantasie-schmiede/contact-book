@@ -6,8 +6,44 @@
         product-name="psb_contacts"
         source-language="en">
         <body>
+            <trans-unit id="city">
+                <source>City</source>
+            </trans-unit>
+            <trans-unit id="contacts">
+                <source>Residents</source>
+            </trans-unit>
+            <trans-unit id="country">
+                <source>Country</source>
+            </trans-unit>
+            <trans-unit id="county">
+                <source>County</source>
+            </trans-unit>
             <trans-unit id="ctrl.title">
                 <source>Address</source>
+            </trans-unit>
+            <trans-unit id="houseNumber">
+                <source>House number</source>
+            </trans-unit>
+            <trans-unit id="notes">
+                <source>Notes</source>
+            </trans-unit>
+            <trans-unit id="street">
+                <source>Street</source>
+            </trans-unit>
+            <trans-unit id="type">
+                <source>Type</source>
+            </trans-unit>
+            <trans-unit id="type.business">
+                <source>Business</source>
+            </trans-unit>
+            <trans-unit id="type.other">
+                <source>Other</source>
+            </trans-unit>
+            <trans-unit id="type.private">
+                <source>Private</source>
+            </trans-unit>
+            <trans-unit id="zipCode">
+                <source>zip code</source>
             </trans-unit>
         </body>
     </file>

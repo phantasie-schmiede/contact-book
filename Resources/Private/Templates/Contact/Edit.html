@@ -1,6 +1,7 @@
 <html
     data-namespace-typo3-fluid="true"
-    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
 <f:form
     action="update"
     class="g-3 row"
@@ -17,12 +18,12 @@
             action="show"
             arguments="{contact: contact}"
             class="btn btn-secondary">
-            Abbrechen
+            <psbFoundation:translate id="cancel" />
         </f:link.action>
         <button
             class="btn btn-primary"
             type="submit">
-            Speichern
+            <psbFoundation:translate id="save" />
         </button>
     </div>
 </f:form>

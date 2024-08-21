@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2024-08-21T08:37:00+01:00"
+        original="messages"
+        product-name="psb_contacts"
+        source-language="en">
+        <body>
+            <trans-unit id="addNewAddress">
+                <source>Add new address</source>
+            </trans-unit>
+            <trans-unit id="addNewEMail">
+                <source>Add new e-mail address</source>
+            </trans-unit>
+            <trans-unit id="addNewEvent">
+                <source>Add new event</source>
+            </trans-unit>
+            <trans-unit id="addNewPhoneNumber">
+                <source>Add new phone number</source>
+            </trans-unit>
+            <trans-unit id="addNewWebsite">
+                <source>Add new website</source>
+            </trans-unit>
+            <trans-unit id="cancel">
+                <source>Cancel</source>
+            </trans-unit>
+            <trans-unit id="remove">
+                <source>Remove</source>
+            </trans-unit>
+            <trans-unit id="save">
+                <source>Save</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

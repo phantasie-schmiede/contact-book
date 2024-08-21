@@ -13,6 +13,7 @@ namespace PSB\PsbContacts\Controller;
 use DateTime;
 use Exception;
 use JsonException;
+use PSB\PsbContacts\Data\ExtensionInformation;
 use PSB\PsbContacts\Domain\Demand\ContactDemand;
 use PSB\PsbContacts\Domain\Enum\ContactType;
 use PSB\PsbContacts\Domain\Enum\EventType;
@@ -29,7 +30,13 @@ use PSB\PsbContacts\Domain\Repository\ContactRepository;
 use PSB\PsbFoundation\Attribute\PluginAction;
 use PSB\PsbFoundation\Service\GlobalVariableProviders\RequestParameterProvider;
 use PSB\PsbFoundation\Service\GlobalVariableService;
+use PSB\PsbFoundation\Utility\Configuration\FilePathUtility;
+use PSB\PsbFoundation\Utility\LocalizationUtility;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
+use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
@@ -44,22 +51,31 @@ use function is_string;
 class ContactController extends ActionController
 {
     public function __construct(
-        protected readonly ContactRepository $contactRepository,
+        protected readonly ContactRepository    $contactRepository,
+        protected readonly ExtensionInformation $extensionInformation,
     ) {
     }
 
     /**
      * @throws JsonException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws AspectNotFoundException
+     * @throws InvalidConfigurationTypeException
      */
     #[PluginAction(uncached: true)]
     public function confirmDeleteAction(Contact $contact): ResponseInterface
     {
         $this->view->assign('contact', $contact);
+        $languageFilePath = FilePathUtility::getLanguageFilePath($this->extensionInformation);
 
         return $this->jsonResponse(json_encode([
-            'body'   => $contact->getDisplayName() . ' wirklich löschen?',
+            'body'   => LocalizationUtility::translate(
+                key      : $languageFilePath . 'Frontend/confirmDeleteModal.xlf:body',
+                arguments: ['name' => $contact->getDisplayName()]
+            ),
             'footer' => $this->view->render(),
-            'title'  => 'Löschen bestätigen',
+            'title'  => LocalizationUtility::translate($languageFilePath . 'Frontend/confirmDeleteModal.xlf:title'),
         ], JSON_THROW_ON_ERROR));
     }
 
@@ -145,7 +161,10 @@ class ContactController extends ActionController
     private function prepareFormView(?Contact $contact = null): void
     {
         $contactDemand = new ContactDemand();
-        $contactDemand->addExcludedContact($contact);
+
+        if ($contact instanceof Contact) {
+            $contactDemand->addExcludedContact($contact);
+        }
 
         $this->view->assignMultiple([
             'generalTypes'     => GeneralType::toArray(GeneralType::Private),

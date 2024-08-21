@@ -1,7 +1,11 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbContacts="http://typo3.org/ns/PSB/PsbContacts/ViewHelpers">
+    xmlns:psbContacts="http://typo3.org/ns/PSB/PsbContacts/ViewHelpers"
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/eMail.xlf" />
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/Contact/edit.xlf" />
+
 <f:if condition="{eMail}">
     <f:then>
         <f:variable
@@ -19,7 +23,7 @@
     <div class="col-md-6">
         <label
             class="form-label">
-            Typ
+            <psbFoundation:translate id="eMail:type" />
         </label>
         <f:form.select
             class="form-select"
@@ -30,7 +34,7 @@
     <div class="col-md-6">
         <label
             class="form-label">
-            E-Mail-Adresse
+            <psbFoundation:translate id="eMail:eMailAddress" />
         </label>
         <f:form.textfield
             class="form-control"
@@ -62,7 +66,7 @@
     <div class="col-md-6">
         <label
             class="form-label">
-            Notizen
+            <psbFoundation:translate id="eMail:notes" />
         </label>
         <f:form.textarea
             class="form-control"
@@ -73,7 +77,7 @@
         class="btn btn-danger"
         data-psb-delete-mode="closest"
         data-psb-delete-target="fieldset">
-        Entfernen
+        <psbFoundation:translate id="edit:remove" />
     </div>
 </fieldset>
 </html>

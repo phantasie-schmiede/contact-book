@@ -6,8 +6,29 @@
         product-name="psb_contacts"
         source-language="en">
         <body>
+            <trans-unit id="contacts">
+                <source>Subscribers</source>
+            </trans-unit>
             <trans-unit id="ctrl.title">
                 <source>E-mail</source>
+            </trans-unit>
+            <trans-unit id="eMailAddress">
+                <source>E-mail address</source>
+            </trans-unit>
+            <trans-unit id="notes">
+                <source>Notes</source>
+            </trans-unit>
+            <trans-unit id="type">
+                <source>Type</source>
+            </trans-unit>
+            <trans-unit id="type.business">
+                <source>Business</source>
+            </trans-unit>
+            <trans-unit id="type.other">
+                <source>Other</source>
+            </trans-unit>
+            <trans-unit id="type.private">
+                <source>Private</source>
             </trans-unit>
         </body>
     </file>

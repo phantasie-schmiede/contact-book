@@ -1,33 +1,47 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers"
     xmlns:psbTemplates="http://typo3.org/ns/PSB/PsbTemplates/ViewHelpers"
     xmlns:psbvh="http://typo3.org/ns/PSB/PsbViewHelpers/ViewHelpers">
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/event.xlf" />
+
 <div class="row">
     <div class="col-12">
         <dl class="row">
             <f:if condition="{contact.firstName}">
-                <dt class="col-3">Vorname</dt>
+                <dt class="col-3">
+                    <psbFoundation:translate id="contact:firstName" />
+                </dt>
                 <dd class="col-9">{contact.firstName}</dd>
             </f:if>
 
             <f:if condition="{contact.middleNames}">
-                <dt class="col-3">weitere Vornamen</dt>
+                <dt class="col-3">
+                    <psbFoundation:translate id="contact:middleNames" />
+                </dt>
                 <dd class="col-9">{contact.middleNames}</dd>
             </f:if>
 
             <f:if condition="{contact.lastName}">
-                <dt class="col-3">Nachname</dt>
+                <dt class="col-3">
+                    <psbFoundation:translate id="contact:lastName" />
+                </dt>
                 <dd class="col-9">{contact.lastName}</dd>
             </f:if>
 
             <f:if condition="{contact.companyName}">
-                <dt class="col-3">Unternehmensname</dt>
+                <dt class="col-3">
+                    <psbFoundation:translate id="contact:companyName" />
+                </dt>
                 <dd class="col-9">{contact.companyName}</dd>
             </f:if>
 
             <f:if condition="{contact.addresses}">
-                <dt class="col-3">Addresses</dt>
+                <dt class="col-3">
+                    <psbFoundation:translate id="contact:addresses" />
+                </dt>
                 <dd class="col-9">
                     <ul>
                         <f:for
@@ -55,7 +69,9 @@
             </f:if>
 
             <f:if condition="{contact.phoneNumbers}">
-                <dt class="col-3">Phone Numbers</dt>
+                <dt class="col-3">
+                    <psbFoundation:translate id="contact:phoneNumbers" />
+                </dt>
                 <dd class="col-9">
                     <ul>
                         <f:for
@@ -71,7 +87,9 @@
             </f:if>
 
             <f:if condition="{contact.eMails}">
-                <dt class="col-3">E-mails</dt>
+                <dt class="col-3">
+                    <psbFoundation:translate id="contact:eMails" />
+                </dt>
                 <dd class="col-9">
                     <ul>
                         <f:for
@@ -87,7 +105,9 @@
             </f:if>
 
             <f:if condition="{contact.websites}">
-                <dt class="col-3">Websites</dt>
+                <dt class="col-3">
+                    <psbFoundation:translate id="contact:websites" />
+                </dt>
                 <dd class="col-9">
                     <ul>
                         <f:for
@@ -103,14 +123,18 @@
             </f:if>
 
             <f:if condition="{contact.events}">
-                <dt class="col-3">Events</dt>
+                <dt class="col-3">
+                    <psbFoundation:translate id="contact:events" />
+                </dt>
                 <dd class="col-9">
                     <ul>
                         <f:for
                             as="event"
                             each="{contact.events}">
                             <li>
-                                <strong>{event.type}</strong>
+                                <strong>
+                                    <psbFoundation:translate id="event:type.{event.type}" />
+                                </strong>
                                 <span>{event.date -> f:format.date(format: 'd.m.Y')}</span>
                             </li>
                         </f:for>
@@ -130,7 +154,7 @@
         <f:link.action
             action="list"
             class="link-light link-underline-opacity-0 link-underline-opacity-100-hover stretched-link">
-            Zurück zur Liste
+            <psbFoundation:translate id="backToList" />
         </f:link.action>
     </div>
 
@@ -139,7 +163,7 @@
             action="edit"
             arguments="{contact: contact}"
             class="link-light link-underline-opacity-0 link-underline-opacity-100-hover stretched-link">
-            Bearbeiten
+            <psbFoundation:translate id="edit" />
         </f:link.action>
     </div>
 
@@ -151,7 +175,7 @@
             data="{psb-modal: '#dynamic-modal'}"
             pageType="{psbvh:variable.convertString(string: '\PSB\PsbContacts\Data\ExtensionInformation::TYPE_NUMS[ConfirmDeleteContact]')}"
             pluginName="ConfirmDeleteContact">
-            Löschen
+            <psbFoundation:translate id="delete" />
         </f:link.action>
     </div>
 </div>

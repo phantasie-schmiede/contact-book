@@ -1,7 +1,11 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbContacts="http://typo3.org/ns/PSB/PsbContacts/ViewHelpers">
+    xmlns:psbContacts="http://typo3.org/ns/PSB/PsbContacts/ViewHelpers"
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/event.xlf" />
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/Contact/edit.xlf" />
+
 <f:if condition="{event}">
     <f:then>
         <f:variable
@@ -19,7 +23,7 @@
     <div class="col-md-6">
         <label
             class="form-label">
-            Art des Events
+            <psbFoundation:translate id="event:type" />
         </label>
         <f:form.select
             class="form-select"
@@ -30,7 +34,7 @@
     <div class="col-md-6">
         <label
             class="form-label">
-            Datum
+            <psbFoundation:translate id="event:date" />
         </label>
         <f:form.textfield
             class="form-control"
@@ -62,7 +66,7 @@
     <div class="col-md-6">
         <label
             class="form-label">
-            Notizen
+            <psbFoundation:translate id="event:notes" />
         </label>
         <f:form.textarea
             class="form-control"
@@ -72,7 +76,7 @@
     <div class="col-md-6">
         <label
             class="form-check-label">
-            Jubiläen anzeigen
+            <psbFoundation:translate id="event:showAnniversaries" />
             <f:form.checkbox
                 checked="{f:if(condition: event.showAnniversaries, then: '1', else: '0')}"
                 class="form-check-input"
@@ -83,7 +87,7 @@
     <div class="col-md-6">
         <label
             class="form-check-label">
-            im Kalender anzeigen
+            <psbFoundation:translate id="event:showInCalendar" />
             <f:form.checkbox
                 checked="{f:if(condition: event.showInCalendar, then: '1', else: '0')}"
                 class="form-check-input"
@@ -95,7 +99,7 @@
         class="btn btn-danger"
         data-psb-delete-mode="closest"
         data-psb-delete-target="fieldset">
-        Entfernen
+        <psbFoundation:translate id="edit:remove" />
     </div>
 </fieldset>
 </html>

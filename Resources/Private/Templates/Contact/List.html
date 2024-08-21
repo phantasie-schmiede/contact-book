@@ -1,7 +1,8 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
-    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
 <div class="row">
     <div class="col-12">
         <f:if condition="{contacts}">
@@ -22,7 +23,7 @@
                 </div>
             </f:then>
             <f:else>
-                Es sind noch keine Kontakte vorhanden.
+                <psbFoundation:translate id="noContacts" />
             </f:else>
         </f:if>
     </div>
@@ -34,7 +35,7 @@
             <core:icon
                 alternativeMarkupIdentifier="inline"
                 identifier="psb-templates-person-add" />
-            Neuen Kontakt anlegen
+            <psbFoundation:translate id="addNewContact" />
         </f:link.action>
     </div>
 </div>

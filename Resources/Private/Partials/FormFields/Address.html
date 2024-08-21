@@ -1,7 +1,11 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbContacts="http://typo3.org/ns/PSB/PsbContacts/ViewHelpers">
+    xmlns:psbContacts="http://typo3.org/ns/PSB/PsbContacts/ViewHelpers"
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/address.xlf" />
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/Contact/edit.xlf" />
+
 <f:if condition="{address}">
     <f:then>
         <f:variable
@@ -19,18 +23,26 @@
     <div class="col-md-6">
         <label
             class="form-label">
-            Typ
+            <psbFoundation:translate id="address:type" />
         </label>
         <f:form.select
             class="form-select"
             name="address[{uid}][type]"
-            options="{generalTypes}"
-            value="{address.type}" />
+            value="{address.type}">
+            <f:for
+                as="label"
+                each="{generalTypes}"
+                key="value">
+                <f:form.select.option value="{value}">
+                    <psbFoundation:translate id="address:type.{value}" />
+                </f:form.select.option>
+            </f:for>
+        </f:form.select>
     </div>
     <div class="col-md-6">
         <label
             class="form-label">
-            Straße
+            <psbFoundation:translate id="address:street" />
         </label>
         <f:form.textfield
             class="form-control"
@@ -41,7 +53,7 @@
     <div class="col-md-6">
         <label
             class="form-label">
-            Hausnummer
+            <psbFoundation:translate id="address:houseNumber" />
         </label>
         <f:form.textfield
             class="form-control"
@@ -52,7 +64,7 @@
     <div class="col-md-6">
         <label
             class="form-label">
-            PLZ
+            <psbFoundation:translate id="address:zipCode" />
         </label>
         <f:form.textfield
             class="form-control"
@@ -63,7 +75,7 @@
     <div class="col-md-6">
         <label
             class="form-label">
-            Ort
+            <psbFoundation:translate id="address:city" />
         </label>
         <f:form.textfield
             class="form-control"
@@ -74,7 +86,7 @@
     <div class="col-md-6">
         <label
             class="form-label">
-            Bundesland
+            <psbFoundation:translate id="address:county" />
         </label>
         <f:form.textfield
             class="form-control"
@@ -85,7 +97,7 @@
     <div class="col-md-6">
         <label
             class="form-label">
-            Land
+            <psbFoundation:translate id="address:country" />
         </label>
         <f:form.textfield
             class="form-control"
@@ -117,7 +129,7 @@
     <div class="col-md-6">
         <label
             class="form-label">
-            Notizen
+            <psbFoundation:translate id="address:notes" />
         </label>
         <f:form.textarea
             class="form-control"
@@ -128,7 +140,7 @@
         class="btn btn-danger"
         data-psb-delete-mode="closest"
         data-psb-delete-target="fieldset">
-        Entfernen
+        <psbFoundation:translate id="edit:remove" />
     </div>
 </fieldset>
 </html>

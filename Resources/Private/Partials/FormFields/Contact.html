@@ -1,11 +1,15 @@
 <html
     data-namespace-typo3-fluid="true"
-    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/Contact/edit.xlf" />
+
 <div class="col-md-6">
     <label
         class="form-label"
         for="type">
-        Art des Eintrags
+        <psbFoundation:translate id="contact:type" />
     </label>
     <f:form.select
         class="form-select"
@@ -20,7 +24,7 @@
     <label
         class="form-label"
         for="companyName">
-        Unternehmensname
+        <psbFoundation:translate id="contact:companyName" />
     </label>
     <f:form.textfield
         class="form-control"
@@ -34,7 +38,7 @@
     <label
         class="form-label"
         for="companies">
-        Unternehmen
+        <psbFoundation:translate id="contact:companies" />
     </label>
     <f:form.select
         class="form-control"
@@ -55,7 +59,7 @@
     <label
         class="form-label"
         for="firstName">
-        Vorname
+        <psbFoundation:translate id="contact:firstName" />
     </label>
     <f:form.textfield
         class="form-control"
@@ -70,7 +74,7 @@
     <label
         class="form-label"
         for="middleNames">
-        weitere Vornamen
+        <psbFoundation:translate id="contact:middleNames" />
     </label>
     <f:form.textfield
         class="form-control"
@@ -85,7 +89,7 @@
     <label
         class="form-label"
         for="lastName">
-        Nachname
+        <psbFoundation:translate id="contact:lastName" />
     </label>
     <f:form.textfield
         class="form-control"
@@ -93,7 +97,9 @@
         property="lastName" />
 </div>
 
-<h5>Adressen</h5>
+<h5>
+    <psbFoundation:translate id="contact:addresses" />
+</h5>
 
 <f:for
     as="address"
@@ -109,10 +115,12 @@
     data-psb-copy-mode="append"
     data-psb-copy-source="#address-template"
     data-psb-copy-target="#new-addresses">
-    Neue Adresse hinzufügen
+    <psbFoundation:translate id="edit:addNewAddress" />
 </span>
 
-<h5>Telefonnummern</h5>
+<h5>
+    <psbFoundation:translate id="contact:phoneNumbers" />
+</h5>
 <f:for
     as="phoneNumber"
     each="{contact.phoneNumbers}">
@@ -126,10 +134,12 @@
     data-psb-copy-mode="append"
     data-psb-copy-source="#phone-number-template"
     data-psb-copy-target="#new-phone-numbers">
-    Neue Telefonnummer hinzufügen
+    <psbFoundation:translate id="edit:addNewPhoneNumber" />
 </span>
 
-<h5>E-Mail-Adressen</h5>
+<h5>
+    <psbFoundation:translate id="contact:eMails" />
+</h5>
 <f:for
     as="eMail"
     each="{contact.eMails}">
@@ -143,10 +153,12 @@
     data-psb-copy-mode="append"
     data-psb-copy-source="#e-mail-template"
     data-psb-copy-target="#new-e-mails">
-    Neue E-Mail-Adresse hinzufügen
+    <psbFoundation:translate id="edit:addNewEMail" />
 </span>
 
-<h5>Webseiten</h5>
+<h5>
+    <psbFoundation:translate id="contact:websites" />
+</h5>
 <f:for
     as="website"
     each="{contact.websites}">
@@ -160,10 +172,12 @@
     data-psb-copy-mode="append"
     data-psb-copy-source="#website-template"
     data-psb-copy-target="#new-websites">
-    Neue Website hinzufügen
+    <psbFoundation:translate id="edit:addNewWebsite" />
 </span>
 
-<h5>Ereignisse</h5>
+<h5>
+    <psbFoundation:translate id="contact:events" />
+</h5>
 <f:for
     as="event"
     each="{contact.events}">
@@ -177,6 +191,6 @@
     data-psb-copy-mode="append"
     data-psb-copy-source="#event-template"
     data-psb-copy-target="#new-events">
-    Neues Ereignis hinzufügen
+    <psbFoundation:translate id="edit:addNewEvent" />
 </span>
 </html>

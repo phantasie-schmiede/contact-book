@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2024-08-21T09:11:00+01:00"
+        original="messages"
+        product-name="psb_contacts"
+        source-language="en"
+        target-language="de">
+        <body>
+            <trans-unit id="addNewContact">
+                <source>Add new contact</source>
+                <target>Neuen Kontakt anlegen</target>
+            </trans-unit>
+            <trans-unit id="noContacts">
+                <source>There are no contacts yet.</source>
+                <target>Es sind noch keine Kontakte vorhanden.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

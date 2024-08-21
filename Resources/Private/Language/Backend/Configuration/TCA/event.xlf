@@ -6,11 +6,26 @@
         product-name="psb_contacts"
         source-language="en">
         <body>
+            <trans-unit id="contacts">
+                <source>Contacts</source>
+            </trans-unit>
             <trans-unit id="ctrl.title">
                 <source>Event</source>
             </trans-unit>
+            <trans-unit id="date">
+                <source>Date</source>
+            </trans-unit>
+            <trans-unit id="notes">
+                <source>Notes</source>
+            </trans-unit>
+            <trans-unit id="showAnniversaries">
+                <source>Show anniversaries</source>
+            </trans-unit>
+            <trans-unit id="showInCalendar">
+                <source>Show in calendar</source>
+            </trans-unit>
             <trans-unit id="type">
-                <source>Typ</source>
+                <source>Type</source>
             </trans-unit>
             <trans-unit id="type.baptism">
                 <source>Baptism</source>
