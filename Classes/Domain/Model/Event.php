@@ -35,9 +35,6 @@ class Event extends AbstractContactRelatedEntity
     #[TcaDatetime]
     protected DateTime $date;
 
-    #[Text]
-    protected string $notes = '';
-
     #[Check]
     protected bool $showAnniversaries = false;
 
@@ -69,11 +66,6 @@ class Event extends AbstractContactRelatedEntity
         return $this->type;
     }
 
-    public function getNotes(): string
-    {
-        return $this->notes;
-    }
-
     public function getType(): string
     {
         return $this->type;
@@ -92,11 +84,6 @@ class Event extends AbstractContactRelatedEntity
     public function setDate(DateTime $date): void
     {
         $this->date = $date;
-    }
-
-    public function setNotes(string $notes): void
-    {
-        $this->notes = $notes;
     }
 
     public function setShowAnniversaries(bool $showAnniversaries): void

@@ -51,9 +51,6 @@ class Address extends AbstractContactRelatedEntity
     #[Input]
     protected string $houseNumber = '';
 
-    #[Text]
-    protected string $notes = '';
-
     #[Input]
     protected string $street = '';
 
@@ -85,11 +82,6 @@ class Address extends AbstractContactRelatedEntity
     public function getHouseNumber(): string
     {
         return $this->houseNumber;
-    }
-
-    public function getNotes(): string
-    {
-        return $this->notes;
     }
 
     public function getStreet(): string
@@ -125,11 +117,6 @@ class Address extends AbstractContactRelatedEntity
     public function setHouseNumber(string $houseNumber): void
     {
         $this->houseNumber = $houseNumber;
-    }
-
-    public function setNotes(string $notes): void
-    {
-        $this->notes = $notes;
     }
 
     public function setStreet(string $street): void

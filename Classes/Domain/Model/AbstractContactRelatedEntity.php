@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Domain\Model;
 
+use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -21,6 +22,9 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 abstract class AbstractContactRelatedEntity extends AbstractEntity implements ContactRelationInterface
 {
     protected ObjectStorage $contacts;
+
+    #[Text]
+    protected string $notes = '';
 
     public function __construct()
     {
@@ -35,6 +39,11 @@ abstract class AbstractContactRelatedEntity extends AbstractEntity implements Co
     public function getContacts(): ObjectStorage
     {
         return $this->contacts;
+    }
+
+    public function getNotes(): string
+    {
+        return $this->notes;
     }
 
     public function initializeObject(): void
@@ -55,5 +64,10 @@ abstract class AbstractContactRelatedEntity extends AbstractEntity implements Co
     public function setContacts(ObjectStorage $contacts): void
     {
         $this->contacts = $contacts;
+    }
+
+    public function setNotes(string $notes): void
+    {
+        $this->notes = htmlspecialchars($notes);
     }
 }

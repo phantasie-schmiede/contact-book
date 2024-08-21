@@ -31,9 +31,6 @@ class EMail extends AbstractContactRelatedEntity
     #[Input]
     protected string $eMailAddress = '';
 
-    #[Text]
-    protected string $notes = '';
-
     #[Select(items   : [
         'Private'  => 'private',
         'Business' => 'business',
@@ -46,11 +43,6 @@ class EMail extends AbstractContactRelatedEntity
         return $this->eMailAddress;
     }
 
-    public function getNotes(): string
-    {
-        return $this->notes;
-    }
-
     public function getType(): string
     {
         return $this->type;
@@ -59,11 +51,6 @@ class EMail extends AbstractContactRelatedEntity
     public function setEMailAddress(string $eMailAddress): void
     {
         $this->eMailAddress = $eMailAddress;
-    }
-
-    public function setNotes(string $notes): void
-    {
-        $this->notes = $notes;
     }
 
     public function setType(string $type): void

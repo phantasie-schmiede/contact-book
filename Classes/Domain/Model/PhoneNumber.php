@@ -47,9 +47,6 @@ class PhoneNumber extends AbstractContactRelatedEntity
     #[Input]
     protected string $internationalDiallingCode = '';
 
-    #[Text]
-    protected string $notes = '';
-
     #[Select(items   : [
         'Landline' => 'landline',
         'Mobile'   => 'mobile',
@@ -78,11 +75,6 @@ class PhoneNumber extends AbstractContactRelatedEntity
         return $this->internationalDiallingCode;
     }
 
-    public function getNotes(): string
-    {
-        return $this->notes;
-    }
-
     public function getPhoneNumberType(): string
     {
         return $this->phoneNumberType;
@@ -106,11 +98,6 @@ class PhoneNumber extends AbstractContactRelatedEntity
     public function setInternationalDiallingCode(string $internationalDiallingCode): void
     {
         $this->internationalDiallingCode = $internationalDiallingCode;
-    }
-
-    public function setNotes(string $notes): void
-    {
-        $this->notes = $notes;
     }
 
     public function setPhoneNumberType(string $phoneNumberType): void

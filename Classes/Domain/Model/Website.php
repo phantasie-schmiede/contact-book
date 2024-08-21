@@ -28,9 +28,6 @@ class Website extends AbstractContactRelatedEntity
     #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_websites', mmOppositeField: 'websites')]
     protected ObjectStorage $contacts;
 
-    #[Text]
-    protected string $notes = '';
-
     #[Select(items   : [
         'Private'  => 'private',
         'Business' => 'business',
@@ -41,11 +38,6 @@ class Website extends AbstractContactRelatedEntity
     #[Input]
     protected string $url = '';
 
-    public function getNotes(): string
-    {
-        return $this->notes;
-    }
-
     public function getType(): string
     {
         return $this->type;
@@ -54,11 +46,6 @@ class Website extends AbstractContactRelatedEntity
     public function getUrl(): string
     {
         return $this->url;
-    }
-
-    public function setNotes(string $notes): void
-    {
-        $this->notes = $notes;
     }
 
     public function setType(string $type): void
