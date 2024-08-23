@@ -23,6 +23,10 @@
                 <source>Phone number</source>
                 <target>Rufnummer</target>
             </trans-unit>
+            <trans-unit id="extension">
+                <source>Extension</source>
+                <target>Durchwahl</target>
+            </trans-unit>
             <trans-unit id="generalType">
                 <source>General type</source>
                 <target>Allgemeiner Typ</target>

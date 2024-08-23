@@ -12,7 +12,6 @@ namespace PSB\PsbContacts\Domain\Model;
 
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
 use PSB\PsbFoundation\Enum\SelectRenderType;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -20,15 +19,29 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Class PhoneNumber
  *
- * Number format: +<international dialling code> <area code> <connection identifier>
+ * Number formats:
+ *  - 0<area code> <connection identifier>
+ *  - 0<area code> <connection identifier>-<extension>
+ *  - +<international dialling code> <area code> <connection identifier>
+ *  - +<international dialling code> <area code> <connection identifier>-<extension>
  *
  * @package PSB\PsbContacts\Domain\Model
  */
-#[Ctrl]
+#[Ctrl(label        : 'internationalDiallingCode', labelAlt: [
+    'areaCode',
+    'connectionIdentifier',
+    'extension',
+],     labelAltForce: true, searchFields: [
+    'areaCode',
+    'connectionIdentifier',
+    'extension',
+    'internationalDiallingCode',
+    'notes',
+])]
 class PhoneNumber extends AbstractContactRelatedEntity
 {
     #[Input]
-    protected string $areaCode = '';
+    protected int $areaCode = 0;
 
     #[Input]
     protected string $connectionIdentifier = '';
@@ -36,6 +49,9 @@ class PhoneNumber extends AbstractContactRelatedEntity
     /** @var ObjectStorage<Contact> */
     #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_phonenumbers', mmOppositeField: 'phoneNumbers', renderType: SelectRenderType::selectMultipleSideBySide)]
     protected ObjectStorage $contacts;
+
+    #[Input]
+    protected string $extension = '';
 
     #[Select(items   : [
         'Private'  => 'private',
@@ -45,7 +61,7 @@ class PhoneNumber extends AbstractContactRelatedEntity
     protected string $generalType = 'private';
 
     #[Input]
-    protected string $internationalDiallingCode = '';
+    protected int $internationalDiallingCode = 0;
 
     #[Select(items   : [
         'Landline' => 'landline',
@@ -55,9 +71,14 @@ class PhoneNumber extends AbstractContactRelatedEntity
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
     protected string $phoneNumberType = 'mobile';
 
-    public function getAreaCode(): string
+    public function getAreaCode(): int
     {
         return $this->areaCode;
+    }
+
+    public function getCompleteNumber(): string
+    {
+        return '+' . $this->internationalDiallingCode . $this->areaCode . $this->connectionIdentifier . $this->extension;
     }
 
     public function getConnectionIdentifier(): string
@@ -65,12 +86,17 @@ class PhoneNumber extends AbstractContactRelatedEntity
         return $this->connectionIdentifier;
     }
 
+    public function getExtension(): string
+    {
+        return $this->extension;
+    }
+
     public function getGeneralType(): string
     {
         return $this->generalType;
     }
 
-    public function getInternationalDiallingCode(): string
+    public function getInternationalDiallingCode(): int
     {
         return $this->internationalDiallingCode;
     }
@@ -80,7 +106,7 @@ class PhoneNumber extends AbstractContactRelatedEntity
         return $this->phoneNumberType;
     }
 
-    public function setAreaCode(string $areaCode): void
+    public function setAreaCode(int $areaCode): void
     {
         $this->areaCode = $areaCode;
     }
@@ -90,12 +116,17 @@ class PhoneNumber extends AbstractContactRelatedEntity
         $this->connectionIdentifier = $connectionIdentifier;
     }
 
+    public function setExtension(string $extension): void
+    {
+        $this->extension = $extension;
+    }
+
     public function setGeneralType(string $generalType): void
     {
         $this->generalType = $generalType;
     }
 
-    public function setInternationalDiallingCode(string $internationalDiallingCode): void
+    public function setInternationalDiallingCode(int $internationalDiallingCode): void
     {
         $this->internationalDiallingCode = $internationalDiallingCode;
     }

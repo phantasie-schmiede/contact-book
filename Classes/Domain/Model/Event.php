@@ -15,7 +15,6 @@ use PSB\PsbContacts\Domain\Enum\EventType;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Check;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Datetime as TcaDatetime;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
 use PSB\PsbFoundation\Enum\SelectRenderType;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -25,7 +24,10 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  *
  * @package PSB\PsbContacts\Domain\Model
  */
-#[Ctrl(label: 'date')]
+#[Ctrl(label: 'date', searchFields: [
+    'date',
+    'notes',
+])]
 class Event extends AbstractContactRelatedEntity
 {
     /** @var ObjectStorage<Contact> */

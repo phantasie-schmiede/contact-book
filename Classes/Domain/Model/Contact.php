@@ -32,6 +32,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
     'companyName',
     'firstName',
     'lastName',
+    'middleNames',
+    'notes',
 ])]
 class Contact extends AbstractEntity
 {
@@ -62,6 +64,9 @@ class Contact extends AbstractEntity
 
     #[Input]
     protected string $middleNames = '';
+
+    #[Text]
+    protected string $notes = '';
 
     /** @var ObjectStorage<PhoneNumber> */
     #[Inline(linkedModel: PhoneNumber::class, mm: 'tx_psbcontacts_contacts_phonenumbers')]
@@ -202,6 +207,11 @@ class Contact extends AbstractEntity
         return $this->middleNames;
     }
 
+    public function getNotes(): string
+    {
+        return $this->notes;
+    }
+
     public function getPhoneNumberByUid(int $uid): PhoneNumber
     {
         foreach ($this->phoneNumbers as $phoneNumber) {
@@ -312,6 +322,11 @@ class Contact extends AbstractEntity
     public function setMiddleNames(string $middleNames): void
     {
         $this->middleNames = $middleNames;
+    }
+
+    public function setNotes(string $notes): void
+    {
+        $this->notes = $notes;
     }
 
     public function setPhoneNumbers(ObjectStorage $phoneNumbers): void

@@ -12,8 +12,8 @@ namespace PSB\PsbContacts\Domain\Model;
 
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
+use PSB\PsbFoundation\Enum\SelectRenderType;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
@@ -21,11 +21,14 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  *
  * @package PSB\PsbContacts\Domain\Model
  */
-#[Ctrl]
+#[Ctrl(label: 'eMailAddress', searchFields: [
+    'eMailAddress',
+    'notes',
+])]
 class EMail extends AbstractContactRelatedEntity
 {
     /** @var ObjectStorage<Contact> */
-    #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_emails', mmOppositeField: 'eMails')]
+    #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_emails', mmOppositeField: 'eMails', renderType: SelectRenderType::selectMultipleSideBySide)]
     protected ObjectStorage $contacts;
 
     #[Input]

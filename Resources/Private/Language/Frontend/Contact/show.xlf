@@ -15,6 +15,18 @@
             <trans-unit id="edit">
                 <source>Edit</source>
             </trans-unit>
+            <trans-unit id="formattedPhoneNumber.international">
+                <source>+{internationalDiallingCode} {areaCode} {connectionIdentifier}</source>
+            </trans-unit>
+            <trans-unit id="formattedPhoneNumber.international.withExtension">
+                <source>+{internationalDiallingCode} {areaCode} {connectionIdentifier}-{extension}</source>
+            </trans-unit>
+            <trans-unit id="formattedPhoneNumber.local">
+                <source>0{areaCode} {connectionIdentifier}</source>
+            </trans-unit>
+            <trans-unit id="formattedPhoneNumber.local.withExtension">
+                <source>0{areaCode} {connectionIdentifier}-{extension}</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

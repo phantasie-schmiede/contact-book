@@ -24,6 +24,9 @@
             <trans-unit id="generalType.business">
                 <source>Business</source>
             </trans-unit>
+            <trans-unit id="extension">
+                <source>Extension</source>
+            </trans-unit>
             <trans-unit id="generalType.other">
                 <source>Other</source>
             </trans-unit>

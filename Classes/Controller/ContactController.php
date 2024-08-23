@@ -26,7 +26,12 @@ use PSB\PsbContacts\Domain\Model\EMail;
 use PSB\PsbContacts\Domain\Model\Event;
 use PSB\PsbContacts\Domain\Model\PhoneNumber;
 use PSB\PsbContacts\Domain\Model\Website;
+use PSB\PsbContacts\Domain\Repository\AddressRepository;
 use PSB\PsbContacts\Domain\Repository\ContactRepository;
+use PSB\PsbContacts\Domain\Repository\EMailRepository;
+use PSB\PsbContacts\Domain\Repository\EventRepository;
+use PSB\PsbContacts\Domain\Repository\PhoneNumberRepository;
+use PSB\PsbContacts\Domain\Repository\WebsiteRepository;
 use PSB\PsbFoundation\Attribute\PluginAction;
 use PSB\PsbFoundation\Service\GlobalVariableProviders\RequestParameterProvider;
 use PSB\PsbFoundation\Service\GlobalVariableService;
@@ -51,8 +56,13 @@ use function is_string;
 class ContactController extends ActionController
 {
     public function __construct(
-        protected readonly ContactRepository    $contactRepository,
-        protected readonly ExtensionInformation $extensionInformation,
+        protected readonly AddressRepository     $addressRepository,
+        protected readonly ContactRepository     $contactRepository,
+        protected readonly EMailRepository       $eMailRepository,
+        protected readonly EventRepository       $eventRepository,
+        protected readonly ExtensionInformation  $extensionInformation,
+        protected readonly PhoneNumberRepository $phoneNumberRepository,
+        protected readonly WebsiteRepository     $websiteRepository,
     ) {
     }
 
@@ -255,27 +265,27 @@ class ContactController extends ActionController
                         case 'address':
                             $address = new Address();
                             $this->updateEntityProperties($contact, $address, $entityData);
-                            $contact->addAddress($address);
+                            $this->addressRepository->add($address);
                             break;
                         case 'eMail':
                             $eMail = new EMail();
                             $this->updateEntityProperties($contact, $eMail, $entityData);
-                            $contact->addEMail($eMail);
+                            $this->eMailRepository->add($eMail);
                             break;
                         case 'event':
                             $event = new Event();
                             $this->updateEntityProperties($contact, $event, $entityData);
-                            $contact->addEvent($event);
+                            $this->eventRepository->add($event);
                             break;
                         case 'phoneNumber':
                             $phoneNumber = new PhoneNumber();
                             $this->updateEntityProperties($contact, $phoneNumber, $entityData);
-                            $contact->addPhoneNumber($phoneNumber);
+                            $this->phoneNumberRepository->add($phoneNumber);
                             break;
                         case 'website':
                             $website = new Website();
                             $this->updateEntityProperties($contact, $website, $entityData);
-                            $contact->addWebsite($website);
+                            $this->websiteRepository->add($website);
                             break;
                     }
                 }
@@ -359,10 +369,11 @@ class ContactController extends ActionController
 
     private function updatePhoneNumberProperties(PhoneNumber $entity, array $entityData): void
     {
-        $entity->setAreaCode($entityData['areaCode']);
-        $entity->setConnectionIdentifier($entityData['connectionIdentifier']);
+        $entity->setAreaCode((int)$entityData['areaCode']);
+        $entity->setConnectionIdentifier((string)$entityData['connectionIdentifier']);
+        $entity->setExtension((string)$entityData['extension']);
         $entity->setGeneralType($entityData['generalType']);
-        $entity->setInternationalDiallingCode($entityData['internationalDiallingCode']);
+        $entity->setInternationalDiallingCode((int)$entityData['internationalDiallingCode']);
         $entity->setNotes($entityData['notes']);
         $entity->setPhoneNumberType($entityData['phoneNumberType']);
     }

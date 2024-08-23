@@ -28,8 +28,16 @@
         <f:form.select
             class="form-select"
             name="eMail[{uid}][type]"
-            options="{generalTypes}"
-            value="{eMail.type}" />
+            value="{eMail.type}">
+            <f:for
+                as="label"
+                each="{generalTypes}"
+                key="value">
+                <f:form.select.option value="{value}">
+                    <psbFoundation:translate id="eMail:type.{value}" />
+                </f:form.select.option>
+            </f:for>
+        </f:form.select>
     </div>
     <div class="col-md-6">
         <label

@@ -28,8 +28,16 @@
         <f:form.select
             class="form-select"
             name="phoneNumber[{uid}][generalType]"
-            options="{generalTypes}"
-            value="{phoneNumber.generalType}" />
+            value="{phoneNumber.generalType}">
+            <f:for
+                as="label"
+                each="{generalTypes}"
+                key="value">
+                <f:form.select.option value="{value}">
+                    <psbFoundation:translate id="phoneNumber:generalType.{value}" />
+                </f:form.select.option>
+            </f:for>
+        </f:form.select>
     </div>
     <div class="col-md-6">
         <label
@@ -39,8 +47,16 @@
         <f:form.select
             class="form-select"
             name="phoneNumber[{uid}][phoneNumberType]"
-            options="{phoneNumberTypes}"
-            value="{phoneNumber.phoneNumberType}" />
+            value="{phoneNumber.phoneNumberType}">
+            <f:for
+                as="label"
+                each="{phoneNumberTypes}"
+                key="value">
+                <f:form.select.option value="{value}">
+                    <psbFoundation:translate id="phoneNumber:phoneNumberType.{value}" />
+                </f:form.select.option>
+            </f:for>
+        </f:form.select>
     </div>
     <div class="col-md-6">
         <label
@@ -52,23 +68,30 @@
             <f:form.textfield
                 class="form-control"
                 name="phoneNumber[{uid}][internationalDiallingCode]"
-                placeholder="Ländervorwahl"
-                type="number"
+                placeholder="{psbFoundation:translate(id: 'phoneNumber:internationalDiallingCode')}"
+                type="tel"
                 value="{phoneNumber.internationalDiallingCode}" />
             <span class="input-group-text">0</span>
             <f:form.textfield
                 class="form-control"
                 name="phoneNumber[{uid}][areaCode]"
                 placeholder="Vorwahl ohne 0"
-                type="number"
+                type="tel"
                 value="{phoneNumber.areaCode}" />
-            <span class="input-group-text">/</span>
+            <span class="input-group-text">&nbsp;</span>
             <f:form.textfield
                 class="form-control"
                 name="phoneNumber[{uid}][connectionIdentifier]"
-                placeholder="Anschlussnummer"
-                type="number"
+                placeholder="{psbFoundation:translate(id: 'phoneNumber:connectionIdentifier')}"
+                type="tel"
                 value="{phoneNumber.connectionIdentifier}" />
+            <span class="input-group-text">-</span>
+            <f:form.textfield
+                class="form-control"
+                name="phoneNumber[{uid}][extension]"
+                placeholder="{psbFoundation:translate(id: 'phoneNumber:extension')}"
+                type="tel"
+                value="{phoneNumber.extension}" />
         </div>
     </div>
     <div class="col-md-6">

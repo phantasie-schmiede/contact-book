@@ -12,7 +12,6 @@ namespace PSB\PsbContacts\Domain\Model;
 
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
 use PSB\PsbFoundation\Enum\SelectRenderType;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
