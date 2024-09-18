@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace PSB\PsbContacts\Domain\Model;
 
 use InvalidArgumentException;
+use PSB\PsbContacts\Domain\Enum\ContactType;
+use PSB\PsbContacts\Utility\NameUtility;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Check;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Inline;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
@@ -143,6 +145,10 @@ class Contact extends AbstractEntity
 
     public function getDisplayName(): string
     {
+        if (ContactType::Company->value === $this->type && '' !== $this->getCompanyName()) {
+            return $this->getCompanyName();
+        }
+
         $displayName = '';
 
         if ('' !== $this->getLastName()) {
@@ -153,8 +159,10 @@ class Contact extends AbstractEntity
             }
         } elseif ('' !== $this->getFirstName()) {
             $displayName = $this->getFirstName();
-        } elseif ('' !== $this->getCompanyName()) {
-            $displayName = $this->getCompanyName();
+
+            if ('' !== $this->getMiddleNames()) {
+                $displayName .= ' ' . $this->getMiddleNames();
+            }
         }
 
         return $displayName;
@@ -195,6 +203,44 @@ class Contact extends AbstractEntity
     public function getFirstName(): string
     {
         return $this->firstName;
+    }
+
+    public function getFullName(): string
+    {
+        if (ContactType::Company->value === $this->type && '' !== $this->getCompanyName()) {
+            return $this->getCompanyName();
+        }
+
+        $nameParts = [];
+
+        if ('' !== $this->getFirstName()) {
+            $nameParts[] = $this->getFirstName();
+        }
+
+        if ('' !== $this->getMiddleNames()) {
+            $nameParts[] = $this->getMiddleNames();
+        }
+
+        if ('' !== $this->getLastName()) {
+            $nameParts[] = $this->getLastName();
+        }
+
+        return implode(' ', $nameParts);
+    }
+
+    public function getGenitiveForm(): string
+    {
+        if (ContactType::Company->value === $this->type && '' !== $this->getCompanyName()) {
+            $name = $this->getCompanyName();
+        } else {
+            $name = $this->getFirstName();
+
+            if ('' !== $this->getMiddleNames()) {
+                $name .= ' ' . $this->getMiddleNames();
+            }
+        }
+
+        return NameUtility::getGenitiveForm($name);
     }
 
     public function getLastName(): string

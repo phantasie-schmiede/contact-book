@@ -28,8 +28,16 @@
         <f:form.select
             class="form-select"
             name="event[{uid}][type]"
-            options="{eventTypes}"
-            value="{event.type}" />
+            value="{event.type}">
+            <f:for
+                as="label"
+                each="{eventTypes}"
+                key="value">
+                <f:form.select.option value="{value}">
+                    <psbFoundation:translate id="event:type.{value}" />
+                </f:form.select.option>
+            </f:for>
+        </f:form.select>
     </div>
     <div class="col-md-6">
         <label

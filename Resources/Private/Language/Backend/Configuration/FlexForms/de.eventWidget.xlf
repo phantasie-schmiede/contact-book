@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2024-09-15T10:45:00+01:00"
+        original="messages"
+        product-name="psb_contacts"
+        source-language="en"
+        target-language="de">
+        <body>
+            <trans-unit id="settings.maxEvents">
+                <source>Maximum number of upcoming events</source>
+                <target>Maximale Anzahl anstehender Ereignisse</target>
+            </trans-unit>
+            <trans-unit id="settings.minDays">
+                <source>Number of days that should always be covered</source>
+                <target>Anzahl an Tagen, die immer abgedeckt werden sollen</target>
+            </trans-unit>
+            <trans-unit id="settings.minDays.description">
+                <source>(takes precedence over maximum number of events)</source>
+                <target>(hat Vorrang vor der maximalen Anzahl von Ereignissen)</target>
+            </trans-unit>
+            <trans-unit id="settings.types">
+                <source>Categories</source>
+                <target>Kategorien</target>
+            </trans-unit>
+            <trans-unit id="sheetTitle">
+                <source>Widget options</source>
+                <target>Widget-Optionen</target>
+            </trans-unit>
+        </body>
+        <header />
+    </file>
+</xliff>

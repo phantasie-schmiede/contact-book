@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2024-09-17T14:23:00+01:00"
+        original="messages"
+        product-name="psb_contacts"
+        source-language="en">
+        <body>
+            <trans-unit id="and">
+                <source>and</source>
+            </trans-unit>
+            <trans-unit id="eventTitle">
+                <source>{type} of {persons}</source>
+            </trans-unit>
+            <trans-unit id="eventTitle.anniversary">
+                <source>{anniversary}. {type} of {persons}</source>
+            </trans-unit>
+            <group id="noUpcomingEvents" restype="x-gettext-plurals">
+                <trans-unit id="noUpcomingEvents[0]">
+                    <source>no upcomming events in the {typeList} category</source>
+                </trans-unit>
+                <trans-unit id="noUpcomingEvents[1]">
+                    <source>no upcomming events in the {typeList} categories</source>
+                </trans-unit>
+            </group>
+            <trans-unit id="type.baptism.anniversary">
+                <source>baptism day</source>
+            </trans-unit>
+            <trans-unit id="type.birthday.anniversary">
+                <source>birthday</source>
+            </trans-unit>
+            <trans-unit id="type.confirmation.anniversary">
+                <source>confirmation anniversary</source>
+            </trans-unit>
+            <trans-unit id="type.death.anniversary">
+                <source>anniversary of the death</source>
+            </trans-unit>
+            <trans-unit id="type.divorce.anniversary">
+                <source>Anniversary of the divorce</source>
+            </trans-unit>
+            <trans-unit id="type.other.anniversary">
+                <source>anniversary</source>
+            </trans-unit>
+            <trans-unit id="type.wedding.anniversary">
+                <source>wedding anniversary</source>
+            </trans-unit>
+        </body>
+        <header />
+    </file>
+</xliff>

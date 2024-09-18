@@ -1,0 +1,54 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/event.xlf" />
+
+<f:if condition="{events}">
+    <f:then>
+        <ul class="list-group list-group-flush">
+            <f:for
+                as="eventsByDate"
+                each="{events}"
+                key="date">
+                <li class="list-group-item">
+                    <div class="fw-bold">
+                        {date -> f:format.date(format: 'd.m.Y')}
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <f:for
+                            as="event"
+                            each="{eventsByDate}">
+                            <f:if condition="{event.anniversary}">
+                                <f:then>
+                                    <f:variable
+                                        name="eventType"
+                                        value="{psbFoundation:translate(id: 'type.{event.type}.anniversary')}" />
+                                </f:then>
+                                <f:else>
+                                    <f:variable
+                                        name="eventType"
+                                        value="{psbFoundation:translate(id: 'event:type.{event.type}')}" />
+                                </f:else>
+                            </f:if>
+
+                            <li class="list-group-item">
+                                <psbFoundation:translate
+                                    arguments="{anniversary: event.nextAnniversary, persons: event.contactsAsEnumeration, type: eventType}"
+                                    id="{f:if(condition: event.nextAnniversary, then: 'eventTitle.anniversary', else: 'eventTitle')}" />
+                            </li>
+                        </f:for>
+                    </ul>
+                </li>
+            </f:for>
+        </ul>
+    </f:then>
+    <f:else>
+        <div class="alert alert-info">
+            <psbFoundation:translate
+                arguments="{quantity: typeCount, typeList: typeList}"
+                id="noUpcomingEvents" />
+        </div>
+    </f:else>
+</f:if>
+</html>

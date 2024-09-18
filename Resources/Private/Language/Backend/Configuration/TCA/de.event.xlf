@@ -32,16 +32,16 @@
                 <target>In Kalender anzeigen</target>
             </trans-unit>
             <trans-unit id="type">
-                <source>Type</source>
-                <target>Typ</target>
+                <source>Category</source>
+                <target>Kategorie</target>
             </trans-unit>
             <trans-unit id="type.baptism">
                 <source>Baptism</source>
                 <target>Taufe</target>
             </trans-unit>
             <trans-unit id="type.birthday">
-                <source>Birthday</source>
-                <target>Geburtstag</target>
+                <source>Date of birth</source>
+                <target>Geburt</target>
             </trans-unit>
             <trans-unit id="type.confirmation">
                 <source>Confirmation</source>

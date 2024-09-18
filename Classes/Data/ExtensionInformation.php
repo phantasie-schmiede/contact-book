@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace PSB\PsbContacts\Data;
 
 use PSB\PsbContacts\Controller\ContactController;
+use PSB\PsbContacts\Controller\EventWidgetController;
 use PSB\PsbFoundation\Data\AbstractExtensionInformation;
 use PSB\PsbFoundation\Data\PluginConfiguration;
 use PSB\PsbFoundation\Enum\ContentType;
@@ -45,6 +46,13 @@ class ExtensionInformation extends AbstractExtensionInformation
                 PluginConfiguration::class,
                 controllers: [ContactController::class],
                 name       : 'ContactList'
+            )
+        );
+        $this->addPlugin(
+            GeneralUtility::makeInstance(
+                PluginConfiguration::class,
+                controllers: [EventWidgetController::class],
+                name       : 'EventWidget'
             )
         );
     }

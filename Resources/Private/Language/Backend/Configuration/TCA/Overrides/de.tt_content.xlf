@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2024-09-01T20:16:00+01:00"
+        original="messages"
+        product-name="psb-contacts"
+        source-language="en"
+        target-language="de">
+        <body>
+            <trans-unit id="plugin.contactList.title">
+                <source>Contact list</source>
+                <target>Kontaktliste</target>
+            </trans-unit>
+            <trans-unit id="plugin.eventWidget.title">
+                <source>Event widget</source>
+                <target>Ereignis-Widget</target>
+            </trans-unit>
+        </body>
+        <header />
+    </file>
+</xliff>

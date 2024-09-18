@@ -10,7 +10,13 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Domain\Enum;
 
+use JsonException;
 use PSB\PsbContacts\Trait\EnumToArrayTrait;
+use PSB\PsbFoundation\Utility\LocalizationUtility;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
+use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 
 /**
  * Class EventType
@@ -28,4 +34,18 @@ enum EventType: string
     case Divorce      = 'divorce';
     case Other        = 'other';
     case Wedding      = 'wedding';
+
+    /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws InvalidConfigurationTypeException
+     * @throws JsonException
+     * @throws NotFoundExceptionInterface
+     */
+    public function getLabel(): string
+    {
+        return LocalizationUtility::translate(
+            'LLL:EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/event.xlf:type.' . $this->value
+        );
+    }
 }
