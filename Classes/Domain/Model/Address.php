@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Domain\Model;
 
+use PSB\PsbContacts\Domain\Enum\GeneralType;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
@@ -53,6 +54,7 @@ class Address extends AbstractContactRelatedEntity
     #[Input]
     protected string $street = '';
 
+    /** @var string $type Needed for Extbase's property mapper! */
     #[Select(items   : [
         'Private'  => 'private',
         'Business' => 'business',
@@ -98,38 +100,52 @@ class Address extends AbstractContactRelatedEntity
         return $this->zipCode;
     }
 
-    public function setCity(string $city): void
+    public function setCity(string $city): self
     {
         $this->city = $city;
+
+        return $this;
     }
 
-    public function setCountry(string $country): void
+    public function setCountry(string $country): self
     {
         $this->country = $country;
+
+        return $this;
     }
 
-    public function setCounty(string $county): void
+    public function setCounty(string $county): self
     {
         $this->county = $county;
+
+        return $this;
     }
 
-    public function setHouseNumber(string $houseNumber): void
+    public function setHouseNumber(string $houseNumber): self
     {
         $this->houseNumber = $houseNumber;
+
+        return $this;
     }
 
-    public function setStreet(string $street): void
+    public function setStreet(string $street): self
     {
         $this->street = $street;
+
+        return $this;
     }
 
-    public function setType(string $type): void
+    public function setType(GeneralType $type): self
     {
-        $this->type = $type;
+        $this->type = $type->value;
+
+        return $this;
     }
 
-    public function setZipCode(string $zipCode): void
+    public function setZipCode(string $zipCode): self
     {
         $this->zipCode = $zipCode;
+
+        return $this;
     }
 }

@@ -10,9 +10,12 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Data;
 
+use PSB\PsbContacts\Controller\Backend\ImportController;
 use PSB\PsbContacts\Controller\ContactController;
 use PSB\PsbContacts\Controller\EventWidgetController;
 use PSB\PsbFoundation\Data\AbstractExtensionInformation;
+use PSB\PsbFoundation\Data\MainModuleConfiguration;
+use PSB\PsbFoundation\Data\ModuleConfiguration;
 use PSB\PsbFoundation\Data\PluginConfiguration;
 use PSB\PsbFoundation\Enum\ContentType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -31,6 +34,23 @@ class ExtensionInformation extends AbstractExtensionInformation
     public function __construct()
     {
         parent::__construct();
+        $mainModuleKey = $this->buildModuleKeyPrefix() . 'main';
+        $this->addMainModule(
+            GeneralUtility::makeInstance(
+                MainModuleConfiguration::class, key: $mainModuleKey, position: [
+                'after'  => 'file',
+                'before' => 'site',
+            ]
+            )
+        );
+        $this->addModule(
+            GeneralUtility::makeInstance(
+                ModuleConfiguration::class,
+                controllers : [ImportController::class],
+                key         : $this->buildModuleKeyPrefix() . 'import',
+                parentModule: $mainModuleKey
+            )
+        );
         $this->addPlugin(
             GeneralUtility::makeInstance(
                 PluginConfiguration::class,

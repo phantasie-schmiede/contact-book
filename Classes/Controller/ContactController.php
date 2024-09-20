@@ -369,11 +369,11 @@ class ContactController extends ActionController
 
     private function updatePhoneNumberProperties(PhoneNumber $entity, array $entityData): void
     {
-        $entity->setAreaCode((int)$entityData['areaCode']);
+        $entity->setAreaCode((string)$entityData['areaCode']);
         $entity->setConnectionIdentifier((string)$entityData['connectionIdentifier']);
         $entity->setExtension((string)$entityData['extension']);
         $entity->setGeneralType($entityData['generalType']);
-        $entity->setInternationalDiallingCode((int)$entityData['internationalDiallingCode']);
+        $entity->setInternationalDiallingCode((string)$entityData['internationalDiallingCode']);
         $entity->setNotes($entityData['notes']);
         $entity->setPhoneNumberType($entityData['phoneNumberType']);
     }

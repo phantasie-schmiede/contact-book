@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Domain\Model;
 
+use PSB\PsbContacts\Domain\Enum\GeneralType;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
@@ -34,6 +35,7 @@ class EMail extends AbstractContactRelatedEntity
     #[Input]
     protected string $eMailAddress = '';
 
+    /** @var string $type Needed for Extbase's property mapper! */
     #[Select(items   : [
         'Private'  => 'private',
         'Business' => 'business',
@@ -51,13 +53,17 @@ class EMail extends AbstractContactRelatedEntity
         return $this->type;
     }
 
-    public function setEMailAddress(string $eMailAddress): void
+    public function setEMailAddress(string $eMailAddress): self
     {
         $this->eMailAddress = $eMailAddress;
+
+        return $this;
     }
 
-    public function setType(string $type): void
+    public function setType(GeneralType $type): self
     {
-        $this->type = $type;
+        $this->type = $type->value;
+
+        return $this;
     }
 }

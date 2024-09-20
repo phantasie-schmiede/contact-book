@@ -44,7 +44,7 @@ class Contact extends AbstractEntity
     protected ObjectStorage $addresses;
 
     /** @var ObjectStorage<Contact> */
-    #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_companies')]
+    #[Select(foreignTableWhere: 'AND {#tx_psbcontacts_domain_model_contact}.{#type} = "company"', linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_companies')]
     protected ObjectStorage $companies;
 
     #[Input]
@@ -67,6 +67,9 @@ class Contact extends AbstractEntity
     #[Input]
     protected string $middleNames = '';
 
+    #[Input]
+    protected string $nickname = '';
+
     #[Text]
     protected string $notes = '';
 
@@ -77,6 +80,7 @@ class Contact extends AbstractEntity
     #[Check]
     protected bool $showInAddressBook = false;
 
+    /** @var string $type Needed for Extbase's property mapper! */
     #[Select(items   : [
         'Company' => 'company',
         'Person'  => 'person',
@@ -92,29 +96,53 @@ class Contact extends AbstractEntity
         $this->initializeObject();
     }
 
-    public function addAddress(Address $address): void
+    public function addAddress(Address $address): self
     {
         $this->addresses->attach($address);
+
+        return $this;
     }
 
-    public function addEMail(EMail $eMail): void
+    public function addCompany(Contact $company): self
+    {
+        $this->companies->attach($company);
+
+        return $this;
+    }
+
+    public function addEMail(EMail $eMail): self
     {
         $this->eMails->attach($eMail);
+
+        return $this;
     }
 
-    public function addEvent(Event $event): void
+    public function addEvent(Event $event): self
     {
         $this->events->attach($event);
+
+        return $this;
     }
 
-    public function addPhoneNumber(PhoneNumber $phoneNumber): void
+    public function addNote(string $note): self
+    {
+        $this->notes .= LF . $note;
+
+        return $this;
+    }
+
+    public function addPhoneNumber(PhoneNumber $phoneNumber): self
     {
         $this->phoneNumbers->attach($phoneNumber);
+
+        return $this;
     }
 
-    public function addWebsite(Website $website): void
+    public function addWebsite(Website $website): self
     {
         $this->websites->attach($website);
+
+        return $this;
     }
 
     public function getAddressByUid(int $uid): Address
@@ -253,6 +281,11 @@ class Contact extends AbstractEntity
         return $this->middleNames;
     }
 
+    public function getNickname(): string
+    {
+        return $this->nickname;
+    }
+
     public function getNotes(): string
     {
         return $this->notes;
@@ -305,93 +338,136 @@ class Contact extends AbstractEntity
         $this->websites = new ObjectStorage();
     }
 
-    public function removeAddress(Address $address): void
+    public function removeAddress(Address $address): self
     {
         $this->addresses->detach($address);
+
+        return $this;
     }
 
-    public function removeEMail(EMail $eMail): void
+    public function removeEMail(EMail $eMail): self
     {
         $this->eMails->detach($eMail);
+
+        return $this;
     }
 
-    public function removeEvent(Event $event): void
+    public function removeEvent(Event $event): self
     {
         $this->events->detach($event);
+
+        return $this;
     }
 
-    public function removePhoneNumber(PhoneNumber $phoneNumber): void
+    public function removePhoneNumber(PhoneNumber $phoneNumber): self
     {
         $this->phoneNumbers->detach($phoneNumber);
+
+        return $this;
     }
 
-    public function removeWebsite(Website $website): void
+    public function removeWebsite(Website $website): self
     {
         $this->websites->detach($website);
+
+        return $this;
     }
 
-    public function setAddresses(ObjectStorage $addresses): void
+    public function setAddresses(ObjectStorage $addresses): self
     {
         $this->addresses = $addresses;
+
+        return $this;
     }
 
-    public function setCompanies(ObjectStorage $companies): void
+    public function setCompanies(ObjectStorage $companies): self
     {
         $this->companies = $companies;
+
+        return $this;
     }
 
-    public function setCompanyName(string $companyName): void
+    public function setCompanyName(string $companyName): self
     {
         $this->companyName = $companyName;
+
+        return $this;
     }
 
-    public function setEMails(ObjectStorage $eMails): void
+    public function setEMails(ObjectStorage $eMails): self
     {
         $this->eMails = $eMails;
+
+        return $this;
     }
 
-    public function setEvents(ObjectStorage $events): void
+    public function setEvents(ObjectStorage $events): self
     {
         $this->events = $events;
+
+        return $this;
     }
 
-    public function setFirstName(string $firstName): void
+    public function setFirstName(string $firstName): self
     {
         $this->firstName = $firstName;
+
+        return $this;
     }
 
-    public function setLastName(string $lastName): void
+    public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
+
+        return $this;
     }
 
-    public function setMiddleNames(string $middleNames): void
+    public function setMiddleNames(string $middleNames): self
     {
         $this->middleNames = $middleNames;
+
+        return $this;
     }
 
-    public function setNotes(string $notes): void
+    public function setNickname(string $nickname): self
+    {
+        $this->nickname = $nickname;
+
+        return $this;
+    }
+
+    public function setNotes(string $notes): self
     {
         $this->notes = $notes;
+
+        return $this;
     }
 
-    public function setPhoneNumbers(ObjectStorage $phoneNumbers): void
+    public function setPhoneNumbers(ObjectStorage $phoneNumbers): self
     {
         $this->phoneNumbers = $phoneNumbers;
+
+        return $this;
     }
 
-    public function setShowInAddressBook(bool $showInAddressBook): void
+    public function setShowInAddressBook(bool $showInAddressBook): self
     {
         $this->showInAddressBook = $showInAddressBook;
+
+        return $this;
     }
 
-    public function setType(string $type): void
+    public function setType(ContactType $type): self
     {
-        $this->type = $type;
+        $this->type = $type->value;
+
+        return $this;
     }
 
-    public function setWebsites(ObjectStorage $websites): void
+    public function setWebsites(ObjectStorage $websites): self
     {
         $this->websites = $websites;
+
+        return $this;
     }
 }

@@ -12,6 +12,7 @@ namespace PSB\PsbContacts\Domain\Repository;
 
 use PSB\PsbContacts\Domain\Demand\ContactDemand;
 use PSB\PsbContacts\Domain\Enum\ContactType;
+use PSB\PsbContacts\Domain\Model\Contact;
 use PSB\PsbFoundation\Utility\QueryUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
@@ -19,6 +20,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 /**
  * Class ContactRepository
  *
+ * @extends Repository<Contact>
  * @package PSB\PsbContacts\Domain\Repository
  */
 class ContactRepository extends Repository
@@ -28,10 +30,32 @@ class ContactRepository extends Repository
         $constraints = [];
         $query = $this->createQuery();
 
+        if ('' !== $demand->getCompanyName()) {
+            $constraints[] = $query->equals('companyName', $demand->getCompanyName());
+        }
+
         if ([] !== $demand->getExcludedContacts()) {
             foreach ($demand->getExcludedContacts() as $excludedContact) {
                 $constraints[] = $query->logicalNot($query->equals('uid', $excludedContact));
             }
+        }
+
+        if ('' !== $demand->getFirstName()) {
+            $constraints[] = $query->equals('firstName', $demand->getFirstName());
+        }
+
+        if ('' !== $demand->getLastName()) {
+            $constraints[] = $query->equals('lastName', $demand->getLastName());
+        }
+
+        if ([] !== $demand->getTypes()) {
+            $orConstraints = [];
+
+            foreach ($demand->getTypes() as $type) {
+                $orConstraints[] = $query->equals('type', $type->value);
+            }
+
+            $constraints[] = $query->logicalOr(...$orConstraints);
         }
 
         QueryUtility::applyConstraints($constraints, $query);

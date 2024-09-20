@@ -1,0 +1,6 @@
+plugin.tx_psbcontacts {
+  persistence {
+    # cat=plugin.tx_psbcontacts//a; type=int+; label=Default storage PID
+    storagePid =
+  }
+}

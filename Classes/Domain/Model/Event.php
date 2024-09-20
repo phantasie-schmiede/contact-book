@@ -49,6 +49,7 @@ class Event extends AbstractContactRelatedEntity
     #[Check]
     protected bool $showInCalendar = false;
 
+    /** @var string $type Needed for Extbase's property mapper! */
     #[Select(items   : [
         'Baptism'      => 'baptism',
         'Birthday'     => 'birthday',
@@ -143,8 +144,8 @@ class Event extends AbstractContactRelatedEntity
         $this->showInCalendar = $showInCalendar;
     }
 
-    public function setType(string $type): void
+    public function setType(EventType $type): void
     {
-        $this->type = $type;
+        $this->type = $type->value;
     }
 }

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Domain\Model;
 
+use PSB\PsbContacts\Domain\Enum\GeneralType;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
@@ -31,6 +32,7 @@ class Website extends AbstractContactRelatedEntity
     #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_websites', mmOppositeField: 'websites', renderType: SelectRenderType::selectMultipleSideBySide)]
     protected ObjectStorage $contacts;
 
+    /** @var string $type Needed for Extbase's property mapper! */
     #[Select(items   : [
         'Private'  => 'private',
         'Business' => 'business',
@@ -51,13 +53,17 @@ class Website extends AbstractContactRelatedEntity
         return $this->url;
     }
 
-    public function setType(string $type): void
+    public function setType(GeneralType $type): self
     {
-        $this->type = $type;
+        $this->type = $type->value;
+
+        return $this;
     }
 
-    public function setUrl(string $url): void
+    public function setUrl(string $url): self
     {
         $this->url = $url;
+
+        return $this;
     }
 }

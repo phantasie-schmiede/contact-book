@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Domain\Model;
 
+use PSB\PsbContacts\Domain\Enum\GeneralType;
+use PSB\PsbContacts\Domain\Enum\PhoneNumberType;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
@@ -41,7 +43,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 class PhoneNumber extends AbstractContactRelatedEntity
 {
     #[Input]
-    protected int $areaCode = 0;
+    protected string $areaCode = '';
 
     #[Input]
     protected string $connectionIdentifier = '';
@@ -53,6 +55,7 @@ class PhoneNumber extends AbstractContactRelatedEntity
     #[Input]
     protected string $extension = '';
 
+    /** @var string $generalType Needed for Extbase's property mapper! */
     #[Select(items   : [
         'Private'  => 'private',
         'Business' => 'business',
@@ -61,8 +64,9 @@ class PhoneNumber extends AbstractContactRelatedEntity
     protected string $generalType = 'private';
 
     #[Input]
-    protected int $internationalDiallingCode = 0;
+    protected string $internationalDiallingCode = '';
 
+    /** @var string $phoneNumberType Needed for Extbase's property mapper! */
     #[Select(items   : [
         'Landline' => 'landline',
         'Mobile'   => 'mobile',
@@ -71,7 +75,7 @@ class PhoneNumber extends AbstractContactRelatedEntity
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
     protected string $phoneNumberType = 'mobile';
 
-    public function getAreaCode(): int
+    public function getAreaCode(): string
     {
         return $this->areaCode;
     }
@@ -96,7 +100,7 @@ class PhoneNumber extends AbstractContactRelatedEntity
         return $this->generalType;
     }
 
-    public function getInternationalDiallingCode(): int
+    public function getInternationalDiallingCode(): string
     {
         return $this->internationalDiallingCode;
     }
@@ -106,33 +110,45 @@ class PhoneNumber extends AbstractContactRelatedEntity
         return $this->phoneNumberType;
     }
 
-    public function setAreaCode(int $areaCode): void
+    public function setAreaCode(string $areaCode): self
     {
         $this->areaCode = $areaCode;
+
+        return $this;
     }
 
-    public function setConnectionIdentifier(string $connectionIdentifier): void
+    public function setConnectionIdentifier(string $connectionIdentifier): self
     {
         $this->connectionIdentifier = $connectionIdentifier;
+
+        return $this;
     }
 
-    public function setExtension(string $extension): void
+    public function setExtension(string $extension): self
     {
         $this->extension = $extension;
+
+        return $this;
     }
 
-    public function setGeneralType(string $generalType): void
+    public function setGeneralType(GeneralType $generalType): self
     {
-        $this->generalType = $generalType;
+        $this->generalType = $generalType->value;
+
+        return $this;
     }
 
-    public function setInternationalDiallingCode(int $internationalDiallingCode): void
+    public function setInternationalDiallingCode(string $internationalDiallingCode): self
     {
         $this->internationalDiallingCode = $internationalDiallingCode;
+
+        return $this;
     }
 
-    public function setPhoneNumberType(string $phoneNumberType): void
+    public function setPhoneNumberType(PhoneNumberType $phoneNumberType): self
     {
-        $this->phoneNumberType = $phoneNumberType;
+        $this->phoneNumberType = $phoneNumberType->value;
+
+        return $this;
     }
 }
