@@ -187,8 +187,10 @@ readonly class ImportService
                 break;
             case 'BDAY':
                 $event = new Event();
-                $event->setDate(DateTime::createFromFormat('Ymd', $value));
-                $event->setType(EventType::Birthday);
+                $event->setDate(DateTime::createFromFormat('Ymd', $value))
+                    ->setShowAnniversaries(true)
+                    ->setShowInCalendar(true)
+                    ->setType(EventType::Birthday);
                 $contact->addEvent($event);
                 break;
             case 'EMAIL':

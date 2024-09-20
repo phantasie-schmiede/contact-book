@@ -129,23 +129,31 @@ class Event extends AbstractContactRelatedEntity
         return $this->showInCalendar;
     }
 
-    public function setDate(DateTime $date): void
+    public function setDate(DateTime $date): self
     {
         $this->date = $date;
+
+        return $this;
     }
 
-    public function setShowAnniversaries(bool $showAnniversaries): void
+    public function setShowAnniversaries(bool $showAnniversaries): self
     {
         $this->showAnniversaries = $showAnniversaries;
+
+        return $this;
     }
 
-    public function setShowInCalendar(bool $showInCalendar): void
+    public function setShowInCalendar(bool $showInCalendar): self
     {
         $this->showInCalendar = $showInCalendar;
+
+        return $this;
     }
 
-    public function setType(EventType $type): void
+    public function setType(EventType $type): self
     {
         $this->type = $type->value;
+
+        return $this;
     }
 }
