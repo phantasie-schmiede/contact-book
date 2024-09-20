@@ -21,7 +21,7 @@ class PhoneNumberUtility
 {
     public static function getPhoneNumberFromString(string $phoneNumber): PhoneNumber
     {
-        $pattern = '/(?<internationalDiallingCode>\+49)(?<areaCode>' . implode(
+        $pattern = '/\+(?<internationalDiallingCode>49)(?<areaCode>' . implode(
                 '|',
                 array_merge(NumberBlockUtility::getGermanMobileServicesWithoutLeadingZero(), ['\d{4}'])
             ) . ')(?<connectionIdentifier>.*)/';
