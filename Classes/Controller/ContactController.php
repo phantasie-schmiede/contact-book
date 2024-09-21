@@ -123,7 +123,13 @@ class ContactController extends ActionController
     #[PluginAction(default: true, uncached: true)]
     public function listAction(): ResponseInterface
     {
-        $this->view->assign('contacts', $this->contactRepository->findAll());
+        $allContacts = $this->contactRepository->findAll()
+            ->toArray();
+
+        // Sort contacts by displayName
+        usort($allContacts, static fn(Contact $a, Contact $b) => $a->getDisplayName() <=> $b->getDisplayName());
+
+        $this->view->assign('contacts', $allContacts);
 
         return $this->htmlResponse();
     }

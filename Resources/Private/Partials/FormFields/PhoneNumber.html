@@ -70,7 +70,7 @@
                 name="phoneNumber[{uid}][internationalDiallingCode]"
                 placeholder="{psbFoundation:translate(id: 'phoneNumber:internationalDiallingCode')}"
                 type="tel"
-                value="{phoneNumber.internationalDiallingCode}" />
+                value="{phoneNumber.internationalDiallingCode -> f:or(alternative: '49')}" />
             <span class="input-group-text">0</span>
             <f:form.textfield
                 class="form-control"

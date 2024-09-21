@@ -2,7 +2,8 @@
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:psbContacts="http://typo3.org/ns/PSB/PsbContacts/ViewHelpers"
-    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers"
+    xmlns:psbTemplates="http://typo3.org/ns/PSB/PsbTemplates/ViewHelpers">
 <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/address.xlf" />
 <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/Contact/edit.xlf" />
 
@@ -88,22 +89,22 @@
             class="form-label">
             <psbFoundation:translate id="address:county" />
         </label>
-        <f:form.textfield
-            class="form-control"
+        <f:form.select
+            class="form-select"
             name="address[{uid}][county]"
-            type="text"
-            value="{address.county}" />
+            options="{psbContacts:data.countyNames()}"
+            value="{address.county -> f:or(alternative: 'Schleswig-Holstein')}" />
     </div>
     <div class="col-md-6">
         <label
             class="form-label">
             <psbFoundation:translate id="address:country" />
         </label>
-        <f:form.textfield
-            class="form-control"
+        <f:form.select
+            class="form-select"
+            options="{psbTemplates:data.countryNames()}"
             name="address[{uid}][country]"
-            type="text"
-            value="{address.country}" />
+            value="{address.country -> f:or(alternative: 'DE')}" />
     </div>
     <div class="col-md-6">
         <label

@@ -15,7 +15,7 @@
         class="form-select"
         id="type"
         options="{contactTypes}"
-        name="type"
+        name="contact[type]"
         value="{contact.type.value}" />
 </div>
 <div
@@ -32,7 +32,7 @@
         id="companyName"
         property="companyName" />
 </div>
-<div class="col-md-6"
+<div class="col-md-6{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
     data-psb-form-condition-field="#type"
     data-psb-form-condition-mode="hide"
     data-psb-form-condition-value="company">
@@ -42,7 +42,7 @@
         <psbFoundation:translate id="contact:companies" />
     </label>
     <f:form.select
-        class="form-control"
+        class="form-select"
         id="companies"
         optionLabelField="companyName"
         optionValueField="uid"
@@ -53,7 +53,7 @@
 </div>
 
 <div
-    class="col-md-4"
+    class="col-md-4{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
     data-psb-form-condition-field="#type"
     data-psb-form-condition-mode="hide"
     data-psb-form-condition-value="company">
@@ -68,7 +68,7 @@
         property="firstName" />
 </div>
 <div
-    class="col-md-4"
+    class="col-md-4{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
     data-psb-form-condition-field="#type"
     data-psb-form-condition-mode="hide"
     data-psb-form-condition-value="company">
@@ -83,7 +83,7 @@
         property="middleNames" />
 </div>
 <div
-    class="col-md-4"
+    class="col-md-4{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
     data-psb-form-condition-field="#type"
     data-psb-form-condition-mode="hide"
     data-psb-form-condition-value="company">

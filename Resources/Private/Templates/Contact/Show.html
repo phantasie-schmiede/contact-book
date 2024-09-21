@@ -69,7 +69,7 @@
                                     {address.county},
                                 </f:if>
 
-                                {address.country}
+                                <psbTemplates:data.countryNames countryCode="{address.country}" />
                             </li>
                         </f:for>
                     </ul>

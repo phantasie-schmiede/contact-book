@@ -179,7 +179,7 @@ class Contact extends AbstractEntity
 
     public function getDisplayName(): string
     {
-        if (ContactType::Company->value === $this->type && '' !== $this->getCompanyName()) {
+        if (ContactType::Company === $this->type && '' !== $this->getCompanyName()) {
             return $this->getCompanyName();
         }
 
