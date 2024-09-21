@@ -35,20 +35,19 @@ class EMail extends AbstractContactRelatedEntity
     #[Input]
     protected string $eMailAddress = '';
 
-    /** @var string $type Needed for Extbase's property mapper! */
     #[Select(items   : [
         'Private'  => 'private',
         'Business' => 'business',
         'Other'    => 'other',
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
-    protected string $type = 'private';
+    protected GeneralType $type = GeneralType::Private;
 
     public function getEMailAddress(): string
     {
         return $this->eMailAddress;
     }
 
-    public function getType(): string
+    public function getType(): GeneralType
     {
         return $this->type;
     }
@@ -62,7 +61,7 @@ class EMail extends AbstractContactRelatedEntity
 
     public function setType(GeneralType $type): self
     {
-        $this->type = $type->value;
+        $this->type = $type;
 
         return $this;
     }

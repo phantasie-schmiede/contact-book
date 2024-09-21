@@ -28,7 +28,7 @@
         <f:form.select
             class="form-select"
             name="phoneNumber[{uid}][generalType]"
-            value="{phoneNumber.generalType}">
+            value="{phoneNumber.generalType.value}">
             <f:for
                 as="label"
                 each="{generalTypes}"
@@ -47,7 +47,7 @@
         <f:form.select
             class="form-select"
             name="phoneNumber[{uid}][phoneNumberType]"
-            value="{phoneNumber.phoneNumberType}">
+            value="{phoneNumber.phoneNumberType.value}">
             <f:for
                 as="label"
                 each="{phoneNumberTypes}"

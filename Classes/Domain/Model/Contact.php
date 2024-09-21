@@ -70,6 +70,13 @@ class Contact extends AbstractEntity
     #[Input]
     protected string $nickname = '';
 
+    /**
+     * "@var" is needed for the PropertyMapper!
+     * Otherwise, array is assumed because of an existing add*-method...
+     * Blame symfony's ReflectionExtractor for this!
+     *
+     * @var string $notes
+     */
     #[Text]
     protected string $notes = '';
 
@@ -80,12 +87,11 @@ class Contact extends AbstractEntity
     #[Check]
     protected bool $showInAddressBook = false;
 
-    /** @var string $type Needed for Extbase's property mapper! */
     #[Select(items   : [
         'Company' => 'company',
         'Person'  => 'person',
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
-    protected string $type = 'person';
+    protected ContactType $type = ContactType::Person;
 
     /** @var ObjectStorage<Website> */
     #[Inline(linkedModel: Website::class, mm: 'tx_psbcontacts_contacts_websites')]
@@ -307,7 +313,7 @@ class Contact extends AbstractEntity
         return $this->phoneNumbers;
     }
 
-    public function getType(): string
+    public function getType(): ContactType
     {
         return $this->type;
     }
@@ -459,7 +465,7 @@ class Contact extends AbstractEntity
 
     public function setType(ContactType $type): self
     {
-        $this->type = $type->value;
+        $this->type = $type;
 
         return $this;
     }

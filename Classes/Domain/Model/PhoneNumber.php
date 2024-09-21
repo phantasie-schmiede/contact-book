@@ -55,25 +55,23 @@ class PhoneNumber extends AbstractContactRelatedEntity
     #[Input]
     protected string $extension = '';
 
-    /** @var string $generalType Needed for Extbase's property mapper! */
     #[Select(items   : [
         'Private'  => 'private',
         'Business' => 'business',
         'Other'    => 'other',
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
-    protected string $generalType = 'private';
+    protected GeneralType $generalType = GeneralType::Private;
 
     #[Input]
     protected string $internationalDiallingCode = '';
 
-    /** @var string $phoneNumberType Needed for Extbase's property mapper! */
     #[Select(items   : [
         'Landline' => 'landline',
         'Mobile'   => 'mobile',
         'Fax'      => 'fax',
         'Other'    => 'other',
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
-    protected string $phoneNumberType = 'mobile';
+    protected PhoneNumberType $phoneNumberType = PhoneNumberType::Mobile;
 
     public function getAreaCode(): string
     {
@@ -95,7 +93,7 @@ class PhoneNumber extends AbstractContactRelatedEntity
         return $this->extension;
     }
 
-    public function getGeneralType(): string
+    public function getGeneralType(): GeneralType
     {
         return $this->generalType;
     }
@@ -105,7 +103,7 @@ class PhoneNumber extends AbstractContactRelatedEntity
         return $this->internationalDiallingCode;
     }
 
-    public function getPhoneNumberType(): string
+    public function getPhoneNumberType(): PhoneNumberType
     {
         return $this->phoneNumberType;
     }
@@ -133,7 +131,7 @@ class PhoneNumber extends AbstractContactRelatedEntity
 
     public function setGeneralType(GeneralType $generalType): self
     {
-        $this->generalType = $generalType->value;
+        $this->generalType = $generalType;
 
         return $this;
     }
@@ -147,7 +145,7 @@ class PhoneNumber extends AbstractContactRelatedEntity
 
     public function setPhoneNumberType(PhoneNumberType $phoneNumberType): self
     {
-        $this->phoneNumberType = $phoneNumberType->value;
+        $this->phoneNumberType = $phoneNumberType;
 
         return $this;
     }

@@ -24,7 +24,6 @@ use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use function count;
@@ -45,7 +44,6 @@ class EventWidgetController extends ActionController
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
      * @throws DateMalformedStringException
-     * @throws InvalidConfigurationTypeException
      * @throws InvalidQueryException
      * @throws JsonException
      * @throws NotFoundExceptionInterface

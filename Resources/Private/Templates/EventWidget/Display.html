@@ -23,12 +23,12 @@
                                 <f:then>
                                     <f:variable
                                         name="eventType"
-                                        value="{psbFoundation:translate(id: 'type.{event.type}.anniversary')}" />
+                                        value="{psbFoundation:translate(id: 'type.{event.type.value}.anniversary')}" />
                                 </f:then>
                                 <f:else>
                                     <f:variable
                                         name="eventType"
-                                        value="{psbFoundation:translate(id: 'event:type.{event.type}')}" />
+                                        value="{psbFoundation:translate(id: 'event:type.{event.type.value}')}" />
                                 </f:else>
                             </f:if>
 

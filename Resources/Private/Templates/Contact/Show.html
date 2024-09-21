@@ -53,7 +53,7 @@
                             each="{contact.addresses}">
                             <li>
                                 <strong>
-                                    <psbFoundation:translate id="address:type.{address.type}" />
+                                    <psbFoundation:translate id="address:type.{address.type.value}" />
                                 </strong>
                                 {address.street} {address.houseNumber}
                                 <br>
@@ -87,8 +87,8 @@
                             each="{contact.phoneNumbers}">
                             <li>
                                 <strong>
-                                    <psbFoundation:translate id="phoneNumber:phoneNumberType.{phoneNumber.phoneNumberType}" />
-                                    (<psbFoundation:translate id="phoneNumber:generalType.{phoneNumber.generalType}" />)
+                                    <psbFoundation:translate id="phoneNumber:phoneNumberType.{phoneNumber.phoneNumberType.value}" />
+                                    (<psbFoundation:translate id="phoneNumber:generalType.{phoneNumber.generalType.value}" />)
                                 </strong>
                                 <span>
                                     <f:variable
@@ -124,7 +124,7 @@
                             each="{contact.eMails}">
                             <li>
                                 <strong>
-                                    <psbFoundation:translate id="eMail:type.{eMail.type}" />
+                                    <psbFoundation:translate id="eMail:type.{eMail.type.value}" />
                                 </strong>
                                 <span>{eMail.eMailAddress}</span>
                             </li>
@@ -144,7 +144,7 @@
                             each="{contact.websites}">
                             <li>
                                 <strong>
-                                    <psbFoundation:translate id="website:type.{website.type}" />
+                                    <psbFoundation:translate id="website:type.{website.type.value}" />
                                 </strong>
                                 <span>{website.url}</span>
                             </li>
@@ -164,7 +164,7 @@
                             each="{contact.events}">
                             <li>
                                 <strong>
-                                    <psbFoundation:translate id="event:type.{event.type}" />
+                                    <psbFoundation:translate id="event:type.{event.type.value}" />
                                 </strong>
                                 <span>{event.date -> f:format.date(format: 'd.m.Y')}</span>
                             </li>

@@ -41,7 +41,6 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
-use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
@@ -71,7 +70,6 @@ class ContactController extends ActionController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws AspectNotFoundException
-     * @throws InvalidConfigurationTypeException
      */
     #[PluginAction(uncached: true)]
     public function confirmDeleteAction(Contact $contact): ResponseInterface
@@ -301,7 +299,7 @@ class ContactController extends ActionController
         $entity->setHouseNumber((string)$entityData['houseNumber']);
         $entity->setNotes($entityData['notes']);
         $entity->setStreet($entityData['street']);
-        $entity->setType($entityData['type']);
+        $entity->setType(GeneralType::from($entityData['type']));
         $entity->setZipCode((string)$entityData['zipCode']);
     }
 
@@ -309,7 +307,7 @@ class ContactController extends ActionController
     {
         $entity->setEMailAddress($entityData['eMailAddress']);
         $entity->setNotes($entityData['notes']);
-        $entity->setType($entityData['type']);
+        $entity->setType(GeneralType::from($entityData['type']));
     }
 
     /**
@@ -364,7 +362,7 @@ class ContactController extends ActionController
         $entity->setNotes($entityData['notes']);
         $entity->setShowAnniversaries((bool)$entityData['showAnniversaries']);
         $entity->setShowInCalendar((bool)$entityData['showInCalendar']);
-        $entity->setType($entityData['type']);
+        $entity->setType(EventType::from($entityData['type']));
     }
 
     private function updatePhoneNumberProperties(PhoneNumber $entity, array $entityData): void
@@ -372,16 +370,16 @@ class ContactController extends ActionController
         $entity->setAreaCode((string)$entityData['areaCode']);
         $entity->setConnectionIdentifier((string)$entityData['connectionIdentifier']);
         $entity->setExtension((string)$entityData['extension']);
-        $entity->setGeneralType($entityData['generalType']);
+        $entity->setGeneralType(GeneralType::from($entityData['generalType']));
         $entity->setInternationalDiallingCode((string)$entityData['internationalDiallingCode']);
         $entity->setNotes($entityData['notes']);
-        $entity->setPhoneNumberType($entityData['phoneNumberType']);
+        $entity->setPhoneNumberType(PhoneNumberType::from($entityData['phoneNumberType']));
     }
 
     private function updateWebsiteProperties(Website $entity, array $entityData): void
     {
         $entity->setNotes($entityData['notes']);
-        $entity->setType($entityData['type']);
+        $entity->setType(GeneralType::from($entityData['type']));
         $entity->setUrl($entityData['url']);
     }
 }

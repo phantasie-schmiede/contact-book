@@ -32,18 +32,17 @@ class Website extends AbstractContactRelatedEntity
     #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_websites', mmOppositeField: 'websites', renderType: SelectRenderType::selectMultipleSideBySide)]
     protected ObjectStorage $contacts;
 
-    /** @var string $type Needed for Extbase's property mapper! */
     #[Select(items   : [
         'Private'  => 'private',
         'Business' => 'business',
         'Other'    => 'other',
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
-    protected string $type = 'private';
+    protected GeneralType $type = GeneralType::Private;
 
     #[Input]
     protected string $url = '';
 
-    public function getType(): string
+    public function getType(): GeneralType
     {
         return $this->type;
     }
@@ -55,7 +54,7 @@ class Website extends AbstractContactRelatedEntity
 
     public function setType(GeneralType $type): self
     {
-        $this->type = $type->value;
+        $this->type = $type;
 
         return $this;
     }

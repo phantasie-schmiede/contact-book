@@ -22,7 +22,6 @@ use PSB\PsbTemplates\Utility\StringUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
-use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
@@ -49,7 +48,6 @@ class Event extends AbstractContactRelatedEntity
     #[Check]
     protected bool $showInCalendar = false;
 
-    /** @var string $type Needed for Extbase's property mapper! */
     #[Select(items   : [
         'Baptism'      => 'baptism',
         'Birthday'     => 'birthday',
@@ -59,12 +57,11 @@ class Event extends AbstractContactRelatedEntity
         'Wedding'      => 'wedding',
         'Other'        => 'other',
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
-    protected string $type = 'birthday';
+    protected EventType $type = EventType::Birthday;
 
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
-     * @throws InvalidConfigurationTypeException
      * @throws JsonException
      * @throws NotFoundExceptionInterface
      */
@@ -86,11 +83,11 @@ class Event extends AbstractContactRelatedEntity
 
     public function getLabel(): string
     {
-        if (EventType::Other->value === $this->type) {
+        if (EventType::Other === $this->type) {
             return $this->notes;
         }
 
-        return $this->type;
+        return $this->type->value;
     }
 
     public function getNextAnniversary(): int
@@ -109,7 +106,7 @@ class Event extends AbstractContactRelatedEntity
         return $anniversary;
     }
 
-    public function getType(): string
+    public function getType(): EventType
     {
         return $this->type;
     }
@@ -152,7 +149,7 @@ class Event extends AbstractContactRelatedEntity
 
     public function setType(EventType $type): self
     {
-        $this->type = $type->value;
+        $this->type = $type;
 
         return $this;
     }

@@ -54,13 +54,12 @@ class Address extends AbstractContactRelatedEntity
     #[Input]
     protected string $street = '';
 
-    /** @var string $type Needed for Extbase's property mapper! */
     #[Select(items   : [
         'Private'  => 'private',
         'Business' => 'business',
         'Other'    => 'other',
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
-    protected string $type = 'private';
+    protected GeneralType $type = GeneralType::Private;
 
     #[Input]
     protected string $zipCode = '';
@@ -90,7 +89,7 @@ class Address extends AbstractContactRelatedEntity
         return $this->street;
     }
 
-    public function getType(): string
+    public function getType(): GeneralType
     {
         return $this->type;
     }
@@ -137,7 +136,7 @@ class Address extends AbstractContactRelatedEntity
 
     public function setType(GeneralType $type): self
     {
-        $this->type = $type->value;
+        $this->type = $type;
 
         return $this;
     }
