@@ -86,13 +86,19 @@ class Event extends AbstractContactRelatedEntity
         return $this->date;
     }
 
+    /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws JsonException
+     * @throws NotFoundExceptionInterface
+     */
     public function getLabel(): string
     {
         if (EventType::Other === $this->type) {
             return $this->notes;
         }
 
-        return $this->type->value;
+        return $this->type->getLabel();
     }
 
     public function getNextAnniversary(): int

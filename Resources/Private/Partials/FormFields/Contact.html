@@ -114,7 +114,7 @@
 </h5>
 
 <f:render
-    arguments="{generalTypes: generalTypes, recordType: 'Address', records: contact.addresses}"
+    arguments="{allContacts: allContacts, contact: contact, generalTypes: generalTypes, recordType: 'Address', records: contact.addresses}"
     section="Accordion" />
 
 <h5>
@@ -122,7 +122,7 @@
 </h5>
 
 <f:render
-    arguments="{generalTypes: generalTypes, phoneNumberTypes: phoneNumberTypes, recordType: 'PhoneNumber', records: contact.phoneNumbers}"
+    arguments="{allContacts: allContacts, contact: contact, generalTypes: generalTypes, phoneNumberTypes: phoneNumberTypes, recordType: 'PhoneNumber', records: contact.phoneNumbers}"
     section="Accordion" />
 
 <h5>
@@ -130,7 +130,7 @@
 </h5>
 
 <f:render
-    arguments="{generalTypes: generalTypes, recordType: 'EMail', records: contact.eMails}"
+    arguments="{allContacts: allContacts, contact: contact, generalTypes: generalTypes, recordType: 'EMail', records: contact.eMails}"
     section="Accordion" />
 
 <h5>
@@ -138,7 +138,7 @@
 </h5>
 
 <f:render
-    arguments="{generalTypes: generalTypes, recordType: 'Website', records: contact.websites}"
+    arguments="{allContacts: allContacts, contact: contact, generalTypes: generalTypes, recordType: 'Website', records: contact.websites}"
     section="Accordion" />
 
 <h5>
@@ -146,7 +146,7 @@
 </h5>
 
 <f:render
-    arguments="{eventTypes: eventTypes, recordType: 'Event', records: contact.events}"
+    arguments="{allContacts: allContacts, contact: contact, eventTypes: eventTypes, recordType: 'Event', records: contact.events}"
     section="Accordion" />
 
 <f:section name="Accordion">

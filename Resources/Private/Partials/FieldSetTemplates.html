@@ -3,19 +3,19 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
 <f:render
-    arguments="{generalTypes: generalTypes, recordType: 'Address'}"
+    arguments="{allContacts: allContacts, contact: contact, generalTypes: generalTypes, recordType: 'Address'}"
     section="AccordionItem" />
 <f:render
-    arguments="{generalTypes: generalTypes, recordType: 'EMail'}"
+    arguments="{allContacts: allContacts, contact: contact, generalTypes: generalTypes, recordType: 'EMail'}"
     section="AccordionItem" />
 <f:render
-    arguments="{eventTypes: eventTypes, recordType: 'Event'}"
+    arguments="{allContacts: allContacts, contact: contact, eventTypes: eventTypes, recordType: 'Event'}"
     section="AccordionItem" />
 <f:render
-    arguments="{generalTypes: generalTypes, phoneNumberTypes: phoneNumberTypes, recordType: 'PhoneNumber'}"
+    arguments="{allContacts: allContacts, contact: contact, generalTypes: generalTypes, phoneNumberTypes: phoneNumberTypes, recordType: 'PhoneNumber'}"
     section="AccordionItem" />
 <f:render
-    arguments="{generalTypes: generalTypes, recordType: 'Website'}"
+    arguments="{allContacts: allContacts, contact: contact, generalTypes: generalTypes, recordType: 'Website'}"
     section="AccordionItem" />
 
 <f:asset.script

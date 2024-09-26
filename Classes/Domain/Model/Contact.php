@@ -19,6 +19,7 @@ use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
+use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -41,10 +42,12 @@ class Contact extends AbstractEntity
 {
     /** @var ObjectStorage<Address> */
     #[Inline(linkedModel: Address::class, mm: 'tx_psbcontacts_contacts_addresses')]
+    #[Lazy]
     protected ObjectStorage $addresses;
 
     /** @var ObjectStorage<Contact> */
     #[Select(foreignTableWhere: 'AND {#tx_psbcontacts_domain_model_contact}.{#type} = "company"', linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_companies')]
+    #[Lazy]
     protected ObjectStorage $companies;
 
     #[Input]
@@ -52,10 +55,12 @@ class Contact extends AbstractEntity
 
     /** @var ObjectStorage<EMail> */
     #[Inline(linkedModel: EMail::class, mm: 'tx_psbcontacts_contacts_emails')]
+    #[Lazy]
     protected ObjectStorage $eMails;
 
     /** @var ObjectStorage<Event> */
     #[Inline(linkedModel: Event::class, mm: 'tx_psbcontacts_contacts_events')]
+    #[Lazy]
     protected ObjectStorage $events;
 
     #[Input]
@@ -82,6 +87,7 @@ class Contact extends AbstractEntity
 
     /** @var ObjectStorage<PhoneNumber> */
     #[Inline(linkedModel: PhoneNumber::class, mm: 'tx_psbcontacts_contacts_phonenumbers')]
+    #[Lazy]
     protected ObjectStorage $phoneNumbers;
 
     #[Check]
@@ -95,6 +101,7 @@ class Contact extends AbstractEntity
 
     /** @var ObjectStorage<Website> */
     #[Inline(linkedModel: Website::class, mm: 'tx_psbcontacts_contacts_websites')]
+    #[Lazy]
     protected ObjectStorage $websites;
 
     public function __construct()
