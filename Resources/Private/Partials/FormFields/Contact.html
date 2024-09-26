@@ -3,7 +3,6 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
 <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
-<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/Contact/edit.xlf" />
 
 <div class="col-md-6">
     <label
@@ -115,7 +114,7 @@
 </h5>
 
 <f:render
-    arguments="{recordTye: 'Address', records: contact.addresses}"
+    arguments="{generalTypes: generalTypes, recordType: 'Address', records: contact.addresses}"
     section="Accordion" />
 
 <h5>
@@ -123,7 +122,7 @@
 </h5>
 
 <f:render
-    arguments="{recordTye: 'PhoneNumber', records: contact.phoneNumbers}"
+    arguments="{generalTypes: generalTypes, phoneNumberTypes: phoneNumberTypes, recordType: 'PhoneNumber', records: contact.phoneNumbers}"
     section="Accordion" />
 
 <h5>
@@ -131,7 +130,7 @@
 </h5>
 
 <f:render
-    arguments="{recordTye: 'EMail', records: contact.eMails}"
+    arguments="{generalTypes: generalTypes, recordType: 'EMail', records: contact.eMails}"
     section="Accordion" />
 
 <h5>
@@ -139,7 +138,7 @@
 </h5>
 
 <f:render
-    arguments="{recordTye: 'Website', records: contact.websites}"
+    arguments="{generalTypes: generalTypes, recordType: 'Website', records: contact.websites}"
     section="Accordion" />
 
 <h5>
@@ -147,23 +146,25 @@
 </h5>
 
 <f:render
-    arguments="{recordTye: 'Event', records: contact.events}"
+    arguments="{eventTypes: eventTypes, recordType: 'Event', records: contact.events}"
     section="Accordion" />
 
 <f:section name="Accordion">
+    <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/Contact/edit.xlf" />
+
     <div
         class="accordion accordion-flush"
-        id="accordion{recordTye}">
+        id="accordion{recordType}">
         <f:for
             as="record"
             each="{records}">
             <div class="accordion-item">
                 <h2 class="accordion-header">
                     <button
-                        aria-controls="accordion{recordTye}-{record.uid}"
+                        aria-controls="accordion{recordType}-{record.uid}"
                         aria-expanded="false"
                         class="accordion-button collapsed"
-                        data-bs-target="#accordion{recordTye}-{record.uid}"
+                        data-bs-target="#accordion{recordType}-{record.uid}"
                         data-bs-toggle="collapse"
                         type="button">
                         {record.compactValue}
@@ -171,12 +172,12 @@
                 </h2>
                 <div
                     class="accordion-collapse collapse"
-                    data-bs-parent="#accordion{recordTye}"
-                    id="accordion{recordTye}-{record.uid}">
+                    data-bs-parent="#accordion{recordType}"
+                    id="accordion{recordType}-{record.uid}">
                     <div class="accordion-body">
                         <f:render
                             arguments="{_all}"
-                            partial="FormFields/{recordTye}" />
+                            partial="FormFields/{recordType}" />
                     </div>
                 </div>
             </div>

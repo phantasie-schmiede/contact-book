@@ -1,20 +1,21 @@
 <html
     data-namespace-typo3-fluid="true"
-    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
 <f:render
-    arguments="{recordTye: 'Address'}"
+    arguments="{generalTypes: generalTypes, recordType: 'Address'}"
     section="AccordionItem" />
 <f:render
-    arguments="{recordTye: 'EMail'}"
+    arguments="{generalTypes: generalTypes, recordType: 'EMail'}"
     section="AccordionItem" />
 <f:render
-    arguments="{recordTye: 'Event'}"
+    arguments="{eventTypes: eventTypes, recordType: 'Event'}"
     section="AccordionItem" />
 <f:render
-    arguments="{recordTye: 'PhoneNumber'}"
+    arguments="{generalTypes: generalTypes, phoneNumberTypes: phoneNumberTypes, recordType: 'PhoneNumber'}"
     section="AccordionItem" />
 <f:render
-    arguments="{recordTye: 'Website'}"
+    arguments="{generalTypes: generalTypes, recordType: 'Website'}"
     section="AccordionItem" />
 
 <f:asset.script
@@ -35,29 +36,31 @@
     type="module" />
 
 <f:section name="AccordionItem">
+    <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/Contact/edit.xlf" />
+
     <div
         class="d-none"
-        id="template{recordTye}">
+        id="template{recordType}">
         <div class="accordion-item">
             <h2 class="accordion-header">
                 <button
-                    aria-controls="accordion{recordTye}-###uid###"
+                    aria-controls="accordion{recordType}-###uid###"
                     aria-expanded="false"
                     class="accordion-button collapsed"
-                    data-bs-target="#accordion{recordTye}-###uid###"
+                    _data-bs-target="#accordion{recordType}-###uid###"
                     data-bs-toggle="collapse"
                     type="button">
-                    {record.uid}
+                    <psbFoundation:translate id="edit:new{recordType}" />
                 </button>
             </h2>
             <div
                 class="accordion-collapse collapse"
-                data-bs-parent="#accordion{recordTye}"
-                id="accordion{recordTye}-###uid###">
+                data-bs-parent="#accordion{recordType}"
+                id="accordion{recordType}-###uid###">
                 <div class="accordion-body">
                     <f:render
                         arguments="{_all}"
-                        partial="FormFields/{recordTye}" />
+                        partial="FormFields/{recordType}" />
                 </div>
             </div>
         </div>

@@ -31,6 +31,26 @@
                 <source>Cancel</source>
                 <target>Abbrechen</target>
             </trans-unit>
+            <trans-unit id="newAddress">
+                <source>&#60;new address&#62;</source>
+                <target>&#60;neue Adresse&#62;</target>
+            </trans-unit>
+            <trans-unit id="newEMail">
+                <source>&#60;new e-mail address&#62;</source>
+                <target>&#60;neue E-Mail-Adresse&#62;</target>
+            </trans-unit>
+            <trans-unit id="newEvent">
+                <source>&#60;new event&#62;</source>
+                <target>&#60;neues Ereignis&#62;</target>
+            </trans-unit>
+            <trans-unit id="newPhoneNumber">
+                <source>&#60;new phone number&#62;</source>
+                <target>&#60;neue Rufnummer&#62;</target>
+            </trans-unit>
+            <trans-unit id="newWebsite">
+                <source>&#60;new website&#62;</source>
+                <target>&#60;neue Webseite&#62;</target>
+            </trans-unit>
             <trans-unit id="remove">
                 <source>Remove</source>
                 <target>Entfernen</target>

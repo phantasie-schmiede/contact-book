@@ -6,11 +6,11 @@
 <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/phoneNumber.xlf" />
 <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/Contact/edit.xlf" />
 
-<f:if condition="{phoneNumber}">
+<f:if condition="{record}">
     <f:then>
         <f:variable
             name="uid"
-            value="{phoneNumber.uid}" />
+            value="{record.uid}" />
     </f:then>
     <f:else>
         <f:variable
@@ -19,117 +19,115 @@
     </f:else>
 </f:if>
 
-<fieldset class="border border-light-subtle mb-3">
-    <div class="col-md-6">
-        <label
-            class="form-label">
-            <psbFoundation:translate id="phoneNumber:generalType" />
-        </label>
-        <f:form.select
-            class="form-select"
-            name="phoneNumber[{uid}][generalType]"
-            value="{phoneNumber.generalType.value}">
-            <f:for
-                as="label"
-                each="{generalTypes}"
-                key="value">
-                <f:form.select.option value="{value}">
-                    <psbFoundation:translate id="phoneNumber:generalType.{value}" />
-                </f:form.select.option>
-            </f:for>
-        </f:form.select>
-    </div>
-    <div class="col-md-6">
-        <label
-            class="form-label">
-            <psbFoundation:translate id="phoneNumber:phoneNumberType" />
-        </label>
-        <f:form.select
-            class="form-select"
-            name="phoneNumber[{uid}][phoneNumberType]"
-            value="{phoneNumber.phoneNumberType.value}">
-            <f:for
-                as="label"
-                each="{phoneNumberTypes}"
-                key="value">
-                <f:form.select.option value="{value}">
-                    <psbFoundation:translate id="phoneNumber:phoneNumberType.{value}" />
-                </f:form.select.option>
-            </f:for>
-        </f:form.select>
-    </div>
-    <div class="col-md-6">
-        <label
-            class="form-label">
-            Telefonnummer
-        </label>
-        <div class="input-group mb-3">
-            <span class="input-group-text">+</span>
-            <f:form.textfield
-                class="form-control"
-                name="phoneNumber[{uid}][internationalDiallingCode]"
-                placeholder="{psbFoundation:translate(id: 'phoneNumber:internationalDiallingCode')}"
-                type="tel"
-                value="{phoneNumber.internationalDiallingCode -> f:or(alternative: '49')}" />
-            <span class="input-group-text">0</span>
-            <f:form.textfield
-                class="form-control"
-                name="phoneNumber[{uid}][areaCode]"
-                placeholder="Vorwahl ohne 0"
-                type="tel"
-                value="{phoneNumber.areaCode}" />
-            <span class="input-group-text">&nbsp;</span>
-            <f:form.textfield
-                class="form-control"
-                name="phoneNumber[{uid}][connectionIdentifier]"
-                placeholder="{psbFoundation:translate(id: 'phoneNumber:connectionIdentifier')}"
-                type="tel"
-                value="{phoneNumber.connectionIdentifier}" />
-            <span class="input-group-text">-</span>
-            <f:form.textfield
-                class="form-control"
-                name="phoneNumber[{uid}][extension]"
-                placeholder="{psbFoundation:translate(id: 'phoneNumber:extension')}"
-                type="tel"
-                value="{phoneNumber.extension}" />
-        </div>
-    </div>
-    <div class="col-md-6">
-        <label
-            class="form-label">
-            weitere Kontakte
-        </label>
-        <input
-            autocomplete="off"
+<div class="col-md-6">
+    <label
+        class="form-label">
+        <psbFoundation:translate id="phoneNumber:generalType" />
+    </label>
+    <f:form.select
+        class="form-select"
+        name="phoneNumber[{uid}][generalType]"
+        value="{record.generalType.value}">
+        <f:for
+            as="label"
+            each="{generalTypes}"
+            key="value">
+            <f:form.select.option value="{value}">
+                <psbFoundation:translate id="phoneNumber:generalType.{value}" />
+            </f:form.select.option>
+        </f:for>
+    </f:form.select>
+</div>
+<div class="col-md-6">
+    <label
+        class="form-label">
+        <psbFoundation:translate id="phoneNumber:phoneNumberType" />
+    </label>
+    <f:form.select
+        class="form-select"
+        name="phoneNumber[{uid}][phoneNumberType]"
+        value="{record.phoneNumberType.value}">
+        <f:for
+            as="label"
+            each="{phoneNumberTypes}"
+            key="value">
+            <f:form.select.option value="{value}">
+                <psbFoundation:translate id="phoneNumber:phoneNumberType.{value}" />
+            </f:form.select.option>
+        </f:for>
+    </f:form.select>
+</div>
+<div class="col-md-6">
+    <label
+        class="form-label">
+        Telefonnummer
+    </label>
+    <div class="input-group mb-3">
+        <span class="input-group-text">+</span>
+        <f:form.textfield
             class="form-control"
-            data-psb-autocomplete-items="{allContacts}"
-            data-psb-autocomplete-preselection="{psbContacts:json.relatedContacts(relatedEntity: phoneNumber, contact: contact)}"
-            data-psb-autocomplete-selection-target="#contact-selection-{uid}"
-            data-psb-autocomplete-value-target="#contact-value-{uid}"
-            type="text" />
-        <ul
-            class="list-group list-group-flush"
-            id="contact-selection-{uid}">
-        </ul>
-        <f:form.hidden
-            id="contact-value-{uid}"
-            name="phoneNumber[{uid}][contacts]" />
-    </div>
-    <div class="col-md-6">
-        <label
-            class="form-label">
-            <psbFoundation:translate id="phoneNumber:notes" />
-        </label>
-        <f:form.textarea
+            name="phoneNumber[{uid}][internationalDiallingCode]"
+            placeholder="{psbFoundation:translate(id: 'phoneNumber:internationalDiallingCode')}"
+            type="tel"
+            value="{record.internationalDiallingCode -> f:or(alternative: '49')}" />
+        <span class="input-group-text">0</span>
+        <f:form.textfield
             class="form-control"
-            name="phoneNumber[{uid}][notes]"
-            value="{phoneNumber.notes}" />
+            name="phoneNumber[{uid}][areaCode]"
+            placeholder="Vorwahl ohne 0"
+            type="tel"
+            value="{record.areaCode}" />
+        <span class="input-group-text">&nbsp;</span>
+        <f:form.textfield
+            class="form-control"
+            name="phoneNumber[{uid}][connectionIdentifier]"
+            placeholder="{psbFoundation:translate(id: 'phoneNumber:connectionIdentifier')}"
+            type="tel"
+            value="{record.connectionIdentifier}" />
+        <span class="input-group-text">-</span>
+        <f:form.textfield
+            class="form-control"
+            name="phoneNumber[{uid}][extension]"
+            placeholder="{psbFoundation:translate(id: 'phoneNumber:extension')}"
+            type="tel"
+            value="{record.extension}" />
     </div>
-    <div
-        class="btn btn-danger"
-        data-psb-delete-mode="closest"
-        data-psb-delete-target="fieldset">
-        <psbFoundation:translate id="edit:remove" />
-    </div>
-</fieldset>
+</div>
+<div class="col-md-6">
+    <label
+        class="form-label">
+        weitere Kontakte
+    </label>
+    <input
+        autocomplete="off"
+        class="form-control"
+        data-psb-autocomplete-items="{allContacts}"
+        data-psb-autocomplete-preselection="{psbContacts:json.relatedContacts(relatedEntity: record, contact: contact)}"
+        data-psb-autocomplete-selection-target="#contact-selection-{uid}"
+        data-psb-autocomplete-value-target="#contact-value-{uid}"
+        type="text" />
+    <ul
+        class="list-group list-group-flush"
+        id="contact-selection-{uid}">
+    </ul>
+    <f:form.hidden
+        id="contact-value-{uid}"
+        name="phoneNumber[{uid}][contacts]" />
+</div>
+<div class="col-md-6">
+    <label
+        class="form-label">
+        <psbFoundation:translate id="phoneNumber:notes" />
+    </label>
+    <f:form.textarea
+        class="form-control"
+        name="phoneNumber[{uid}][notes]"
+        value="{record.notes}" />
+</div>
+<div
+    class="btn btn-danger mt-3"
+    data-psb-delete-mode="closest"
+    data-psb-delete-target=".accordion-item">
+    <psbFoundation:translate id="edit:remove" />
+</div>
 </html>

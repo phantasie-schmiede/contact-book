@@ -6,11 +6,11 @@
 <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/eMail.xlf" />
 <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/Contact/edit.xlf" />
 
-<f:if condition="{eMail}">
+<f:if condition="{record}">
     <f:then>
         <f:variable
             name="uid"
-            value="{eMail.uid}" />
+            value="{record.uid}" />
     </f:then>
     <f:else>
         <f:variable
@@ -19,73 +19,71 @@
     </f:else>
 </f:if>
 
-<fieldset class="border border-light-subtle mb-3">
-    <div class="col-md-6">
-        <label
-            class="form-label">
-            <psbFoundation:translate id="eMail:type" />
-        </label>
-        <f:form.select
-            class="form-select"
-            name="eMail[{uid}][type]"
-            value="{eMail.type.value}">
-            <f:for
-                as="label"
-                each="{generalTypes}"
-                key="value">
-                <f:form.select.option value="{value}">
-                    <psbFoundation:translate id="eMail:type.{value}" />
-                </f:form.select.option>
-            </f:for>
-        </f:form.select>
-    </div>
-    <div class="col-md-6">
-        <label
-            class="form-label">
-            <psbFoundation:translate id="eMail:eMailAddress" />
-        </label>
-        <f:form.textfield
-            class="form-control"
-            name="eMail[{uid}][eMailAddress]"
-            type="email"
-            value="{eMail.eMailAddress}" />
-    </div>
-    <div class="col-md-6">
-        <label
-            class="form-label">
-            weitere Kontakte
-        </label>
-        <input
-            autocomplete="off"
-            class="form-control"
-            data-psb-autocomplete-items="{allContacts}"
-            data-psb-autocomplete-preselection="{psbContacts:json.relatedContacts(relatedEntity: eMail, contact: contact)}"
-            data-psb-autocomplete-selection-target="#contact-selection-{uid}"
-            data-psb-autocomplete-value-target="#contact-value-{uid}"
-            type="text" />
-        <ul
-            class="list-group list-group-flush"
-            id="contact-selection-{uid}">
-        </ul>
-        <f:form.hidden
-            id="contact-value-{uid}"
-            name="eMail[{uid}][contacts]" />
-    </div>
-    <div class="col-md-6">
-        <label
-            class="form-label">
-            <psbFoundation:translate id="eMail:notes" />
-        </label>
-        <f:form.textarea
-            class="form-control"
-            name="eMail[{uid}][notes]"
-            value="{eMail.notes}" />
-    </div>
-    <div
-        class="btn btn-danger"
-        data-psb-delete-mode="closest"
-        data-psb-delete-target="fieldset">
-        <psbFoundation:translate id="edit:remove" />
-    </div>
-</fieldset>
+<div class="col-md-6">
+    <label
+        class="form-label">
+        <psbFoundation:translate id="eMail:type" />
+    </label>
+    <f:form.select
+        class="form-select"
+        name="eMail[{uid}][type]"
+        value="{record.type.value}">
+        <f:for
+            as="label"
+            each="{generalTypes}"
+            key="value">
+            <f:form.select.option value="{value}">
+                <psbFoundation:translate id="eMail:type.{value}" />
+            </f:form.select.option>
+        </f:for>
+    </f:form.select>
+</div>
+<div class="col-md-6">
+    <label
+        class="form-label">
+        <psbFoundation:translate id="eMail:eMailAddress" />
+    </label>
+    <f:form.textfield
+        class="form-control"
+        name="eMail[{uid}][eMailAddress]"
+        type="email"
+        value="{record.eMailAddress}" />
+</div>
+<div class="col-md-6">
+    <label
+        class="form-label">
+        weitere Kontakte
+    </label>
+    <input
+        autocomplete="off"
+        class="form-control"
+        data-psb-autocomplete-items="{allContacts}"
+        data-psb-autocomplete-preselection="{psbContacts:json.relatedContacts(relatedEntity: record, contact: contact)}"
+        data-psb-autocomplete-selection-target="#contact-selection-{uid}"
+        data-psb-autocomplete-value-target="#contact-value-{uid}"
+        type="text" />
+    <ul
+        class="list-group list-group-flush"
+        id="contact-selection-{uid}">
+    </ul>
+    <f:form.hidden
+        id="contact-value-{uid}"
+        name="eMail[{uid}][contacts]" />
+</div>
+<div class="col-md-6">
+    <label
+        class="form-label">
+        <psbFoundation:translate id="eMail:notes" />
+    </label>
+    <f:form.textarea
+        class="form-control"
+        name="eMail[{uid}][notes]"
+        value="{record.notes}" />
+</div>
+<div
+    class="btn btn-danger mt-3"
+    data-psb-delete-mode="closest"
+    data-psb-delete-target=".accordion-item">
+    <psbFoundation:translate id="edit:remove" />
+</div>
 </html>
