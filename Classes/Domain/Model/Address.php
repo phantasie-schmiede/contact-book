@@ -69,6 +69,17 @@ class Address extends AbstractContactRelatedEntity
         return $this->city;
     }
 
+    public function getCompactValue(): string
+    {
+        return sprintf(
+            '%s %s, %s %s',
+            $this->street,
+            $this->houseNumber,
+            $this->zipCode,
+            $this->city
+        );
+    }
+
     public function getCountry(): string
     {
         return $this->country;

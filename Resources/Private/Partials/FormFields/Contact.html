@@ -114,109 +114,81 @@
     <psbFoundation:translate id="contact:addresses" />
 </h5>
 
-<div class="accordion accordion-flush" id="accordionAddresses">
-    <f:for
-        as="address"
-        each="{contact.addresses}">
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionAddress-{address.uid}" aria-expanded="false" aria-controls="accordionAddress-{address.uid}">
-                    {address.uid}
-                </button>
-            </h2>
-            <div id="accordionAddress-{address.uid}" class="accordion-collapse collapse" data-bs-parent="#accordionAddresses">
-                <div class="accordion-body">
-                    <f:render
-                        arguments="{_all}"
-                        partial="FormFields/Address" />
-                </div>
-            </div>
-        </div>
-    </f:for>
-</div>
-
-<div id="new-addresses"></div>
-<span
-    class="btn btn-secondary"
-    data-psb-copy-mode="append"
-    data-psb-copy-source="#address-template"
-    data-psb-copy-target="#new-addresses">
-    <psbFoundation:translate id="edit:addNewAddress" />
-</span>
+<f:render
+    arguments="{recordTye: 'Address', records: contact.addresses}"
+    section="Accordion" />
 
 <h5>
     <psbFoundation:translate id="contact:phoneNumbers" />
 </h5>
-<f:for
-    as="phoneNumber"
-    each="{contact.phoneNumbers}">
-    <f:render
-        arguments="{_all}"
-        partial="FormFields/PhoneNumber" />
-</f:for>
-<div id="new-phone-numbers"></div>
-<span
-    class="btn btn-secondary"
-    data-psb-copy-mode="append"
-    data-psb-copy-source="#phone-number-template"
-    data-psb-copy-target="#new-phone-numbers">
-    <psbFoundation:translate id="edit:addNewPhoneNumber" />
-</span>
+
+<f:render
+    arguments="{recordTye: 'PhoneNumber', records: contact.phoneNumbers}"
+    section="Accordion" />
 
 <h5>
     <psbFoundation:translate id="contact:eMails" />
 </h5>
-<f:for
-    as="eMail"
-    each="{contact.eMails}">
-    <f:render
-        arguments="{_all}"
-        partial="FormFields/EMail" />
-</f:for>
-<div id="new-e-mails"></div>
-<span
-    class="btn btn-secondary"
-    data-psb-copy-mode="append"
-    data-psb-copy-source="#e-mail-template"
-    data-psb-copy-target="#new-e-mails">
-    <psbFoundation:translate id="edit:addNewEMail" />
-</span>
+
+<f:render
+    arguments="{recordTye: 'EMail', records: contact.eMails}"
+    section="Accordion" />
 
 <h5>
     <psbFoundation:translate id="contact:websites" />
 </h5>
-<f:for
-    as="website"
-    each="{contact.websites}">
-    <f:render
-        arguments="{_all}"
-        partial="FormFields/Website" />
-</f:for>
-<div id="new-websites"></div>
-<span
-    class="btn btn-secondary"
-    data-psb-copy-mode="append"
-    data-psb-copy-source="#website-template"
-    data-psb-copy-target="#new-websites">
-    <psbFoundation:translate id="edit:addNewWebsite" />
-</span>
+
+<f:render
+    arguments="{recordTye: 'Website', records: contact.websites}"
+    section="Accordion" />
 
 <h5>
     <psbFoundation:translate id="contact:events" />
 </h5>
-<f:for
-    as="event"
-    each="{contact.events}">
-    <f:render
-        arguments="{_all}"
-        partial="FormFields/Event" />
-</f:for>
-<div id="new-events"></div>
-<span
-    class="btn btn-secondary"
-    data-psb-copy-mode="append"
-    data-psb-copy-source="#event-template"
-    data-psb-copy-target="#new-events">
-    <psbFoundation:translate id="edit:addNewEvent" />
+
+<f:render
+    arguments="{recordTye: 'Event', records: contact.events}"
+    section="Accordion" />
+
+<f:section name="Accordion">
+    <div
+        class="accordion accordion-flush"
+        id="accordion{recordTye}">
+        <f:for
+            as="record"
+            each="{records}">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button
+                        aria-controls="accordion{recordTye}-{record.uid}"
+                        aria-expanded="false"
+                        class="accordion-button collapsed"
+                        data-bs-target="#accordion{recordTye}-{record.uid}"
+                        data-bs-toggle="collapse"
+                        type="button">
+                        {record.compactValue}
+                    </button>
+                </h2>
+                <div
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordion{recordTye}"
+                    id="accordion{recordTye}-{record.uid}">
+                    <div class="accordion-body">
+                        <f:render
+                            arguments="{_all}"
+                            partial="FormFields/{recordTye}" />
+                    </div>
+                </div>
+            </div>
+        </f:for>
+    </div>
+
+    <span
+        class="btn btn-secondary"
+        data-psb-copy-mode="append"
+        data-psb-copy-source="#template{recordType}"
+        data-psb-copy-target="#accordion{recordType}">
+    <psbFoundation:translate id="edit:addNew{recordType}" />
 </span>
+</f:section>
 </html>

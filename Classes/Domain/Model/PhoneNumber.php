@@ -78,6 +78,17 @@ class PhoneNumber extends AbstractContactRelatedEntity
         return $this->areaCode;
     }
 
+    public function getCompactValue(): string
+    {
+        return sprintf(
+            '+%s %s %s %s',
+            $this->internationalDiallingCode,
+            $this->areaCode,
+            $this->connectionIdentifier,
+            $this->extension,
+        );
+    }
+
     public function getCompleteNumber(): string
     {
         return '+' . $this->internationalDiallingCode . $this->areaCode . $this->connectionIdentifier . $this->extension;

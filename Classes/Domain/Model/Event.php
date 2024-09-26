@@ -59,6 +59,11 @@ class Event extends AbstractContactRelatedEntity
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
     protected EventType $type = EventType::Birthday;
 
+    public function getCompactValue(): string
+    {
+        return $this->getLabel() . ': ' . $this->date->format('d.m.Y');
+    }
+
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface

@@ -65,4 +65,9 @@ class EMail extends AbstractContactRelatedEntity
 
         return $this;
     }
+
+    public function getCompactValue(): string
+    {
+        return $this->eMailAddress;
+    }
 }

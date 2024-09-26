@@ -42,6 +42,11 @@ class Website extends AbstractContactRelatedEntity
     #[Input]
     protected string $url = '';
 
+    public function getCompactValue(): string
+    {
+        return $this->url;
+    }
+
     public function getType(): GeneralType
     {
         return $this->type;

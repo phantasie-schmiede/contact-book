@@ -1,45 +1,21 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
-<div
-    class="d-none"
-    id="address-template">
-    <f:render
-        arguments="{_all}"
-        partial="FormFields/Address" />
-</div>
-
-<div
-    class="d-none"
-    id="e-mail-template">
-    <f:render
-        arguments="{_all}"
-        partial="FormFields/EMail" />
-</div>
-
-<div
-    class="d-none"
-    id="event-template">
-    <f:render
-        arguments="{_all}"
-        partial="FormFields/Event" />
-</div>
-
-<div
-    class="d-none"
-    id="phone-number-template">
-    <f:render
-        arguments="{_all}"
-        partial="FormFields/PhoneNumber" />
-</div>
-
-<div
-    class="d-none"
-    id="website-template">
-    <f:render
-        arguments="{_all}"
-        partial="FormFields/Website" />
-</div>
+<f:render
+    arguments="{recordTye: 'Address'}"
+    section="AccordionItem" />
+<f:render
+    arguments="{recordTye: 'EMail'}"
+    section="AccordionItem" />
+<f:render
+    arguments="{recordTye: 'Event'}"
+    section="AccordionItem" />
+<f:render
+    arguments="{recordTye: 'PhoneNumber'}"
+    section="AccordionItem" />
+<f:render
+    arguments="{recordTye: 'Website'}"
+    section="AccordionItem" />
 
 <f:asset.script
     identifier="copyContent"
@@ -57,4 +33,34 @@
     identifier="inputAutocomplete"
     src="EXT:psb_templates/Resources/Public/JavaScript/inputAutocomplete.js"
     type="module" />
+
+<f:section name="AccordionItem">
+    <div
+        class="d-none"
+        id="template{recordTye}">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button
+                    aria-controls="accordion{recordTye}-###uid###"
+                    aria-expanded="false"
+                    class="accordion-button collapsed"
+                    data-bs-target="#accordion{recordTye}-###uid###"
+                    data-bs-toggle="collapse"
+                    type="button">
+                    {record.uid}
+                </button>
+            </h2>
+            <div
+                class="accordion-collapse collapse"
+                data-bs-parent="#accordion{recordTye}"
+                id="accordion{recordTye}-###uid###">
+                <div class="accordion-body">
+                    <f:render
+                        arguments="{_all}"
+                        partial="FormFields/{recordTye}" />
+                </div>
+            </div>
+        </div>
+    </div>
+</f:section>
 </html>
