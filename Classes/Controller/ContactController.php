@@ -104,7 +104,7 @@ class ContactController extends ActionController
     {
         $this->processRelations($contact);
         $this->contactRepository->add($contact);
-        $this->deletePageCache();
+        $this->deletePagesCache();
 
         return $this->redirect('list');
     }
@@ -117,7 +117,7 @@ class ContactController extends ActionController
     public function deleteAction(Contact $contact): ResponseInterface
     {
         $this->contactRepository->remove($contact);
-        $this->deletePageCache();
+        $this->deletePagesCache();
 
         return $this->redirect('list');
     }
@@ -179,7 +179,7 @@ class ContactController extends ActionController
     {
         $this->processRelations($contact);
         $this->contactRepository->update($contact);
-        $this->deletePageCache();
+        $this->deletePagesCache();
 
         return $this->redirect(
             actionName: 'show', arguments: ['contact' => $contact]
@@ -189,7 +189,7 @@ class ContactController extends ActionController
     /**
      * @throws NoSuchCacheGroupException
      */
-    private function deletePageCache(): void
+    private function deletePagesCache(): void
     {
         /** @var CacheManager $cacheManager */
         $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
