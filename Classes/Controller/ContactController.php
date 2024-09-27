@@ -40,7 +40,12 @@ use PSB\PsbFoundation\Utility\LocalizationUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Cache\CacheDataCollector;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\CacheTag;
+use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
@@ -54,6 +59,8 @@ use function is_string;
  */
 class ContactController extends ActionController
 {
+    public const string CACHE_TAG = 'tx_psbcontacts';
+
     public function __construct(
         protected readonly AddressRepository     $addressRepository,
         protected readonly ContactRepository     $contactRepository,
@@ -90,21 +97,27 @@ class ContactController extends ActionController
     /**
      * @throws Exception
      * @throws IllegalObjectTypeException
+     * @throws NoSuchCacheGroupException
      */
     #[PluginAction(uncached: true)]
     public function createAction(Contact $contact): ResponseInterface
     {
         $this->processRelations($contact);
         $this->contactRepository->add($contact);
+        $this->deletePageCache();
 
         return $this->redirect('list');
     }
 
-    /** @throws IllegalObjectTypeException */
+    /**
+     * @throws IllegalObjectTypeException
+     * @throws NoSuchCacheGroupException
+     */
     #[PluginAction(uncached: true)]
     public function deleteAction(Contact $contact): ResponseInterface
     {
         $this->contactRepository->remove($contact);
+        $this->deletePageCache();
 
         return $this->redirect('list');
     }
@@ -120,9 +133,10 @@ class ContactController extends ActionController
         return $this->htmlResponse();
     }
 
-    #[PluginAction(default: true, uncached: true)]
+    #[PluginAction(default: true)]
     public function listAction(): ResponseInterface
     {
+        $this->setCacheTag();
         $allContacts = $this->contactRepository->findAll()
             ->toArray();
 
@@ -145,9 +159,10 @@ class ContactController extends ActionController
         return $this->htmlResponse();
     }
 
-    #[PluginAction(uncached: true)]
+    #[PluginAction]
     public function showAction(Contact $contact): ResponseInterface
     {
+        $this->setCacheTag();
         $this->view->assign('contact', $contact);
 
         return $this->htmlResponse();
@@ -156,6 +171,7 @@ class ContactController extends ActionController
     /**
      * @throws Exception
      * @throws IllegalObjectTypeException
+     * @throws NoSuchCacheGroupException
      * @throws UnknownObjectException
      */
     #[PluginAction(uncached: true)]
@@ -163,10 +179,21 @@ class ContactController extends ActionController
     {
         $this->processRelations($contact);
         $this->contactRepository->update($contact);
+        $this->deletePageCache();
 
         return $this->redirect(
             actionName: 'show', arguments: ['contact' => $contact]
         );
+    }
+
+    /**
+     * @throws NoSuchCacheGroupException
+     */
+    private function deletePageCache(): void
+    {
+        /** @var CacheManager $cacheManager */
+        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
+        $cacheManager->flushCachesInGroupByTag('pages', self::CACHE_TAG);
     }
 
     /**
@@ -295,6 +322,13 @@ class ContactController extends ActionController
                 }
             }
         }
+    }
+
+    private function setCacheTag(): void
+    {
+        /** @var CacheDataCollector $cacheDataCollector */
+        $cacheDataCollector = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.cache.collector');
+        $cacheDataCollector->addCacheTags(new CacheTag(self::CACHE_TAG));
     }
 
     private function updateAddressProperties(Address $entity, array $entityData): void
