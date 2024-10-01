@@ -10,15 +10,19 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Controller\Backend;
 
+use JsonException;
 use PSB\PsbContacts\Data\ExtensionInformation;
 use PSB\PsbContacts\Service\ImportService;
 use PSB\PsbFoundation\Attribute\ModuleAction;
 use PSB\PsbFoundation\Controller\Backend\AbstractModuleController;
 use PSB\PsbFoundation\Utility\Configuration\FilePathUtility;
 use PSB\PsbFoundation\Utility\LocalizationUtility;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
@@ -28,7 +32,7 @@ use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
  *
  * @package PSB\PsbContacts\Controller\Backend
  */
-#[Controller]
+#[AsController]
 class ImportController extends AbstractModuleController
 {
     public function __construct(
@@ -40,8 +44,11 @@ class ImportController extends AbstractModuleController
     }
 
     /**
-     * @return ResponseInterface
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
      * @throws IllegalObjectTypeException
+     * @throws JsonException
+     * @throws NotFoundExceptionInterface
      * @throws UnknownObjectException
      */
     #[ModuleAction]
@@ -61,6 +68,8 @@ class ImportController extends AbstractModuleController
     #[ModuleAction(default: true)]
     public function showUploadFormAction(): ResponseInterface
     {
-        return $this->htmlResponse();
+        return $this->responseFactory->createResponse()
+            ->withHeader('Content-Type', 'text/html; charset=utf-8')
+            ->withBody($this->streamFactory->createStream($this->view->render()));
     }
 }

@@ -84,7 +84,7 @@ readonly class ImportService
                         ->getFirst();
 
                     if ($existingContact instanceof Contact) {
-                        $this->copyProperties($contact, $existingContact);
+                        $this->addProperties($contact, $existingContact);
                         $this->contactRepository->update($existingContact);
                     } else {
                         $this->contactRepository->add($contact);
@@ -100,17 +100,24 @@ readonly class ImportService
         }
     }
 
-    private function copyProperties(Contact $contact, Contact $existingContact): void
+    private function addProperties(Contact $contact, Contact $existingContact): void
     {
-        $existingContact->setCompanies($contact->getCompanies());
-        $existingContact->setEMails($contact->getEMails());
-        $existingContact->setEvents($contact->getEvents());
-        $existingContact->setFirstName($contact->getFirstName());
-        $existingContact->setLastName($contact->getLastName());
-        $existingContact->setMiddleNames($contact->getMiddleNames());
-        $existingContact->setNotes($contact->getNotes());
-        $existingContact->setPhoneNumbers($contact->getPhoneNumbers());
-        $existingContact->setWebsites($contact->getWebsites());
+        $existingContact->addAddresses(...$contact->getAddresses());
+        $existingContact->addCompanies(...$contact->getCompanies());
+        $existingContact->addEMails(...$contact->getEMails());
+        $existingContact->addEvents(...$contact->getEvents());
+
+        if ('' === $existingContact->getMiddleNames()) {
+            $existingContact->setMiddleNames($contact->getMiddleNames());
+        }
+
+        if ('' === $existingContact->getNickname()) {
+            $existingContact->setNickname($contact->getNickname());
+        }
+
+        $existingContact->addNote($contact->getNotes());
+        $existingContact->addPhoneNumbers(...$contact->getPhoneNumbers());
+        $existingContact->addWebsites(...$contact->getWebsites());
     }
 
     private function parseVCardLine(string $line, Contact $contact): void
@@ -183,15 +190,16 @@ readonly class ImportService
                     $address->setType(GeneralType::Private);
                 }
 
-                $contact->addAddress($address);
+                $contact->addAddresses($address);
                 break;
             case 'BDAY':
                 $event = new Event();
-                $event->setDate(DateTime::createFromFormat('Ymd', $value))
+                $eventDate = DateTime::createFromFormat('Ymd', $value) ?: DateTime::createFromFormat('Y-m-d', $value);
+                $event->setDate($eventDate)
                     ->setShowAnniversaries(true)
                     ->setShowInCalendar(true)
                     ->setType(EventType::Birthday);
-                $contact->addEvent($event);
+                $contact->addEvents($event);
                 break;
             case 'EMAIL':
                 $eMailDemand = (new EMailDemand())->setEMailAddress($value);
@@ -204,7 +212,7 @@ readonly class ImportService
                     $eMail->setType(GeneralType::Private);
                 }
 
-                $contact->addEMail($eMail);
+                $contact->addEMails($eMail);
                 break;
             case 'FN':
                 $nameParts = explode(' ', $value);
@@ -217,7 +225,7 @@ readonly class ImportService
                 $websiteDemand->setUrl($value);
                 $website = $this->websiteRepository->findByDemand($websiteDemand)
                     ->getFirst() ?? (new Website())->setUrl($value);
-                $contact->addWebsite($website);
+                $contact->addWebsites($website);
                 break;
             case 'NICKNAME':
                 $contact->setNickname($value);
@@ -234,7 +242,7 @@ readonly class ImportService
                 $company = $this->contactRepository->findByDemand($contactDemand)
                     ->getFirst() ?? (new Contact())->setCompanyName($value)
                     ->setType(ContactType::Company);
-                $contact->addCompany($company);
+                $contact->addCompanies($company);
                 break;
             case 'TEL':
                 if (!str_starts_with($value, '+49')) {
@@ -264,7 +272,7 @@ readonly class ImportService
                     $phoneNumber->setPhoneNumberType(PhoneNumberType::Landline);
                 }
 
-                $contact->addPhoneNumber($phoneNumber);
+                $contact->addPhoneNumbers($phoneNumber);
                 break;
             case 'X-ANDROID-CUSTOM':
                 if (str_starts_with($value, 'vnd.android.cursor.item/nickname;')) {

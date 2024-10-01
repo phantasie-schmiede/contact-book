@@ -109,30 +109,46 @@ class Contact extends AbstractEntity
         $this->initializeObject();
     }
 
-    public function addAddress(Address $address): self
+    public function addAddresses(Address ...$addresses): self
     {
-        $this->addresses->attach($address);
+        foreach ($addresses as $address) {
+            if (!$this->addresses->contains($address)) {
+                $this->addresses->attach($address);
+            }
+        }
 
         return $this;
     }
 
-    public function addCompany(Contact $company): self
+    public function addCompanies(Contact ...$companies): self
     {
-        $this->companies->attach($company);
+        foreach ($companies as $company) {
+            if (!$this->companies->contains($company)) {
+                $this->companies->attach($company);
+            }
+        }
 
         return $this;
     }
 
-    public function addEMail(EMail $eMail): self
+    public function addEMails(EMail ...$eMails): self
     {
-        $this->eMails->attach($eMail);
+        foreach ($eMails as $eMail) {
+            if (!$this->eMails->contains($eMail)) {
+                $this->eMails->attach($eMail);
+            }
+        }
 
         return $this;
     }
 
-    public function addEvent(Event $event): self
+    public function addEvents(Event ...$events): self
     {
-        $this->events->attach($event);
+        foreach ($events as $event) {
+            if (!$this->events->contains($event)) {
+                $this->events->attach($event);
+            }
+        }
 
         return $this;
     }
@@ -144,16 +160,24 @@ class Contact extends AbstractEntity
         return $this;
     }
 
-    public function addPhoneNumber(PhoneNumber $phoneNumber): self
+    public function addPhoneNumbers(PhoneNumber ...$phoneNumbers): self
     {
-        $this->phoneNumbers->attach($phoneNumber);
+        foreach ($phoneNumbers as $phoneNumber) {
+            if (!$this->phoneNumbers->contains($phoneNumber)) {
+                $this->phoneNumbers->attach($phoneNumber);
+            }
+        }
 
         return $this;
     }
 
-    public function addWebsite(Website $website): self
+    public function addWebsites(Website ...$websites): self
     {
-        $this->websites->attach($website);
+        foreach ($websites as $website) {
+            if (!$this->websites->contains($website)) {
+                $this->websites->attach($website);
+            }
+        }
 
         return $this;
     }
