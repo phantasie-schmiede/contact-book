@@ -19,6 +19,7 @@ use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
+use PSB\PsbFoundation\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -145,9 +146,15 @@ class Contact extends AbstractEntity
     public function addEvents(Event ...$events): self
     {
         foreach ($events as $event) {
-            if (!$this->events->contains($event)) {
-                $this->events->attach($event);
+            foreach ($this->events as $existingEvent) {
+                if ($event->getType() === $existingEvent->getType() && $event->getDate()
+                        ->format('m.d.Y') === $existingEvent->getDate()
+                        ->format('m.d.Y')) {
+                    continue 2;
+                }
             }
+
+            $this->events->attach($event);
         }
 
         return $this;
@@ -342,6 +349,37 @@ class Contact extends AbstractEntity
     public function getPhoneNumbers(): ObjectStorage
     {
         return $this->phoneNumbers;
+    }
+
+    public function getSearchTerms(): string
+    {
+        $searchTerms = [];
+
+        if (ContactType::Company === $this->type && '' !== $this->getCompanyName()) {
+            $searchTerms[] = $this->getCompanyName();
+        } else {
+            if ('' !== $this->getFirstName()) {
+                $searchTerms[] = $this->getFirstName();
+            }
+
+            if ('' !== $this->getLastName()) {
+                $searchTerms[] = $this->getLastName();
+            }
+
+            if ('' !== $this->getMiddleNames()) {
+                $searchTerms[] = $this->getMiddleNames();
+            }
+
+            if ('' !== $this->getNickname()) {
+                $searchTerms[] = $this->getNickname();
+            }
+        }
+
+        if ('' !== $this->getNotes()) {
+            array_push($searchTerms, ...StringUtility::explodeByLineBreaks($this->getNotes()));
+        }
+
+        return implode(' ', $searchTerms);
     }
 
     public function getType(): ContactType

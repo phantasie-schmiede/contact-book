@@ -7,14 +7,23 @@
     <div class="col-12">
         <f:if condition="{contacts}">
             <f:then>
-                <div class="list-group list-group-flush">
+                <input
+                    class="form-control"
+                    data-psb-filter-target=".js-contact-list-item"
+                    data-psb-filter-value="data-search-terms"
+                    id="search"
+                    placeholder="{psbFoundation:translate(id: 'search')}"
+                    type="text" />
+                <div
+                    class="list-group list-group-flush">
                     <f:for
                         as="contact"
                         each="{contacts}">
                         <f:link.action
                             action="show"
                             arguments="{contact: contact}"
-                            class="list-group-item list-group-item-action">
+                            data="{search-terms: contact.searchTerms}"
+                            class="js-contact-list-item list-group-item list-group-item-action">
                             <div class="d-flex w-100 justify-content-between">
                                 {contact.displayName}
                             </div>
@@ -39,4 +48,11 @@
         </f:link.action>
     </div>
 </div>
+
+<section name="FooterAssets">
+    <f:asset.script
+        identifier="filter"
+        src="EXT:psb_templates/Resources/Public/JavaScript/filter.js"
+        type="module" />
+</section>
 </html>
