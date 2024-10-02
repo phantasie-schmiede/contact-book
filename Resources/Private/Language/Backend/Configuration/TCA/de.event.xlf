@@ -63,6 +63,10 @@
                 <source>Wedding</source>
                 <target>Hochzeit</target>
             </trans-unit>
+            <trans-unit id="yearUnknown">
+                <source>Unknown year</source>
+                <target>Unbekanntes Jahr</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

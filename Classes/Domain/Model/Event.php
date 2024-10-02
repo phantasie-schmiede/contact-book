@@ -59,6 +59,15 @@ class Event extends AbstractContactRelatedEntity
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
     protected EventType $type = EventType::Birthday;
 
+    #[Check]
+    protected bool $yearUnknown = false;
+
+    /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws JsonException
+     * @throws NotFoundExceptionInterface
+     */
     public function getCompactValue(): string
     {
         return $this->getLabel() . ': ' . $this->date->format('d.m.Y');
@@ -103,6 +112,10 @@ class Event extends AbstractContactRelatedEntity
 
     public function getNextAnniversary(): int
     {
+        if ($this->isYearUnknown()) {
+            return 0;
+        }
+
         $now = new DateTime();
         $anniversary = (int)$now->format('Y') - (int)$this->date->format('Y');
 
@@ -124,7 +137,7 @@ class Event extends AbstractContactRelatedEntity
 
     public function isAnniversary(): bool
     {
-        return date('Y') > $this->date->format('Y');
+        return $this->isYearUnknown() || date('Y') > $this->date->format('Y');
     }
 
     public function isShowAnniversaries(): bool
@@ -135,6 +148,11 @@ class Event extends AbstractContactRelatedEntity
     public function isShowInCalendar(): bool
     {
         return $this->showInCalendar;
+    }
+
+    public function isYearUnknown(): bool
+    {
+        return $this->yearUnknown;
     }
 
     public function setDate(DateTime $date): self
@@ -163,5 +181,10 @@ class Event extends AbstractContactRelatedEntity
         $this->type = $type;
 
         return $this;
+    }
+
+    public function setYearUnknown(bool $yearUnknown): void
+    {
+        $this->yearUnknown = $yearUnknown;
     }
 }

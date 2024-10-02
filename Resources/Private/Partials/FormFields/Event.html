@@ -51,6 +51,39 @@
 </div>
 <div class="col-md-6">
     <label
+        class="form-check-label">
+        <psbFoundation:translate id="event:yearUnknown" />
+        <f:form.checkbox
+            checked="{f:if(condition: record.yearUnknown, then: '1', else: '0')}"
+            class="form-check-input"
+            name="event[{uid}][yearUnknown]"
+            value="1" />
+    </label>
+</div>
+<div class="col-md-6">
+    <label
+        class="form-check-label">
+        <psbFoundation:translate id="event:showAnniversaries" />
+        <f:form.checkbox
+            checked="{f:if(condition: record.showAnniversaries, then: '1', else: '0')}"
+            class="form-check-input"
+            name="event[{uid}][showAnniversaries]"
+            value="1" />
+    </label>
+</div>
+<div class="col-md-6">
+    <label
+        class="form-check-label">
+        <psbFoundation:translate id="event:showInCalendar" />
+        <f:form.checkbox
+            checked="{f:if(condition: record.showInCalendar, then: '1', else: '0')}"
+            class="form-check-input"
+            name="event[{uid}][showInCalendar]"
+            value="1" />
+    </label>
+</div>
+<div class="col-md-6">
+    <label
         class="form-label">
         weitere Kontakte
     </label>
