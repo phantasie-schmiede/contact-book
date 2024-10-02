@@ -11,6 +11,10 @@
                 <source>Addresses</source>
                 <target>Adressen</target>
             </trans-unit>
+            <trans-unit id="birthName">
+                <source>Birth name</source>
+                <target>Geburtsname</target>
+            </trans-unit>
             <trans-unit id="companies">
                 <source>Companies</source>
                 <target>Unternehmen</target>
@@ -42,6 +46,10 @@
             <trans-unit id="middleNames">
                 <source>Middle Names</source>
                 <target>weitere Vornamen</target>
+            </trans-unit>
+            <trans-unit id="nickname">
+                <source>Nickname</source>
+                <target>Spitzname</target>
             </trans-unit>
             <trans-unit id="notes">
                 <source>Notes</source>

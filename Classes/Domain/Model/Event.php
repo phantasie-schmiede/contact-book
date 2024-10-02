@@ -183,8 +183,10 @@ class Event extends AbstractContactRelatedEntity
         return $this;
     }
 
-    public function setYearUnknown(bool $yearUnknown): void
+    public function setYearUnknown(bool $yearUnknown): self
     {
         $this->yearUnknown = $yearUnknown;
+
+        return $this;
     }
 }

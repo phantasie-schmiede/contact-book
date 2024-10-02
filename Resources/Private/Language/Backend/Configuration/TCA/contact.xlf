@@ -9,6 +9,9 @@
             <trans-unit id="addresses">
                 <source>Addresses</source>
             </trans-unit>
+            <trans-unit id="birthName">
+                <source>Birth name</source>
+            </trans-unit>
             <trans-unit id="companies">
                 <source>Companies</source>
             </trans-unit>
@@ -32,6 +35,9 @@
             </trans-unit>
             <trans-unit id="middleNames">
                 <source>Middle Names</source>
+            </trans-unit>
+            <trans-unit id="nickname">
+                <source>Nickname</source>
             </trans-unit>
             <trans-unit id="notes">
                 <source>Notes</source>

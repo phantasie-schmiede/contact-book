@@ -113,28 +113,6 @@
         name="event[{uid}][notes]"
         value="{record.notes}" />
 </div>
-<div class="col-md-6">
-    <label
-        class="form-check-label">
-        <psbFoundation:translate id="event:showAnniversaries" />
-        <f:form.checkbox
-            checked="{f:if(condition: record.showAnniversaries, then: '1', else: '0')}"
-            class="form-check-input"
-            name="event[{uid}][showAnniversaries]"
-            value="1" />
-    </label>
-</div>
-<div class="col-md-6">
-    <label
-        class="form-check-label">
-        <psbFoundation:translate id="event:showInCalendar" />
-        <f:form.checkbox
-            checked="{f:if(condition: record.showInCalendar, then: '1', else: '0')}"
-            class="form-check-input"
-            name="event[{uid}][showInCalendar]"
-            value="1" />
-    </label>
-</div>
 <div
     class="btn btn-danger mt-3"
     data-psb-delete-mode="closest"

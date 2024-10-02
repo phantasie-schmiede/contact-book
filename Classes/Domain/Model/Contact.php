@@ -46,6 +46,9 @@ class Contact extends AbstractEntity
     #[Lazy]
     protected ObjectStorage $addresses;
 
+    #[Input]
+    protected string $birthName = '';
+
     /** @var ObjectStorage<Contact> */
     #[Select(foreignTableWhere: 'AND {#tx_psbcontacts_domain_model_contact}.{#type} = "company"', linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_companies')]
     #[Lazy]
@@ -203,6 +206,11 @@ class Contact extends AbstractEntity
     public function getAddresses(): ObjectStorage
     {
         return $this->addresses;
+    }
+
+    public function getBirthName(): string
+    {
+        return $this->birthName;
     }
 
     public function getCompanies(): ObjectStorage
@@ -451,6 +459,13 @@ class Contact extends AbstractEntity
     public function setAddresses(ObjectStorage $addresses): self
     {
         $this->addresses = $addresses;
+
+        return $this;
+    }
+
+    public function setBirthName(string $birthName): self
+    {
+        $this->birthName = $birthName;
 
         return $this;
     }
