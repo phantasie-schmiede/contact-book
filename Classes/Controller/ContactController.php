@@ -177,6 +177,7 @@ class ContactController extends ActionController
     #[PluginAction(uncached: true)]
     public function updateAction(Contact $contact): ResponseInterface
     {
+       // @TODO: Handle company selection!
         $this->processRelations($contact);
         $this->contactRepository->update($contact);
         $this->deletePagesCache();

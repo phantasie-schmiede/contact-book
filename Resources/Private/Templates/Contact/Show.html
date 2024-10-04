@@ -14,6 +14,13 @@
 <div class="row">
     <div class="col-12">
         <dl class="row">
+            <f:if condition="{contact.title}">
+                <dt class="col-3">
+                    <psbFoundation:translate id="contact:title" />
+                </dt>
+                <dd class="col-9">{contact.title}</dd>
+            </f:if>
+
             <f:if condition="{contact.firstName}">
                 <dt class="col-3">
                     <psbFoundation:translate id="contact:firstName" />
@@ -33,6 +40,37 @@
                     <psbFoundation:translate id="contact:lastName" />
                 </dt>
                 <dd class="col-9">{contact.lastName}</dd>
+            </f:if>
+
+            <f:if condition="{contact.birthName}">
+                <dt class="col-3">
+                    <psbFoundation:translate id="contact:birthName" />
+                </dt>
+                <dd class="col-9">{contact.birthName}</dd>
+            </f:if>
+
+            <f:if condition="{contact.nickname}">
+                <dt class="col-3">
+                    <psbFoundation:translate id="contact:nickname" />
+                </dt>
+                <dd class="col-9">{contact.nickname}</dd>
+            </f:if>
+
+            <f:if condition="{contact.companies}">
+                <dt class="col-3">
+                    <psbFoundation:translate id="contact:companies" />
+                </dt>
+                <dd class="col-9">
+                    <ul>
+                        <f:for
+                            as="company"
+                            each="{contact.companies}">
+                            <li>
+                                {company.companyName}
+                            </li>
+                        </f:for>
+                    </ul>
+                </dd>
             </f:if>
 
             <f:if condition="{contact.companyName}">
@@ -95,7 +133,7 @@
                                         name="phoneNumberLabelId"
                                         value="formattedPhoneNumber.international" />
 
-                                    <f:if condition="{phoneNumber.extension}">
+                                    <f:if condition="'' !== {phoneNumber.extension}">
                                         <f:variable
                                             name="phoneNumberLabelId"
                                             value="{phoneNumberLabelId}.withExtension" />
@@ -170,6 +208,15 @@
                             </li>
                         </f:for>
                     </ul>
+                </dd>
+            </f:if>
+
+            <f:if condition="{contact.notes}">
+                <dt class="col-3">
+                    <psbFoundation:translate id="contact:notes" />
+                </dt>
+                <dd class="col-9">
+                    {contact.notes}
                 </dd>
             </f:if>
         </dl>

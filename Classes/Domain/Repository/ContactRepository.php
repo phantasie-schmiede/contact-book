@@ -12,8 +12,8 @@ namespace PSB\PsbContacts\Domain\Repository;
 
 use PSB\PsbContacts\Domain\Demand\ContactDemand;
 use PSB\PsbContacts\Domain\Enum\ContactType;
-use PSB\PsbContacts\Domain\Model\Contact;
 use PSB\PsbFoundation\Utility\QueryUtility;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
@@ -67,6 +67,7 @@ class ContactRepository extends Repository
     {
         $query = $this->createQuery();
         $query->matching($query->equals('type', $type->value));
+        $query->setOrderings(['companyName' => QueryInterface::ORDER_ASCENDING]);
 
         return $query->execute();
     }

@@ -58,6 +58,21 @@
     data-psb-form-condition-value="company">
     <label
         class="form-label"
+        for="title">
+        <psbFoundation:translate id="contact:title" />
+    </label>
+    <f:form.textfield
+        class="form-control"
+        id="title"
+        property="title" />
+</div>
+<div
+    class="col-md-4{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
+    data-psb-form-condition-field="#type"
+    data-psb-form-condition-mode="hide"
+    data-psb-form-condition-value="company">
+    <label
+        class="form-label"
         for="firstName">
         <psbFoundation:translate id="contact:firstName" />
     </label>

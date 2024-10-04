@@ -63,6 +63,10 @@
                 <source>Show in address book</source>
                 <target>Im Adressbuch anzeigen</target>
             </trans-unit>
+            <trans-unit id="title">
+                <source>Title</source>
+                <target>Titel</target>
+            </trans-unit>
             <trans-unit id="type">
                 <source>Type</source>
                 <target>Typ</target>

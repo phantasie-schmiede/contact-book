@@ -97,6 +97,9 @@ class Contact extends AbstractEntity
     #[Check]
     protected bool $showInAddressBook = false;
 
+    #[Input]
+    protected string $title = '';
+
     #[Select(items   : [
         'Company' => 'company',
         'Person'  => 'person',
@@ -381,6 +384,10 @@ class Contact extends AbstractEntity
             if ('' !== $this->getNickname()) {
                 $searchTerms[] = $this->getNickname();
             }
+
+            foreach ($this->companies as $company) {
+                $searchTerms[] = $company->getCompanyName();
+            }
         }
 
         if ('' !== $this->getNotes()) {
@@ -388,6 +395,11 @@ class Contact extends AbstractEntity
         }
 
         return implode(' ', $searchTerms);
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
     }
 
     public function getType(): ContactType
@@ -543,6 +555,13 @@ class Contact extends AbstractEntity
     public function setShowInAddressBook(bool $showInAddressBook): self
     {
         $this->showInAddressBook = $showInAddressBook;
+
+        return $this;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
 
         return $this;
     }
