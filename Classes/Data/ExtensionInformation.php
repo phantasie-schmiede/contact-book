@@ -12,6 +12,8 @@ namespace PSB\PsbContacts\Data;
 
 use PSB\PsbContacts\Controller\Backend\ImportController;
 use PSB\PsbContacts\Controller\ContactController;
+use PSB\PsbContacts\Controller\ContactGroupController;
+use PSB\PsbContacts\Controller\ContactGroupWidgetController;
 use PSB\PsbContacts\Controller\EventWidgetController;
 use PSB\PsbFoundation\Data\AbstractExtensionInformation;
 use PSB\PsbFoundation\Data\MainModuleConfiguration;
@@ -59,6 +61,20 @@ class ExtensionInformation extends AbstractExtensionInformation
                 name              : 'ConfirmDeleteContact',
                 typeNum           : self::TYPE_NUMS['ConfirmDeleteContact'],
                 typeNumContentType: ContentType::JSON
+            )
+        );
+        $this->addPlugin(
+            GeneralUtility::makeInstance(
+                PluginConfiguration::class,
+                controllers: [ContactGroupController::class],
+                name       : 'ContactGroups'
+            )
+        );
+        $this->addPlugin(
+            GeneralUtility::makeInstance(
+                PluginConfiguration::class,
+                controllers: [ContactGroupWidgetController::class],
+                name       : 'ContactGroupWidget'
             )
         );
         $this->addPlugin(

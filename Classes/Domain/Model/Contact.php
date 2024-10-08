@@ -57,6 +57,11 @@ class Contact extends AbstractEntity
     #[Input]
     protected string $companyName = '';
 
+    /** @var ObjectStorage<ContactGroup> */
+    #[Inline(linkedModel: ContactGroup::class, mm: 'tx_psbcontacts_contacts_contactgroups')]
+    #[Lazy]
+    protected ObjectStorage $contactGroups;
+
     /** @var ObjectStorage<EMail> */
     #[Inline(linkedModel: EMail::class, mm: 'tx_psbcontacts_contacts_emails')]
     #[Lazy]
@@ -228,6 +233,22 @@ class Contact extends AbstractEntity
     public function getCompanyName(): string
     {
         return $this->companyName;
+    }
+
+    public function getContactGroupByUid(int $uid): EMail
+    {
+        foreach ($this->contactGroups as $contactGroup) {
+            if ($uid === $contactGroup->getUid()) {
+                return $contactGroup;
+            }
+        }
+
+        throw new InvalidArgumentException(__CLASS__ . ': Contact group with UID ' . $uid . ' not found!', 1728419001);
+    }
+
+    public function getContactGroups(): ObjectStorage
+    {
+        return $this->contactGroups;
     }
 
     public function getDisplayName(): string
@@ -431,6 +452,7 @@ class Contact extends AbstractEntity
     {
         $this->addresses = new ObjectStorage();
         $this->companies = new ObjectStorage();
+        $this->contactGroups = new ObjectStorage();
         $this->eMails = new ObjectStorage();
         $this->events = new ObjectStorage();
         $this->phoneNumbers = new ObjectStorage();
@@ -440,6 +462,13 @@ class Contact extends AbstractEntity
     public function removeAddress(Address $address): self
     {
         $this->addresses->detach($address);
+
+        return $this;
+    }
+
+    public function removeContactGroup(ContactGroup $contactGroup): self
+    {
+        $this->contactGroups->detach($contactGroup);
 
         return $this;
     }
@@ -500,6 +529,13 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    public function setContactGroups(ObjectStorage $contactGroups): self
+    {
+        $this->contactGroups = $contactGroups;
+
+        return $this;
+    }
+
     public function setEMails(ObjectStorage $eMails): self
     {
         $this->eMails = $eMails;
@@ -544,7 +580,7 @@ class Contact extends AbstractEntity
 
     public function setNotes(string $notes): self
     {
-        $this->notes = trim($notes);
+        $this->notes = htmlspecialchars(trim($notes));
 
         return $this;
     }

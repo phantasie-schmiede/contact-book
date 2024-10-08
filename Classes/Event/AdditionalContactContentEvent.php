@@ -15,9 +15,9 @@ use PSB\PsbContacts\Domain\Model\Contact;
 use PSB\PsbTemplates\Event\AdditionalContentEventInterface;
 
 /**
- * Class EventController
+ * Class AdditionalContactContentEvent
  *
- * @package PSB\PsbContacts\Controller
+ * @package PSB\PsbContacts\Event
  */
 class AdditionalContactContentEvent implements AdditionalContentEventInterface
 {

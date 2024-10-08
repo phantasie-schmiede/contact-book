@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace PSB\PsbContacts\Domain\Model;
 
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
+use PSB\PsbFoundation\Utility\StringUtility;
 use ReflectionClass;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -32,9 +33,11 @@ abstract class AbstractContactRelatedEntity extends AbstractEntity implements Co
         $this->initializeObject();
     }
 
-    public function addContact(Contact $contact): void
+    public function addContact(Contact $contact): self
     {
         $this->contacts->attach($contact);
+
+        return $this;
     }
 
     public function getContacts(): ObjectStorage
@@ -44,7 +47,7 @@ abstract class AbstractContactRelatedEntity extends AbstractEntity implements Co
 
     public function getNotes(): string
     {
-        return $this->notes;
+        return StringUtility::isEmpty($this->notes) ? '' : $this->notes;
     }
 
     public function initializeObject(): void
@@ -52,24 +55,32 @@ abstract class AbstractContactRelatedEntity extends AbstractEntity implements Co
         $this->contacts = new ObjectStorage();
     }
 
-    public function removeAllContacts(): void
+    public function removeAllContacts(): self
     {
         $this->contacts = new ObjectStorage();
+
+        return $this;
     }
 
-    public function removeContact(Contact $contact): void
+    public function removeContact(Contact $contact): self
     {
         $this->contacts->detach($contact);
+
+        return $this;
     }
 
-    public function setContacts(ObjectStorage $contacts): void
+    public function setContacts(ObjectStorage $contacts): self
     {
         $this->contacts = $contacts;
+
+        return $this;
     }
 
-    public function setNotes(string $notes): void
+    public function setNotes(string $notes): self
     {
-        $this->notes = htmlspecialchars($notes);
+        $this->notes = htmlspecialchars(trim($notes));
+
+        return $this;
     }
 
     public function getRecordType(): string

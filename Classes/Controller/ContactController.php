@@ -21,12 +21,14 @@ use PSB\PsbContacts\Domain\Enum\GeneralType;
 use PSB\PsbContacts\Domain\Enum\PhoneNumberType;
 use PSB\PsbContacts\Domain\Model\Address;
 use PSB\PsbContacts\Domain\Model\Contact;
+use PSB\PsbContacts\Domain\Model\ContactGroup;
 use PSB\PsbContacts\Domain\Model\ContactRelationInterface;
 use PSB\PsbContacts\Domain\Model\EMail;
 use PSB\PsbContacts\Domain\Model\Event;
 use PSB\PsbContacts\Domain\Model\PhoneNumber;
 use PSB\PsbContacts\Domain\Model\Website;
 use PSB\PsbContacts\Domain\Repository\AddressRepository;
+use PSB\PsbContacts\Domain\Repository\ContactGroupRepository;
 use PSB\PsbContacts\Domain\Repository\ContactRepository;
 use PSB\PsbContacts\Domain\Repository\EMailRepository;
 use PSB\PsbContacts\Domain\Repository\EventRepository;
@@ -62,13 +64,14 @@ class ContactController extends ActionController
     public const string CACHE_TAG = 'tx_psbcontacts';
 
     public function __construct(
-        protected readonly AddressRepository     $addressRepository,
-        protected readonly ContactRepository     $contactRepository,
-        protected readonly EMailRepository       $eMailRepository,
-        protected readonly EventRepository       $eventRepository,
-        protected readonly ExtensionInformation  $extensionInformation,
-        protected readonly PhoneNumberRepository $phoneNumberRepository,
-        protected readonly WebsiteRepository     $websiteRepository,
+        protected readonly AddressRepository      $addressRepository,
+        protected readonly ContactRepository      $contactRepository,
+        protected readonly ContactGroupRepository $contactGroupRepository,
+        protected readonly EMailRepository        $eMailRepository,
+        protected readonly EventRepository        $eventRepository,
+        protected readonly ExtensionInformation   $extensionInformation,
+        protected readonly PhoneNumberRepository  $phoneNumberRepository,
+        protected readonly WebsiteRepository      $websiteRepository,
     ) {
     }
 
@@ -177,7 +180,7 @@ class ContactController extends ActionController
     #[PluginAction(uncached: true)]
     public function updateAction(Contact $contact): ResponseInterface
     {
-       // @TODO: Handle company selection!
+        // @TODO: Handle company selection!
         $this->processRelations($contact);
         $this->contactRepository->update($contact);
         $this->deletePagesCache();
@@ -209,6 +212,7 @@ class ContactController extends ActionController
         }
 
         $this->view->assignMultiple([
+            'contactGroups'    => $this->contactGroupRepository->findAll(),
             'generalTypes'     => GeneralType::toArray(GeneralType::Private),
             'companies'        => $this->contactRepository->findByType(ContactType::Company),
             'contact'          => $contact,
@@ -236,17 +240,19 @@ class ContactController extends ActionController
     {
         foreach ([
                      'address',
+                     'contactGroup',
                      'eMail',
                      'event',
                      'phoneNumber',
                      'website',
                  ] as $relationType) {
             $existingEntities = match ($relationType) {
-                'address'     => clone $contact->getAddresses(),
-                'eMail'       => clone $contact->getEMails(),
-                'event'       => clone $contact->getEvents(),
-                'phoneNumber' => clone $contact->getPhoneNumbers(),
-                'website'     => clone $contact->getWebsites(),
+                'address'      => clone $contact->getAddresses(),
+                'contactGroup' => clone $contact->getContactGroups(),
+                'eMail'        => clone $contact->getEMails(),
+                'event'        => clone $contact->getEvents(),
+                'phoneNumber'  => clone $contact->getPhoneNumbers(),
+                'website'      => clone $contact->getWebsites(),
             };
 
             $updatedEntities = $this->request->hasArgument($relationType) ? $this->request->getArgument(
@@ -257,11 +263,12 @@ class ContactController extends ActionController
             if (is_array($updatedEntities)) {
                 foreach ($updatedEntities as $uid => $entityData) {
                     $entity = match ($relationType) {
-                        'address'     => $contact->getAddressByUid($uid),
-                        'eMail'       => $contact->getEMailByUid($uid),
-                        'event'       => $contact->getEventByUid($uid),
-                        'phoneNumber' => $contact->getPhoneNumberByUid($uid),
-                        'website'     => $contact->getWebsiteByUid($uid),
+                        'address'      => $contact->getAddressByUid($uid),
+                        'contactGroup' => $contact->getContactGroupByUid($uid),
+                        'eMail'        => $contact->getEMailByUid($uid),
+                        'event'        => $contact->getEventByUid($uid),
+                        'phoneNumber'  => $contact->getPhoneNumberByUid($uid),
+                        'website'      => $contact->getWebsiteByUid($uid),
                     };
                     $this->updateEntityProperties($contact, $entity, $entityData);
                     $existingEntities->detach($entity);
@@ -274,6 +281,9 @@ class ContactController extends ActionController
                     switch ($relationType) {
                         case 'address':
                             $contact->removeAddress($entity);
+                            break;
+                        case 'contactGroup':
+                            $contact->removeContactGroup($entity);
                             break;
                         case 'eMail':
                             $contact->removeEMail($entity);
@@ -298,6 +308,11 @@ class ContactController extends ActionController
                             $address = new Address();
                             $this->updateEntityProperties($contact, $address, $entityData);
                             $this->addressRepository->add($address);
+                            break;
+                        case 'contactGroup':
+                            $contactGroup = new ContactGroup();
+                            $this->updateEntityProperties($contact, $contactGroup, $entityData);
+                            $this->contactGroupRepository->add($contactGroup);
                             break;
                         case 'eMail':
                             $eMail = new EMail();
