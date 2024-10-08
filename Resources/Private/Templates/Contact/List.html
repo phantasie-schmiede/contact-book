@@ -3,6 +3,8 @@
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+
 <div class="row">
     <div class="col-12">
         <f:if condition="{contacts}">
@@ -14,20 +16,33 @@
                     id="search"
                     placeholder="{psbFoundation:translate(id: 'search')}"
                     type="text" />
-                <div
-                    class="list-group list-group-flush">
+                <div class="list-group list-group-flush">
                     <f:for
                         as="contact"
                         each="{contacts}">
-                        <f:link.action
-                            action="show"
-                            arguments="{contact: contact}"
-                            data="{search-terms: contact.searchTerms}"
-                            class="js-contact-list-item list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                {contact.displayName}
-                            </div>
-                        </f:link.action>
+                        <li
+                            class="d-flex js-contact-list-item list-group-item list-group-item-action p-0"
+                            data-search-terms="{contact.searchTerms}">
+                            <f:link.action
+                                action="show"
+                                arguments="{contact: contact}"
+                                class="d-block flex-grow-1 p-2 text-decoration-none text-reset">
+                                <div>{contact.displayName}</div>
+                            </f:link.action>
+
+                            <f:render
+                                arguments="{icon: 'box-arrow-up-right', property: 'websites', records: contact.websites, uid: contact.uid}"
+                                section="Details" />
+                            <f:render
+                                arguments="{icon: 'envelope-at', property: 'eMails', records: contact.eMails, uid: contact.uid}"
+                                section="Details" />
+                            <f:render
+                                arguments="{icon: 'sign-turn-right', property: 'addresses', records: contact.addresses, uid: contact.uid}"
+                                section="Details" />
+                            <f:render
+                                arguments="{icon: 'telephone', property: 'phoneNumbers', records: contact.phoneNumbers, uid: contact.uid}"
+                                section="Details" />
+                        </li>
                     </f:for>
                 </div>
             </f:then>
@@ -49,10 +64,96 @@
     </div>
 </div>
 
-<section name="FooterAssets">
+<f:for as="contact" each="{contacts}">
+    <f:render
+        arguments="{property: 'websites', records: contact.websites, uid: contact.uid}"
+        section="Modal" />
+    <f:render
+        arguments="{property: 'eMails', records: contact.eMails, uid: contact.uid}"
+        section="Modal" />
+    <f:render
+        arguments="{property: 'addresses', records: contact.addresses, uid: contact.uid}"
+        section="Modal" />
+    <f:render
+        arguments="{property: 'phoneNumbers', records: contact.phoneNumbers, uid: contact.uid}"
+        section="Modal" />
+</f:for>
+
+<f:section name="Details">
+    <f:if condition="{records}">
+        <f:then>
+            <f:if condition="1 == {records -> f:count()}">
+                <f:then>
+                    <a
+                        class="p-2"
+                        href="{records.0.link}"
+                        target="_blank">
+                        <core:icon
+                            identifier="psb-templates-{icon}"
+                            size="small" />
+                    </a>
+                </f:then>
+                <f:else>
+                    <a
+                        class="p-2"
+                        data-bs-target="#contact-{uid}-{property}-modal"
+                        data-bs-toggle="modal"
+                        href="#">
+                        <core:icon
+                            identifier="psb-templates-{icon}"
+                            size="small" />
+                    </a>
+                </f:else>
+            </f:if>
+        </f:then>
+        <f:else>
+            <span style="width: 32px;"></span>
+        </f:else>
+    </f:if>
+</f:section>
+
+<f:section name="FooterAssets">
     <f:asset.script
         identifier="filter"
         src="EXT:psb_templates/Resources/Public/JavaScript/filter.js"
         type="module" />
-</section>
+</f:section>
+
+<f:section name="Modal">
+    <f:if condition="1 < {records -> f:count()}">
+        <div
+            aria-hidden="true"
+            aria-label="{psbFoundation:translate(id: 'contact:{property}')}"
+            class="modal fade"
+            id="contact-{uid}-{property}-modal"
+            tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body p-1">
+                        <button
+                            aria-label="{psbFoundation:translate(id: 'close')}"
+                            class="btn-close end-0 position-absolute top-0 z-2"
+                            data-bs-dismiss="modal"
+                            type="button"></button>
+                        <div class="list-group list-group-flush">
+                            <f:for
+                                as="record"
+                                each="{records}">
+                                <a
+                                    class="list-group-item list-group-item-action"
+                                    href="{record.link}">
+                                    <f:render
+                                        arguments="{record: record}"
+                                        default="{record.compactValue}"
+                                        optional="true"
+                                        partial="{record.recordType}" />
+                                </a>
+                            </f:for>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </f:if>
+</f:section>
 </html>

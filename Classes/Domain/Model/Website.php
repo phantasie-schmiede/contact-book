@@ -47,6 +47,11 @@ class Website extends AbstractContactRelatedEntity
         return $this->url;
     }
 
+    public function getLink(): string
+    {
+        return $this->url;
+    }
+
     public function getType(): GeneralType
     {
         return $this->type;

@@ -1,0 +1,26 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/phoneNumber.xlf" />
+
+<f:if condition="{record}">
+    <f:variable
+        name="phoneNumber"
+        value="{record}" />
+</f:if>
+
+<f:variable
+    name="phoneNumberLabelId"
+    value="formatted.international" />
+
+<f:if condition="'' !== {phoneNumber.extension}">
+    <f:variable
+        name="phoneNumberLabelId"
+        value="{phoneNumberLabelId}.withExtension" />
+</f:if>
+
+<psbFoundation:translate
+    arguments="{areaCode: phoneNumber.areaCode, connectionIdentifier: phoneNumber.connectionIdentifier, extension: phoneNumber.extension, internationalDiallingCode: phoneNumber.internationalDiallingCode}"
+    id="phoneNumber:{phoneNumberLabelId}" />
+</html>

@@ -19,30 +19,6 @@
                 <source>Edit</source>
                 <target>Bearbeiten</target>
             </trans-unit>
-            <trans-unit id="formattedPhoneNumber.international">
-                <source>+{internationalDiallingCode} {areaCode} {connectionIdentifier}</source>
-                <target>+{internationalDiallingCode} {areaCode} {connectionIdentifier}</target>
-            </trans-unit>
-            <trans-unit id="formattedPhoneNumber.international.withExtension">
-                <source>+{internationalDiallingCode} {areaCode} {connectionIdentifier}-{extension}</source>
-                <target>+{internationalDiallingCode} {areaCode} {connectionIdentifier}-{extension}</target>
-            </trans-unit>
-            <trans-unit id="formattedPhoneNumber.local">
-                <source>{connectionIdentifier}</source>
-                <target>{connectionIdentifier}</target>
-            </trans-unit>
-            <trans-unit id="formattedPhoneNumber.local.withExtension">
-                <source>{connectionIdentifier}-{extension}</source>
-                <target>{connectionIdentifier}-{extension}</target>
-            </trans-unit>
-            <trans-unit id="formattedPhoneNumber.national">
-                <source>0{areaCode} {connectionIdentifier}</source>
-                <target>0{areaCode} {connectionIdentifier}</target>
-            </trans-unit>
-            <trans-unit id="formattedPhoneNumber.national.withExtension">
-                <source>0{areaCode} {connectionIdentifier}-{extension}</source>
-                <target>0{areaCode} {connectionIdentifier}-{extension}</target>
-            </trans-unit>
         </body>
     </file>
 </xliff>

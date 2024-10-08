@@ -42,9 +42,19 @@ class EMail extends AbstractContactRelatedEntity
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
     protected GeneralType $type = GeneralType::Private;
 
+    public function getCompactValue(): string
+    {
+        return $this->eMailAddress;
+    }
+
     public function getEMailAddress(): string
     {
         return $this->eMailAddress;
+    }
+
+    public function getLink(): string
+    {
+        return 'mailto:' . $this->eMailAddress;
     }
 
     public function getType(): GeneralType
@@ -64,10 +74,5 @@ class EMail extends AbstractContactRelatedEntity
         $this->type = $type;
 
         return $this;
-    }
-
-    public function getCompactValue(): string
-    {
-        return $this->eMailAddress;
     }
 }

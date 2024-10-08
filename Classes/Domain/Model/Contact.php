@@ -168,7 +168,11 @@ class Contact extends AbstractEntity
 
     public function addNote(string $note): self
     {
-        $this->notes .= LF . $note;
+        $note = trim($note, StringUtility::EMPTY_CHARACTERS);
+
+        if (!empty($note)) {
+            $this->notes .= LF . $note;
+        }
 
         return $this;
     }
@@ -343,7 +347,7 @@ class Contact extends AbstractEntity
 
     public function getNotes(): string
     {
-        return $this->notes;
+        return StringUtility::isEmpty($this->notes) ? '' : $this->notes;
     }
 
     public function getPhoneNumberByUid(int $uid): PhoneNumber
@@ -540,7 +544,7 @@ class Contact extends AbstractEntity
 
     public function setNotes(string $notes): self
     {
-        $this->notes = $notes;
+        $this->notes = trim($notes);
 
         return $this;
     }

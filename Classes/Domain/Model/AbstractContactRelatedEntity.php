@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace PSB\PsbContacts\Domain\Model;
 
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
+use ReflectionClass;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -69,5 +70,10 @@ abstract class AbstractContactRelatedEntity extends AbstractEntity implements Co
     public function setNotes(string $notes): void
     {
         $this->notes = htmlspecialchars($notes);
+    }
+
+    public function getRecordType(): string
+    {
+        return (new ReflectionClass($this))->getShortName();
     }
 }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2024-10-08T16:35:00+01:00"
+        original="messages"
+        product-name="psb_contacts"
+        source-language="en"
+        target-language="de">
+        <body>
+            <trans-unit id="formatted.international">
+                <source>+{internationalDiallingCode} {areaCode} {connectionIdentifier}</source>
+                <target>+{internationalDiallingCode} {areaCode} {connectionIdentifier}</target>
+            </trans-unit>
+            <trans-unit id="formatted.international.withExtension">
+                <source>+{internationalDiallingCode} {areaCode} {connectionIdentifier}-{extension}</source>
+                <target>+{internationalDiallingCode} {areaCode} {connectionIdentifier}-{extension}</target>
+            </trans-unit>
+            <trans-unit id="formatted.local">
+                <source>{connectionIdentifier}</source>
+                <target>{connectionIdentifier}</target>
+            </trans-unit>
+            <trans-unit id="formatted.local.withExtension">
+                <source>{connectionIdentifier}-{extension}</source>
+                <target>{connectionIdentifier}-{extension}</target>
+            </trans-unit>
+            <trans-unit id="formatted.national">
+                <source>0{areaCode} {connectionIdentifier}</source>
+                <target>0{areaCode} {connectionIdentifier}</target>
+            </trans-unit>
+            <trans-unit id="formatted.national.withExtension">
+                <source>0{areaCode} {connectionIdentifier}-{extension}</source>
+                <target>0{areaCode} {connectionIdentifier}-{extension}</target>
+            </trans-unit>
+        </body>
+        <header />
+    </file>
+</xliff>

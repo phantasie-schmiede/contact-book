@@ -95,6 +95,11 @@ class Address extends AbstractContactRelatedEntity
         return $this->houseNumber;
     }
 
+    public function getLink(): string
+    {
+        return 'https://www.google.com/maps/dir//' . $this->getCompactValue();
+    }
+
     public function getStreet(): string
     {
         return $this->street;

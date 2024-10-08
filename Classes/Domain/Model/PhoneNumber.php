@@ -114,6 +114,11 @@ class PhoneNumber extends AbstractContactRelatedEntity
         return $this->internationalDiallingCode;
     }
 
+    public function getLink(): string
+    {
+        return 'tel:' . $this->getCompleteNumber();
+    }
+
     public function getPhoneNumberType(): PhoneNumberType
     {
         return $this->phoneNumberType;

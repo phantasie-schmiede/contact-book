@@ -1,5 +1,6 @@
 <html
     data-namespace-typo3-fluid="true"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers"
     xmlns:psbTemplates="http://typo3.org/ns/PSB/PsbTemplates/ViewHelpers"
@@ -129,20 +130,10 @@
                                     (<psbFoundation:translate id="phoneNumber:generalType.{phoneNumber.generalType.value}" />)
                                 </strong>
                                 <span>
-                                    <f:variable
-                                        name="phoneNumberLabelId"
-                                        value="formattedPhoneNumber.international" />
-
-                                    <f:if condition="'' !== {phoneNumber.extension}">
-                                        <f:variable
-                                            name="phoneNumberLabelId"
-                                            value="{phoneNumberLabelId}.withExtension" />
-                                    </f:if>
-
                                     <a href="tel:{phoneNumber.completeNumber}">
-                                        <psbFoundation:translate
-                                            arguments="{areaCode: phoneNumber.areaCode, connectionIdentifier: phoneNumber.connectionIdentifier, extension: phoneNumber.extension, internationalDiallingCode: phoneNumber.internationalDiallingCode}"
-                                            id="{phoneNumberLabelId}" />
+                                        <f:render
+                                            arguments="{phoneNumber: phoneNumber}"
+                                            partial="PhoneNumber" />
                                     </a>
                                 </span>
                             </li>
@@ -216,7 +207,7 @@
                     <psbFoundation:translate id="contact:notes" />
                 </dt>
                 <dd class="col-9">
-                    {contact.notes}
+                    <f:format.nl2br>{contact.notes}</f:format.nl2br>
                 </dd>
             </f:if>
         </dl>
@@ -227,41 +218,44 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="bg-secondary col-md-4 d-flex justify-content-center p-2 position-relative ">
-        <f:link.action
-            action="list"
-            class="link-light link-underline-opacity-0 link-underline-opacity-100-hover stretched-link">
-            <psbFoundation:translate id="backToList" />
-        </f:link.action>
-    </div>
+<div class="d-flex">
+    <f:link.action
+        action="list"
+        class="bg-secondary-subtle btn me-2 p-2">
+         <core:icon
+             identifier="psb-templates-arrow-left"
+             size="small" />
+        <psbFoundation:translate id="backToList" />
+    </f:link.action>
 
-    <div class="bg-primary col-md-4 d-flex justify-content-center p-2 position-relative ">
-        <f:link.action
-            action="edit"
-            arguments="{contact: contact}"
-            class="link-light link-underline-opacity-0 link-underline-opacity-100-hover stretched-link">
-            <psbFoundation:translate id="edit" />
-        </f:link.action>
-    </div>
+    <f:link.action
+        action="edit"
+        arguments="{contact: contact}"
+        class="bg-primary-subtle btn">
+        <core:icon
+            identifier="psb-templates-pencil"
+            size="small" />
+        <psbFoundation:translate id="edit" />
+    </f:link.action>
 
-    <div class="bg-danger col-md-4 d-flex justify-content-center p-2 position-relative">
-        <f:link.action
-            action="confirmDelete"
-            arguments="{contact: contact}"
-            class="link-light link-underline-opacity-0 link-underline-opacity-100-hover stretched-link"
-            data="{psb-modal: '#dynamic-modal'}"
-            pageType="{psbvh:variable.convertString(string: '\PSB\PsbContacts\Data\ExtensionInformation::TYPE_NUMS[ConfirmDeleteContact]')}"
-            pluginName="ConfirmDeleteContact">
-            <psbFoundation:translate id="delete" />
-        </f:link.action>
-    </div>
+    <f:link.action
+        action="confirmDelete"
+        arguments="{contact: contact}"
+        class="bg-danger btn ms-auto rounded-circle"
+        data="{psb-modal: '#dynamic-modal'}"
+        pageType="{psbvh:variable.convertString(string: '\PSB\PsbContacts\Data\ExtensionInformation::TYPE_NUMS[ConfirmDeleteContact]')}"
+        pluginName="ConfirmDeleteContact">
+        <core:icon
+            identifier="psb-templates-trash"
+            size="small"
+            title="{psbFoundation:translate(id: 'delete')}" />
+    </f:link.action>
 </div>
 
-<section name="FooterAssets">
+<f:section name="FooterAssets">
     <f:asset.script
         identifier="dynamicModal"
         src="EXT:psb_templates/Resources/Public/JavaScript/dynamicModal.js"
         type="module" />
-</section>
+</f:section>
 </html>
