@@ -24,4 +24,13 @@ enum GeneralType: string
     case Business = 'business';
     case Other    = 'other';
     case Private  = 'private';
+
+    public function getIconIdentifier(): string
+    {
+        return match ($this) {
+            self::Business => 'briefcase',
+            self::Other    => 'question-circle',
+            self::Private  => 'person',
+        };
+    }
 }

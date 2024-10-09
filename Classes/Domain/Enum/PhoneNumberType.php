@@ -25,4 +25,14 @@ enum PhoneNumberType: string
     case Landline = 'landline';
     case Mobile   = 'mobile';
     case Other    = 'other';
+
+    public function getIconIdentifier(): string
+    {
+        return match ($this) {
+            self::Fax      => 'file-text',
+            self::Landline => 'house',
+            self::Mobile   => 'phone',
+            self::Other    => 'question-circle',
+        };
+    }
 }

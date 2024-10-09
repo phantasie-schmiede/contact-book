@@ -142,6 +142,21 @@
                                 <a
                                     class="list-group-item list-group-item-action"
                                     href="{record.link}">
+                                    <f:if condition="{record.phoneNumberType}">
+                                        <f:then>
+                                            <core:icon
+                                                identifier="psb-templates-{record.generalType.iconIdentifier}"
+                                                size="small" />
+                                            <core:icon
+                                                identifier="psb-templates-{record.phoneNumberType.iconIdentifier}"
+                                                size="small" />
+                                        </f:then>
+                                        <f:else>
+                                            <core:icon
+                                                identifier="psb-templates-{record.type.iconIdentifier}"
+                                                size="small" />
+                                        </f:else>
+                                    </f:if>
                                     <f:render
                                         arguments="{record: record}"
                                         default="{record.compactValue}"
