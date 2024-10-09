@@ -34,6 +34,7 @@ use PSB\PsbContacts\Domain\Repository\EMailRepository;
 use PSB\PsbContacts\Domain\Repository\EventRepository;
 use PSB\PsbContacts\Domain\Repository\PhoneNumberRepository;
 use PSB\PsbContacts\Domain\Repository\WebsiteRepository;
+use PSB\PsbContacts\Service\CleanupService;
 use PSB\PsbFoundation\Attribute\PluginAction;
 use PSB\PsbFoundation\Service\GlobalVariableProviders\RequestParameterProvider;
 use PSB\PsbFoundation\Service\GlobalVariableService;
@@ -51,6 +52,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use function is_array;
 use function is_string;
 
@@ -65,11 +67,13 @@ class ContactController extends ActionController
 
     public function __construct(
         protected readonly AddressRepository      $addressRepository,
+        protected readonly CleanupService         $cleanupService,
         protected readonly ContactRepository      $contactRepository,
         protected readonly ContactGroupRepository $contactGroupRepository,
         protected readonly EMailRepository        $eMailRepository,
         protected readonly EventRepository        $eventRepository,
         protected readonly ExtensionInformation   $extensionInformation,
+        protected readonly PersistenceManager     $persistenceManager,
         protected readonly PhoneNumberRepository  $phoneNumberRepository,
         protected readonly WebsiteRepository      $websiteRepository,
     ) {
@@ -184,6 +188,8 @@ class ContactController extends ActionController
         $this->processRelations($contact);
         $this->contactRepository->update($contact);
         $this->deletePagesCache();
+        $this->persistenceManager->persistAll();
+        $this->cleanupService->cleanAll();
 
         return $this->redirect(
             actionName: 'show', arguments: ['contact' => $contact]
