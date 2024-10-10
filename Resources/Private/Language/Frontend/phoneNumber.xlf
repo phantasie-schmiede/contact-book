@@ -25,6 +25,5 @@
                 <source>0{areaCode} {connectionIdentifier}-{extension}</source>
             </trans-unit>
         </body>
-        <header />
     </file>
 </xliff>

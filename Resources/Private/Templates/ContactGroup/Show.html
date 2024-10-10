@@ -1,0 +1,95 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+<psbFoundation:translation.registerLanguageFile
+    file="EXT:psb_contacts/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
+    name="modal" />
+
+<div class="row">
+    <div class="col-12">
+        <h1>
+            {contactGroup.name}
+        </h1>
+        <f:render
+            arguments="{contacts: contactGroup.contactsSorted}"
+            partial="ContactList" />
+    </div>
+</div>
+
+<div class="d-flex">
+    <f:link.action
+        action="list"
+        class="bg-secondary-subtle btn me-2 p-2">
+        <core:icon
+            identifier="psb-templates-arrow-left"
+            size="small" />
+        <psbFoundation:translate id="backToList" />
+    </f:link.action>
+
+    <f:link.action
+        action="edit"
+        arguments="{contactGroup: contactGroup}"
+        class="bg-primary-subtle btn">
+        <core:icon
+            identifier="psb-templates-pencil"
+            size="small" />
+        <psbFoundation:translate id="edit" />
+    </f:link.action>
+
+    <a
+        class="bg-danger btn ms-auto rounded-circle"
+        data-bs-target="#delete-contactGroup-{contactGroup.uid}-modal"
+        data-bs-toggle="modal"
+        href="#">
+        <core:icon
+            identifier="psb-templates-trash"
+            size="small"
+            title="{psbFoundation:translate(id: 'delete')}" />
+    </a>
+</div>
+
+<div
+    aria-labelledby="delete-contactGroup-{contactGroup.uid}-modal-label"
+    aria-modal="true"
+    class="fade modal"
+    id="delete-contactGroup-{contactGroup.uid}-modal"
+    role="dialog"
+    tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1
+                    class="modal-title fs-5"
+                    id="delete-contactGroup-{contactGroup.uid}-modal-label">
+                    <psbFoundation:translate id="modal:title" />
+                </h1>
+                <button
+                    aria-label="Close"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    type="button"></button>
+            </div>
+            <div class="modal-body">
+                <psbFoundation:translate
+                    arguments="{name: contactGroup.name}"
+                    id="modal:body" />
+            </div>
+            <div class="modal-footer">
+                <button
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                    type="button">
+                    <psbFoundation:translate id="modal:cancel" />
+                </button>
+                <f:link.action
+                    action="delete"
+                    arguments="{contactGroup: contactGroup}"
+                    class="btn btn-danger">
+                    <psbFoundation:translate id="modal:delete" />
+                </f:link.action>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

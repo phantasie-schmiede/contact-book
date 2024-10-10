@@ -11,6 +11,9 @@
 <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/event.xlf" />
 <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/phoneNumber.xlf" />
 <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/website.xlf" />
+<psbFoundation:translation.registerLanguageFile
+    file="EXT:psb_contacts/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
+    name="modal" />
 
 <div class="row">
     <div class="col-12">
@@ -238,18 +241,60 @@
         <psbFoundation:translate id="edit" />
     </f:link.action>
 
-    <f:link.action
-        action="confirmDelete"
-        arguments="{contact: contact}"
+    <a
         class="bg-danger btn ms-auto rounded-circle"
-        data="{psb-modal: '#dynamic-modal'}"
-        pageType="{psbvh:variable.convertString(string: '\PSB\PsbContacts\Data\ExtensionInformation::TYPE_NUMS[ConfirmDeleteContact]')}"
-        pluginName="ConfirmDeleteContact">
+        data-bs-target="#delete-contact-{contact.uid}-modal"
+        data-bs-toggle="modal"
+        href="#">
         <core:icon
             identifier="psb-templates-trash"
             size="small"
             title="{psbFoundation:translate(id: 'delete')}" />
-    </f:link.action>
+    </a>
+</div>
+
+<div
+    aria-labelledby="delete-contact-{contact.uid}-modal-label"
+    aria-modal="true"
+    class="fade modal"
+    id="delete-contact-{contact.uid}-modal"
+    role="dialog"
+    tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1
+                    class="modal-title fs-5"
+                    id="delete-contact-{contact.uid}-modal-label">
+                    <psbFoundation:translate id="modal:title" />
+                </h1>
+                <button
+                    aria-label="Close"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    type="button"></button>
+            </div>
+            <div class="modal-body">
+                <psbFoundation:translate
+                    arguments="{name: contact.displayName}"
+                    id="modal:body" />
+            </div>
+            <div class="modal-footer">
+                <button
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                    type="button">
+                    <psbFoundation:translate id="modal:cancel" />
+                </button>
+                <f:link.action
+                    action="delete"
+                    arguments="{contact: contact}"
+                    class="btn btn-danger">
+                    <psbFoundation:translate id="modal:delete" />
+                </f:link.action>
+            </div>
+        </div>
+    </div>
 </div>
 
 <f:section name="FooterAssets">

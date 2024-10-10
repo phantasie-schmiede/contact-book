@@ -14,7 +14,6 @@ use DateTime;
 use Exception;
 use JsonException;
 use PSB\PsbContacts\Data\ExtensionInformation;
-use PSB\PsbContacts\Domain\Demand\ContactDemand;
 use PSB\PsbContacts\Domain\Enum\ContactType;
 use PSB\PsbContacts\Domain\Enum\EventType;
 use PSB\PsbContacts\Domain\Enum\GeneralType;
@@ -35,26 +34,19 @@ use PSB\PsbContacts\Domain\Repository\EventRepository;
 use PSB\PsbContacts\Domain\Repository\PhoneNumberRepository;
 use PSB\PsbContacts\Domain\Repository\WebsiteRepository;
 use PSB\PsbContacts\Service\CleanupService;
+use PSB\PsbContacts\Service\ContactService;
+use PSB\PsbContacts\Utility\ContactUtility;
 use PSB\PsbFoundation\Attribute\PluginAction;
 use PSB\PsbFoundation\Service\GlobalVariableProviders\RequestParameterProvider;
 use PSB\PsbFoundation\Service\GlobalVariableService;
-use PSB\PsbFoundation\Utility\Configuration\FilePathUtility;
-use PSB\PsbFoundation\Utility\LocalizationUtility;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use PSB\PsbFoundation\Traits\ControllerCacheTrait;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Cache\CacheDataCollector;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
-use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use function is_array;
-use function is_string;
 
 /**
  * Class ContactController
@@ -63,13 +55,16 @@ use function is_string;
  */
 class ContactController extends ActionController
 {
+    use ControllerCacheTrait;
+
     public const string CACHE_TAG = 'tx_psbcontacts';
 
     public function __construct(
         protected readonly AddressRepository      $addressRepository,
         protected readonly CleanupService         $cleanupService,
-        protected readonly ContactRepository      $contactRepository,
         protected readonly ContactGroupRepository $contactGroupRepository,
+        protected readonly ContactRepository      $contactRepository,
+        protected readonly ContactService         $contactService,
         protected readonly EMailRepository        $eMailRepository,
         protected readonly EventRepository        $eventRepository,
         protected readonly ExtensionInformation   $extensionInformation,
@@ -77,28 +72,6 @@ class ContactController extends ActionController
         protected readonly PhoneNumberRepository  $phoneNumberRepository,
         protected readonly WebsiteRepository      $websiteRepository,
     ) {
-    }
-
-    /**
-     * @throws JsonException
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws AspectNotFoundException
-     */
-    #[PluginAction(uncached: true)]
-    public function confirmDeleteAction(Contact $contact): ResponseInterface
-    {
-        $this->view->assign('contact', $contact);
-        $languageFilePath = FilePathUtility::getLanguageFilePath($this->extensionInformation);
-
-        return $this->jsonResponse(json_encode([
-            'body'   => LocalizationUtility::translate(
-                key      : $languageFilePath . 'Frontend/confirmDeleteModal.xlf:body',
-                arguments: ['name' => $contact->getDisplayName()]
-            ),
-            'footer' => $this->view->render(),
-            'title'  => LocalizationUtility::translate($languageFilePath . 'Frontend/confirmDeleteModal.xlf:title'),
-        ], JSON_THROW_ON_ERROR));
     }
 
     /**
@@ -144,13 +117,13 @@ class ContactController extends ActionController
     public function listAction(): ResponseInterface
     {
         $this->setCacheTag();
-        $allContacts = $this->contactRepository->findAll()
-            ->toArray();
-
-        // Sort contacts by displayName
-        usort($allContacts, static fn(Contact $a, Contact $b) => $a->getDisplayName() <=> $b->getDisplayName());
-
-        $this->view->assign('contacts', $allContacts);
+        $this->view->assign(
+            'contacts',
+            ContactUtility::sortByDisplayName(
+                $this->contactRepository->findAll()
+                    ->toArray()
+            )
+        );
 
         return $this->htmlResponse();
     }
@@ -187,9 +160,9 @@ class ContactController extends ActionController
         // @TODO: Handle company selection!
         $this->processRelations($contact);
         $this->contactRepository->update($contact);
-        $this->deletePagesCache();
         $this->persistenceManager->persistAll();
         $this->cleanupService->cleanAll();
+        $this->deletePagesCache();
 
         return $this->redirect(
             actionName: 'show', arguments: ['contact' => $contact]
@@ -197,42 +170,16 @@ class ContactController extends ActionController
     }
 
     /**
-     * @throws NoSuchCacheGroupException
-     */
-    private function deletePagesCache(): void
-    {
-        /** @var CacheManager $cacheManager */
-        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
-        $cacheManager->flushCachesInGroupByTag('pages', self::CACHE_TAG);
-    }
-
-    /**
      * @throws JsonException
      */
     private function prepareFormView(?Contact $contact = null): void
     {
-        $contactDemand = new ContactDemand();
-
-        if ($contact instanceof Contact) {
-            $contactDemand->addExcludedContact($contact);
-        }
-
         $this->view->assignMultiple([
             'contactGroups'    => $this->contactGroupRepository->findAll(),
             'generalTypes'     => GeneralType::toArray(GeneralType::Private),
             'companies'        => $this->contactRepository->findByType(ContactType::Company),
             'contact'          => $contact,
-            'allContacts'      => json_encode(
-                array_map(
-                    static fn(Contact $contact) => [
-                        'label' => $contact->getDisplayName(),
-                        'value' => $contact->getUid(),
-                    ],
-                    $this->contactRepository->findByDemand($contactDemand)
-                        ->toArray()
-                ),
-                JSON_THROW_ON_ERROR
-            ),
+            'allContacts'      => $this->contactService->getAllAsJson($contact ? [$contact] : []),
             'eventTypes'       => EventType::toArray(EventType::Birthday),
             'contactTypes'     => ContactType::toArray(ContactType::Person),
             'phoneNumberTypes' => PhoneNumberType::toArray(PhoneNumberType::Mobile),
@@ -346,13 +293,6 @@ class ContactController extends ActionController
         }
     }
 
-    private function setCacheTag(): void
-    {
-        /** @var CacheDataCollector $cacheDataCollector */
-        $cacheDataCollector = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.cache.collector');
-        $cacheDataCollector->addCacheTags(new CacheTag(self::CACHE_TAG));
-    }
-
     private function updateAddressProperties(Address $entity, array $entityData): void
     {
         $entity->setCity($entityData['city']);
@@ -377,24 +317,7 @@ class ContactController extends ActionController
      */
     private function updateEntityProperties(Contact $contact, ContactRelationInterface $entity, array $entityData): void
     {
-        $entity->removeAllContacts();
-        $entity->addContact($contact);
-
-        if (!empty($entityData['contacts'])) {
-            if (is_string($entityData['contacts'])) {
-                $entityData['contacts'] = json_decode($entityData['contacts'], true, 512, JSON_THROW_ON_ERROR);
-            }
-
-            $contactIds = array_map('\intval', $entityData['contacts']);
-
-            foreach ($contactIds as $contactId) {
-                $additionalContact = $this->contactRepository->findByUid($contactId);
-
-                if (null !== $additionalContact) {
-                    $entity->addContact($additionalContact);
-                }
-            }
-        }
+        $this->contactService->setContactsOfRelatedEntity($entity, $contact, $entityData['contacts']);
 
         switch (true) {
             case $entity instanceof Address:

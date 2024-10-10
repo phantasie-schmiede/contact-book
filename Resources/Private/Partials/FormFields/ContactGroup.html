@@ -1,0 +1,45 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbContacts="http://typo3.org/ns/PSB/PsbContacts/ViewHelpers"
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/contactGroup.xlf" />
+
+<div class="col-md-6">
+    <label
+        class="form-label"
+        for="name">
+        <psbFoundation:translate id="contactGroup:name" />
+    </label>
+    <f:form.textfield
+        class="form-control"
+        id="name"
+        property="name" />
+</div>
+<div class="col-md-6">
+    <label
+        class="form-label">
+        Kontakte
+    </label>
+    <input
+        autocomplete="off"
+        class="form-control"
+        data-psb-autocomplete-items="{allContacts}"
+        data-psb-autocomplete-preselection="{psbContacts:json.relatedContacts(relatedEntity: contactGroup)}"
+        data-psb-autocomplete-selection-target="#contact-selection"
+        data-psb-autocomplete-value-target="#contact-value"
+        type="text" />
+    <ul
+        class="list-group list-group-flush"
+        id="contact-selection">
+    </ul>
+    <f:form.hidden
+        id="contact-value"
+        name="contacts" />
+</div>
+
+<f:asset.script
+    identifier="inputAutocomplete"
+    src="EXT:psb_templates/Resources/Public/JavaScript/inputAutocomplete.js"
+    type="module" />
+</html>

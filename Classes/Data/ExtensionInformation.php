@@ -29,10 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ExtensionInformation extends AbstractExtensionInformation
 {
-    public const TYPE_NUMS = [
-        'ConfirmDeleteContact' => 1715345584,
-    ];
-
     public function __construct()
     {
         parent::__construct();
@@ -51,16 +47,6 @@ class ExtensionInformation extends AbstractExtensionInformation
                 controllers : [ImportController::class],
                 key         : $this->buildModuleKeyPrefix() . 'import',
                 parentModule: $mainModuleKey
-            )
-        );
-        $this->addPlugin(
-            GeneralUtility::makeInstance(
-                PluginConfiguration::class,
-                addToElementWizard: false,
-                controllers       : [ContactController::class => ['confirmDelete']],
-                name              : 'ConfirmDeleteContact',
-                typeNum           : self::TYPE_NUMS['ConfirmDeleteContact'],
-                typeNumContentType: ContentType::JSON
             )
         );
         $this->addPlugin(

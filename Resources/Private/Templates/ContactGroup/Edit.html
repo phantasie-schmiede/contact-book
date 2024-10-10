@@ -1,0 +1,30 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+<f:form
+    action="update"
+    class="g-3 row"
+    enctype="multipart/form-data"
+    method="post"
+    name="contactGroup"
+    object="{contactGroup}">
+    <f:render
+        arguments="{allContacts: allContacts, contactGroup: contactGroup}"
+        partial="FormFields/ContactGroup" />
+
+    <div class="col-12 mt-3">
+        <f:link.action
+            action="show"
+            arguments="{contactGroup: contactGroup}"
+            class="btn btn-secondary">
+            <psbFoundation:translate id="cancel" />
+        </f:link.action>
+        <button
+            class="btn btn-primary"
+            type="submit">
+            <psbFoundation:translate id="save" />
+        </button>
+    </div>
+</f:form>
+</html>

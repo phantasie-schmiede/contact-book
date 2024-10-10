@@ -1,0 +1,25 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+<div class="h-100 position-relative">
+    <div class="h-100 overflow-auto pb-5">
+        <h1>
+            {contactGroup.name}
+        </h1>
+        <f:render
+            arguments="{contacts: contactGroup.contactsSorted}"
+            partial="ContactList" />
+    </div>
+
+    <div class="bg-white bottom-0 end-0 position-absolute pt-3 start-0">
+        <f:link.action
+            action="list"
+            class="bg-secondary-subtle btn w-100"
+            controller="Contact"
+            pluginName="ContactList">
+            <psbFoundation:translate id="showAllContacts" />
+        </f:link.action>
+    </div>
+</div>
+</html>

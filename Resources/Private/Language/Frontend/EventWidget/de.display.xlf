@@ -7,6 +7,17 @@
         source-language="en"
         target-language="de">
         <body>
+            <group id="noUpcomingEvents"
+                restype="x-gettext-plurals">
+                <trans-unit id="noUpcomingEvents[0]">
+                    <source>no upcomming events in the {typeList} category</source>
+                    <target>keine anstehenden Ereignisse in der Kategorie {typeList}</target>
+                </trans-unit>
+                <trans-unit id="noUpcomingEvents[1]">
+                    <source>no upcomming events in the {typeList} categories</source>
+                    <target>keine anstehenden Ereignisse in den Kategorien {typeList}</target>
+                </trans-unit>
+            </group>
             <trans-unit id="and">
                 <source>and</source>
                 <target>und</target>
@@ -19,16 +30,6 @@
                 <source>{anniversary}. {type} of {persons}</source>
                 <target>{anniversary}. {type} von {persons}</target>
             </trans-unit>
-            <group id="noUpcomingEvents" restype="x-gettext-plurals">
-                <trans-unit id="noUpcomingEvents[0]">
-                    <source>no upcomming events in the {typeList} category</source>
-                    <target>keine anstehenden Ereignisse in der Kategorie {typeList}</target>
-                </trans-unit>
-                <trans-unit id="noUpcomingEvents[1]">
-                    <source>no upcomming events in the {typeList} categories</source>
-                    <target>keine anstehenden Ereignisse in den Kategorien {typeList}</target>
-                </trans-unit>
-            </group>
             <trans-unit id="type.baptism.anniversary">
                 <source>baptism day</source>
                 <target>Tauftag</target>
@@ -58,6 +59,5 @@
                 <target>Hochzeitstag</target>
             </trans-unit>
         </body>
-        <header />
     </file>
 </xliff>

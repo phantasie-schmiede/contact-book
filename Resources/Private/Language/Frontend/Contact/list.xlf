@@ -9,12 +9,6 @@
             <trans-unit id="addNewContact">
                 <source>Add new contact</source>
             </trans-unit>
-            <trans-unit id="noContacts">
-                <source>There are no contacts yet.</source>
-            </trans-unit>
-            <trans-unit id="search">
-                <source>Search ...</source>
-            </trans-unit>
         </body>
     </file>
 </xliff>

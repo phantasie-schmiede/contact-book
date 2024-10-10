@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Domain\Model;
 
+use PSB\PsbContacts\Utility\ContactUtility;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Utility\StringUtility;
 use ReflectionClass;
@@ -45,9 +46,19 @@ abstract class AbstractContactRelatedEntity extends AbstractEntity implements Co
         return $this->contacts;
     }
 
+    public function getContactsSorted(): array
+    {
+        return ContactUtility::sortByDisplayName($this->contacts->toArray());
+    }
+
     public function getNotes(): string
     {
         return StringUtility::isEmpty($this->notes) ? '' : $this->notes;
+    }
+
+    public function getRecordType(): string
+    {
+        return (new ReflectionClass($this))->getShortName();
     }
 
     public function initializeObject(): void
@@ -81,10 +92,5 @@ abstract class AbstractContactRelatedEntity extends AbstractEntity implements Co
         $this->notes = htmlspecialchars(trim($notes));
 
         return $this;
-    }
-
-    public function getRecordType(): string
-    {
-        return (new ReflectionClass($this))->getShortName();
     }
 }

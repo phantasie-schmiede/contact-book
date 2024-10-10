@@ -1,0 +1,35 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+<f:if condition="{contactGroups}">
+    <f:then>
+        <ul class="list-group list-group-flush">
+            <f:for
+                as="contactGroup"
+                each="{contactGroups}">
+                <f:link.action
+                    action="show"
+                    arguments="{contactGroup: contactGroup}"
+                    class="list-group-item list-group-item-action">
+                    {contactGroup.name}
+                </f:link.action>
+            </f:for>
+        </ul>
+    </f:then>
+    <f:else>
+        <div class="alert alert-info">
+            <psbFoundation:translate id="noContactGroups" />
+        </div>
+    </f:else>
+</f:if>
+
+<f:link.action
+    action="new"
+    class="bg-primary-subtle btn mt-3">
+    <core:icon
+        identifier="psb-templates-plus-lg"
+        size="small" />
+    <psbFoundation:translate id="createContactGroup" />
+</f:link.action>
+</html>
