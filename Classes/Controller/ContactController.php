@@ -40,8 +40,12 @@ use PSB\PsbFoundation\Attribute\PluginAction;
 use PSB\PsbFoundation\Service\GlobalVariableProviders\RequestParameterProvider;
 use PSB\PsbFoundation\Service\GlobalVariableService;
 use PSB\PsbFoundation\Traits\ControllerCacheTrait;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
+use ReflectionException;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
@@ -75,15 +79,21 @@ class ContactController extends ActionController
     }
 
     /**
+     * @throws ContainerExceptionInterface
      * @throws Exception
      * @throws IllegalObjectTypeException
      * @throws NoSuchCacheGroupException
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     * @throws SiteNotFoundException
      */
     #[PluginAction(uncached: true)]
     public function createAction(Contact $contact): ResponseInterface
     {
         $this->processRelations($contact);
         $this->contactRepository->add($contact);
+        $this->persistenceManager->persistAll();
+        $this->contactService->updateSlug($contact);
         $this->deletePagesCache();
 
         return $this->redirect('list');
@@ -149,9 +159,13 @@ class ContactController extends ActionController
     }
 
     /**
+     * @throws ContainerExceptionInterface
      * @throws Exception
      * @throws IllegalObjectTypeException
      * @throws NoSuchCacheGroupException
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     * @throws SiteNotFoundException
      * @throws UnknownObjectException
      */
     #[PluginAction(uncached: true)]
@@ -161,6 +175,7 @@ class ContactController extends ActionController
         $this->processRelations($contact);
         $this->contactRepository->update($contact);
         $this->persistenceManager->persistAll();
+        $this->contactService->updateSlug($contact);
         $this->cleanupService->cleanAll();
         $this->deletePagesCache();
 

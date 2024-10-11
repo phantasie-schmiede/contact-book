@@ -16,6 +16,14 @@ use PSB\PsbContacts\Domain\Model\Contact;
 use PSB\PsbContacts\Domain\Model\ContactRelationInterface;
 use PSB\PsbContacts\Domain\Repository\ContactRepository;
 use PSB\PsbContacts\Utility\ContactUtility;
+use PSB\PsbFoundation\Service\Configuration\TcaService;
+use PSB\PsbTemplates\Utility\SlugUtility;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use ReflectionException;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use function is_string;
 
 /**
@@ -27,6 +35,7 @@ readonly class ContactService
 {
     public function __construct(
         protected ContactRepository $contactRepository,
+        protected TcaService        $tcaService,
     ) {
     }
 
@@ -92,5 +101,27 @@ readonly class ContactService
                 $entity->addContact($additionalContact);
             }
         }
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws IllegalObjectTypeException
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     * @throws SiteNotFoundException
+     * @throws UnknownObjectException
+     */
+    public function updateSlug(Contact $contact): void
+    {
+        $slug = SlugUtility::generateUniqueSlug(
+            $contact->getUid(),
+            $this->tcaService->convertClassNameToTableName(Contact::class)
+        );
+
+        if (false !== $slug) {
+            $contact->setSlug($slug);
+        }
+
+        $this->contactRepository->update($contact);
     }
 }

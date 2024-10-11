@@ -15,14 +15,20 @@ use PSB\PsbContacts\Data\ExtensionInformation;
 use PSB\PsbContacts\Domain\Model\ContactGroup;
 use PSB\PsbContacts\Domain\Repository\ContactGroupRepository;
 use PSB\PsbContacts\Domain\Repository\ContactRepository;
+use PSB\PsbContacts\Service\ContactGroupService;
 use PSB\PsbContacts\Service\ContactService;
 use PSB\PsbFoundation\Attribute\PluginAction;
 use PSB\PsbFoundation\Traits\ControllerCacheTrait;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
+use ReflectionException;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
 /**
  * Class ContactGroupController
@@ -37,16 +43,23 @@ class ContactGroupController extends ActionController
 
     public function __construct(
         protected readonly ContactGroupRepository $contactGroupRepository,
+        protected readonly ContactGroupService    $contactGroupService,
         protected readonly ContactRepository      $contactRepository,
         protected readonly ContactService         $contactService,
         protected readonly ExtensionInformation   $extensionInformation,
+        protected readonly PersistenceManager     $persistenceManager,
     ) {
     }
 
     /**
+     * @throws ContainerExceptionInterface
      * @throws IllegalObjectTypeException
      * @throws JsonException
      * @throws NoSuchCacheGroupException
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     * @throws SiteNotFoundException
+     * @throws UnknownObjectException
      */
     #[PluginAction(uncached: true)]
     public function createAction(ContactGroup $contactGroup): ResponseInterface
@@ -56,6 +69,8 @@ class ContactGroupController extends ActionController
             additionalContacts: $this->request->getArgument('contacts')
         );
         $this->contactGroupRepository->add($contactGroup);
+        $this->persistenceManager->persistAll();
+        $this->contactGroupService->updateSlug($contactGroup);
         $this->deletePagesCache();
 
         return $this->redirect(actionName: 'show', arguments: ['contactGroup' => $contactGroup]);
@@ -116,9 +131,13 @@ class ContactGroupController extends ActionController
     }
 
     /**
+     * @throws ContainerExceptionInterface
      * @throws IllegalObjectTypeException
      * @throws JsonException
      * @throws NoSuchCacheGroupException
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     * @throws SiteNotFoundException
      * @throws UnknownObjectException
      */
     #[PluginAction(uncached: true)]
@@ -129,6 +148,8 @@ class ContactGroupController extends ActionController
             additionalContacts: $this->request->getArgument('contacts')
         );
         $this->contactGroupRepository->update($contactGroup);
+        $this->persistenceManager->persistAll();
+        $this->contactGroupService->updateSlug($contactGroup);
         $this->deletePagesCache();
 
         return $this->redirect(actionName: 'show', arguments: ['contactGroup' => $contactGroup]);

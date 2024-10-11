@@ -18,8 +18,12 @@ use PSB\PsbContacts\Domain\Repository\EMailRepository;
 use PSB\PsbContacts\Domain\Repository\EventRepository;
 use PSB\PsbContacts\Domain\Repository\PhoneNumberRepository;
 use PSB\PsbContacts\Domain\Repository\WebsiteRepository;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use ReflectionException;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -37,6 +41,7 @@ class CleanupService implements LoggerAwareInterface
     public function __construct(
         protected readonly AddressRepository     $addressRepository,
         protected readonly ContactRepository     $contactRepository,
+        protected readonly ContactService        $contactService,
         protected readonly EMailRepository       $eMailRepository,
         protected readonly EventRepository       $eventRepository,
         protected readonly PersistenceManager    $persistenceManager,
@@ -57,12 +62,8 @@ class CleanupService implements LoggerAwareInterface
         $this->deleteOrphanedEvents();
         $this->deleteOrphanedPhoneNumbers();
         $this->deleteOrphanedWebsites();
-
-        $trimmedNotes = $this->trimNotes();
-
-        if (0 < $trimmedNotes) {
-            $this->logger->info('Trimmed ' . $trimmedNotes . ' notes.');
-        }
+        $this->addMissingSlugs();
+        $this->trimNotes();
     }
 
     /**
@@ -119,7 +120,7 @@ class CleanupService implements LoggerAwareInterface
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */
-    public function trimNotes(): int
+    public function trimNotes(): void
     {
         $trimmedNotes = 0;
         $this->trimNotesForRepository($this->addressRepository, $trimmedNotes);
@@ -130,7 +131,34 @@ class CleanupService implements LoggerAwareInterface
         $this->trimNotesForRepository($this->websiteRepository, $trimmedNotes);
         $this->persistenceManager->persistAll();
 
-        return $trimmedNotes;
+        if (0 < $trimmedNotes) {
+            $this->logger->info('Trimmed ' . $trimmedNotes . ' notes.');
+        }
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws IllegalObjectTypeException
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     * @throws SiteNotFoundException
+     * @throws UnknownObjectException
+     */
+    private function addMissingSlugs(): void
+    {
+        $addedSlugs = 0;
+
+        foreach ($this->contactRepository->findAll() as $contact) {
+            if ('' === $contact->getSlug()) {
+                $this->contactService->updateSlug($contact);
+                $this->persistenceManager->persistAll();
+                $addedSlugs++;
+            }
+        }
+
+        if (0 < $addedSlugs) {
+            $this->logger->info('Added ' . $addedSlugs . ' missing slugs.');
+        }
     }
 
     /**

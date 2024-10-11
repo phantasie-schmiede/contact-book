@@ -12,6 +12,7 @@ namespace PSB\PsbContacts\Domain\Model;
 
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
+use PSB\PsbFoundation\Attribute\TCA\ColumnType\Slug;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
 use PSB\PsbFoundation\Enum\SelectRenderType;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -27,6 +28,18 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 ])]
 class ContactGroup extends AbstractContactRelatedEntity
 {
+    public const array SLUG_GENERATOR_OPTIONS = [
+        'fields'               => [
+            'name',
+        ],
+        'prefixParentPageSlug' => true,
+        'replacements'         => [
+            ' ' => '-',
+            '/' => '',
+            '.' => '-',
+        ],
+    ];
+
     /** @var ObjectStorage<Contact> */
     #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_contactgroups', mmOppositeField: 'contactGroups', renderType: SelectRenderType::selectMultipleSideBySide)]
     protected ObjectStorage $contacts;
@@ -34,13 +47,30 @@ class ContactGroup extends AbstractContactRelatedEntity
     #[Input]
     protected string $name = '';
 
+    #[Slug(generatorOptions: self::SLUG_GENERATOR_OPTIONS)]
+    protected string $slug = '';
+
     public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 }

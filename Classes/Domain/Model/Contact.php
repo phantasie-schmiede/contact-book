@@ -17,6 +17,7 @@ use PSB\PsbFoundation\Attribute\TCA\ColumnType\Check;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Inline;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
+use PSB\PsbFoundation\Attribute\TCA\ColumnType\Slug;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
 use PSB\PsbFoundation\Utility\StringUtility;
@@ -41,6 +42,24 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 ])]
 class Contact extends AbstractEntity
 {
+    public const array SLUG_GENERATOR_OPTIONS = [
+        'fallbackCharacter'    => '',
+        'fieldSeparator'       => '-',
+        'fields'               => [
+            'company_name',
+            'title',
+            'first_name',
+            'middle_names',
+            'last_name',
+        ],
+        'prefixParentPageSlug' => true,
+        'replacements'         => [
+            ' ' => '-',
+            '/' => '',
+            '.' => '-',
+        ],
+    ];
+
     /** @var ObjectStorage<Address> */
     #[Inline(linkedModel: Address::class, mm: 'tx_psbcontacts_contacts_addresses')]
     #[Lazy]
@@ -101,6 +120,9 @@ class Contact extends AbstractEntity
 
     #[Check]
     protected bool $showInAddressBook = false;
+
+    #[Slug(generatorOptions: self::SLUG_GENERATOR_OPTIONS)]
+    protected string $slug = '';
 
     #[Input]
     protected string $title = '';
@@ -422,6 +444,11 @@ class Contact extends AbstractEntity
         return implode(' ', $searchTerms);
     }
 
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
     public function getTitle(): string
     {
         return $this->title;
@@ -595,6 +622,13 @@ class Contact extends AbstractEntity
     public function setShowInAddressBook(bool $showInAddressBook): self
     {
         $this->showInAddressBook = $showInAddressBook;
+
+        return $this;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
