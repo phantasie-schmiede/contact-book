@@ -5,15 +5,23 @@
     xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
 <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/contactList.xlf" />
 
+<f:asset.script
+    identifier="clearInput"
+    src="EXT:psb_templates/Resources/Public/JavaScript/clearInput.js"
+    type="module" />
+
 <f:if condition="{contacts}">
     <f:then>
-        <input
-            class="form-control"
-            data-psb-filter-target=".js-contact-list-item"
-            data-psb-filter-value="data-search-terms"
-            id="search"
-            placeholder="{psbFoundation:translate(id: 'contactList:search')}"
-            type="text" />
+        <div class="align-items-center d-inline-flex input-group position-relative">
+            <input
+                autocomplete="on"
+                class="form-control js-clear-input"
+                data-psb-filter-target=".js-contact-list-item"
+                data-psb-filter-value="data-search-terms"
+                id="search"
+                placeholder="{psbFoundation:translate(id: 'contactList:search')}"
+                type="text" />
+        </div>
         <ul class="list-group list-group-flush">
             <f:for
                 as="contact"
