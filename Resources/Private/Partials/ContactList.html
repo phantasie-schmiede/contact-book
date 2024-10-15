@@ -39,16 +39,16 @@
                     </f:link.action>
 
                     <f:render
-                        arguments="{icon: 'box-arrow-up-right', property: 'websites', records: contact.websites, uid: contact.uid}"
+                        arguments="{property: 'websites', records: contact.websites, uid: contact.uid}"
                         section="Details" />
                     <f:render
-                        arguments="{icon: 'envelope-at', property: 'eMails', records: contact.eMails, uid: contact.uid}"
+                        arguments="{property: 'eMails', records: contact.eMails, uid: contact.uid}"
                         section="Details" />
                     <f:render
-                        arguments="{icon: 'sign-turn-right', property: 'addresses', records: contact.addresses, uid: contact.uid}"
+                        arguments="{property: 'addresses', records: contact.addresses, uid: contact.uid}"
                         section="Details" />
                     <f:render
-                        arguments="{icon: 'telephone', property: 'phoneNumbers', records: contact.phoneNumbers, uid: contact.uid}"
+                        arguments="{property: 'phoneNumbers', records: contact.phoneNumbers, uid: contact.uid}"
                         section="Details" />
                 </li>
             </f:for>
@@ -91,7 +91,7 @@
                         href="{records.0.link}"
                         target="_blank">
                         <core:icon
-                            identifier="psb-templates-{icon}"
+                            identifier="psb-templates-{records.0.iconIdentifier}"
                             size="small" />
                     </a>
                 </f:then>
@@ -102,7 +102,7 @@
                         data-bs-toggle="modal"
                         href="#">
                         <core:icon
-                            identifier="psb-templates-{icon}"
+                            identifier="psb-templates-{records.0.iconIdentifier}"
                             size="small" />
                     </a>
                 </f:else>
@@ -130,36 +130,9 @@
                             class="btn-close end-0 position-absolute top-0 z-2"
                             data-bs-dismiss="modal"
                             type="button"></button>
-                        <div class="list-group list-group-flush">
-                            <f:for
-                                as="record"
-                                each="{records}">
-                                <a
-                                    class="list-group-item list-group-item-action"
-                                    href="{record.link}">
-                                    <f:if condition="{record.phoneNumberType}">
-                                        <f:then>
-                                            <core:icon
-                                                identifier="psb-templates-{record.generalType.iconIdentifier}"
-                                                size="small" />
-                                            <core:icon
-                                                identifier="psb-templates-{record.phoneNumberType.iconIdentifier}"
-                                                size="small" />
-                                        </f:then>
-                                        <f:else>
-                                            <core:icon
-                                                identifier="psb-templates-{record.type.iconIdentifier}"
-                                                size="small" />
-                                        </f:else>
-                                    </f:if>
-                                    <f:render
-                                        arguments="{record: record}"
-                                        default="{record.compactValue}"
-                                        optional="true"
-                                        partial="{record.recordType}" />
-                                </a>
-                            </f:for>
-                        </div>
+                        <f:render
+                            arguments="{records: records}"
+                            partial="LinkedRelations" />
                     </div>
                 </div>
             </div>

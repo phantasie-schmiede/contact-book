@@ -1,0 +1,46 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+<div class="list-group list-group-flush">
+    <f:for
+        as="record"
+        each="{records}">
+        <a
+            class="d-flex list-group-item list-group-item-action"
+            href="{record.link}">
+            <f:if condition="{record.phoneNumberType}">
+                <f:then>
+                    <core:icon
+                        identifier="psb-templates-{record.generalType.iconIdentifier}"
+                        size="small" />
+                    <core:icon
+                        identifier="psb-templates-{record.phoneNumberType.iconIdentifier}"
+                        size="small" />
+                </f:then>
+                <f:else>
+                    <core:icon
+                        identifier="psb-templates-{record.type.iconIdentifier}"
+                        size="small" />
+                </f:else>
+            </f:if>
+
+            <span class="ms-2">
+                <f:render
+                    arguments="{record: record}"
+                    default="{record.compactValue}"
+                    optional="true"
+                    partial="{record.recordType}" />
+            </span>
+
+            <f:if condition="{showActionIcon}">
+                <span class="ms-auto">
+                    <core:icon
+                        identifier="psb-templates-{record.iconIdentifier}"
+                        size="small" />
+                </span>
+            </f:if>
+        </a>
+    </f:for>
+</div>
+</html>

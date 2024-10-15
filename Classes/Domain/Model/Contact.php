@@ -343,6 +343,10 @@ class Contact extends AbstractEntity
 
         $nameParts = [];
 
+        if ('' !== $this->getTitle()) {
+            $nameParts[] = $this->getTitle();
+        }
+
         if ('' !== $this->getFirstName()) {
             $nameParts[] = $this->getFirstName();
         }
