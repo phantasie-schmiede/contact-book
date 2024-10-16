@@ -96,7 +96,7 @@ class ContactGroupController extends ActionController
     public function editAction(ContactGroup $contactGroup): ResponseInterface
     {
         $this->view->assign('contactGroup', $contactGroup);
-        $this->view->assign('allContacts', $this->contactService->getAllAsJson());
+        $this->view->assign('allContacts', $this->contactService->getAsJson());
 
         return $this->htmlResponse();
     }
@@ -116,7 +116,7 @@ class ContactGroupController extends ActionController
     #[PluginAction(uncached: true)]
     public function newAction(): ResponseInterface
     {
-        $this->view->assign('allContacts', $this->contactService->getAllAsJson());
+        $this->view->assign('allContacts', $this->contactService->getAsJson());
 
         return $this->htmlResponse();
     }

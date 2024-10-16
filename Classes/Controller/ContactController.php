@@ -14,6 +14,7 @@ use DateTime;
 use Exception;
 use JsonException;
 use PSB\PsbContacts\Data\ExtensionInformation;
+use PSB\PsbContacts\Domain\Demand\ContactDemand;
 use PSB\PsbContacts\Domain\Enum\ContactType;
 use PSB\PsbContacts\Domain\Enum\EventType;
 use PSB\PsbContacts\Domain\Enum\GeneralType;
@@ -34,6 +35,7 @@ use PSB\PsbContacts\Domain\Repository\EventRepository;
 use PSB\PsbContacts\Domain\Repository\PhoneNumberRepository;
 use PSB\PsbContacts\Domain\Repository\WebsiteRepository;
 use PSB\PsbContacts\Service\CleanupService;
+use PSB\PsbContacts\Service\ContactGroupService;
 use PSB\PsbContacts\Service\ContactService;
 use PSB\PsbContacts\Utility\ContactUtility;
 use PSB\PsbFoundation\Attribute\PluginAction;
@@ -67,6 +69,7 @@ class ContactController extends ActionController
         protected readonly AddressRepository      $addressRepository,
         protected readonly CleanupService         $cleanupService,
         protected readonly ContactGroupRepository $contactGroupRepository,
+        protected readonly ContactGroupService    $contactGroupService,
         protected readonly ContactRepository      $contactRepository,
         protected readonly ContactService         $contactService,
         protected readonly EMailRepository        $eMailRepository,
@@ -127,13 +130,13 @@ class ContactController extends ActionController
     public function listAction(): ResponseInterface
     {
         $this->setCacheTag();
-        $this->view->assign(
-            'contacts',
-            ContactUtility::sortByDisplayName(
+        $this->view->assignMultiple([
+            'contacts'  => ContactUtility::sortByDisplayName(
                 $this->contactRepository->findAll()
                     ->toArray()
-            )
-        );
+            ),
+            'pluginUid' => $this->request->getAttribute('currentContentObject')->data['uid'],
+        ]);
 
         return $this->htmlResponse();
     }
@@ -171,7 +174,6 @@ class ContactController extends ActionController
     #[PluginAction(uncached: true)]
     public function updateAction(Contact $contact): ResponseInterface
     {
-        // @TODO: Handle company selection!
         $this->processRelations($contact);
         $this->contactRepository->update($contact);
         $this->persistenceManager->persistAll();
@@ -189,14 +191,25 @@ class ContactController extends ActionController
      */
     private function prepareFormView(?Contact $contact = null): void
     {
+        $allCompaniesDemand = new ContactDemand();
+        $allCompaniesDemand->addType(ContactType::Company);
+
+        $allContactsDemand = new ContactDemand();
+        $allContactsDemand->addType(ContactType::Person);
+
+        if ($contact instanceof Contact) {
+            $allContactsDemand->addExcludedContact($contact);
+        }
+
         $this->view->assignMultiple([
-            'contactGroups'    => $this->contactGroupRepository->findAll(),
-            'generalTypes'     => GeneralType::toArray(GeneralType::Private),
+            'allCompanies'     => $this->contactService->getAsJson($allCompaniesDemand),
+            'allContactGroups' => $this->contactGroupService->getAsJson(),
+            'allContacts'      => $this->contactService->getAsJson($allContactsDemand),
             'companies'        => $this->contactRepository->findByType(ContactType::Company),
             'contact'          => $contact,
-            'allContacts'      => $this->contactService->getAllAsJson($contact ? [$contact] : []),
-            'eventTypes'       => EventType::toArray(EventType::Birthday),
             'contactTypes'     => ContactType::toArray(ContactType::Person),
+            'eventTypes'       => EventType::toArray(EventType::Birthday),
+            'generalTypes'     => GeneralType::toArray(GeneralType::Private),
             'phoneNumberTypes' => PhoneNumberType::toArray(PhoneNumberType::Mobile),
         ]);
     }
@@ -206,21 +219,46 @@ class ContactController extends ActionController
      */
     private function processRelations(Contact $contact): void
     {
+        $contact->removeAllCompanies();
+        $companyUids = json_decode($this->request->getArgument('companies') ?: '[]', true, 512, JSON_THROW_ON_ERROR);
+
+        foreach ($companyUids as $companyUid) {
+            $company = $this->contactRepository->findByUid($companyUid);
+
+            if ($company instanceof Contact) {
+                $contact->addCompany($company);
+            }
+        }
+
+        $contact->removeAllContactGroups();
+        $contactGroupUids = json_decode(
+            $this->request->getArgument('contactGroups') ?: '[]',
+            true,
+            512,
+            JSON_THROW_ON_ERROR
+        );
+
+        foreach ($contactGroupUids as $contactGroupUid) {
+            $contactGroup = $this->contactGroupRepository->findByUid($contactGroupUid);
+
+            if ($contactGroup instanceof ContactGroup) {
+                $contact->addContactGroup($contactGroup);
+            }
+        }
+
         foreach ([
                      'address',
-                     'contactGroup',
                      'eMail',
                      'event',
                      'phoneNumber',
                      'website',
                  ] as $relationType) {
             $existingEntities = match ($relationType) {
-                'address'      => clone $contact->getAddresses(),
-                'contactGroup' => clone $contact->getContactGroups(),
-                'eMail'        => clone $contact->getEMails(),
-                'event'        => clone $contact->getEvents(),
-                'phoneNumber'  => clone $contact->getPhoneNumbers(),
-                'website'      => clone $contact->getWebsites(),
+                'address'     => clone $contact->getAddresses(),
+                'eMail'       => clone $contact->getEMails(),
+                'event'       => clone $contact->getEvents(),
+                'phoneNumber' => clone $contact->getPhoneNumbers(),
+                'website'     => clone $contact->getWebsites(),
             };
 
             $updatedEntities = $this->request->hasArgument($relationType) ? $this->request->getArgument(
@@ -231,12 +269,11 @@ class ContactController extends ActionController
             if (is_array($updatedEntities)) {
                 foreach ($updatedEntities as $uid => $entityData) {
                     $entity = match ($relationType) {
-                        'address'      => $contact->getAddressByUid($uid),
-                        'contactGroup' => $contact->getContactGroupByUid($uid),
-                        'eMail'        => $contact->getEMailByUid($uid),
-                        'event'        => $contact->getEventByUid($uid),
-                        'phoneNumber'  => $contact->getPhoneNumberByUid($uid),
-                        'website'      => $contact->getWebsiteByUid($uid),
+                        'address'     => $contact->getAddressByUid($uid),
+                        'eMail'       => $contact->getEMailByUid($uid),
+                        'event'       => $contact->getEventByUid($uid),
+                        'phoneNumber' => $contact->getPhoneNumberByUid($uid),
+                        'website'     => $contact->getWebsiteByUid($uid),
                     };
                     $this->updateEntityProperties($contact, $entity, $entityData);
                     $existingEntities->detach($entity);
@@ -249,9 +286,6 @@ class ContactController extends ActionController
                     switch ($relationType) {
                         case 'address':
                             $contact->removeAddress($entity);
-                            break;
-                        case 'contactGroup':
-                            $contact->removeContactGroup($entity);
                             break;
                         case 'eMail':
                             $contact->removeEMail($entity);
@@ -276,11 +310,6 @@ class ContactController extends ActionController
                             $address = new Address();
                             $this->updateEntityProperties($contact, $address, $entityData);
                             $this->addressRepository->add($address);
-                            break;
-                        case 'contactGroup':
-                            $contactGroup = new ContactGroup();
-                            $this->updateEntityProperties($contact, $contactGroup, $entityData);
-                            $this->contactGroupRepository->add($contactGroup);
                             break;
                         case 'eMail':
                             $eMail = new EMail();

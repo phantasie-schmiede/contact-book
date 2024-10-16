@@ -40,19 +40,12 @@ readonly class ContactService
     }
 
     /**
-     * @param array $excludedContacts
-     *
-     * @return string
      * @throws JsonException
      */
-    public function getAllAsJson(array $excludedContacts = []): string
+    public function getAsJson(ContactDemand $demand = null): string
     {
-        $contactDemand = new ContactDemand();
-
-        if ([] !== $excludedContacts) {
-            foreach ($excludedContacts as $excludedContact) {
-                $contactDemand->addExcludedContact($excludedContact);
-            }
+        if (!$demand instanceof ContactDemand) {
+            $demand = new ContactDemand();
         }
 
         return json_encode(
@@ -62,7 +55,7 @@ readonly class ContactService
                     'value' => $contact->getUid(),
                 ],
                 ContactUtility::sortByDisplayName(
-                    $this->contactRepository->findByDemand($contactDemand)
+                    $this->contactRepository->findByDemand($demand)
                         ->toArray()
                 )
             ),

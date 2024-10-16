@@ -165,6 +165,20 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    public function addCompany(Contact $company): self
+    {
+        $this->companies->attach($company);
+
+        return $this;
+    }
+
+    public function addContactGroup(ContactGroup $contactGroup): self
+    {
+        $this->contactGroups->attach($contactGroup);
+
+        return $this;
+    }
+
     public function addEMails(EMail ...$eMails): self
     {
         foreach ($eMails as $eMail) {
@@ -250,6 +264,17 @@ class Contact extends AbstractEntity
     public function getCompanies(): ObjectStorage
     {
         return $this->companies;
+    }
+
+    public function getCompanyByUid(int $uid): Contact
+    {
+        foreach ($this->companies as $company) {
+            if ($uid === $company->getUid()) {
+                return $company;
+            }
+        }
+
+        throw new InvalidArgumentException(__CLASS__ . ': Company with UID ' . $uid . ' not found!', 1729023370);
     }
 
     public function getCompanyName(): string
@@ -493,9 +518,16 @@ class Contact extends AbstractEntity
         return $this;
     }
 
-    public function removeContactGroup(ContactGroup $contactGroup): self
+    public function removeAllCompanies(): self
     {
-        $this->contactGroups->detach($contactGroup);
+        $this->companies = new ObjectStorage();
+
+        return $this;
+    }
+
+    public function removeAllContactGroups(): self
+    {
+        $this->contactGroups = new ObjectStorage();
 
         return $this;
     }

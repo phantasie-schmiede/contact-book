@@ -1,157 +1,201 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbContacts="http://typo3.org/ns/PSB/PsbContacts/ViewHelpers"
     xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
 <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
 
-<div class="col-md-6">
-    <label
-        class="form-label"
-        for="type">
-        <psbFoundation:translate id="contact:type" />
-    </label>
+<div class="form-floating mb-3">
     <f:form.select
         class="form-select"
         id="type"
         options="{contactTypes}"
         name="contact[type]"
         value="{contact.type.value}" />
+    <label for="type">
+        <psbFoundation:translate id="contact:type" />
+    </label>
 </div>
+
 <div
-    class="col-md-6{f:if(condition: 'company != {contact.type.value}', then: ' visually-hidden')}"
+    class="form-floating mb-3{f:if(condition: 'company != {contact.type.value}', then: ' visually-hidden')}"
     data-psb-form-condition-field="#type"
     data-psb-form-condition-value="company">
+    <f:form.textfield
+        class="form-control"
+        id="companyName"
+        placeholder="{psbFoundation:translate(id: 'contact:companyName')}"
+        property="companyName" />
     <label
         class="form-label"
         for="companyName">
         <psbFoundation:translate id="contact:companyName" />
     </label>
-    <f:form.textfield
-        class="form-control"
-        id="companyName"
-        property="companyName" />
 </div>
-<div class="col-md-6{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
+
+<div class="form-floating mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
     data-psb-form-condition-field="#type"
     data-psb-form-condition-mode="hide"
     data-psb-form-condition-value="company">
+    <input
+        autocomplete="off"
+        class="form-control"
+        data-psb-autocomplete-items="{allCompanies}"
+        data-psb-autocomplete-preselection="{psbContacts:json.relatedCompanies(contact: contact)}"
+        data-psb-autocomplete-selection-target="#companies-selection"
+        data-psb-autocomplete-value-target="#companies-value"
+        type="text" />
     <label
         class="form-label"
         for="companies">
         <psbFoundation:translate id="contact:companies" />
     </label>
-    <f:form.select
-        class="form-select"
-        id="companies"
-        optionLabelField="companyName"
-        optionValueField="uid"
-        options="{companies}"
-        prependOptionLabel="Bitte wählen"
-        prependOptionValue=""
-        property="companies" />
+    <ul
+        class="list-group list-group-flush"
+        id="companies-selection">
+    </ul>
+    <f:form.hidden
+        id="companies-value"
+        name="companies" />
 </div>
 
 <div
-    class="col-md-4{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
+    class="form-floating mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
     data-psb-form-condition-field="#type"
     data-psb-form-condition-mode="hide"
     data-psb-form-condition-value="company">
+    <f:form.textfield
+        class="form-control"
+        id="title"
+        placeholder="{psbFoundation:translate(id: 'contact:title')}"
+        property="title" />
     <label
         class="form-label"
         for="title">
         <psbFoundation:translate id="contact:title" />
     </label>
-    <f:form.textfield
-        class="form-control"
-        id="title"
-        property="title" />
 </div>
+
 <div
-    class="col-md-4{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
+    class="form-floating mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
     data-psb-form-condition-field="#type"
     data-psb-form-condition-mode="hide"
     data-psb-form-condition-value="company">
+    <f:form.textfield
+        class="form-control"
+        id="firstName"
+        placeholder="{psbFoundation:translate(id: 'contact:firstName')}"
+        property="firstName" />
     <label
         class="form-label"
         for="firstName">
         <psbFoundation:translate id="contact:firstName" />
     </label>
-    <f:form.textfield
-        class="form-control"
-        id="firstName"
-        property="firstName" />
 </div>
+
 <div
-    class="col-md-4{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
+    class="form-floating mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
     data-psb-form-condition-field="#type"
     data-psb-form-condition-mode="hide"
     data-psb-form-condition-value="company">
+    <f:form.textfield
+        class="form-control"
+        id="middleNames"
+        placeholder="{psbFoundation:translate(id: 'contact:middleNames')}"
+        property="middleNames" />
     <label
         class="form-label"
         for="middleNames">
         <psbFoundation:translate id="contact:middleNames" />
     </label>
-    <f:form.textfield
-        class="form-control"
-        id="middleNames"
-        property="middleNames" />
 </div>
+
 <div
-    class="col-md-4{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
+    class="form-floating mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
     data-psb-form-condition-field="#type"
     data-psb-form-condition-mode="hide"
     data-psb-form-condition-value="company">
+    <f:form.textfield
+        class="form-control"
+        id="lastName"
+        placeholder="{psbFoundation:translate(id: 'contact:lastName')}"
+        property="lastName" />
     <label
         class="form-label"
         for="lastName">
         <psbFoundation:translate id="contact:lastName" />
     </label>
-    <f:form.textfield
-        class="form-control"
-        id="lastName"
-        property="lastName" />
 </div>
+
 <div
-    class="col-md-4{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
+    class="form-floating mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
     data-psb-form-condition-field="#type"
     data-psb-form-condition-mode="hide"
     data-psb-form-condition-value="company">
+    <f:form.textfield
+        class="form-control"
+        id="birthName"
+        placeholder="{psbFoundation:translate(id: 'contact:birthName')}"
+        property="birthName" />
     <label
         class="form-label"
         for="birthName">
         <psbFoundation:translate id="contact:birthName" />
     </label>
-    <f:form.textfield
-        class="form-control"
-        id="birthName"
-        property="birthName" />
 </div>
+
 <div
-    class="col-md-4{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
+    class="form-floating mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
     data-psb-form-condition-field="#type"
     data-psb-form-condition-mode="hide"
     data-psb-form-condition-value="company">
+    <f:form.textfield
+        class="form-control"
+        id="nickname"
+        placeholder="{psbFoundation:translate(id: 'contact:nickname')}"
+        property="nickname" />
     <label
         class="form-label"
         for="nickname">
         <psbFoundation:translate id="contact:nickname" />
     </label>
-    <f:form.textfield
-        class="form-control"
-        id="nickname"
-        property="nickname" />
 </div>
-<div class="col-12">
+
+<div class="form-floating mb-3">
+    <input
+        autocomplete="off"
+        class="form-control"
+        data-psb-autocomplete-items="{allContactGroups}"
+        data-psb-autocomplete-preselection="{psbContacts:json.relatedContactGroups(contact: contact)}"
+        data-psb-autocomplete-selection-target="#contactGroups-selection"
+        data-psb-autocomplete-value-target="#contactGroups-value"
+        type="text" />
+    <label
+        class="form-label"
+        for="contactGroups">
+        <psbFoundation:translate id="contact:contactGroups" />
+    </label>
+    <ul
+        class="list-group list-group-flush"
+        id="contactGroups-selection">
+    </ul>
+    <f:form.hidden
+        id="contactGroups-value"
+        name="contactGroups" />
+</div>
+
+<div class="form-floating mb-3">
+    <f:form.textarea
+        class="form-control"
+        id="notes"
+        placeholder="{psbFoundation:translate(id: 'contact:notes')}"
+        property="notes"
+        value="{contact.notes}" />
     <label
         class="form-label"
         for="notes">
         <psbFoundation:translate id="contact:notes" />
     </label>
-    <f:form.textarea
-        class="form-control"
-        id="notes"
-        property="notes"
-        value="{contact.notes}" />
 </div>
 
 <h5>
@@ -162,7 +206,7 @@
     arguments="{allContacts: allContacts, contact: contact, generalTypes: generalTypes, recordType: 'Address', records: contact.addresses}"
     section="Accordion" />
 
-<h5>
+<h5 class="mt-3">
     <psbFoundation:translate id="contact:phoneNumbers" />
 </h5>
 
@@ -170,7 +214,7 @@
     arguments="{allContacts: allContacts, contact: contact, generalTypes: generalTypes, phoneNumberTypes: phoneNumberTypes, recordType: 'PhoneNumber', records: contact.phoneNumbers}"
     section="Accordion" />
 
-<h5>
+<h5 class="mt-3">
     <psbFoundation:translate id="contact:eMails" />
 </h5>
 
@@ -178,7 +222,7 @@
     arguments="{allContacts: allContacts, contact: contact, generalTypes: generalTypes, recordType: 'EMail', records: contact.eMails}"
     section="Accordion" />
 
-<h5>
+<h5 class="mt-3">
     <psbFoundation:translate id="contact:websites" />
 </h5>
 
@@ -186,7 +230,7 @@
     arguments="{allContacts: allContacts, contact: contact, generalTypes: generalTypes, recordType: 'Website', records: contact.websites}"
     section="Accordion" />
 
-<h5>
+<h5 class="mt-3">
     <psbFoundation:translate id="contact:events" />
 </h5>
 

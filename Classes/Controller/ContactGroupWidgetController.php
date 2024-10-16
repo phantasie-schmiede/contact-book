@@ -30,7 +30,10 @@ class ContactGroupWidgetController extends ActionController
     #[PluginAction]
     public function displayAction(): ResponseInterface
     {
-        $this->view->assign('contactGroup', $this->contactGroupRepository->findByUid($this->settings['contactGroup']));
+        $this->view->assignMultiple([
+            'contactGroup' => $this->contactGroupRepository->findByUid($this->settings['contactGroup']),
+            'pluginUid'    => $this->request->getAttribute('currentContentObject')->data['uid'],
+        ]);
 
         return $this->htmlResponse();
     }

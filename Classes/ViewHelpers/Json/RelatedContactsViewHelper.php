@@ -61,6 +61,7 @@ class RelatedContactsViewHelper extends AbstractViewHelper
 
         $data = [];
 
+        /** @var Contact $contact */
         foreach ($relatedEntity->getContacts() as $contact) {
             $data[] = [
                 'label' => $contact->getDisplayName(),
