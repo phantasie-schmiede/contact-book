@@ -33,17 +33,18 @@
     </label>
 </div>
 
-<div class="form-floating mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
+<div class="form-floating mb-3 position-relative{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
     data-psb-form-condition-field="#type"
     data-psb-form-condition-mode="hide"
     data-psb-form-condition-value="company">
     <input
         autocomplete="off"
-        class="form-control"
+        class="form-control js-clear-input"
         data-psb-autocomplete-items="{allCompanies}"
         data-psb-autocomplete-preselection="{psbContacts:json.relatedCompanies(contact: contact)}"
         data-psb-autocomplete-selection-target="#companies-selection"
         data-psb-autocomplete-value-target="#companies-value"
+        placeholder="{psbFoundation:translate(id: 'contact:companies')}"
         type="text" />
     <label
         class="form-label"
@@ -164,11 +165,12 @@
 <div class="form-floating mb-3">
     <input
         autocomplete="off"
-        class="form-control"
+        class="form-control js-clear-input"
         data-psb-autocomplete-items="{allContactGroups}"
         data-psb-autocomplete-preselection="{psbContacts:json.relatedContactGroups(contact: contact)}"
         data-psb-autocomplete-selection-target="#contactGroups-selection"
         data-psb-autocomplete-value-target="#contactGroups-value"
+        placeholder="{psbFoundation:translate(id: 'contact:contactGroups')}"
         type="text" />
     <label
         class="form-label"
@@ -274,7 +276,7 @@
     </div>
 
     <span
-        class="btn btn-secondary"
+        class="btn bg-secondary-subtle btn"
         data-psb-copy-mode="append"
         data-psb-copy-source="#template{recordType}"
         data-psb-copy-target="#accordion{recordType}">

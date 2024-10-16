@@ -7,7 +7,7 @@
         source-language="en">
         <body>
             <trans-unit id="contacts">
-                <source>Subscribers</source>
+                <source>Recipients</source>
             </trans-unit>
             <trans-unit id="ctrl.title">
                 <source>E-mail</source>

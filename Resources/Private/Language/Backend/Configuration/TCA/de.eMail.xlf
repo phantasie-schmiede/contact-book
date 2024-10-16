@@ -8,8 +8,8 @@
         target-language="de">
         <body>
             <trans-unit id="contacts">
-                <source>Subscribers</source>
-                <target>Teilnehmer</target>
+                <source>Recipients</source>
+                <target>Empfänger</target>
             </trans-unit>
             <trans-unit id="ctrl.title">
                 <source>E-mail</source>

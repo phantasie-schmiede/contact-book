@@ -27,6 +27,26 @@
                 <source>Add new website</source>
                 <target>Neue Webseite hinzufügen</target>
             </trans-unit>
+            <trans-unit id="additionalContacts.address">
+                <source>other residents</source>
+                <target>weitere Bewohner</target>
+            </trans-unit>
+            <trans-unit id="additionalContacts.eMail">
+                <source>other recipients</source>
+                <target>weitere Empfänger</target>
+            </trans-unit>
+            <trans-unit id="additionalContacts.event">
+                <source>other participants</source>
+                <target>weitere Beteiligte</target>
+            </trans-unit>
+            <trans-unit id="additionalContacts.phoneNumber">
+                <source>other subscribers</source>
+                <target>weitere Teilnehmer</target>
+            </trans-unit>
+            <trans-unit id="additionalContacts.website">
+                <source>other operators</source>
+                <target>weitere Betreiber</target>
+            </trans-unit>
             <trans-unit id="cancel">
                 <source>Cancel</source>
                 <target>Abbrechen</target>

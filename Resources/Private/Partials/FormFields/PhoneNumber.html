@@ -96,15 +96,16 @@
 <div class="form-floating mb-3">
     <input
         autocomplete="off"
-        class="form-control"
+        class="form-control js-clear-input"
         data-psb-autocomplete-items="{allContacts}"
         data-psb-autocomplete-preselection="{psbContacts:json.relatedContacts(relatedEntity: record, contact: contact)}"
         data-psb-autocomplete-selection-target="#contact-selection-{uid}"
         data-psb-autocomplete-value-target="#contact-value-{uid}"
+        placeholder="{psbFoundation:translate(id: 'edit:additionalContacts.phoneNumber')}"
         type="text" />
     <label
         class="form-label">
-        weitere Kontakte
+        <psbFoundation:translate id="edit:additionalContacts.phoneNumber" />
     </label>
     <ul
         class="list-group list-group-flush"

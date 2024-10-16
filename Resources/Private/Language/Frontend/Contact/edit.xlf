@@ -21,6 +21,21 @@
             <trans-unit id="addNewWebsite">
                 <source>Add new website</source>
             </trans-unit>
+            <trans-unit id="additionalContacts.address">
+                <source>other residents</source>
+            </trans-unit>
+            <trans-unit id="additionalContacts.eMail">
+                <source>other recipients</source>
+            </trans-unit>
+            <trans-unit id="additionalContacts.event">
+                <source>other participants</source>
+            </trans-unit>
+            <trans-unit id="additionalContacts.phoneNumber">
+                <source>other subscribers</source>
+            </trans-unit>
+            <trans-unit id="additionalContacts.website">
+                <source>other operators</source>
+            </trans-unit>
             <trans-unit id="cancel">
                 <source>Cancel</source>
             </trans-unit>

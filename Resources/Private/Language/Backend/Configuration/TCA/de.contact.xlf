@@ -23,6 +23,10 @@
                 <source>Company name</source>
                 <target>Unternehmensname</target>
             </trans-unit>
+            <trans-unit id="contactGroups">
+                <source>Contact groups</source>
+                <target>Kontaktgruppen</target>
+            </trans-unit>
             <trans-unit id="ctrl.title">
                 <source>Contact</source>
                 <target>Kontakt</target>
