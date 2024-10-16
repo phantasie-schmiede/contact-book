@@ -5,22 +5,19 @@
     xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
 <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/contactGroup.xlf" />
 
-<div class="col-md-6">
+<div class="form-floating mb-3">
+    <f:form.textfield
+        class="form-control"
+        id="name"
+        placeholder="{psbFoundation:translate(id: 'contactGroup:name')}"
+        property="name" />
     <label
         class="form-label"
         for="name">
         <psbFoundation:translate id="contactGroup:name" />
     </label>
-    <f:form.textfield
-        class="form-control"
-        id="name"
-        property="name" />
 </div>
-<div class="col-md-6">
-    <label
-        class="form-label">
-        Kontakte
-    </label>
+<div class="form-floating">
     <input
         autocomplete="off"
         class="form-control"
@@ -29,6 +26,10 @@
         data-psb-autocomplete-selection-target="#contact-selection"
         data-psb-autocomplete-value-target="#contact-value"
         type="text" />
+    <label
+        class="form-label">
+        Kontakte
+    </label>
     <ul
         class="list-group list-group-flush"
         id="contact-selection">

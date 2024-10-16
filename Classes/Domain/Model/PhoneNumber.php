@@ -42,6 +42,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 ])]
 class PhoneNumber extends AbstractContactRelatedEntity
 {
+    public const string ICON_IDENTIFIER = 'telephone';
+
     #[Input]
     protected string $areaCode = '';
 

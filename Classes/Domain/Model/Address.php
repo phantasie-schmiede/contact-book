@@ -35,6 +35,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 ])]
 class Address extends AbstractContactRelatedEntity
 {
+    public const string ICON_IDENTIFIER = 'sign-turn-right';
+
     #[Input]
     protected string $city = '';
 

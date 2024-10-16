@@ -17,203 +17,92 @@
 
 <div class="row">
     <div class="col-12">
-        <dl class="row">
-            <f:if condition="{contact.title}">
-                <dt class="col-3">
-                    <psbFoundation:translate id="contact:title" />
-                </dt>
-                <dd class="col-9">{contact.title}</dd>
-            </f:if>
+        <h1>{contact.fullName}</h1>
 
-            <f:if condition="{contact.firstName}">
-                <dt class="col-3">
-                    <psbFoundation:translate id="contact:firstName" />
-                </dt>
-                <dd class="col-9">{contact.firstName}</dd>
-            </f:if>
+        <f:if condition="{contact.nickname}">
+            <h2>&raquo;{contact.nickname}&laquo;</h2>
+        </f:if>
 
-            <f:if condition="{contact.middleNames}">
-                <dt class="col-3">
-                    <psbFoundation:translate id="contact:middleNames" />
-                </dt>
-                <dd class="col-9">{contact.middleNames}</dd>
-            </f:if>
+        <f:if condition="{contact.notes}">
+            <h3 class="mt-3">
+                <psbFoundation:translate id="contact:notes" />
+            </h3>
+            <p>
+                <f:format.nl2br>{contact.notes}</f:format.nl2br>
+            </p>
+        </f:if>
 
-            <f:if condition="{contact.lastName}">
-                <dt class="col-3">
-                    <psbFoundation:translate id="contact:lastName" />
-                </dt>
-                <dd class="col-9">{contact.lastName}</dd>
-            </f:if>
+        <f:if condition="{contact.companies}">
+            <h3 class="mt-3">
+                <psbFoundation:translate id="contact:companies" />
+            </h3>
+            <ul class="list-group list-group-flush">
+                <f:for
+                    as="company"
+                    each="{contact.companies}">
+                    <f:link.action
+                        action="show"
+                        arguments="{contact: company}"
+                        class="list-group-item list-group-item-action">
+                        {company.companyName}
+                    </f:link.action>
+                </f:for>
+            </ul>
+        </f:if>
 
-            <f:if condition="{contact.birthName}">
-                <dt class="col-3">
-                    <psbFoundation:translate id="contact:birthName" />
-                </dt>
-                <dd class="col-9">{contact.birthName}</dd>
-            </f:if>
+        <f:if condition="{contact.addresses}">
+            <h3 class="mt-3">
+                <psbFoundation:translate id="contact:addresses" />
+            </h3>
+            <f:render
+                arguments="{records: contact.addresses, showActionIcon: true}"
+                partial="LinkedRelations" />
+        </f:if>
 
-            <f:if condition="{contact.nickname}">
-                <dt class="col-3">
-                    <psbFoundation:translate id="contact:nickname" />
-                </dt>
-                <dd class="col-9">{contact.nickname}</dd>
-            </f:if>
+        <f:if condition="{contact.phoneNumbers}">
+            <h3 class="mt-3">
+                <psbFoundation:translate id="contact:phoneNumbers" />
+            </h3>
+            <f:render
+                arguments="{records: contact.phoneNumbers, showActionIcon: true}"
+                partial="LinkedRelations" />
+        </f:if>
 
-            <f:if condition="{contact.companies}">
-                <dt class="col-3">
-                    <psbFoundation:translate id="contact:companies" />
-                </dt>
-                <dd class="col-9">
-                    <ul>
-                        <f:for
-                            as="company"
-                            each="{contact.companies}">
-                            <li>
-                                {company.companyName}
-                            </li>
-                        </f:for>
-                    </ul>
-                </dd>
-            </f:if>
+        <f:if condition="{contact.eMails}">
+            <h3 class="mt-3">
+                <psbFoundation:translate id="contact:eMails" />
+            </h3>
+            <f:render
+                arguments="{records: contact.eMails, showActionIcon: true}"
+                partial="LinkedRelations" />
+        </f:if>
 
-            <f:if condition="{contact.companyName}">
-                <dt class="col-3">
-                    <psbFoundation:translate id="contact:companyName" />
-                </dt>
-                <dd class="col-9">{contact.companyName}</dd>
-            </f:if>
+        <f:if condition="{contact.websites}">
+            <h3 class="mt-3">
+                <psbFoundation:translate id="contact:websites" />
+            </h3>
+            <f:render
+                arguments="{records: contact.websites, showActionIcon: true}"
+                partial="LinkedRelations" />
+        </f:if>
 
-            <f:if condition="{contact.addresses}">
-                <dt class="col-3">
-                    <psbFoundation:translate id="contact:addresses" />
-                </dt>
-                <dd class="col-9">
-                    <ul>
-                        <f:for
-                            as="address"
-                            each="{contact.addresses}">
-                            <li>
-                                <strong>
-                                    <psbFoundation:translate id="address:type.{address.type.value}" />
-                                </strong>
-                                {address.street} {address.houseNumber}
-                                <br>
-
-                                <f:if condition="{address.zipCode}">
-                                    {address.zipCode}
-                                </f:if>
-
-                                {address.city}
-                                <br>
-
-                                <f:if condition="{address.county}">
-                                    {address.county},
-                                </f:if>
-
-                                <psbTemplates:data.countryNames countryCode="{address.country}" />
-                            </li>
-                        </f:for>
-                    </ul>
-                </dd>
-            </f:if>
-
-            <f:if condition="{contact.phoneNumbers}">
-                <dt class="col-3">
-                    <psbFoundation:translate id="contact:phoneNumbers" />
-                </dt>
-                <dd class="col-9">
-                    <ul>
-                        <f:for
-                            as="phoneNumber"
-                            each="{contact.phoneNumbers}">
-                            <li>
-                                <strong>
-                                    <psbFoundation:translate id="phoneNumber:phoneNumberType.{phoneNumber.phoneNumberType.value}" />
-                                    (<psbFoundation:translate id="phoneNumber:generalType.{phoneNumber.generalType.value}" />)
-                                </strong>
-                                <span>
-                                    <a href="tel:{phoneNumber.completeNumber}">
-                                        <f:render
-                                            arguments="{phoneNumber: phoneNumber}"
-                                            partial="PhoneNumber" />
-                                    </a>
-                                </span>
-                            </li>
-                        </f:for>
-                    </ul>
-                </dd>
-            </f:if>
-
-            <f:if condition="{contact.eMails}">
-                <dt class="col-3">
-                    <psbFoundation:translate id="contact:eMails" />
-                </dt>
-                <dd class="col-9">
-                    <ul>
-                        <f:for
-                            as="eMail"
-                            each="{contact.eMails}">
-                            <li>
-                                <strong>
-                                    <psbFoundation:translate id="eMail:type.{eMail.type.value}" />
-                                </strong>
-                                <span>{eMail.eMailAddress}</span>
-                            </li>
-                        </f:for>
-                    </ul>
-                </dd>
-            </f:if>
-
-            <f:if condition="{contact.websites}">
-                <dt class="col-3">
-                    <psbFoundation:translate id="contact:websites" />
-                </dt>
-                <dd class="col-9">
-                    <ul>
-                        <f:for
-                            as="website"
-                            each="{contact.websites}">
-                            <li>
-                                <strong>
-                                    <psbFoundation:translate id="website:type.{website.type.value}" />
-                                </strong>
-                                <span>{website.url}</span>
-                            </li>
-                        </f:for>
-                    </ul>
-                </dd>
-            </f:if>
-
-            <f:if condition="{contact.events}">
-                <dt class="col-3">
-                    <psbFoundation:translate id="contact:events" />
-                </dt>
-                <dd class="col-9">
-                    <ul>
-                        <f:for
-                            as="event"
-                            each="{contact.events}">
-                            <li>
-                                <strong>
-                                    <psbFoundation:translate id="event:type.{event.type.value}" />
-                                </strong>
-                                <span>{event.date -> f:format.date(format: 'd.m.Y')}</span>
-                            </li>
-                        </f:for>
-                    </ul>
-                </dd>
-            </f:if>
-
-            <f:if condition="{contact.notes}">
-                <dt class="col-3">
-                    <psbFoundation:translate id="contact:notes" />
-                </dt>
-                <dd class="col-9">
-                    <f:format.nl2br>{contact.notes}</f:format.nl2br>
-                </dd>
-            </f:if>
-        </dl>
+        <f:if condition="{contact.events}">
+            <h3 class="mt-3">
+                <psbFoundation:translate id="contact:events" />
+            </h3>
+            <ul class="list-group list-group-flush">
+                <f:for
+                    as="event"
+                    each="{contact.events}">
+                    <li class="list-group-item">
+                        <strong>
+                            <psbFoundation:translate id="event:type.{event.type.value}" />
+                        </strong>
+                        <span>{event.date -> f:format.date(format: 'd.m.Y')}</span>
+                    </li>
+                </f:for>
+            </ul>
+        </f:if>
 
         <psbTemplates:additionalContent
             eventClass="{psbvh:variable.convertString(string: 'PSB\PsbContacts\Event\AdditionalContactContentEvent::class')}"
@@ -221,7 +110,7 @@
     </div>
 </div>
 
-<div class="d-flex">
+<div class="d-flex mt-3">
     <f:link.action
         action="list"
         class="bg-secondary-subtle btn me-2 p-2">
