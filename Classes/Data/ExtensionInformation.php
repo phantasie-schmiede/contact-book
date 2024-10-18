@@ -19,7 +19,6 @@ use PSB\PsbFoundation\Data\AbstractExtensionInformation;
 use PSB\PsbFoundation\Data\MainModuleConfiguration;
 use PSB\PsbFoundation\Data\ModuleConfiguration;
 use PSB\PsbFoundation\Data\PluginConfiguration;
-use PSB\PsbFoundation\Enum\ContentType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**

@@ -12,39 +12,30 @@ namespace PSB\PsbContacts\Event;
 
 use InvalidArgumentException;
 use PSB\PsbContacts\Domain\Model\Contact;
-use PSB\PsbTemplates\Event\AdditionalContentEventInterface;
+use PSB\PsbTemplates\Event\AbstractAdditionalContentEvent;
 
 /**
  * Class AdditionalContactContentEvent
  *
  * @package PSB\PsbContacts\Event
  */
-class AdditionalContactContentEvent implements AdditionalContentEventInterface
+class AdditionalContactContentEvent extends AbstractAdditionalContentEvent
 {
     protected Contact $contact;
-    protected string  $content = '';
-
-    public function addContent(string $content): void
-    {
-        $this->content .= $content;
-    }
 
     public function getContact(): Contact
     {
         return $this->contact;
     }
 
-    public function getContent(): string
+    public function setParameters(array $parameters): static
     {
-        return $this->content;
-    }
-
-    public function setParameters(array $parameters): void
-    {
-        if (!isset($parameters['contact'])) {
-            throw new InvalidArgumentException(__CLASS__ . ': Missing contact parameter!', 1721047163);
+        if (!isset($parameters['contact']) || !$parameters['contact'] instanceof Contact) {
+            throw new InvalidArgumentException(__CLASS__ . ': Missing or invalid contact parameter!', 1721047163);
         }
 
         $this->contact = $parameters['contact'];
+
+        return $this;
     }
 }
