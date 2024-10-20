@@ -2,47 +2,64 @@
     data-namespace-typo3-fluid="true"
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
-<div class="list-group list-group-flush">
+<ul class="list-group list-group-flush">
     <f:for
         as="record"
         each="{records}">
-        <a
-            class="d-flex list-group-item list-group-item-action"
-            href="{record.link}">
-            <f:if condition="{record.phoneNumberType}">
-                <f:then>
-                    <core:icon
-                        identifier="psb-templates-{record.generalType.iconIdentifier}"
-                        size="small" />
-                    <span class="ms-1">
+        <li class="d-flex list-group-item list-group-item-action p-0">
+            <a
+                class="d-block flex-grow-1 p-2 text-decoration-none text-reset"
+                href="{record.link}">
+                <f:if condition="{record.phoneNumberType}">
+                    <f:then>
+                        <core:icon
+                            identifier="psb-templates-{record.generalType.iconIdentifier}"
+                            size="small" />
+                        <span class="ms-1">
                         <core:icon
                             identifier="psb-templates-{record.phoneNumberType.iconIdentifier}"
                             size="small" />
                     </span>
-                </f:then>
-                <f:else>
-                    <core:icon
-                        identifier="psb-templates-{record.type.iconIdentifier}"
-                        size="small" />
-                </f:else>
-            </f:if>
+                    </f:then>
+                    <f:else>
+                        <core:icon
+                            identifier="psb-templates-{record.type.iconIdentifier}"
+                            size="small" />
+                    </f:else>
+                </f:if>
 
-            <span class="ms-2">
-                <f:render
-                    arguments="{record: record}"
-                    default="{record.compactValue}"
-                    optional="true"
-                    partial="{record.recordType}" />
-            </span>
+                <span class="ms-2">
+                    <f:render
+                        arguments="{record: record}"
+                        default="{record.compactValue}"
+                        optional="true"
+                        partial="{record.recordType}" />
+                </span>
+            </a>
 
             <f:if condition="{showActionIcon}">
-                <span class="ms-auto">
+                <f:if condition="{record.additionalLinks}">
+                    <f:for
+                        as="href"
+                        each="{record.additionalLinks}"
+                        key="iconIdentifier">
+                        <a
+                            class="me-1"
+                            href="{href}">
+                            <core:icon
+                                identifier="psb-templates-{iconIdentifier}"
+                                size="small" />
+                        </a>
+                    </f:for>
+                </f:if>
+
+                <a href="{record.link}">
                     <core:icon
                         identifier="psb-templates-{record.iconIdentifier}"
                         size="small" />
-                </span>
+                </a>
             </f:if>
-        </a>
+        </li>
     </f:for>
-</div>
+</ul>
 </html>

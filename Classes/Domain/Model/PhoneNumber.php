@@ -75,6 +75,17 @@ class PhoneNumber extends AbstractContactRelatedEntity
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
     protected PhoneNumberType $phoneNumberType = PhoneNumberType::Mobile;
 
+    public function getAdditionalLinks(): array
+    {
+        if (PhoneNumberType::Mobile === $this->getPhoneNumberType()) {
+            return [
+                'chat-left-dots' => 'sms:' . $this->getCompleteNumber(),
+            ];
+        }
+
+        return [];
+    }
+
     public function getAreaCode(): string
     {
         return $this->areaCode;
