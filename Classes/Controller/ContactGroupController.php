@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Controller;
 
+use Doctrine\DBAL\Exception;
 use JsonException;
 use PSB\PsbContacts\Data\ExtensionInformation;
 use PSB\PsbContacts\Domain\Model\ContactGroup;
@@ -53,6 +54,7 @@ class ContactGroupController extends ActionController
 
     /**
      * @throws ContainerExceptionInterface
+     * @throws Exception
      * @throws IllegalObjectTypeException
      * @throws JsonException
      * @throws NoSuchCacheGroupException
@@ -71,7 +73,7 @@ class ContactGroupController extends ActionController
         $this->contactGroupRepository->add($contactGroup);
         $this->persistenceManager->persistAll();
         $this->contactGroupService->updateSlug($contactGroup);
-        $this->deletePagesCache();
+        $this->deletePagesCache(self::CACHE_TAG);
 
         return $this->redirect(actionName: 'show', arguments: ['contactGroup' => $contactGroup]);
     }
@@ -84,7 +86,7 @@ class ContactGroupController extends ActionController
     public function deleteAction(ContactGroup $contactGroup): ResponseInterface
     {
         $this->contactGroupRepository->remove($contactGroup);
-        $this->deletePagesCache();
+        $this->deletePagesCache(self::CACHE_TAG);
 
         return $this->redirect('list');
     }
@@ -104,7 +106,7 @@ class ContactGroupController extends ActionController
     #[PluginAction(default: true)]
     public function listAction(): ResponseInterface
     {
-        $this->setCacheTag();
+        $this->setCacheTags(self::CACHE_TAG);
         $this->view->assign('contactGroups', $this->contactGroupRepository->findAll());
 
         return $this->htmlResponse();
@@ -124,7 +126,7 @@ class ContactGroupController extends ActionController
     #[PluginAction]
     public function showAction(ContactGroup $contactGroup): ResponseInterface
     {
-        $this->setCacheTag();
+        $this->setCacheTags(self::CACHE_TAG);
         $this->view->assign('contactGroup', $contactGroup);
 
         return $this->htmlResponse();
@@ -132,6 +134,7 @@ class ContactGroupController extends ActionController
 
     /**
      * @throws ContainerExceptionInterface
+     * @throws Exception
      * @throws IllegalObjectTypeException
      * @throws JsonException
      * @throws NoSuchCacheGroupException
@@ -150,7 +153,7 @@ class ContactGroupController extends ActionController
         $this->contactGroupRepository->update($contactGroup);
         $this->persistenceManager->persistAll();
         $this->contactGroupService->updateSlug($contactGroup);
-        $this->deletePagesCache();
+        $this->deletePagesCache(self::CACHE_TAG);
 
         return $this->redirect(actionName: 'show', arguments: ['contactGroup' => $contactGroup]);
     }

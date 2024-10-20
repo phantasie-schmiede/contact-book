@@ -25,8 +25,6 @@ class ContactGroupWidgetController extends ActionController
 {
     use ControllerCacheTrait;
 
-    public const string CACHE_TAG = ContactGroupController::CACHE_TAG;
-
     public function __construct(
         protected readonly ContactGroupRepository $contactGroupRepository,
     ) {
@@ -35,7 +33,7 @@ class ContactGroupWidgetController extends ActionController
     #[PluginAction]
     public function displayAction(): ResponseInterface
     {
-        $this->setCacheTag();
+        $this->setCacheTags(ContactController::CACHE_TAG, ContactGroupController::CACHE_TAG);
         $this->view->assignMultiple([
             'contactGroup' => $this->contactGroupRepository->findByUid($this->settings['contactGroup']),
             'pluginUid'    => $this->request->getAttribute('currentContentObject')->data['uid'],
