@@ -12,6 +12,7 @@ namespace PSB\PsbContacts\Controller;
 
 use PSB\PsbContacts\Domain\Repository\ContactGroupRepository;
 use PSB\PsbFoundation\Attribute\PluginAction;
+use PSB\PsbFoundation\Traits\ControllerCacheTrait;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
@@ -22,6 +23,10 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  */
 class ContactGroupWidgetController extends ActionController
 {
+    use ControllerCacheTrait;
+
+    public const string CACHE_TAG = ContactGroupController::CACHE_TAG;
+
     public function __construct(
         protected readonly ContactGroupRepository $contactGroupRepository,
     ) {
@@ -30,6 +35,7 @@ class ContactGroupWidgetController extends ActionController
     #[PluginAction]
     public function displayAction(): ResponseInterface
     {
+        $this->setCacheTag();
         $this->view->assignMultiple([
             'contactGroup' => $this->contactGroupRepository->findByUid($this->settings['contactGroup']),
             'pluginUid'    => $this->request->getAttribute('currentContentObject')->data['uid'],
