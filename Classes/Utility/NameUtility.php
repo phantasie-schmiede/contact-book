@@ -19,6 +19,25 @@ use function in_array;
  */
 class NameUtility
 {
+    public static function getCompareString(string $name): string
+    {
+        $search = [
+            'ä',
+            'ö',
+            'ü',
+            'ß',
+        ];
+
+        $replace = [
+            'ae',
+            'oe',
+            'ue',
+            'ss',
+        ];
+
+        return str_replace($search, $replace, mb_strtolower($name));
+    }
+
     public static function getGenitiveForm(string $name): string
     {
         if (in_array(

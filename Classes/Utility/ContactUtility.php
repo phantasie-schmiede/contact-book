@@ -21,7 +21,12 @@ class ContactUtility
 {
     public static function sortByDisplayName(array $contacts): array
     {
-        usort($contacts, static fn(Contact $a, Contact $b) => $a->getDisplayName() <=> $b->getDisplayName());
+        usort(
+            $contacts, static fn(Contact $a, Contact $b) => strnatcasecmp(
+            NameUtility::getCompareString($a->getDisplayName()),
+            NameUtility::getCompareString($b->getDisplayName())
+        )
+        );
 
         return $contacts;
     }

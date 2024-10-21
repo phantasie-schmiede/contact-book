@@ -13,6 +13,7 @@ namespace PSB\PsbContacts\ViewHelpers\Json;
 use JsonException;
 use PSB\PsbContacts\Domain\Model\Contact;
 use PSB\PsbContacts\Domain\Model\ContactRelationInterface;
+use PSB\PsbContacts\Utility\ContactUtility;
 use RuntimeException;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -59,10 +60,11 @@ class RelatedContactsViewHelper extends AbstractViewHelper
             $relatedContacts->detach($contact);
         }
 
+        $contacts = ContactUtility::sortByDisplayName($relatedContacts->toArray());
         $data = [];
 
         /** @var Contact $contact */
-        foreach ($relatedEntity->getContacts() as $contact) {
+        foreach ($contacts as $contact) {
             $data[] = [
                 'label' => $contact->getDisplayName(),
                 'value' => $contact->getUid(),
