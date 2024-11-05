@@ -81,6 +81,11 @@ class Contact extends AbstractEntity
     #[Lazy]
     protected ObjectStorage $contactGroups;
 
+    /** @var ObjectStorage<Document> */
+    #[Inline(linkedModel: Document::class, mm: 'tx_psbcontacts_contacts_documents')]
+    #[Lazy]
+    protected ObjectStorage $documents;
+
     /** @var ObjectStorage<EMail> */
     #[Inline(linkedModel: EMail::class, mm: 'tx_psbcontacts_contacts_emails')]
     #[Lazy]
@@ -248,7 +253,7 @@ class Contact extends AbstractEntity
             }
         }
 
-        throw new InvalidArgumentException(__CLASS__ . ': Address with UID ' . $uid . ' not found!', 1724164780);
+        throw new InvalidArgumentException(__CLASS__ . ': Address with UID ' . $uid . ' was not found!', 1724164780);
     }
 
     public function getAddresses(): ObjectStorage
@@ -274,7 +279,7 @@ class Contact extends AbstractEntity
             }
         }
 
-        throw new InvalidArgumentException(__CLASS__ . ': Company with UID ' . $uid . ' not found!', 1729023370);
+        throw new InvalidArgumentException(__CLASS__ . ': Company with UID ' . $uid . ' was not found!', 1729023370);
     }
 
     public function getCompanyName(): string
@@ -290,7 +295,10 @@ class Contact extends AbstractEntity
             }
         }
 
-        throw new InvalidArgumentException(__CLASS__ . ': Contact group with UID ' . $uid . ' not found!', 1728419001);
+        throw new InvalidArgumentException(
+            __CLASS__ . ': Contact group with UID ' . $uid . ' was not found!',
+            1728419001
+        );
     }
 
     public function getContactGroups(): ObjectStorage
@@ -323,6 +331,22 @@ class Contact extends AbstractEntity
         return $displayName;
     }
 
+    public function getDocumentByUid(int $uid): Document
+    {
+        foreach ($this->documents as $document) {
+            if ($uid === $document->getUid()) {
+                return $document;
+            }
+        }
+
+        throw new InvalidArgumentException(__CLASS__ . ': Document with UID ' . $uid . ' was not found!', 1730819265);
+    }
+
+    public function getDocuments(): ObjectStorage
+    {
+        return $this->documents;
+    }
+
     public function getEMailByUid(int $uid): EMail
     {
         foreach ($this->eMails as $eMail) {
@@ -331,7 +355,7 @@ class Contact extends AbstractEntity
             }
         }
 
-        throw new InvalidArgumentException(__CLASS__ . ': E-Mail with UID ' . $uid . ' not found!', 1724164830);
+        throw new InvalidArgumentException(__CLASS__ . ': E-Mail with UID ' . $uid . ' was not found!', 1724164830);
     }
 
     public function getEMails(): ObjectStorage
@@ -347,7 +371,7 @@ class Contact extends AbstractEntity
             }
         }
 
-        throw new InvalidArgumentException(__CLASS__ . ': Event with UID ' . $uid . ' not found!', 1720095212);
+        throw new InvalidArgumentException(__CLASS__ . ': Event with UID ' . $uid . ' was not found!', 1720095212);
     }
 
     public function getEvents(): ObjectStorage
@@ -430,7 +454,9 @@ class Contact extends AbstractEntity
             }
         }
 
-        throw new InvalidArgumentException(__CLASS__ . ': Phone number with UID ' . $uid . ' not found!', 1724164856);
+        throw new InvalidArgumentException(
+            __CLASS__ . ': Phone number with UID ' . $uid . ' was not found!', 1724164856
+        );
     }
 
     public function getPhoneNumbers(): ObjectStorage
@@ -496,7 +522,7 @@ class Contact extends AbstractEntity
             }
         }
 
-        throw new InvalidArgumentException(__CLASS__ . ': Website with UID ' . $uid . ' not found!', 1724164873);
+        throw new InvalidArgumentException(__CLASS__ . ': Website with UID ' . $uid . ' was not found!', 1724164873);
     }
 
     public function getWebsites(): ObjectStorage
@@ -509,6 +535,7 @@ class Contact extends AbstractEntity
         $this->addresses = new ObjectStorage();
         $this->companies = new ObjectStorage();
         $this->contactGroups = new ObjectStorage();
+        $this->documents = new ObjectStorage();
         $this->eMails = new ObjectStorage();
         $this->events = new ObjectStorage();
         $this->phoneNumbers = new ObjectStorage();
@@ -532,6 +559,13 @@ class Contact extends AbstractEntity
     public function removeAllContactGroups(): self
     {
         $this->contactGroups = new ObjectStorage();
+
+        return $this;
+    }
+
+    public function removeDocument(Document $document): self
+    {
+        $this->documents->detach($document);
 
         return $this;
     }

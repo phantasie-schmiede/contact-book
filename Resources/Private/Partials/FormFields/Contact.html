@@ -5,8 +5,6 @@
     xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
 <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
 
-<f:render partial="Component/Form/Upload" />
-
 <div class="form-floating mb-3">
     <f:form.select
         class="form-select"
@@ -232,6 +230,14 @@
 
 <f:render
     arguments="{allContacts: allContacts, contact: contact, generalTypes: generalTypes, recordType: 'Website', records: contact.websites}"
+    section="Accordion" />
+
+<h5 class="mt-3">
+    <psbFoundation:translate id="contact:documents" />
+</h5>
+
+<f:render
+    arguments="{allContacts: allContacts, contact: contact, recordType: 'Document', records: contact.documents}"
     section="Accordion" />
 
 <h5 class="mt-3">

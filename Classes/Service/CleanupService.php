@@ -14,6 +14,7 @@ use PSB\PsbContacts\Domain\Model\AbstractContactRelatedEntity;
 use PSB\PsbContacts\Domain\Model\Contact;
 use PSB\PsbContacts\Domain\Repository\AddressRepository;
 use PSB\PsbContacts\Domain\Repository\ContactRepository;
+use PSB\PsbContacts\Domain\Repository\DocumentRepository;
 use PSB\PsbContacts\Domain\Repository\EMailRepository;
 use PSB\PsbContacts\Domain\Repository\EventRepository;
 use PSB\PsbContacts\Domain\Repository\PhoneNumberRepository;
@@ -42,6 +43,7 @@ class CleanupService implements LoggerAwareInterface
         protected readonly AddressRepository     $addressRepository,
         protected readonly ContactRepository     $contactRepository,
         protected readonly ContactService        $contactService,
+        protected readonly DocumentRepository    $documentRepository,
         protected readonly EMailRepository       $eMailRepository,
         protected readonly EventRepository       $eventRepository,
         protected readonly PersistenceManager    $persistenceManager,
@@ -51,13 +53,17 @@ class CleanupService implements LoggerAwareInterface
     }
 
     /**
-     * @return void
+     * @throws ContainerExceptionInterface
      * @throws IllegalObjectTypeException
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     * @throws SiteNotFoundException
      * @throws UnknownObjectException
      */
     public function cleanAll(): void
     {
         $this->deleteOrphanedAddresses();
+        $this->deleteOrphanedDocuments();
         $this->deleteOrphanedEmails();
         $this->deleteOrphanedEvents();
         $this->deleteOrphanedPhoneNumbers();
@@ -74,6 +80,16 @@ class CleanupService implements LoggerAwareInterface
         $deletedValues = [];
         $numberOfDeletedRecords = $this->deleteOrphanedRecords($this->addressRepository, $deletedValues);
         $this->logDeletion($deletedValues, $numberOfDeletedRecords, 'addresses');
+    }
+
+    /**
+     * @throws IllegalObjectTypeException
+     */
+    public function deleteOrphanedDocuments(): void
+    {
+        $deletedValues = [];
+        $numberOfDeletedRecords = $this->deleteOrphanedRecords($this->documentRepository, $deletedValues);
+        $this->logDeletion($deletedValues, $numberOfDeletedRecords, 'documents');
     }
 
     /**

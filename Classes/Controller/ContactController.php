@@ -23,6 +23,7 @@ use PSB\PsbContacts\Domain\Model\Address;
 use PSB\PsbContacts\Domain\Model\Contact;
 use PSB\PsbContacts\Domain\Model\ContactGroup;
 use PSB\PsbContacts\Domain\Model\ContactRelationInterface;
+use PSB\PsbContacts\Domain\Model\Document;
 use PSB\PsbContacts\Domain\Model\EMail;
 use PSB\PsbContacts\Domain\Model\Event;
 use PSB\PsbContacts\Domain\Model\PhoneNumber;
@@ -30,6 +31,7 @@ use PSB\PsbContacts\Domain\Model\Website;
 use PSB\PsbContacts\Domain\Repository\AddressRepository;
 use PSB\PsbContacts\Domain\Repository\ContactGroupRepository;
 use PSB\PsbContacts\Domain\Repository\ContactRepository;
+use PSB\PsbContacts\Domain\Repository\DocumentRepository;
 use PSB\PsbContacts\Domain\Repository\EMailRepository;
 use PSB\PsbContacts\Domain\Repository\EventRepository;
 use PSB\PsbContacts\Domain\Repository\PhoneNumberRepository;
@@ -39,19 +41,24 @@ use PSB\PsbContacts\Service\ContactGroupService;
 use PSB\PsbContacts\Service\ContactService;
 use PSB\PsbContacts\Utility\ContactUtility;
 use PSB\PsbFoundation\Attribute\PluginAction;
+use PSB\PsbFoundation\Exceptions\MisconfiguredTcaException;
 use PSB\PsbFoundation\Service\GlobalVariableProviders\RequestParameterProvider;
 use PSB\PsbFoundation\Service\GlobalVariableService;
+use PSB\PsbFoundation\Service\UploadService;
 use PSB\PsbFoundation\Traits\ControllerCacheTrait;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use ReflectionException;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
 use function is_array;
 
 /**
@@ -72,11 +79,13 @@ class ContactController extends ActionController
         protected readonly ContactGroupService    $contactGroupService,
         protected readonly ContactRepository      $contactRepository,
         protected readonly ContactService         $contactService,
+        protected readonly DocumentRepository     $documentRepository,
         protected readonly EMailRepository        $eMailRepository,
         protected readonly EventRepository        $eventRepository,
         protected readonly ExtensionInformation   $extensionInformation,
         protected readonly PersistenceManager     $persistenceManager,
         protected readonly PhoneNumberRepository  $phoneNumberRepository,
+        protected readonly UploadService          $uploadService,
         protected readonly WebsiteRepository      $websiteRepository,
     ) {
     }
@@ -215,7 +224,15 @@ class ContactController extends ActionController
     }
 
     /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
      * @throws Exception
+     * @throws IllegalObjectTypeException
+     * @throws JsonException
+     * @throws MisconfiguredTcaException
+     * @throws NotFoundExceptionInterface
+     * @throws PropertyNotAccessibleException
+     * @throws ReflectionException
      */
     private function processRelations(Contact $contact): void
     {
@@ -248,6 +265,7 @@ class ContactController extends ActionController
 
         foreach ([
                      'address',
+                     'document',
                      'eMail',
                      'event',
                      'phoneNumber',
@@ -255,6 +273,7 @@ class ContactController extends ActionController
                  ] as $relationType) {
             $existingEntities = match ($relationType) {
                 'address'     => clone $contact->getAddresses(),
+                'document'    => clone $contact->getDocuments(),
                 'eMail'       => clone $contact->getEMails(),
                 'event'       => clone $contact->getEvents(),
                 'phoneNumber' => clone $contact->getPhoneNumbers(),
@@ -270,6 +289,7 @@ class ContactController extends ActionController
                 foreach ($updatedEntities as $uid => $entityData) {
                     $entity = match ($relationType) {
                         'address'     => $contact->getAddressByUid($uid),
+                        'document'    => $contact->getDocumentByUid($uid),
                         'eMail'       => $contact->getEMailByUid($uid),
                         'event'       => $contact->getEventByUid($uid),
                         'phoneNumber' => $contact->getPhoneNumberByUid($uid),
@@ -286,6 +306,9 @@ class ContactController extends ActionController
                     switch ($relationType) {
                         case 'address':
                             $contact->removeAddress($entity);
+                            break;
+                        case 'document':
+                            $contact->removeDocument($entity);
                             break;
                         case 'eMail':
                             $contact->removeEMail($entity);
@@ -304,12 +327,19 @@ class ContactController extends ActionController
             }
 
             if (is_array($newEntities)) {
-                foreach ($newEntities as $entityData) {
+                foreach ($newEntities as $tempUid => $entityData) {
                     switch ($relationType) {
                         case 'address':
                             $address = new Address();
                             $this->updateEntityProperties($contact, $address, $entityData);
                             $this->addressRepository->add($address);
+                            break;
+                        case 'document':
+                            $document = new Document();
+                            $this->documentRepository->add($document);
+                            $this->persistenceManager->persistAll();
+                            $this->updateEntityProperties($contact, $document, $entityData, $tempUid);
+                            $this->documentRepository->update($document);
                             break;
                         case 'eMail':
                             $eMail = new EMail();
@@ -349,6 +379,33 @@ class ContactController extends ActionController
         $entity->setZipCode((string)$entityData['zipCode']);
     }
 
+    /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws MisconfiguredTcaException
+     * @throws NotFoundExceptionInterface
+     * @throws PropertyNotAccessibleException
+     * @throws ReflectionException
+     */
+    private function updateDocumentProperties(Document $entity, array $entityData, int $tempUid = null): void
+    {
+        if (null !== $tempUid) {
+            $uploadedFiles = ServerRequestFactory::fromGlobals()
+                ->getUploadedFiles();
+
+            if (isset($uploadedFiles['document'][$tempUid]['file'])) {
+                $uploadedFile = $uploadedFiles['document'][$tempUid]['file'];
+                $this->uploadService->uploadForDomainObject(
+                    $entity,
+                    'file',
+                    $uploadedFile
+                );
+            }
+        }
+
+        $entity->setNotes($entityData['notes']);
+    }
+
     private function updateEMailProperties(EMail $entity, array $entityData): void
     {
         $entity->setEMailAddress($entityData['eMailAddress']);
@@ -357,15 +414,29 @@ class ContactController extends ActionController
     }
 
     /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
      * @throws Exception
+     * @throws JsonException
+     * @throws MisconfiguredTcaException
+     * @throws NotFoundExceptionInterface
+     * @throws PropertyNotAccessibleException
+     * @throws ReflectionException
      */
-    private function updateEntityProperties(Contact $contact, ContactRelationInterface $entity, array $entityData): void
-    {
+    private function updateEntityProperties(
+        Contact                  $contact,
+        ContactRelationInterface $entity,
+        array                    $entityData,
+        int                      $tempUid = null,
+    ): void {
         $this->contactService->setContactsOfRelatedEntity($entity, $contact, $entityData['contacts']);
 
         switch (true) {
             case $entity instanceof Address:
                 $this->updateAddressProperties($entity, $entityData);
+                break;
+            case $entity instanceof Document:
+                $this->updateDocumentProperties($entity, $entityData, $tempUid);
                 break;
             case $entity instanceof EMail:
                 $this->updateEMailProperties($entity, $entityData);

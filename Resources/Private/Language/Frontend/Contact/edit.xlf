@@ -9,6 +9,9 @@
             <trans-unit id="addNewAddress">
                 <source>Add new address</source>
             </trans-unit>
+            <trans-unit id="addNewDocument">
+                <source>Add new document</source>
+            </trans-unit>
             <trans-unit id="addNewEMail">
                 <source>Add new e-mail address</source>
             </trans-unit>
@@ -23,6 +26,9 @@
             </trans-unit>
             <trans-unit id="additionalContacts.address">
                 <source>other residents</source>
+            </trans-unit>
+            <trans-unit id="additionalContacts.document">
+                <source>other linked contacts</source>
             </trans-unit>
             <trans-unit id="additionalContacts.eMail">
                 <source>other recipients</source>
@@ -41,6 +47,9 @@
             </trans-unit>
             <trans-unit id="newAddress">
                 <source>&#60;new address&#62;</source>
+            </trans-unit>
+            <trans-unit id="newDocument">
+                <source>&#60;new document&#62;</source>
             </trans-unit>
             <trans-unit id="newEMail">
                 <source>&#60;new e-mail address&#62;</source>

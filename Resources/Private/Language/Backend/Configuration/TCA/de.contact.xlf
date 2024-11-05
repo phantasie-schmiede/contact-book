@@ -31,6 +31,10 @@
                 <source>Contact</source>
                 <target>Kontakt</target>
             </trans-unit>
+            <trans-unit id="documents">
+                <source>Documents</source>
+                <target>Dokumente</target>
+            </trans-unit>
             <trans-unit id="eMails">
                 <source>E-mail addresses</source>
                 <target>E-Mail-Adressen</target>

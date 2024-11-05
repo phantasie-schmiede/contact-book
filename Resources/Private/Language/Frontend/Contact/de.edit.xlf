@@ -11,6 +11,10 @@
                 <source>Add new address</source>
                 <target>Neue Adresse hinzufügen</target>
             </trans-unit>
+            <trans-unit id="addNewDocument">
+                <source>Add new document</source>
+                <target>Neues Dokument hinzufügen</target>
+            </trans-unit>
             <trans-unit id="addNewEMail">
                 <source>Add new e-mail address</source>
                 <target>Neue E-Mail-Adresse hinzufügen</target>
@@ -30,6 +34,10 @@
             <trans-unit id="additionalContacts.address">
                 <source>other residents</source>
                 <target>weitere Bewohner</target>
+            </trans-unit>
+            <trans-unit id="additionalContacts.document">
+                <source>other linked contacts</source>
+                <target>weitere verlinkte Kontakte</target>
             </trans-unit>
             <trans-unit id="additionalContacts.eMail">
                 <source>other recipients</source>
@@ -54,6 +62,10 @@
             <trans-unit id="newAddress">
                 <source>&#60;new address&#62;</source>
                 <target>&#60;neue Adresse&#62;</target>
+            </trans-unit>
+            <trans-unit id="newDocument">
+                <source>&#60;new document&#62;</source>
+                <target>&#60;neues Dokument&#62;</target>
             </trans-unit>
             <trans-unit id="newEMail">
                 <source>&#60;new e-mail address&#62;</source>
