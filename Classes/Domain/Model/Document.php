@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace PSB\PsbContacts\Domain\Model;
 
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\File;
+use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
 use PSB\PsbFoundation\Enum\SelectRenderType;
@@ -46,8 +47,29 @@ class Document extends AbstractContactRelatedEntity
     ],     maxItems: 1, uploadDuplicationBehaviour: DuplicationBehavior::RENAME, uploadFileNameGeneratorPartSeparator: '_', uploadFileNameGeneratorPrefix: 'document', uploadFileNameGeneratorProperties: ['uid'], uploadFileNameGeneratorSuffix: 'file', uploadTargetFolder: 'user_upload/psb_contacts/documents',)]
     protected FileReference $file;
 
+    #[Input]
+    protected string $title = '';
+
+    public function getCompactValue(): string
+    {
+        return $this->getTitle() ?: $this->notes ?: $this->file->getOriginalResource()
+            ->getName();
+    }
+
     public function getFile(): FileReference
     {
         return $this->file;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
     }
 }

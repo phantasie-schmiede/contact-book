@@ -15,6 +15,9 @@
             <trans-unit id="notes">
                 <source>Notes</source>
             </trans-unit>
+            <trans-unit id="title">
+                <source>Title</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

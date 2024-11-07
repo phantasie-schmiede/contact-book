@@ -33,6 +33,30 @@
         </f:else>
     </f:if>
 </div>
+
+<div
+    class="form-floating mb-3">
+    <f:form.textfield
+        class="form-control"
+        name="document[{uid}][title]"
+        placeholder="{psbFoundation:translate(id: 'document:title')}"
+        value="{record.title}" />
+    <label class="form-label">
+        <psbFoundation:translate id="document:title" />
+    </label>
+</div>
+
+<div class="form-floating mb-3">
+    <f:form.textarea
+        class="form-control psb-templates-auto-size"
+        name="document[{uid}][notes]"
+        placeholder="{psbFoundation:translate(id: 'document:notes')}"
+        value="{record.notes}" />
+    <label class="form-label">
+        <psbFoundation:translate id="document:notes" />
+    </label>
+</div>
+
 <div class="form-floating mb-3">
     <input
         autocomplete="off"
@@ -43,8 +67,7 @@
         data-psb-autocomplete-value-target="#contact-value-{uid}"
         placeholder="{psbFoundation:translate(id: 'edit:additionalContacts.document')}"
         type="text" />
-    <label
-        class="form-label">
+    <label class="form-label">
         <psbFoundation:translate id="edit:additionalContacts.document" />
     </label>
     <ul
@@ -55,17 +78,7 @@
         id="contact-value-{uid}"
         name="document[{uid}][contacts]" />
 </div>
-<div class="form-floating mb-3">
-    <f:form.textarea
-        class="form-control psb-templates-auto-size"
-        name="document[{uid}][notes]"
-        placeholder="{psbFoundation:translate(id: 'document:notes')}"
-        value="{record.notes}" />
-    <label
-        class="form-label">
-        <psbFoundation:translate id="document:notes" />
-    </label>
-</div>
+
 <div
     class="btn btn-danger"
     data-psb-delete-mode="closest"

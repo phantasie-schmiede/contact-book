@@ -296,8 +296,7 @@ class Contact extends AbstractEntity
         }
 
         throw new InvalidArgumentException(
-            __CLASS__ . ': Contact group with UID ' . $uid . ' was not found!',
-            1728419001
+            __CLASS__ . ': Contact group with UID ' . $uid . ' was not found!', 1728419001
         );
     }
 
@@ -345,6 +344,24 @@ class Contact extends AbstractEntity
     public function getDocuments(): ObjectStorage
     {
         return $this->documents;
+    }
+
+    public function getDocumentsWithoutImages(): array
+    {
+        $documents = [];
+
+        foreach ($this->documents as $document) {
+            if (!str_starts_with(
+                $document->getFile()
+                    ->getOriginalResource()
+                    ->getMimeType(),
+                'image/'
+            )) {
+                $documents[] = $document;
+            }
+        }
+
+        return $documents;
     }
 
     public function getEMailByUid(int $uid): EMail
@@ -424,6 +441,24 @@ class Contact extends AbstractEntity
         }
 
         return NameUtility::getGenitiveForm($name);
+    }
+
+    public function getImages(): array
+    {
+        $images = [];
+
+        foreach ($this->documents as $document) {
+            if (str_starts_with(
+                $document->getFile()
+                    ->getOriginalResource()
+                    ->getMimeType(),
+                'image/'
+            )) {
+                $images[] = $document;
+            }
+        }
+
+        return $images;
     }
 
     public function getLastName(): string

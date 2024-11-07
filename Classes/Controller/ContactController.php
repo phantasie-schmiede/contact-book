@@ -404,6 +404,7 @@ class ContactController extends ActionController
         }
 
         $entity->setNotes($entityData['notes']);
+        $entity->setTitle($entityData['title']);
     }
 
     private function updateEMailProperties(EMail $entity, array $entityData): void

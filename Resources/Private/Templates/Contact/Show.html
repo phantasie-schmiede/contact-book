@@ -14,8 +14,34 @@
     file="EXT:psb_contacts/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
     name="modal" />
 
+<f:asset.script
+    identifier="dynamicModal"
+    src="EXT:psb_templates/Resources/Public/JavaScript/dynamicModal.js"
+    type="module" />
+
 <div class="row">
     <div class="col-12">
+        <f:if condition="{contact.images}">
+            <div class="mb-3">
+                <f:render
+                    arguments="{
+                        autoHeight: true,
+                        id: 'contact-images',
+                        showNavigation: true
+                    }"
+                    contentAs="slides"
+                    partial="Component/Swiper">
+                    <f:for
+                        as="document"
+                        each="{contact.images}">
+                        <f:image
+                            class="swiper-slide"
+                            image="{document.file}" />
+                    </f:for>
+                </f:render>
+            </div>
+        </f:if>
+
         <h1>{contact.fullName}</h1>
 
         <f:if condition="{contact.nickname}">
@@ -184,11 +210,4 @@
         </div>
     </div>
 </div>
-
-<f:section name="FooterAssets">
-    <f:asset.script
-        identifier="dynamicModal"
-        src="EXT:psb_templates/Resources/Public/JavaScript/dynamicModal.js"
-        type="module" />
-</f:section>
 </html>
