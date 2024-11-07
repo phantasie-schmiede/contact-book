@@ -5,6 +5,15 @@
     xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
 <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/contactGroup.xlf" />
 
+<f:asset.script
+    identifier="clearInput"
+    src="EXT:psb_templates/Resources/Public/JavaScript/clearInput.js"
+    type="module" />
+<f:asset.script
+    identifier="inputAutocomplete"
+    src="EXT:psb_templates/Resources/Public/JavaScript/inputAutocomplete.js"
+    type="module" />
+
 <div class="form-floating mb-3">
     <f:form.textfield
         class="form-control"
@@ -20,7 +29,7 @@
 <div class="form-floating">
     <input
         autocomplete="off"
-        class="form-control js-clear-input"
+        class="form-control psb-templates-clear-input"
         data-psb-autocomplete-items="{allContacts}"
         data-psb-autocomplete-preselection="{psbContacts:json.relatedContacts(relatedEntity: contactGroup)}"
         data-psb-autocomplete-selection-target="#contact-selection"
@@ -39,9 +48,4 @@
         id="contact-value"
         name="contacts" />
 </div>
-
-<f:asset.script
-    identifier="inputAutocomplete"
-    src="EXT:psb_templates/Resources/Public/JavaScript/inputAutocomplete.js"
-    type="module" />
 </html>

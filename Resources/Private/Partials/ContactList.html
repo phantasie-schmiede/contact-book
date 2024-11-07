@@ -11,10 +11,15 @@
 
 <f:if condition="{contacts}">
     <f:then>
+        <f:asset.script
+            identifier="filter"
+            src="EXT:psb_templates/Resources/Public/JavaScript/filter.js"
+            type="module" />
+
         <div class="mb-1 position-relative">
             <input
                 autocomplete="on"
-                class="form-control js-clear-input"
+                class="form-control psb-templates-clear-input"
                 data-psb-filter-target=".js-contact-list-item"
                 data-psb-filter-value="data-search-terms"
                 id="search{pluginUid}"
@@ -52,11 +57,6 @@
                 </li>
             </f:for>
         </ul>
-
-        <f:asset.script
-            identifier="filter"
-            src="EXT:psb_templates/Resources/Public/JavaScript/filter.js"
-            type="module" />
     </f:then>
     <f:else>
         <psbFoundation:translate id="contactList:noContacts" />

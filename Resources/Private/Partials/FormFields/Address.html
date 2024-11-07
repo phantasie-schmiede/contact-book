@@ -112,7 +112,7 @@
 <div class="form-floating mb-3">
     <input
         autocomplete="off"
-        class="form-control js-clear-input"
+        class="form-control psb-templates-clear-input"
         data-psb-autocomplete-items="{allContacts}"
         data-psb-autocomplete-preselection="{psbContacts:json.relatedContacts(relatedEntity: record, contact: contact)}"
         data-psb-autocomplete-selection-target="#contact-selection-{uid}"
@@ -133,7 +133,7 @@
 </div>
 <div class="form-floating mb-3">
     <f:form.textarea
-        class="form-control"
+        class="form-control psb-templates-auto-size"
         name="address[{uid}][notes]"
         placeholder="{psbFoundation:translate(id: 'address:notes')}"
         value="{record.notes}" />
