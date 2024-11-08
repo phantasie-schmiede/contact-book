@@ -28,7 +28,7 @@
         </f:then>
         <f:else>
             <f:render
-                arguments="{id: 'document-{uid}', name: 'document[{uid}][file]'}"
+                arguments="{accept: '*;capture=camera', id: 'document-{uid}', name: 'document[{uid}][file]'}"
                 partial="Component/Form/Upload" />
         </f:else>
     </f:if>
