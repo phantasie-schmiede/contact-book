@@ -7,9 +7,9 @@
         source-language="en"
         target-language="de">
         <body>
-            <trans-unit id="showAllContacts">
-                <source>Show all contacts</source>
-                <target>Alle Kontakte anzeigen</target>
+            <trans-unit id="showAll">
+                <source>Show all</source>
+                <target>Alle anzeigen</target>
             </trans-unit>
         </body>
     </file>

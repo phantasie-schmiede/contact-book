@@ -6,8 +6,8 @@
         product-name="psb_contacts"
         source-language="en">
         <body>
-            <trans-unit id="showAllContacts">
-                <source>Show all contacts</source>
+            <trans-unit id="showAll">
+                <source>Show all</source>
             </trans-unit>
         </body>
     </file>
