@@ -464,6 +464,7 @@ class ContactController extends ActionController
         $entity->setShowAnniversaries((bool)$entityData['showAnniversaries']);
         $entity->setShowInCalendar((bool)$entityData['showInCalendar']);
         $entity->setType(EventType::from($entityData['type']));
+        $entity->setYearUnknown((bool)$entityData['yearUnknown']);
     }
 
     private function updatePhoneNumberProperties(PhoneNumber $entity, array $entityData): void

@@ -54,10 +54,12 @@
     <f:form.checkbox
         checked="{f:if(condition: record.yearUnknown, then: '1', else: '0')}"
         class="form-check-input"
+        id="event-{uid}-yearUnknown"
         name="event[{uid}][yearUnknown]"
         value="1" />
     <label
-        class="form-check-label">
+        class="form-check-label"
+        for="event-{uid}-yearUnknown">
         <psbFoundation:translate id="event:yearUnknown" />
     </label>
 </div>
@@ -65,10 +67,12 @@
     <f:form.checkbox
         checked="{f:if(condition: record.showAnniversaries, then: '1', else: '0')}"
         class="form-check-input"
+        id="event-{uid}-showAnniversaries"
         name="event[{uid}][showAnniversaries]"
         value="1" />
     <label
-        class="form-check-label">
+        class="form-check-label"
+        for="event-{uid}-showAnniversaries">
         <psbFoundation:translate id="event:showAnniversaries" />
     </label>
 </div>
@@ -76,10 +80,12 @@
     <f:form.checkbox
         checked="{f:if(condition: record.showInCalendar, then: '1', else: '0')}"
         class="form-check-input"
+        id="event-{uid}-showInCalendar"
         name="event[{uid}][showInCalendar]"
         value="1" />
     <label
-        class="form-check-label">
+        class="form-check-label"
+        for="event-{uid}-showInCalendar">
         <psbFoundation:translate id="event:showInCalendar" />
     </label>
 </div>
