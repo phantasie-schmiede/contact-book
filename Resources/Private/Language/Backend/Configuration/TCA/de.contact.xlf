@@ -67,10 +67,6 @@
                 <source>Phone numbers</source>
                 <target>Rufnummern</target>
             </trans-unit>
-            <trans-unit id="showInAddressBook">
-                <source>Show in address book</source>
-                <target>Im Adressbuch anzeigen</target>
-            </trans-unit>
             <trans-unit id="title">
                 <source>Title</source>
                 <target>Titel</target>

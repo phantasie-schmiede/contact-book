@@ -123,9 +123,6 @@ class Contact extends AbstractEntity
     #[Lazy]
     protected ObjectStorage $phoneNumbers;
 
-    #[Check]
-    protected bool $showInAddressBook = false;
-
     #[Slug(generatorOptions: self::SLUG_GENERATOR_OPTIONS)]
     protected string $slug = '';
 
@@ -720,13 +717,6 @@ class Contact extends AbstractEntity
     public function setPhoneNumbers(ObjectStorage $phoneNumbers): self
     {
         $this->phoneNumbers = $phoneNumbers;
-
-        return $this;
-    }
-
-    public function setShowInAddressBook(bool $showInAddressBook): self
-    {
-        $this->showInAddressBook = $showInAddressBook;
 
         return $this;
     }

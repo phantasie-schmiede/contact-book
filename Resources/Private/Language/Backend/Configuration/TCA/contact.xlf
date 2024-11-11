@@ -51,9 +51,6 @@
             <trans-unit id="phoneNumbers">
                 <source>Phone numbers</source>
             </trans-unit>
-            <trans-unit id="showInAddressBook">
-                <source>Show in address book</source>
-            </trans-unit>
             <trans-unit id="title">
                 <source>Title</source>
             </trans-unit>
