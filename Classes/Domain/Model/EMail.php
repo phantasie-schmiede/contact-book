@@ -28,7 +28,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 ])]
 class EMail extends AbstractContactRelatedEntity
 {
-    public const string ICON_IDENTIFIER = 'envelope-at';
+    public const string ACTION_ICON_IDENTIFIER = 'envelope-at';
 
     /** @var ObjectStorage<Contact> */
     #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_emails', mmOppositeField: 'eMails', renderType: SelectRenderType::selectMultipleSideBySide)]

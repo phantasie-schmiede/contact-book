@@ -107,7 +107,16 @@
                 <psbFoundation:translate id="contact:websites" />
             </h3>
             <f:render
-                arguments="{records: contact.websites, showActionIcon: true}"
+                arguments="{linkTarget: '_blank', records: contact.websites, showActionIcon: true}"
+                partial="LinkedRelations" />
+        </f:if>
+
+        <f:if condition="{contact.documentsWithoutImages}">
+            <h3 class="mt-3">
+                <psbFoundation:translate id="contact:documents" />
+            </h3>
+            <f:render
+                arguments="{linkTarget: '_blank', records: contact.documentsWithoutImages, showActionIcon: true}"
                 partial="LinkedRelations" />
         </f:if>
 

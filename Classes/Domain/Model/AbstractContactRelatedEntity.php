@@ -24,7 +24,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  */
 abstract class AbstractContactRelatedEntity extends AbstractEntity implements ContactRelationInterface
 {
-    public const string ICON_IDENTIFIER = '';
+    /* Override this constant in your concrete class. */
+    public const string ACTION_ICON_IDENTIFIER = '';
 
     protected ObjectStorage $contacts;
 
@@ -43,6 +44,11 @@ abstract class AbstractContactRelatedEntity extends AbstractEntity implements Co
         return $this;
     }
 
+    public function getActionIconIdentifier(): string
+    {
+        return static::ACTION_ICON_IDENTIFIER;
+    }
+
     public function getContacts(): ObjectStorage
     {
         return $this->contacts;
@@ -51,11 +57,6 @@ abstract class AbstractContactRelatedEntity extends AbstractEntity implements Co
     public function getContactsSorted(): array
     {
         return ContactUtility::sortByDisplayName($this->contacts->toArray());
-    }
-
-    public function getIconIdentifier(): string
-    {
-        return static::ICON_IDENTIFIER;
     }
 
     public function getNotes(): string

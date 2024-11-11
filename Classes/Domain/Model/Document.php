@@ -29,7 +29,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 ])]
 class Document extends AbstractContactRelatedEntity
 {
-    public const string ICON_IDENTIFIER = 'file-earmark-text';
+    public const string ACTION_ICON_IDENTIFIER = 'download';
+    public const string TYPE_ICON_IDENTIFIER   = 'file-earmark-text';
 
     /** @var ObjectStorage<Contact> */
     #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_documents', mmOppositeField: 'documents', renderType: SelectRenderType::selectMultipleSideBySide)]
@@ -45,15 +46,15 @@ class Document extends AbstractContactRelatedEntity
         'rtf',
         'txt',
     ],     maxItems: 1, uploadDuplicationBehaviour: DuplicationBehavior::RENAME, uploadFileNameGeneratorPartSeparator: '_', uploadFileNameGeneratorPrefix: 'document', uploadFileNameGeneratorProperties: ['uid'], uploadFileNameGeneratorSuffix: 'file', uploadTargetFolder: 'user_upload/psb_contacts/documents',)]
-    protected FileReference $file;
+    protected ?FileReference $file = null;
 
     #[Input]
     protected string $title = '';
 
     public function getCompactValue(): string
     {
-        return $this->getTitle() ?: $this->notes ?: $this->file->getOriginalResource()
-            ->getName();
+        return $this->getTitle() ?: $this->notes ?: $this->file?->getOriginalResource()
+            ->getName() ?: (string)$this->getUid();
     }
 
     public function getFile(): FileReference
@@ -61,9 +62,20 @@ class Document extends AbstractContactRelatedEntity
         return $this->file;
     }
 
+    public function getLink(): string
+    {
+        return $this->file->getOriginalResource()
+            ->getPublicUrl();
+    }
+
     public function getTitle(): string
     {
         return $this->title;
+    }
+
+    public function getTypeIconIdentifier(): string
+    {
+        return self::TYPE_ICON_IDENTIFIER;
     }
 
     public function setTitle(string $title): self

@@ -28,7 +28,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 ])]
 class Website extends AbstractContactRelatedEntity
 {
-    public const string ICON_IDENTIFIER = 'box-arrow-up-right';
+    public const string ACTION_ICON_IDENTIFIER = 'box-arrow-up-right';
 
     /** @var ObjectStorage<Contact> */
     #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_websites', mmOppositeField: 'websites', renderType: SelectRenderType::selectMultipleSideBySide)]

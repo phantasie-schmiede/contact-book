@@ -8,18 +8,24 @@
         <li class="d-flex list-group-item list-group-item-action p-0">
             <a
                 class="d-block flex-grow-1 p-2 text-decoration-none text-reset"
-                href="{record.link}">
+                href="{record.link}"
+                target="{linkTarget}">
                 <f:if condition="{record.phoneNumberType}">
                     <f:then>
                         <core:icon
                             identifier="psb-templates-{record.generalType.iconIdentifier}"
                             size="small" />
                         <span class="ms-1">
-                        <core:icon
-                            identifier="psb-templates-{record.phoneNumberType.iconIdentifier}"
-                            size="small" />
-                    </span>
+                            <core:icon
+                                identifier="psb-templates-{record.phoneNumberType.iconIdentifier}"
+                                size="small" />
+                        </span>
                     </f:then>
+                    <f:else if="{record.typeIconIdentifier}">
+                        <core:icon
+                            identifier="psb-templates-{record.typeIconIdentifier}"
+                            size="small" />
+                    </f:else>
                     <f:else>
                         <core:icon
                             identifier="psb-templates-{record.type.iconIdentifier}"
@@ -41,20 +47,23 @@
                     <f:for
                         as="href"
                         each="{record.additionalLinks}"
-                        key="iconIdentifier">
+                        key="actionIconIdentifier">
                         <a
-                            class="me-3"
+                            class="p-2"
                             href="{href}">
                             <core:icon
-                                identifier="psb-templates-{iconIdentifier}"
+                                identifier="psb-templates-{actionIconIdentifier}"
                                 size="small" />
                         </a>
                     </f:for>
                 </f:if>
 
-                <a href="{record.link}">
+                <a
+                    class="p-2"
+                    href="{record.link}"
+                    target="{linkTarget}">
                     <core:icon
-                        identifier="psb-templates-{record.iconIdentifier}"
+                        identifier="psb-templates-{record.actionIconIdentifier}"
                         size="small" />
                 </a>
             </f:if>
