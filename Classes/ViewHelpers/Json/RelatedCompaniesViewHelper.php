@@ -37,8 +37,13 @@ class RelatedCompaniesViewHelper extends AbstractViewHelper
      */
     public function render(): string
     {
-        /** @var Contact $contact */
+        /** @var Contact|null $contact */
         $contact = $this->arguments['contact'];
+
+        if (!$contact instanceof Contact) {
+            return '';
+        }
+
         $data = [];
 
         /** @var Contact $company */

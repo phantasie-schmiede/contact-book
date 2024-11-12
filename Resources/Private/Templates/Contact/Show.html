@@ -130,7 +130,7 @@
                     each="{contact.events}">
                     <li class="list-group-item">
                         <strong>
-                            <psbFoundation:translate id="event:type.{event.type.value}" />
+                            {event.label}
                         </strong>
                         <span>{event.date -> f:format.date(format: 'd.m.Y')}</span>
                     </li>

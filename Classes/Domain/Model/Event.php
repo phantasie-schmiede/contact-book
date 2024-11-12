@@ -103,7 +103,7 @@ class Event extends AbstractContactRelatedEntity
      */
     public function getLabel(): string
     {
-        if (EventType::Other === $this->type) {
+        if (EventType::Other === $this->type && !empty($this->notes)) {
             return $this->notes;
         }
 
