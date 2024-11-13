@@ -13,7 +13,6 @@ namespace PSB\PsbContacts\Domain\Model;
 use InvalidArgumentException;
 use PSB\PsbContacts\Domain\Enum\ContactType;
 use PSB\PsbContacts\Utility\NameUtility;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Check;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Inline;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
@@ -388,9 +387,25 @@ class Contact extends AbstractEntity
         throw new InvalidArgumentException(__CLASS__ . ': Event with UID ' . $uid . ' was not found!', 1720095212);
     }
 
+    /**
+     * @return ObjectStorage<Event>
+     */
     public function getEvents(): ObjectStorage
     {
         return $this->events;
+    }
+
+    public function getEventsInDescendingOrder(): array
+    {
+        $events = $this->events->toArray();
+
+        usort(
+            $events, static function(Event $eventA, Event $eventB) {
+            return $eventB->getDate() <=> $eventA->getDate();
+        }
+        );
+
+        return $events;
     }
 
     public function getFirstName(): string

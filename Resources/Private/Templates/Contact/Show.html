@@ -120,14 +120,14 @@
                 partial="LinkedRelations" />
         </f:if>
 
-        <f:if condition="{contact.events}">
+        <f:if condition="{contact.eventsInDescendingOrder}">
             <h3 class="mt-3">
                 <psbFoundation:translate id="contact:events" />
             </h3>
             <ul class="list-group list-group-flush">
                 <f:for
                     as="event"
-                    each="{contact.events}">
+                    each="{contact.eventsInDescendingOrder}">
                     <li class="list-group-item">
                         <strong>
                             {event.label}
