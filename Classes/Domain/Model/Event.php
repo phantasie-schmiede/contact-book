@@ -29,7 +29,10 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  *
  * @package PSB\PsbContacts\Domain\Model
  */
-#[Ctrl(label: 'date', searchFields: [
+#[Ctrl(label        : 'date', labelAlt: [
+    'type',
+    'contacts',
+],     labelAltForce: true, searchFields: [
     'date',
     'notes',
 ])]
@@ -61,6 +64,21 @@ class Event extends AbstractContactRelatedEntity
 
     #[Check]
     protected bool $yearUnknown = false;
+
+    public function getAnniversaryForYear(int $year): int
+    {
+        if ($this->isYearUnknown()) {
+            return 0;
+        }
+
+        $anniversary = $year - (int)$this->date->format('Y');
+
+        if (1 > $anniversary) {
+            return 0;
+        }
+
+        return $anniversary;
+    }
 
     /**
      * @throws AspectNotFoundException
