@@ -24,11 +24,11 @@
         <f:if condition="{contact.images}">
             <div class="mb-3">
                 <f:render
-                    arguments="{
+                    arguments="{configuration: {
                         autoHeight: true,
-                        id: 'contact-images',
-                        showNavigation: true
-                    }"
+                        navigation: true
+                    },
+                    id: 'contact-images'}"
                     contentAs="slides"
                     partial="Component/Swiper">
                     <f:for
