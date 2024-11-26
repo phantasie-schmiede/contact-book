@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2024-11-26T17:18:00+01:00"
+        original="messages"
+        product-name="psb_contacts"
+        source-language="en">
+        <body>
+            <trans-unit id="baptism">
+                <source>Baptism</source>
+            </trans-unit>
+            <trans-unit id="baptism.anniversary">
+                <source>baptism day</source>
+            </trans-unit>
+            <trans-unit id="birthday">
+                <source>Date of birth</source>
+            </trans-unit>
+            <trans-unit id="birthday.anniversary">
+                <source>birthday</source>
+            </trans-unit>
+            <trans-unit id="confirmation">
+                <source>Confirmation</source>
+            </trans-unit>
+            <trans-unit id="confirmation.anniversary">
+                <source>confirmation anniversary</source>
+            </trans-unit>
+            <trans-unit id="death">
+                <source>Death</source>
+            </trans-unit>
+            <trans-unit id="death.anniversary">
+                <source>anniversary of the death</source>
+            </trans-unit>
+            <trans-unit id="divorce">
+                <source>Divorce</source>
+            </trans-unit>
+            <trans-unit id="divorce.anniversary">
+                <source>Anniversary of the divorce</source>
+            </trans-unit>
+            <trans-unit id="other">
+                <source>Other</source>
+            </trans-unit>
+            <trans-unit id="other.anniversary">
+                <source>anniversary</source>
+            </trans-unit>
+            <trans-unit id="wedding">
+                <source>Wedding</source>
+            </trans-unit>
+            <trans-unit id="wedding.anniversary">
+                <source>wedding anniversary</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

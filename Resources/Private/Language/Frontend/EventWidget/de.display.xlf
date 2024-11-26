@@ -7,17 +7,6 @@
         source-language="en"
         target-language="de">
         <body>
-            <group id="noUpcomingEvents"
-                restype="x-gettext-plurals">
-                <trans-unit id="noUpcomingEvents[0]">
-                    <source>no upcomming events in the {typeList} category</source>
-                    <target>keine anstehenden Ereignisse in der Kategorie {typeList}</target>
-                </trans-unit>
-                <trans-unit id="noUpcomingEvents[1]">
-                    <source>no upcomming events in the {typeList} categories</source>
-                    <target>keine anstehenden Ereignisse in den Kategorien {typeList}</target>
-                </trans-unit>
-            </group>
             <trans-unit id="and">
                 <source>and</source>
                 <target>und</target>
@@ -30,34 +19,17 @@
                 <source>{anniversary}. {type} of {persons}</source>
                 <target>{anniversary}. {type} von {persons}</target>
             </trans-unit>
-            <trans-unit id="type.baptism.anniversary">
-                <source>baptism day</source>
-                <target>Tauftag</target>
-            </trans-unit>
-            <trans-unit id="type.birthday.anniversary">
-                <source>birthday</source>
-                <target>Geburtstag</target>
-            </trans-unit>
-            <trans-unit id="type.confirmation.anniversary">
-                <source>confirmation anniversary</source>
-                <target>Jahrestag der Konfirmation</target>
-            </trans-unit>
-            <trans-unit id="type.death.anniversary">
-                <source>anniversary of the death</source>
-                <target>Todestag</target>
-            </trans-unit>
-            <trans-unit id="type.divorce.anniversary">
-                <source>Anniversary of the divorce</source>
-                <target>Jahrestag der Scheidung</target>
-            </trans-unit>
-            <trans-unit id="type.other.anniversary">
-                <source>anniversary</source>
-                <target>Jahrestag</target>
-            </trans-unit>
-            <trans-unit id="type.wedding.anniversary">
-                <source>wedding anniversary</source>
-                <target>Hochzeitstag</target>
-            </trans-unit>
+            <group id="noUpcomingEvents"
+                restype="x-gettext-plurals">
+                <trans-unit id="noUpcomingEvents[0]">
+                    <source>no upcomming events in the {typeList} category</source>
+                    <target>keine anstehenden Ereignisse in der Kategorie {typeList}</target>
+                </trans-unit>
+                <trans-unit id="noUpcomingEvents[1]">
+                    <source>no upcomming events in the {typeList} categories</source>
+                    <target>keine anstehenden Ereignisse in den Kategorien {typeList}</target>
+                </trans-unit>
+            </group>
         </body>
     </file>
 </xliff>

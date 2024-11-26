@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2024-11-26T17:19:00+01:00"
+        original="messages"
+        product-name="psb_contacts"
+        source-language="en"
+        target-language="de">
+        <body>
+            <trans-unit id="baptism">
+                <source>Baptism</source>
+                <target>Taufe</target>
+            </trans-unit>
+            <trans-unit id="baptism.anniversary">
+                <source>baptism day</source>
+                <target>Tauftag</target>
+            </trans-unit>
+            <trans-unit id="birthday">
+                <source>Date of birth</source>
+                <target>Geburt</target>
+            </trans-unit>
+            <trans-unit id="birthday.anniversary">
+                <source>birthday</source>
+                <target>Geburtstag</target>
+            </trans-unit>
+            <trans-unit id="confirmation">
+                <source>Confirmation</source>
+                <target>Konfirmation</target>
+            </trans-unit>
+            <trans-unit id="confirmation.anniversary">
+                <source>confirmation anniversary</source>
+                <target>Jahrestag der Konfirmation</target>
+            </trans-unit>
+            <trans-unit id="death">
+                <source>Death</source>
+                <target>Tod</target>
+            </trans-unit>
+            <trans-unit id="death.anniversary">
+                <source>anniversary of the death</source>
+                <target>Todestag</target>
+            </trans-unit>
+            <trans-unit id="divorce">
+                <source>Divorce</source>
+                <target>Scheidung</target>
+            </trans-unit>
+            <trans-unit id="divorce.anniversary">
+                <source>Anniversary of the divorce</source>
+                <target>Jahrestag der Scheidung</target>
+            </trans-unit>
+            <trans-unit id="other">
+                <source>Other</source>
+                <target>Anderes</target>
+            </trans-unit>
+            <trans-unit id="other.anniversary">
+                <source>anniversary</source>
+                <target>Jahrestag</target>
+            </trans-unit>
+            <trans-unit id="wedding">
+                <source>Wedding</source>
+                <target>Hochzeit</target>
+            </trans-unit>
+            <trans-unit id="wedding.anniversary">
+                <source>wedding anniversary</source>
+                <target>Hochzeitstag</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

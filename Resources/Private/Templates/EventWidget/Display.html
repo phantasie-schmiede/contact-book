@@ -4,8 +4,6 @@
     xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers"
     xmlns:psbTemplates="http://typo3.org/ns/PSB/PsbTemplates/ViewHelpers"
     xmlns:psbvh="http://typo3.org/ns/PSB/PsbViewHelpers/ViewHelpers">
-<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/event.xlf" />
-
 <f:if condition="{events}">
     <f:then>
         <ul class="list-group list-group-flush overflow-auto">
@@ -25,12 +23,12 @@
                                 <f:then>
                                     <f:variable
                                         name="eventType"
-                                        value="{psbFoundation:translate(id: 'type.{event.type.value}.anniversary')}" />
+                                        value="{psbFoundation:translate(id: '{event.type.value}.anniversary')}" />
                                 </f:then>
                                 <f:else>
                                     <f:variable
                                         name="eventType"
-                                        value="{psbFoundation:translate(id: 'event:type.{event.type.value}')}" />
+                                        value="{psbFoundation:translate(id: event.type.value)}" />
                                 </f:else>
                             </f:if>
 

@@ -125,7 +125,7 @@ class Event extends AbstractContactRelatedEntity
             return $this->notes;
         }
 
-        return $this->type->getLabel();
+        return $this->type->getLabel($this->isAnniversary() ? 'anniversary' : '');
     }
 
     public function getNextAnniversary(): int

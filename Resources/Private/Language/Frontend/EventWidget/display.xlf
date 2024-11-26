@@ -23,27 +23,6 @@
                     <source>no upcomming events in the {typeList} categories</source>
                 </trans-unit>
             </group>
-            <trans-unit id="type.baptism.anniversary">
-                <source>baptism day</source>
-            </trans-unit>
-            <trans-unit id="type.birthday.anniversary">
-                <source>birthday</source>
-            </trans-unit>
-            <trans-unit id="type.confirmation.anniversary">
-                <source>confirmation anniversary</source>
-            </trans-unit>
-            <trans-unit id="type.death.anniversary">
-                <source>anniversary of the death</source>
-            </trans-unit>
-            <trans-unit id="type.divorce.anniversary">
-                <source>Anniversary of the divorce</source>
-            </trans-unit>
-            <trans-unit id="type.other.anniversary">
-                <source>anniversary</source>
-            </trans-unit>
-            <trans-unit id="type.wedding.anniversary">
-                <source>wedding anniversary</source>
-            </trans-unit>
         </body>
     </file>
 </xliff>

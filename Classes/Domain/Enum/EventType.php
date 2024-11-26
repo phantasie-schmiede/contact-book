@@ -40,10 +40,12 @@ enum EventType: string
      * @throws JsonException
      * @throws NotFoundExceptionInterface
      */
-    public function getLabel(): string
+    public function getLabel(string $subType = ''): string
     {
+        $key = $this->value . ($subType ? ('.' . $subType) : '');
+
         return LocalizationUtility::translate(
-            'LLL:EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/event.xlf:type.' . $this->value
+            'LLL:EXT:psb_contacts/Resources/Private/Language/Frontend/eventType.xlf:' . $key
         );
     }
 }
