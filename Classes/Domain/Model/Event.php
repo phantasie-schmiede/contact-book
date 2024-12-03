@@ -119,10 +119,18 @@ class Event extends AbstractContactRelatedEntity
      * @throws JsonException
      * @throws NotFoundExceptionInterface
      */
-    public function getLabel(): string
+    public function getLabel(?int $year = null): string
     {
         if (EventType::Other === $this->type && !empty($this->notes)) {
             return $this->notes;
+        }
+
+        if (null !== $year) {
+            $anniversary = $this->getAnniversaryForYear($year);
+
+            if (0 < $anniversary) {
+                return $anniversary . '. ' . $this->type->getLabel('anniversary');
+            }
         }
 
         return $this->type->getLabel($this->isAnniversary() ? 'anniversary' : '');
