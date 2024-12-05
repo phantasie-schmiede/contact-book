@@ -15,11 +15,11 @@ use PSB\PsbContacts\Domain\Model\Event;
 use PSB\PsbTemplates\Event\AbstractAdditionalContentEvent;
 
 /**
- * Class AdditionalEventWidgetContentEvent
+ * Class AdditionalEventListContentEvent
  *
  * @package PSB\PsbContacts\Event
  */
-class AdditionalEventWidgetContentEvent extends AbstractAdditionalContentEvent
+class AdditionalEventListContentEvent extends AbstractAdditionalContentEvent
 {
     protected Event $event;
 

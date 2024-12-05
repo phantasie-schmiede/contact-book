@@ -37,7 +37,7 @@
                                     arguments="{anniversary: event.nextAnniversary, persons: event.contactsAsEnumeration, type: eventType}"
                                     id="{f:if(condition: event.nextAnniversary, then: 'eventTitle.anniversary', else: 'eventTitle')}" />
                                 <psbTemplates:additionalContent
-                                    eventClass="{psbvh:variable.convertString(string: 'PSB\PsbContacts\Event\AdditionalEventWidgetContentEvent::class')}"
+                                    eventClass="{psbvh:variable.convertString(string: 'PSB\PsbContacts\Event\AdditionalEventListContentEvent::class')}"
                                     parameters="{event: event}" />
                             </li>
                         </f:for>

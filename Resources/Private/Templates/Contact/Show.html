@@ -123,11 +123,14 @@
                 <f:for
                     as="event"
                     each="{contact.eventsInDescendingOrder}">
-                    <li class="list-group-item">
-                        <strong>
-                            {event.label}
-                        </strong>
+                    <li class="d-flex list-group-item">
                         <span>{event.date -> f:format.date(format: 'd.m.Y')}</span>
+                        <span class="fw-bold ms-2">
+                            {event.label}
+                        </span>
+                        <psbTemplates:additionalContent
+                            eventClass="{psbvh:variable.convertString(string: 'PSB\PsbContacts\Event\AdditionalEventListContentEvent::class')}"
+                            parameters="{event: event}" />
                     </li>
                 </f:for>
             </ul>
