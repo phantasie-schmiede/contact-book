@@ -400,7 +400,8 @@ class Contact extends AbstractEntity
         $events = $this->events->toArray();
 
         usort(
-            $events, static function(Event $eventA, Event $eventB) {
+            $events,
+            static function(Event $eventA, Event $eventB) {
             return $eventB->getDate() <=> $eventA->getDate();
         }
         );
@@ -506,6 +507,7 @@ class Contact extends AbstractEntity
         );
     }
 
+    /** @return ObjectStorage<PhoneNumber> */
     public function getPhoneNumbers(): ObjectStorage
     {
         return $this->phoneNumbers;
@@ -513,7 +515,9 @@ class Contact extends AbstractEntity
 
     public function getSearchTerms(): string
     {
-        $searchTerms = [];
+        $searchTerms = [
+            'type:' . $this->type->value,
+        ];
 
         if (ContactType::Company === $this->type && '' !== $this->getCompanyName()) {
             $searchTerms[] = $this->getCompanyName();
@@ -539,11 +543,28 @@ class Contact extends AbstractEntity
             }
         }
 
+        foreach ($this->addresses as $address) {
+            $searchTerms[] = str_replace(',', '', $address->getCompactValue());
+        }
+
+        foreach ($this->eMails as $eMail) {
+            $searchTerms[] = $eMail->getEMailAddress();
+        }
+
         if ('' !== $this->getNotes()) {
             array_push($searchTerms, ...StringUtility::explodeByLineBreaks($this->getNotes()));
         }
 
-        return implode(' ', $searchTerms);
+        foreach ($this->websites as $website) {
+            $searchTerms[] = $website->getUrl();
+        }
+
+        foreach ($this->getPhoneNumbers() as $phoneNumber) {
+            $searchTerms[] = 'phoneType:' . $phoneNumber->getPhoneNumberType()->value;
+            $searchTerms[] = $phoneNumber->getCompleteNumber();
+        }
+
+        return implode(' ', array_unique($searchTerms));
     }
 
     public function getSlug(): string
