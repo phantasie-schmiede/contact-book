@@ -124,7 +124,13 @@
                     as="event"
                     each="{contact.eventsInDescendingOrder}">
                     <li class="d-flex list-group-item">
-                        <span>{event.date -> f:format.date(format: 'd.m.Y')}</span>
+                        <span>
+                            <f:variable
+                                name="dateFormat"
+                                value="{f:if(condition: event.yearUnknown, then: 'd.m.', else: 'd.m.Y')}" />
+
+                            {event.date -> f:format.date(format: dateFormat)}
+                        </span>
                         <span class="fw-bold ms-2">
                             {event.label}
                         </span>
