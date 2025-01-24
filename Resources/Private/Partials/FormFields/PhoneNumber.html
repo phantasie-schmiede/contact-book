@@ -62,35 +62,42 @@
         class="form-label">
         Telefonnummer
     </label>
-    <div class="input-group mb-3">
-        <span class="input-group-text">+</span>
-        <f:form.textfield
-            class="form-control"
-            name="phoneNumber[{uid}][internationalDiallingCode]"
-            placeholder="{psbFoundation:translate(id: 'phoneNumber:internationalDiallingCode')}"
-            type="tel"
-            value="{record.internationalDiallingCode -> f:or(alternative: '49')}" />
-        <span class="input-group-text">0</span>
-        <f:form.textfield
-            class="form-control"
-            name="phoneNumber[{uid}][areaCode]"
-            placeholder="Vorwahl ohne 0"
-            type="tel"
-            value="{record.areaCode}" />
-        <span class="input-group-text">&nbsp;</span>
-        <f:form.textfield
-            class="form-control"
-            name="phoneNumber[{uid}][connectionIdentifier]"
-            placeholder="{psbFoundation:translate(id: 'phoneNumber:connectionIdentifier')}"
-            type="tel"
-            value="{record.connectionIdentifier}" />
-        <span class="input-group-text">-</span>
-        <f:form.textfield
-            class="form-control"
-            name="phoneNumber[{uid}][extension]"
-            placeholder="{psbFoundation:translate(id: 'phoneNumber:extension')}"
-            type="tel"
-            value="{record.extension}" />
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="input-group mb-3">
+                <span class="input-group-text">+</span>
+                <f:form.textfield
+                    class="form-control"
+                    name="phoneNumber[{uid}][internationalDiallingCode]"
+                    placeholder="{psbFoundation:translate(id: 'phoneNumber:internationalDiallingCode')}"
+                    type="tel"
+                    value="{record.internationalDiallingCode -> f:or(alternative: '49')}" />
+                <span class="input-group-text">0</span>
+                <f:form.textfield
+                    class="form-control"
+                    name="phoneNumber[{uid}][areaCode]"
+                    placeholder="Vorwahl ohne 0"
+                    type="tel"
+                    value="{record.areaCode}" />
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="input-group mb-3">
+                <f:form.textfield
+                    class="form-control"
+                    name="phoneNumber[{uid}][connectionIdentifier]"
+                    placeholder="{psbFoundation:translate(id: 'phoneNumber:connectionIdentifier')}"
+                    type="tel"
+                    value="{record.connectionIdentifier}" />
+                <span class="input-group-text">-</span>
+                <f:form.textfield
+                    class="form-control"
+                    name="phoneNumber[{uid}][extension]"
+                    placeholder="{psbFoundation:translate(id: 'phoneNumber:extension')}"
+                    type="tel"
+                    value="{record.extension}" />
+            </div>
+        </div>
     </div>
 </div>
 <div class="form-floating mb-3">
