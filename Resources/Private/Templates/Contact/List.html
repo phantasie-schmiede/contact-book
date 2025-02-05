@@ -4,6 +4,13 @@
     xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
 <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
 
+<f:asset.css
+    href="EXT:psb_contacts/Resources/Public/Stylesheets/extension.css"
+    identifier="psbContacts"
+    media="all"
+    rel="stylesheet"
+    type="text/css" />
+
 <div class="row">
     <div class="col-12">
         <f:render
@@ -14,7 +21,7 @@
     <div class="col-12 mt-3">
         <f:link.action
             action="new"
-            class="bottom-0 btn btn-lg btn-primary end-0 position-fixed rounded-circle">
+            class="bottom-right btn btn-lg btn-primary position-fixed rounded-circle z-1">
             <core:icon
                 alternativeMarkupIdentifier="inline"
                 identifier="psb-templates-person-add"
