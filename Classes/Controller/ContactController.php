@@ -151,7 +151,7 @@ class ContactController extends ActionController
         }
 
         FileUtility::initiateDownload(
-            'text/x-vcard',
+            'text/vcard',
             implode('', $vCards),
             'allContacts.vcf',
         );
