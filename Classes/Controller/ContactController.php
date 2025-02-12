@@ -12,6 +12,7 @@ namespace PSB\PsbContacts\Controller;
 
 use DateTime;
 use Exception;
+use JetBrains\PhpStorm\NoReturn;
 use JsonException;
 use PSB\PsbContacts\Data\ExtensionInformation;
 use PSB\PsbContacts\Domain\Demand\ContactDemand;
@@ -39,6 +40,7 @@ use PSB\PsbContacts\Domain\Repository\WebsiteRepository;
 use PSB\PsbContacts\Service\CleanupService;
 use PSB\PsbContacts\Service\ContactGroupService;
 use PSB\PsbContacts\Service\ContactService;
+use PSB\PsbContacts\Service\VCardService;
 use PSB\PsbContacts\Utility\ContactUtility;
 use PSB\PsbFoundation\Attribute\PluginAction;
 use PSB\PsbFoundation\Exceptions\MisconfiguredTcaException;
@@ -46,6 +48,7 @@ use PSB\PsbFoundation\Service\GlobalVariableProviders\RequestParameterProvider;
 use PSB\PsbFoundation\Service\GlobalVariableService;
 use PSB\PsbFoundation\Service\UploadService;
 use PSB\PsbFoundation\Traits\ControllerCacheTrait;
+use PSB\PsbFoundation\Utility\FileUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -86,6 +89,7 @@ class ContactController extends ActionController
         protected readonly PersistenceManager     $persistenceManager,
         protected readonly PhoneNumberRepository  $phoneNumberRepository,
         protected readonly UploadService          $uploadService,
+        protected readonly VCardService           $vCardService,
         protected readonly WebsiteRepository      $websiteRepository,
     ) {
     }
@@ -133,6 +137,26 @@ class ContactController extends ActionController
         $this->prepareFormView($contact);
 
         return $this->htmlResponse();
+    }
+
+    #[NoReturn]
+    #[PluginAction(uncached: true)]
+    public function exportAction(): void
+    {
+        $vCards = [];
+        $allContacts = $this->contactRepository->findAll();
+
+        foreach ($allContacts as $contact) {
+            $vCards[] = $this->vCardService->getVCard($contact);
+        }
+
+        FileUtility::initiateDownload(
+            'text/x-vcard',
+            implode('', $vCards),
+            'allContacts.vcf',
+        );
+
+        exit;
     }
 
     #[PluginAction(default: true)]
@@ -191,7 +215,8 @@ class ContactController extends ActionController
         $this->deletePagesCache(self::CACHE_TAG);
 
         return $this->redirect(
-            actionName: 'show', arguments: ['contact' => $contact]
+            actionName: 'show',
+            arguments: ['contact' => $contact]
         );
     }
 

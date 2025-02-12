@@ -9,6 +9,9 @@
             <trans-unit id="addNewContact">
                 <source>Add new contact</source>
             </trans-unit>
+            <trans-unit id="exportVCard">
+                <source>Export as VCard</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

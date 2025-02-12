@@ -16,6 +16,7 @@ use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
 use PSB\PsbFoundation\Enum\SelectRenderType;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use function sprintf;
 
 /**
  * Class Address
@@ -105,6 +106,11 @@ class Address extends AbstractContactRelatedEntity
     public function getStreet(): string
     {
         return $this->street;
+    }
+
+    public function getStreetAndHouseNumber(): string
+    {
+        return $this->street . ($this->houseNumber ? ' ' . $this->houseNumber : '');
     }
 
     public function getType(): GeneralType

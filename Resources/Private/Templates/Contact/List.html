@@ -2,31 +2,32 @@
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
-<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
-
-<f:asset.css
-    href="EXT:psb_contacts/Resources/Public/Stylesheets/extension.css"
-    identifier="psbContacts"
-    media="all"
-    rel="stylesheet"
-    type="text/css" />
+<div class="mb-2 row">
+    <div class="col-12 d-flex justify-content-end">
+        <f:link.action
+            action="export"
+            class="bg-secondary-subtle btn"
+            title="{psbFoundation:translate(id: 'exportVCard')}">
+            <core:icon
+                identifier="psb-templates-download"
+                size="small" />
+        </f:link.action>
+        <f:link.action
+            action="new"
+            class="bg-primary-subtle btn ms-2"
+            title="{psbFoundation:translate(id: 'addNewContact')}">
+            <core:icon
+                identifier="psb-templates-person-add"
+                size="small" />
+        </f:link.action>
+    </div>
+</div>
 
 <div class="row">
     <div class="col-12">
         <f:render
             arguments="{contacts: contacts, pluginUid: pluginUid}"
             partial="ContactList" />
-    </div>
-
-    <div class="col-12 mt-3">
-        <f:link.action
-            action="new"
-            class="bottom-right btn btn-lg btn-primary position-fixed rounded-circle z-1">
-            <core:icon
-                alternativeMarkupIdentifier="inline"
-                identifier="psb-templates-person-add"
-                size="large" />
-        </f:link.action>
     </div>
 </div>
 </html>

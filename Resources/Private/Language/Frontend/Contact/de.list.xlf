@@ -11,6 +11,10 @@
                 <source>Add new contact</source>
                 <target>Neuen Kontakt anlegen</target>
             </trans-unit>
+            <trans-unit id="exportVCard">
+                <source>Export as VCard</source>
+                <target>Als VCard exportieren</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
