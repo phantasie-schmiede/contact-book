@@ -49,6 +49,7 @@ readonly class VCardService
         $this->addAddresses($contact, $vCard);
         $this->addEMails($contact, $vCard);
         $this->addPhoneNumbers($contact, $vCard);
+        $this->addUid($contact, $vCard);
         $this->addWebsites($contact, $vCard);
         $this->addLine('END:VCARD', $vCard);
 
@@ -158,6 +159,11 @@ readonly class VCardService
                 $vCard
             );
         }
+    }
+
+    private function addUid(Contact $contact, string $vCard): void
+    {
+        $this->addLine('UID:urn:uuid:' . $contact->getUuid(), $vCard);
     }
 
     private function addWebsites(Contact $contact, string &$vCard): void

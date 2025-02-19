@@ -69,6 +69,7 @@ class CleanupService implements LoggerAwareInterface
         $this->deleteOrphanedPhoneNumbers();
         $this->deleteOrphanedWebsites();
         $this->addMissingSlugs();
+        $this->addMissingUuids();
         $this->trimNotes();
     }
 
@@ -174,6 +175,29 @@ class CleanupService implements LoggerAwareInterface
 
         if (0 < $addedSlugs) {
             $this->logger->info('Added ' . $addedSlugs . ' missing slugs.');
+        }
+    }
+
+    /**
+     * @throws IllegalObjectTypeException
+     * @throws UnknownObjectException
+     */
+    private function addMissingUuids(): void
+    {
+        $addedUuids = 0;
+
+        /** @var Contact $contact */
+        foreach ($this->contactRepository->findAll() as $contact) {
+            if ('' === $contact->getUuid()) {
+                $contact->setUuid();
+                $this->contactRepository->update($contact);
+                $this->persistenceManager->persistAll();
+                $addedUuids++;
+            }
+        }
+
+        if (0 < $addedUuids) {
+            $this->logger->info('Added ' . $addedUuids . ' missing UUIDs.');
         }
     }
 

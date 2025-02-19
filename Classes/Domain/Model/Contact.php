@@ -13,6 +13,7 @@ namespace PSB\PsbContacts\Domain\Model;
 use InvalidArgumentException;
 use PSB\PsbContacts\Domain\Enum\ContactType;
 use PSB\PsbContacts\Utility\NameUtility;
+use PSB\PsbFoundation\Attribute\TCA\Column;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Inline;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
@@ -20,6 +21,8 @@ use PSB\PsbFoundation\Attribute\TCA\ColumnType\Slug;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
 use PSB\PsbFoundation\Utility\StringUtility;
+use Ramsey\Uuid\Uuid;
+use RuntimeException;
 use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -134,6 +137,10 @@ class Contact extends AbstractEntity
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
     protected ContactType $type = ContactType::Person;
 
+    #[Column(readOnly: true)]
+    #[Input(eval: 'unique')]
+    protected string $uuid = '';
+
     /** @var ObjectStorage<Website> */
     #[Inline(linkedModel: Website::class, mm: 'tx_psbcontacts_contacts_websites')]
     #[Lazy]
@@ -141,6 +148,10 @@ class Contact extends AbstractEntity
 
     public function __construct()
     {
+        if ('' === $this->uuid) {
+            $this->setUuid();
+        }
+
         $this->initializeObject();
     }
 
@@ -582,6 +593,11 @@ class Contact extends AbstractEntity
         return $this->type;
     }
 
+    public function getUuid(): string
+    {
+        return $this->uuid;
+    }
+
     public function getWebsiteByUid(int $uid): Website
     {
         foreach ($this->websites as $website) {
@@ -774,6 +790,18 @@ class Contact extends AbstractEntity
     public function setType(ContactType $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function setUuid(): self
+    {
+        if ('' !== $this->uuid) {
+            throw new RuntimeException(__CLASS__ . ': UUID is already set!', 1739963501);
+        }
+
+        $this->uuid = Uuid::uuid4()
+            ->toString();
 
         return $this;
     }
