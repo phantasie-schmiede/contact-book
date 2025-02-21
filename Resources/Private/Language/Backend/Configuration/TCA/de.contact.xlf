@@ -83,6 +83,10 @@
                 <source>Person</source>
                 <target>Person</target>
             </trans-unit>
+            <trans-unit id="uuid">
+                <source>UUID</source>
+                <target>UUID</target>
+            </trans-unit>
             <trans-unit id="websites">
                 <source>Websites</source>
                 <target>Webseiten</target>

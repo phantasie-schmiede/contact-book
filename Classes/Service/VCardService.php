@@ -21,6 +21,7 @@ use PSB\PsbContacts\Domain\Model\PhoneNumber;
 use PSB\PsbContacts\Domain\Model\Website;
 use PSB\PsbContacts\Utility\ContactUtility;
 use PSB\PsbTemplates\Service\CountryNamesService;
+use RuntimeException;
 
 /**
  * Class VCardService
@@ -161,8 +162,14 @@ readonly class VCardService
         }
     }
 
-    private function addUid(Contact $contact, string $vCard): void
+    private function addUid(Contact $contact, string &$vCard): void
     {
+        if ('' === $contact->getUuid()) {
+            throw new RuntimeException(
+                __CLASS__ . ': Contact [uid:' . $contact->getUid() . '] has no UUID!', 1740157024
+            );
+        }
+
         $this->addLine('UID:urn:uuid:' . $contact->getUuid(), $vCard);
     }
 

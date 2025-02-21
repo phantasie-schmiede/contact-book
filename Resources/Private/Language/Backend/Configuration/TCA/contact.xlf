@@ -63,6 +63,9 @@
             <trans-unit id="type.person">
                 <source>Person</source>
             </trans-unit>
+            <trans-unit id="uuid">
+                <source>UUID</source>
+            </trans-unit>
             <trans-unit id="websites">
                 <source>Websites</source>
             </trans-unit>
