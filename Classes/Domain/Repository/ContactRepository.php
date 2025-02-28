@@ -25,7 +25,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class ContactRepository extends Repository
 {
-    public function findByDemand(ContactDemand $demand): QueryResultInterface
+    public function findByDemand(ContactDemand $demand): array|QueryResultInterface
     {
         $constraints = [];
         $query = $this->createQuery();
@@ -60,7 +60,21 @@ class ContactRepository extends Repository
 
         QueryUtility::applyConstraints($constraints, $query);
 
-        return $query->execute();
+        $contacts = $query->execute();
+
+        if (null !== $demand->getHasPhoneNumber()) {
+            $filteredContacts = [];
+
+            foreach ($contacts as $contact) {
+                if ($demand->getHasPhoneNumber() === $contact->hasPhoneNumber()) {
+                    $filteredContacts[] = $contact;
+                }
+            }
+
+            return $filteredContacts;
+        }
+
+        return $contacts;
     }
 
     public function findByType(ContactType $type): QueryResultInterface

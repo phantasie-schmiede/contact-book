@@ -23,6 +23,7 @@ class ContactDemand
     protected string $companyName      = '';
     protected array  $excludedContacts = [];
     protected string $firstName        = '';
+    protected ?bool  $hasPhoneNumber   = null;
     protected string $lastName         = '';
     protected array  $types            = [];
 
@@ -59,6 +60,11 @@ class ContactDemand
         return $this->firstName;
     }
 
+    public function getHasPhoneNumber(): ?bool
+    {
+        return $this->hasPhoneNumber;
+    }
+
     public function getLastName(): string
     {
         return $this->lastName;
@@ -79,6 +85,13 @@ class ContactDemand
     public function setFirstName(string $firstName): self
     {
         $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function setHasPhoneNumber(?bool $hasPhoneNumber): self
+    {
+        $this->hasPhoneNumber = $hasPhoneNumber;
 
         return $this;
     }

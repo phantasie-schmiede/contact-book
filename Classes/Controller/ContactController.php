@@ -144,7 +144,9 @@ class ContactController extends ActionController
     public function exportAction(): void
     {
         $vCards = [];
-        $allContacts = $this->contactRepository->findAll();
+        $contactDemand = new ContactDemand();
+        $contactDemand->setHasPhoneNumber(true);
+        $allContacts = $this->contactRepository->findByDemand($contactDemand);
 
         foreach ($allContacts as $contact) {
             $vCards[] = $this->vCardService->getVCard($contact);

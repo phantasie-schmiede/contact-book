@@ -614,6 +614,11 @@ class Contact extends AbstractEntity
         return $this->websites;
     }
 
+    public function hasPhoneNumber(): bool
+    {
+        return $this->phoneNumbers->count() > 0;
+    }
+
     public function initializeObject(): void
     {
         $this->addresses = new ObjectStorage();
