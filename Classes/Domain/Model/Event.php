@@ -13,12 +13,12 @@ namespace PSB\PsbContacts\Domain\Model;
 use DateTime;
 use JsonException;
 use PSB\PsbContacts\Domain\Enum\EventType;
+use PSB\PsbContacts\Utility\ContactUtility;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Check;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Datetime as TcaDatetime;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
 use PSB\PsbFoundation\Enum\SelectRenderType;
-use PSB\PsbTemplates\Utility\StringUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
@@ -99,13 +99,7 @@ class Event extends AbstractContactRelatedEntity
      */
     public function getContactsAsEnumeration(): string
     {
-        $names = [];
-
-        foreach ($this->contacts as $contact) {
-            $names[] = $contact->getFullName();
-        }
-
-        return StringUtility::createEnumeration($names);
+        return ContactUtility::createEnumeration($this->contacts->toArray());
     }
 
     public function getDate(): DateTime

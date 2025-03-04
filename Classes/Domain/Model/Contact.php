@@ -327,11 +327,7 @@ class Contact extends AbstractEntity
                 $displayName .= ', ' . $this->getFirstName();
             }
         } elseif ('' !== $this->getFirstName()) {
-            $displayName = $this->getFirstName();
-
-            if ('' !== $this->getMiddleNames()) {
-                $displayName .= ' ' . $this->getMiddleNames();
-            }
+            $displayName = $this->getFirstNames();
         }
 
         return $displayName;
@@ -425,6 +421,17 @@ class Contact extends AbstractEntity
         return $this->firstName;
     }
 
+    public function getFirstNames(): string
+    {
+        $name = $this->getFirstName();
+
+        if ('' !== $this->getMiddleNames()) {
+            $name .= ' ' . $this->getMiddleNames();
+        }
+
+        return $name;
+    }
+
     public function getFullName(): string
     {
         if (ContactType::Company === $this->type && '' !== $this->getCompanyName()) {
@@ -438,11 +445,7 @@ class Contact extends AbstractEntity
         }
 
         if ('' !== $this->getFirstName()) {
-            $nameParts[] = $this->getFirstName();
-        }
-
-        if ('' !== $this->getMiddleNames()) {
-            $nameParts[] = $this->getMiddleNames();
+            $nameParts[] = $this->getFirstNames();
         }
 
         if ('' !== $this->getLastName()) {
@@ -457,11 +460,7 @@ class Contact extends AbstractEntity
         if (ContactType::Company === $this->type && '' !== $this->getCompanyName()) {
             $name = $this->getCompanyName();
         } else {
-            $name = $this->getFirstName();
-
-            if ('' !== $this->getMiddleNames()) {
-                $name .= ' ' . $this->getMiddleNames();
-            }
+            $name = $this->getFirstNames();
         }
 
         return NameUtility::getGenitiveForm($name);
