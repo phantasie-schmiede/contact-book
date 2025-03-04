@@ -9,6 +9,9 @@
             <trans-unit id="backToList">
                 <source>Back to list</source>
             </trans-unit>
+            <trans-unit id="birthName">
+                <source>née {birthName}</source>
+            </trans-unit>
             <trans-unit id="delete">
                 <source>Delete</source>
             </trans-unit>

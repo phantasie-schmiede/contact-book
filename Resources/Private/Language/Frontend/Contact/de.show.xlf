@@ -11,6 +11,10 @@
                 <source>Back to list</source>
                 <target>Zurück zur Liste</target>
             </trans-unit>
+            <trans-unit id="birthName">
+                <source>née {birthName}</source>
+                <target>geb. {birthName}</target>
+            </trans-unit>
             <trans-unit id="delete">
                 <source>Delete</source>
                 <target>Löschen</target>
