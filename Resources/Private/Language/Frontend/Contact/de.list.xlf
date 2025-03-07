@@ -15,6 +15,10 @@
                 <source>Export as VCard</source>
                 <target>Als VCard exportieren</target>
             </trans-unit>
+            <trans-unit id="selectVCardVersion">
+                <source>Select VCard version</source>
+                <target>VCard-Version auswählen</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

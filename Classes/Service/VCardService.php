@@ -19,6 +19,7 @@ use PSB\PsbContacts\Domain\Model\EMail;
 use PSB\PsbContacts\Domain\Model\Event;
 use PSB\PsbContacts\Domain\Model\PhoneNumber;
 use PSB\PsbContacts\Domain\Model\Website;
+use PSB\PsbContacts\Service\Enum\VCardVersion;
 use PSB\PsbContacts\Utility\ContactUtility;
 use PSB\PsbTemplates\Service\CountryNamesService;
 use RuntimeException;
@@ -35,26 +36,27 @@ readonly class VCardService
     ) {
     }
 
-    public function getVCard(Contact $contact): string
+    public function getVCard(Contact $contact, VCardVersion $version): string
     {
         $vCard = '';
         $this->addLine('BEGIN:VCARD', $vCard);
-        $this->addLine('VERSION:4.0', $vCard);
+        $this->addLine('VERSION:' . $version->value, $vCard);
 
         if (ContactType::Company === $contact->getType()) {
             $this->addCompanyInformation($contact, $vCard);
         } else {
-            $this->addIndividualInformation($contact, $vCard);
+            $this->addIndividualInformation($contact, $vCard, $version);
         }
 
         $this->addAddresses($contact, $vCard);
         $this->addEMails($contact, $vCard);
-        $this->addPhoneNumbers($contact, $vCard);
-        $this->addUid($contact, $vCard);
+        $this->addPhoneNumbers($contact, $vCard, $version);
+        $this->addUid($contact, $vCard, $version);
         $this->addWebsites($contact, $vCard);
         $this->addLine('END:VCARD', $vCard);
 
-        return $vCard;
+        // Ensure the VCard is encoded in UTF-8.
+        return mb_convert_encoding($vCard, 'UTF-8', 'auto');
     }
 
     private function addAddresses(Contact $contact, string &$vCard): void
@@ -79,12 +81,17 @@ readonly class VCardService
         }
     }
 
-    private function addBirthday(Contact $contact, string &$vCard): void
+    private function addBirthday(Contact $contact, string &$vCard, VCardVersion $version): void
     {
         $birthEvent = ContactUtility::getBirthEvent($contact);
 
         if ($birthEvent instanceof Event) {
             if ($birthEvent->isYearUnknown()) {
+                // Incomplete birth dates are only supported in VCard 4.0.
+                if (VCardVersion::V4_0 !== $version) {
+                    return;
+                }
+
                 $this->addLine(
                     'BDAY:' . $birthEvent->getDate()
                         ->format('--md'),
@@ -122,9 +129,9 @@ readonly class VCardService
         }
     }
 
-    private function addIndividualInformation(Contact $contact, string &$vCard): void
+    private function addIndividualInformation(Contact $contact, string &$vCard, VCardVersion $version): void
     {
-        $this->addBirthday($contact, $vCard);
+        $this->addBirthday($contact, $vCard, $version);
         $this->addLine('FN:' . $contact->getFullName(), $vCard);
         $this->addLine(
             'N:' . $contact->getLastName() . ';' . $contact->getFirstName() . ';' . $contact->getMiddleNames(
@@ -142,7 +149,7 @@ readonly class VCardService
         $vCard .= $line . PHP_EOL;
     }
 
-    private function addPhoneNumbers(Contact $contact, string &$vCard): void
+    private function addPhoneNumbers(Contact $contact, string &$vCard, VCardVersion $version): void
     {
         if (0 === $contact->getPhoneNumbers()
                 ->count()) {
@@ -152,17 +159,17 @@ readonly class VCardService
         /** @var PhoneNumber $phoneNumber */
         foreach ($contact->getPhoneNumbers() as $phoneNumber) {
             $this->addLine(
-                'TEL;VALUE=uri;' . $this->getGeneralType(
+                'TEL;' . (VCardVersion::V4_0 === $version ? 'VALUE=uri;' : '') . $this->getGeneralType(
                     $phoneNumber->getGeneralType()
                 ) . ',' . $this->getPhoneNumberType(
                     $phoneNumber->getPhoneNumberType()
-                ) . ':tel:' . $phoneNumber->getCompleteNumber(),
+                ) . ':' . (VCardVersion::V4_0 === $version ? 'tel:' : '') . $phoneNumber->getCompleteNumber(),
                 $vCard
             );
         }
     }
 
-    private function addUid(Contact $contact, string &$vCard): void
+    private function addUid(Contact $contact, string &$vCard, VCardVersion $version): void
     {
         if ('' === $contact->getUuid()) {
             throw new RuntimeException(
@@ -170,7 +177,7 @@ readonly class VCardService
             );
         }
 
-        $this->addLine('UID:urn:uuid:' . $contact->getUuid(), $vCard);
+        $this->addLine('UID:' . (VCardVersion::V4_0 === $version ? 'urn:uuid:' : '') . $contact->getUuid(), $vCard);
     }
 
     private function addWebsites(Contact $contact, string &$vCard): void

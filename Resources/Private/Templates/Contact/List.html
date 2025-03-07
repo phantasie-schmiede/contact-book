@@ -4,14 +4,15 @@
     xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
 <div class="mb-2 row">
     <div class="col-12 d-flex justify-content-end">
-        <f:link.action
-            action="export"
-            class="bg-secondary-subtle btn"
-            title="{psbFoundation:translate(id: 'exportVCard')}">
-            <core:icon
-                identifier="psb-templates-download"
-                size="small" />
-        </f:link.action>
+        <f:render
+            arguments="{
+                classes: 'bg-secondary-subtle btn',
+                modalId: 'vcard-export-modal',
+                text: '{core:icon(identifier: \'psb-templates-download\', size: \'small\', title: iconTitle)}',
+                title: '{psbFoundation:translate(id: \'exportVCard\')}'
+            }"
+            partial="Component/Modal/Toggle" />
+
         <f:link.action
             action="new"
             class="bg-primary-subtle btn ms-2"
@@ -30,4 +31,33 @@
             partial="ContactList" />
     </div>
 </div>
+
+<f:render
+    arguments="{
+        body: '{f:render(section: \'modalBody\')}',
+        classes: 'modal-dialog-centered',
+        id: 'vcard-export-modal',
+        title: '{psbFoundation:translate(id: \'selectVCardVersion\')}'
+    }"
+    partial="Component/Modal/Dialog" />
+
+<f:section name="modalBody">
+    <f:for
+        as="version"
+        each="{0: '3.0', 1: '4.0'}"
+        iteration="iterator">
+        <f:link.action
+            action="export"
+            arguments="{version: version}"
+            class="btn btn-outline-secondary d-flex w-100{f:if(condition: '!{iterator.isLast}', then: ' mb-2')}"
+            title="{psbFoundation:translate(id: 'exportVCard')}">
+            v{version}
+            <span class="ms-auto">
+                <core:icon
+                    identifier="psb-templates-download"
+                    size="small" />
+            </span>
+        </f:link.action>
+    </f:for>
+</f:section>
 </html>

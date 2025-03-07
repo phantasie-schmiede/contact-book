@@ -40,6 +40,7 @@ use PSB\PsbContacts\Domain\Repository\WebsiteRepository;
 use PSB\PsbContacts\Service\CleanupService;
 use PSB\PsbContacts\Service\ContactGroupService;
 use PSB\PsbContacts\Service\ContactService;
+use PSB\PsbContacts\Service\Enum\VCardVersion;
 use PSB\PsbContacts\Service\VCardService;
 use PSB\PsbContacts\Utility\ContactUtility;
 use PSB\PsbFoundation\Attribute\PluginAction;
@@ -141,7 +142,7 @@ class ContactController extends ActionController
 
     #[NoReturn]
     #[PluginAction(uncached: true)]
-    public function exportAction(): void
+    public function exportAction(VCardVersion $version = null): void
     {
         $vCards = [];
         $contactDemand = new ContactDemand();
@@ -149,7 +150,7 @@ class ContactController extends ActionController
         $allContacts = $this->contactRepository->findByDemand($contactDemand);
 
         foreach ($allContacts as $contact) {
-            $vCards[] = $this->vCardService->getVCard($contact);
+            $vCards[] = $this->vCardService->getVCard($contact, $version ?? VCardVersion::V4_0);
         }
 
         FileUtility::initiateDownload(
