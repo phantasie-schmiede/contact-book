@@ -68,8 +68,6 @@ class ImportController extends AbstractModuleController
     #[ModuleAction(default: true)]
     public function showUploadFormAction(): ResponseInterface
     {
-        return $this->responseFactory->createResponse()
-            ->withHeader('Content-Type', 'text/html; charset=utf-8')
-            ->withBody($this->streamFactory->createStream($this->view->render()));
+        return $this->htmlResponse();
     }
 }
