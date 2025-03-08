@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2025-03-08T13:18:00+01:00"
+        original="messages"
+        product-name="psb_contacts"
+        source-language="en">
+        <body>
+			<trans-unit id="allContacts">
+				<source>all contacts</source>
+				<target>alle Kontakte</target>
+			</trans-unit>
+			<trans-unit id="exportVCard">
+				<source>Export as VCard</source>
+			</trans-unit>
+			<trans-unit id="selectVCardVersion">
+				<source>Select VCard version</source>
+			</trans-unit>
+		</body>
+    </file>
+</xliff>

@@ -1,0 +1,38 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/exportModal.xlf" />
+
+<f:render
+    arguments="{
+        body: '{f:render(arguments: {contact: contact, contactGroup: contactGroup}, section: \'modalBody\')}',
+        classes: 'modal-dialog-centered',
+        id: 'vcard-export-modal',
+        title: '{psbFoundation:translate(id: \'exportModal:selectVCardVersion\')}'
+    }"
+    partial="Component/Modal/Dialog" />
+
+<f:section name="modalBody">
+    <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/exportModal.xlf" />
+
+    <f:for
+        as="version"
+        each="{0: '3.0', 1: '4.0'}"
+        iteration="iterator">
+        <f:link.action
+            action="export"
+            arguments="{contact: contact, contactGroup: contactGroup, version: version}"
+            class="btn btn-outline-secondary d-flex w-100{f:if(condition: '!{iterator.isLast}', then: ' mb-2')}"
+            controller="{f:if(condition: '{contactGroup}', then: 'ContactGroup', else: 'Contact')}"
+            title="{psbFoundation:translate(id: 'exportModal:exportVCard')}">
+            v{version}
+            <span class="ms-auto">
+                <core:icon
+                    identifier="psb-templates-download"
+                    size="small" />
+            </span>
+        </f:link.action>
+    </f:for>
+</f:section>
+</html>

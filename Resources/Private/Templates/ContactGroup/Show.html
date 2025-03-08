@@ -8,8 +8,9 @@
 
 <div class="row">
     <div class="col-12">
-        <h1>
+        <h1 class="d-flex justify-content-between">
             {contactGroup.name}
+            <f:render partial="ExportModal/Toggle" />
         </h1>
         <f:render
             arguments="{contacts: contactGroup.contactsSorted}"
@@ -58,6 +59,10 @@
         title: '{psbFoundation:translate(id: \'modal:title\')}'
     }"
     partial="Component/Modal/Dialog" />
+
+<f:render
+    arguments="{contactGroup: contactGroup}"
+    partial="ExportModal/Dialog" />
 
 <f:section name="modalFooter">
     <psbFoundation:translation.registerLanguageFile

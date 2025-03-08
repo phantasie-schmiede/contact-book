@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace PSB\PsbContacts\Controller;
 
 use Doctrine\DBAL\Exception;
+use JetBrains\PhpStorm\NoReturn;
 use JsonException;
 use PSB\PsbContacts\Data\ExtensionInformation;
 use PSB\PsbContacts\Domain\Model\ContactGroup;
@@ -18,8 +19,11 @@ use PSB\PsbContacts\Domain\Repository\ContactGroupRepository;
 use PSB\PsbContacts\Domain\Repository\ContactRepository;
 use PSB\PsbContacts\Service\ContactGroupService;
 use PSB\PsbContacts\Service\ContactService;
+use PSB\PsbContacts\Service\Enum\VCardVersion;
+use PSB\PsbContacts\Service\VCardService;
 use PSB\PsbFoundation\Attribute\PluginAction;
 use PSB\PsbFoundation\Traits\ControllerCacheTrait;
+use PSB\PsbFoundation\Utility\FileUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -49,6 +53,7 @@ class ContactGroupController extends ActionController
         protected readonly ContactService         $contactService,
         protected readonly ExtensionInformation   $extensionInformation,
         protected readonly PersistenceManager     $persistenceManager,
+        protected readonly VCardService           $vCardService,
     ) {
     }
 
@@ -101,6 +106,25 @@ class ContactGroupController extends ActionController
         $this->view->assign('allContacts', $this->contactService->getAsJson());
 
         return $this->htmlResponse();
+    }
+
+    #[NoReturn]
+    #[PluginAction(uncached: true)]
+    public function exportAction(ContactGroup $contactGroup, ?VCardVersion $version = null): void
+    {
+        $vCards = [];
+
+        foreach ($contactGroup->getContacts() as $contact) {
+            $vCards[] = $this->vCardService->getVCard($contact, $version ?? VCardVersion::V4_0);
+        }
+
+        FileUtility::initiateDownload(
+            'text/vcard',
+            implode('', $vCards),
+            FileUtility::sanitizeFileName($contactGroup->getName()) . '.vcf',
+        );
+
+        exit;
     }
 
     #[PluginAction(default: true)]

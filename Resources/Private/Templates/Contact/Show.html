@@ -37,7 +37,10 @@
             </div>
         </f:if>
 
-        <h1>{contact.fullName}</h1>
+        <h1 class="d-flex justify-content-between">
+            {contact.fullName}
+            <f:render partial="ExportModal/Toggle" />
+        </h1>
 
         <f:if condition="{contact.nickname}">
             <h2>&raquo;{contact.nickname}&laquo;</h2>
@@ -197,6 +200,10 @@
         title: '{psbFoundation:translate(id: \'modal:title\')}'
     }"
     partial="Component/Modal/Dialog" />
+
+<f:render
+    arguments="{contact: contact}"
+    partial="ExportModal/Dialog" />
 
 <f:section name="modalFooter">
     <psbFoundation:translation.registerLanguageFile

@@ -50,6 +50,7 @@ use PSB\PsbFoundation\Service\GlobalVariableService;
 use PSB\PsbFoundation\Service\UploadService;
 use PSB\PsbFoundation\Traits\ControllerCacheTrait;
 use PSB\PsbFoundation\Utility\FileUtility;
+use PSB\PsbFoundation\Utility\LocalizationUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -142,21 +143,30 @@ class ContactController extends ActionController
 
     #[NoReturn]
     #[PluginAction(uncached: true)]
-    public function exportAction(VCardVersion $version = null): void
+    public function exportAction(?Contact $contact = null, ?VCardVersion $version = null): void
     {
         $vCards = [];
-        $contactDemand = new ContactDemand();
-        $contactDemand->setHasPhoneNumber(true);
-        $allContacts = $this->contactRepository->findByDemand($contactDemand);
 
-        foreach ($allContacts as $contact) {
+        if ($contact instanceof Contact) {
+            $fileName = $contact->getFullName();
             $vCards[] = $this->vCardService->getVCard($contact, $version ?? VCardVersion::V4_0);
+        } else {
+            $contactDemand = new ContactDemand();
+            $contactDemand->setHasPhoneNumber(true);
+            $allContacts = $this->contactRepository->findByDemand($contactDemand);
+            $fileName = LocalizationUtility::translate(
+                'LLL:EXT:psb_contacts/Resources/Private/Language/Frontend/exportModal.xlf:allContacts'
+            );
+
+            foreach ($allContacts as $singleContact) {
+                $vCards[] = $this->vCardService->getVCard($singleContact, $version ?? VCardVersion::V4_0);
+            }
         }
 
         FileUtility::initiateDownload(
             'text/vcard',
             implode('', $vCards),
-            'allContacts.vcf',
+            FileUtility::sanitizeFileName($fileName) . '.vcf',
         );
 
         exit;

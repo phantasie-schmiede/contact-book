@@ -9,7 +9,7 @@
         <body>
             <trans-unit id="backToList">
                 <source>Back to list</source>
-                <target>Zurück zur Liste</target>
+                <target>Zur Liste</target>
             </trans-unit>
             <trans-unit id="birthName">
                 <source>née {birthName}</source>
