@@ -19,11 +19,13 @@
         <f:if condition="{contact.images}">
             <div class="mb-3">
                 <f:render
-                    arguments="{configuration: {
-                        autoHeight: true,
-                        navigation: true
-                    },
-                    id: 'contact-images'}"
+                    arguments="{
+                        configuration: {
+                            autoHeight: true,
+                            navigation: true
+                        },
+                        id: 'contact-images'
+                    }"
                     contentAs="slides"
                     partial="Component/Swiper">
                     <f:for
@@ -179,15 +181,12 @@
         <psbFoundation:translate id="edit" />
     </f:link.action>
 
-    <f:variable
-        name="iconTitle"
-        value="{psbFoundation:translate(id: 'delete')}" />
-
     <f:render
         arguments="{
-            classes: 'bg-danger btn ms-auto rounded-circle',
+            classes: 'bg-danger btn ms-auto',
             modalId: 'delete-contact-{contact.uid}-modal',
-            text: '{core:icon(identifier: \'psb-templates-trash\', size: \'small\', title: iconTitle)}',
+            text: '{psbTemplates:svgIcon(identifier: \'psb-templates-trash\')}',
+            title: '{psbFoundation:translate(id: \'delete\')}'
         }"
         partial="Component/Modal/Toggle" />
 </div>
