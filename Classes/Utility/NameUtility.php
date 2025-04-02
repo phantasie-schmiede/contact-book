@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Utility;
 
+use PSB\PsbFoundation\Utility\StringUtility;
 use function in_array;
 
 /**
@@ -19,29 +20,33 @@ use function in_array;
  */
 class NameUtility
 {
+    /*
+     * This method replaces the German umlauts before using StringUtility::normalizeForSorting() because
+     * normalizeForSorting() will replace ä with a, ö with o and ü with u, which will not result in a correct sorting
+     * of a list of names according to DIN 5007-1.
+     */
     public static function getCompareString(string $name): string
     {
         $search = [
             'ä',
             'ö',
             'ü',
-            'ß',
         ];
 
         $replace = [
             'ae',
             'oe',
             'ue',
-            'ss',
         ];
 
-        return str_replace($search, $replace, mb_strtolower($name));
+        return StringUtility::normalizeForSorting(str_replace($search, $replace, mb_strtolower($name)));
     }
 
     public static function getGenitiveForm(string $name): string
     {
         if (in_array(
-            strtolower(substr($name, -1)), [
+            strtolower(substr($name, -1)),
+            [
                 'ce',
                 's',
                 'x',
