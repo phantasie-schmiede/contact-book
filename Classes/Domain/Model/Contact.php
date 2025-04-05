@@ -20,6 +20,7 @@ use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Slug;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
+use PSB\PsbFoundation\Enum\SelectRenderType;
 use PSB\PsbFoundation\Utility\StringUtility;
 use Ramsey\Uuid\Uuid;
 use RuntimeException;
@@ -67,11 +68,12 @@ class Contact extends AbstractEntity
     #[Lazy]
     protected ObjectStorage $addresses;
 
+    #[Column(position: 'after:nickname')]
     #[Input]
     protected string $birthName = '';
 
     /** @var ObjectStorage<Contact> */
-    #[Select(foreignTableWhere: 'AND {#tx_psbcontacts_domain_model_contact}.{#type} = "company"', linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_companies')]
+    #[Select(foreignTableWhere: 'AND {#tx_psbcontacts_domain_model_contact}.{#type} = "company"', linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_companies', renderType: SelectRenderType::selectMultipleSideBySide)]
     #[Lazy]
     protected ObjectStorage $companies;
 
@@ -98,15 +100,19 @@ class Contact extends AbstractEntity
     #[Lazy]
     protected ObjectStorage $events;
 
+    #[Column(position: 'after:title')]
     #[Input]
     protected string $firstName = '';
 
+    #[Column(position: 'after:middleNames')]
     #[Input]
     protected string $lastName = '';
 
+    #[Column(position: 'after:firstName')]
     #[Input]
     protected string $middleNames = '';
 
+    #[Column(position: 'after:lastName')]
     #[Input]
     protected string $nickname = '';
 
@@ -125,9 +131,11 @@ class Contact extends AbstractEntity
     #[Lazy]
     protected ObjectStorage $phoneNumbers;
 
+    #[Column(position: 'after:notes')]
     #[Slug(generatorOptions: self::SLUG_GENERATOR_OPTIONS)]
     protected string $slug = '';
 
+    #[Column(position: 'after:type')]
     #[Input]
     protected string $title = '';
 
@@ -137,7 +145,7 @@ class Contact extends AbstractEntity
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
     protected ContactType $type = ContactType::Person;
 
-    #[Column(readOnly: true)]
+    #[Column(position: 'after:slug', readOnly: true)]
     #[Input(eval: 'unique')]
     protected string $uuid = '';
 

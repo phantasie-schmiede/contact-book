@@ -114,7 +114,10 @@ class ContactController extends ActionController
         $this->contactService->updateSlug($contact);
         $this->deletePagesCache(self::CACHE_TAG);
 
-        return $this->redirect('list');
+        return $this->redirect(
+            actionName: 'show',
+            arguments: ['contact' => $contact]
+        );
     }
 
     /**
