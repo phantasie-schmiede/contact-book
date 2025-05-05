@@ -89,7 +89,16 @@ readonly class VCardService
             if ($birthEvent->isYearUnknown()) {
                 // Incomplete birth dates are only supported in VCard 4.0.
                 if (VCardVersion::V4_0 !== $version) {
-                    return;
+                    /*
+                     * Apple does not support incomplete birth dates in VCard 3.0. As a workaround, we set the year
+                     * to 1604, which is the year of the first known birth date in the Gregorian calendar.
+                     * This is a hack, but it works for Apple.
+                     */
+                    $this->addLine(
+                        'BDAY;X-APPLE-OMIT-YEAR=1604:' . $birthEvent->getDate()
+                            ->format('1604-m-d'),
+                        $vCard
+                    );
                 }
 
                 $this->addLine(
