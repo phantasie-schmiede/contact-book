@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace PSB\PsbContacts\Controller;
 
 use DateTime;
+use Doctrine\DBAL\Exception as DbalException;
 use Exception;
 use JetBrains\PhpStorm\NoReturn;
 use JsonException;
@@ -97,13 +98,18 @@ class ContactController extends ActionController
     }
 
     /**
+     * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
-     * @throws Exception
+     * @throws DbalException
      * @throws IllegalObjectTypeException
+     * @throws JsonException
+     * @throws MisconfiguredTcaException
      * @throws NoSuchCacheGroupException
      * @throws NotFoundExceptionInterface
+     * @throws PropertyNotAccessibleException
      * @throws ReflectionException
      * @throws SiteNotFoundException
+     * @throws UnknownObjectException
      */
     #[PluginAction(uncached: true)]
     public function createAction(Contact $contact): ResponseInterface
@@ -112,6 +118,7 @@ class ContactController extends ActionController
         $this->contactRepository->add($contact);
         $this->persistenceManager->persistAll();
         $this->contactService->updateSlug($contact);
+        $this->persistenceManager->persistAll();
         $this->deletePagesCache(self::CACHE_TAG);
 
         return $this->redirect(
@@ -211,11 +218,15 @@ class ContactController extends ActionController
     }
 
     /**
+     * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
-     * @throws Exception
+     * @throws DbalException
      * @throws IllegalObjectTypeException
+     * @throws JsonException
+     * @throws MisconfiguredTcaException
      * @throws NoSuchCacheGroupException
      * @throws NotFoundExceptionInterface
+     * @throws PropertyNotAccessibleException
      * @throws ReflectionException
      * @throws SiteNotFoundException
      * @throws UnknownObjectException
@@ -227,6 +238,7 @@ class ContactController extends ActionController
         $this->contactRepository->update($contact);
         $this->persistenceManager->persistAll();
         $this->contactService->updateSlug($contact);
+        $this->persistenceManager->persistAll();
         $this->cleanupService->cleanAll();
         $this->deletePagesCache(self::CACHE_TAG);
 

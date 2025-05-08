@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Service;
 
+use Doctrine\DBAL\Exception;
 use JsonException;
 use PSB\PsbContacts\Domain\Demand\ContactDemand;
 use PSB\PsbContacts\Domain\Model\Contact;
@@ -99,6 +100,7 @@ readonly class ContactService
 
     /**
      * @throws ContainerExceptionInterface
+     * @throws Exception
      * @throws IllegalObjectTypeException
      * @throws NotFoundExceptionInterface
      * @throws ReflectionException

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Service;
 
+use Doctrine\DBAL\Exception;
 use PSB\PsbContacts\Domain\Model\AbstractContactRelatedEntity;
 use PSB\PsbContacts\Domain\Model\Contact;
 use PSB\PsbContacts\Domain\Repository\AddressRepository;
@@ -155,6 +156,7 @@ class CleanupService implements LoggerAwareInterface
 
     /**
      * @throws ContainerExceptionInterface
+     * @throws Exception
      * @throws IllegalObjectTypeException
      * @throws NotFoundExceptionInterface
      * @throws ReflectionException
@@ -165,6 +167,7 @@ class CleanupService implements LoggerAwareInterface
     {
         $addedSlugs = 0;
 
+        /** @var Contact $contact */
         foreach ($this->contactRepository->findAll() as $contact) {
             if ('' === $contact->getSlug()) {
                 $this->contactService->updateSlug($contact);
