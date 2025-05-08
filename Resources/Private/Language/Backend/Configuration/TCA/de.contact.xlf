@@ -67,6 +67,10 @@
                 <source>Phone numbers</source>
                 <target>Rufnummern</target>
             </trans-unit>
+            <trans-unit id="slug">
+                <source>Slug</source>
+                <target>URL-Segment</target>
+            </trans-unit>
             <trans-unit id="title">
                 <source>Title</source>
                 <target>Titel</target>
