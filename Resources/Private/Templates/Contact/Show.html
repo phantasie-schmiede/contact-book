@@ -144,7 +144,14 @@
 
                             {event.date -> f:format.date(format: dateFormat)}
                             <span class="fw-bold ms-2">
-                                {event.label}
+                                <f:if condition="{event.yearUnknown}">
+                                    <f:then>
+                                        {event.label}
+                                    </f:then>
+                                    <f:else>
+                                        {event.type.label}
+                                    </f:else>
+                                </f:if>
                             </span>
                         </span>
                         <psbTemplates:additionalContent
