@@ -42,9 +42,9 @@ readonly class ContactService
     /**
      * @throws JsonException
      */
-    public function getAsJson(ContactDemand $demand = null): string
+    public function getAsJson(ContactDemand $demand = null, Contact ...$contacts): string
     {
-        if (!$demand instanceof ContactDemand) {
+        if (!$demand instanceof ContactDemand && empty($contacts)) {
             $demand = new ContactDemand();
         }
 
@@ -55,7 +55,7 @@ readonly class ContactService
                     'value' => $contact->getUid(),
                 ],
                 ContactUtility::sortByDisplayName(
-                    $this->contactRepository->findByDemand($demand)
+                    $contacts ?: $this->contactRepository->findByDemand($demand)
                         ->toArray()
                 )
             ),

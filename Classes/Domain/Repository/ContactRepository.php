@@ -29,6 +29,8 @@ class ContactRepository extends Repository
     {
         $constraints = [];
         $query = $this->createQuery();
+        $query->getQuerySettings()
+            ->setRespectStoragePage(false);
 
         if ('' !== $demand->getCompanyName()) {
             $constraints[] = $query->equals('companyName', $demand->getCompanyName());

@@ -88,7 +88,7 @@
                 <psbFoundation:translate id="contact:addresses" />
             </h3>
             <f:render
-                arguments="{records: contact.addresses, showActionIcon: true}"
+                arguments="{linkTarget: '_blank', records: contact.addresses, showActionIcon: true}"
                 partial="LinkedRelations" />
         </f:if>
 
@@ -136,16 +136,16 @@
                 <f:for
                     as="event"
                     each="{contact.eventsInDescendingOrder}">
-                    <li class="d-flex list-group-item">
-                        <span>
+                    <li class="d-flex list-group-item p-0">
+                        <span class="p-2">
                             <f:variable
                                 name="dateFormat"
                                 value="{f:if(condition: event.yearUnknown, then: 'd.m.', else: 'd.m.Y')}" />
 
                             {event.date -> f:format.date(format: dateFormat)}
-                        </span>
-                        <span class="fw-bold ms-2">
-                            {event.label}
+                            <span class="fw-bold ms-2">
+                                {event.label}
+                            </span>
                         </span>
                         <psbTemplates:additionalContent
                             eventClass="{psbvh:variable.convertString(string: 'PSB\PsbContacts\Event\AdditionalEventListContentEvent::class')}"

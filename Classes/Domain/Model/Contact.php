@@ -540,6 +540,10 @@ class Contact extends AbstractEntity
         if (ContactType::Company === $this->type && '' !== $this->getCompanyName()) {
             $searchTerms[] = $this->getCompanyName();
         } else {
+            if ('' !== $this->getBirthName()) {
+                $searchTerms[] = $this->getBirthName();
+            }
+
             if ('' !== $this->getFirstName()) {
                 $searchTerms[] = $this->getFirstName();
             }
