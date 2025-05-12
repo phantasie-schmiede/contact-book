@@ -140,7 +140,7 @@
                         <span class="p-2">
                             {event.dateFormatted}
                             <span class="fw-bold ms-2">
-                                <f:if condition="{event.yearUnknown}">
+                                <f:if condition="!{event.year}">
                                     <f:then>
                                         {event.label}
                                     </f:then>

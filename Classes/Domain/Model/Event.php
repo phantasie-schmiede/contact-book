@@ -16,7 +16,6 @@ use PSB\PsbContacts\Domain\Enum\EventType;
 use PSB\PsbContacts\Utility\ContactUtility;
 use PSB\PsbFoundation\Attribute\TCA\Column;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Check;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Datetime as TcaDatetime;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Number;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
@@ -44,9 +43,6 @@ class Event extends AbstractContactRelatedEntity
     /** @var ObjectStorage<Contact> */
     #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_events', mmOppositeField: 'events', renderType: SelectRenderType::selectMultipleSideBySide)]
     protected ObjectStorage $contacts;
-
-    #[TcaDatetime]
-    protected DateTime $date;
 
     #[Column(databaseDefinition: 'INT UNSIGNED DEFAULT NULL', nullable: true)]
     #[Number(rangeLower: 1, rangeUpper: 31)]
@@ -77,12 +73,9 @@ class Event extends AbstractContactRelatedEntity
     #[Number]
     protected ?int $year = null;
 
-    #[Check]
-    protected bool $yearUnknown = false;
-
     public function getAnniversaryForYear(int $year): int
     {
-        if ($this->isYearUnknown()) {
+        if (null === $this->year) {
             return 0;
         }
 
@@ -115,11 +108,6 @@ class Event extends AbstractContactRelatedEntity
     public function getContactsAsEnumeration(): string
     {
         return ContactUtility::createEnumeration($this->contacts->toArray());
-    }
-
-    public function getDateLegacy(): DateTime
-    {
-        return $this->date;
     }
 
     public function getDate(bool $useFallbacks = false): ?DateTime
@@ -234,7 +222,7 @@ class Event extends AbstractContactRelatedEntity
 
     public function isAnniversary(): bool
     {
-        return $this->isYearUnknown() || date('Y') > $this->year;
+        return null === $this->year || date('Y') > $this->year;
     }
 
     public function isDateComplete(): bool
@@ -275,22 +263,6 @@ class Event extends AbstractContactRelatedEntity
     public function isShowInCalendar(): bool
     {
         return $this->showInCalendar;
-    }
-
-    public function isYearUnknown(): bool
-    {
-        if (property_exists($this, 'yearUnknown')) {
-            return $this->yearUnknown;
-        }
-
-        return null === $this->year;
-    }
-
-    public function setDate(DateTime $date): self
-    {
-        $this->date = $date;
-
-        return $this;
     }
 
     public function setDay(?int $day): self
