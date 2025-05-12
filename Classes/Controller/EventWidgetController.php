@@ -57,7 +57,7 @@ class EventWidgetController extends ActionController
 
         if (!empty($types)) {
             foreach ($types as $type) {
-                $eventDemand->addType(EventType::tryFrom($type));
+                $eventDemand->addType(EventType::from($type));
             }
         }
 
@@ -70,10 +70,9 @@ class EventWidgetController extends ActionController
 
         /** @var Event $event */
         foreach ($allEvents as $event) {
-            $eventDate = $event->getDate()
+            $eventDate = $event->getDate(true)
                 ->format('m-d');
-            $eventYear = (int)$event->getDate()
-                ->format('Y');
+            $eventYear = $event->getYear();
 
             if ($eventYear < $nextYear) {
                 $eventYear = $eventDate >= $today ? $currentYear : $nextYear;

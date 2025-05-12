@@ -38,30 +38,47 @@
         <psbFoundation:translate id="event:type" />
     </label>
 </div>
-<div class="form-floating mb-3">
-    <f:form.textfield
-        class="form-control"
-        name="event[{uid}][date]"
-        placeholder="{psbFoundation:translate(id: 'event:date')}"
-        type="date"
-        value="{record.date -> f:format.date(format: 'Y-m-d')}" />
-    <label
-        class="form-label">
-        <psbFoundation:translate id="event:date" />
-    </label>
-</div>
-<div class="form-check mb-3">
-    <f:form.checkbox
-        checked="{f:if(condition: record.yearUnknown, then: '1', else: '0')}"
-        class="form-check-input"
-        id="event-{uid}-yearUnknown"
-        name="event[{uid}][yearUnknown]"
-        value="1" />
-    <label
-        class="form-check-label"
-        for="event-{uid}-yearUnknown">
-        <psbFoundation:translate id="event:yearUnknown" />
-    </label>
+<div class="input-group mb-3">
+    <div class="form-floating">
+        <f:form.textfield
+            class="form-control"
+            min="1"
+            max="31"
+            name="event[{uid}][day]"
+            placeholder="{psbFoundation:translate(id: 'event:day')}"
+            type="number"
+            value="{record.day}" />
+        <label
+            class="form-label">
+            <psbFoundation:translate id="event:day" />
+        </label>
+    </div>
+    <div class="form-floating">
+        <f:form.textfield
+            class="form-control"
+            min="1"
+            max="12"
+            name="event[{uid}][month]"
+            placeholder="{psbFoundation:translate(id: 'event:month')}"
+            type="number"
+            value="{record.month}" />
+        <label
+            class="form-label">
+            <psbFoundation:translate id="event:month" />
+        </label>
+    </div>
+    <div class="form-floating">
+        <f:form.textfield
+            class="form-control"
+            name="event[{uid}][year]"
+            placeholder="{psbFoundation:translate(id: 'event:year')}"
+            type="number"
+            value="{record.year}" />
+        <label
+            class="form-label">
+            <psbFoundation:translate id="event:year" />
+        </label>
+    </div>
 </div>
 <div class="form-check mb-3">
     <f:form.checkbox

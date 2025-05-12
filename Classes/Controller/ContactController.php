@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Controller;
 
-use DateTime;
 use Doctrine\DBAL\Exception as DbalException;
 use Exception;
 use JetBrains\PhpStorm\NoReturn;
@@ -422,14 +421,14 @@ class ContactController extends ActionController
 
     private function updateAddressProperties(Address $entity, array $entityData): void
     {
-        $entity->setCity($entityData['city']);
-        $entity->setCountry($entityData['country']);
-        $entity->setCounty($entityData['county']);
-        $entity->setHouseNumber((string)$entityData['houseNumber']);
-        $entity->setNotes($entityData['notes']);
-        $entity->setStreet($entityData['street']);
-        $entity->setType(GeneralType::from($entityData['type']));
-        $entity->setZipCode((string)$entityData['zipCode']);
+        $entity->setCity($entityData['city'])
+            ->setCountry($entityData['country'])
+            ->setCounty($entityData['county'])
+            ->setHouseNumber((string)$entityData['houseNumber'])
+            ->setNotes($entityData['notes'])
+            ->setStreet($entityData['street'])
+            ->setType(GeneralType::from($entityData['type']))
+            ->setZipCode((string)$entityData['zipCode']);
     }
 
     /**
@@ -456,15 +455,15 @@ class ContactController extends ActionController
             }
         }
 
-        $entity->setNotes($entityData['notes']);
-        $entity->setTitle($entityData['title']);
+        $entity->setNotes($entityData['notes'])
+            ->setTitle($entityData['title']);
     }
 
     private function updateEMailProperties(EMail $entity, array $entityData): void
     {
-        $entity->setEMailAddress($entityData['eMailAddress']);
-        $entity->setNotes($entityData['notes']);
-        $entity->setType(GeneralType::from($entityData['type']));
+        $entity->setEMailAddress($entityData['eMailAddress'])
+            ->setNotes($entityData['notes'])
+            ->setType(GeneralType::from($entityData['type']));
     }
 
     /**
@@ -507,34 +506,32 @@ class ContactController extends ActionController
         }
     }
 
-    /**
-     * @throws Exception
-     */
     private function updateEventProperties(Event $entity, array $entityData): void
     {
-        $entity->setDate(new DateTime($entityData['date']));
-        $entity->setNotes($entityData['notes']);
-        $entity->setShowAnniversaries((bool)$entityData['showAnniversaries']);
-        $entity->setShowInCalendar((bool)$entityData['showInCalendar']);
-        $entity->setType(EventType::from($entityData['type']));
-        $entity->setYearUnknown((bool)$entityData['yearUnknown']);
+        $entity->setDay($entityData['day'] ? (int)$entityData['day'] : null)
+            ->setMonth($entityData['month'] ? (int)$entityData['month'] : null)
+            ->setNotes($entityData['notes'])
+            ->setShowAnniversaries((bool)$entityData['showAnniversaries'])
+            ->setShowInCalendar((bool)$entityData['showInCalendar'])
+            ->setType(EventType::from($entityData['type']))
+            ->setYear($entityData['year'] ? (int)$entityData['year'] : null);
     }
 
     private function updatePhoneNumberProperties(PhoneNumber $entity, array $entityData): void
     {
-        $entity->setAreaCode((string)$entityData['areaCode']);
-        $entity->setConnectionIdentifier((string)$entityData['connectionIdentifier']);
-        $entity->setExtension((string)$entityData['extension']);
-        $entity->setGeneralType(GeneralType::from($entityData['generalType']));
-        $entity->setInternationalDiallingCode((string)$entityData['internationalDiallingCode']);
-        $entity->setNotes($entityData['notes']);
-        $entity->setPhoneNumberType(PhoneNumberType::from($entityData['phoneNumberType']));
+        $entity->setAreaCode((string)$entityData['areaCode'])
+            ->setConnectionIdentifier((string)$entityData['connectionIdentifier'])
+            ->setExtension((string)$entityData['extension'])
+            ->setGeneralType(GeneralType::from($entityData['generalType']))
+            ->setInternationalDiallingCode((string)$entityData['internationalDiallingCode'])
+            ->setNotes($entityData['notes'])
+            ->setPhoneNumberType(PhoneNumberType::from($entityData['phoneNumberType']));
     }
 
     private function updateWebsiteProperties(Website $entity, array $entityData): void
     {
-        $entity->setNotes($entityData['notes']);
-        $entity->setType(GeneralType::from($entityData['type']));
-        $entity->setUrl($entityData['url']);
+        $entity->setNotes($entityData['notes'])
+            ->setType(GeneralType::from($entityData['type']))
+            ->setUrl($entityData['url']);
     }
 }

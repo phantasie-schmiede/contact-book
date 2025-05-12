@@ -13,6 +13,7 @@ namespace PSB\PsbContacts\Service;
 use Doctrine\DBAL\Exception;
 use PSB\PsbContacts\Domain\Model\AbstractContactRelatedEntity;
 use PSB\PsbContacts\Domain\Model\Contact;
+use PSB\PsbContacts\Domain\Model\Event;
 use PSB\PsbContacts\Domain\Repository\AddressRepository;
 use PSB\PsbContacts\Domain\Repository\ContactRepository;
 use PSB\PsbContacts\Domain\Repository\DocumentRepository;
@@ -55,6 +56,7 @@ class CleanupService implements LoggerAwareInterface
 
     /**
      * @throws ContainerExceptionInterface
+     * @throws Exception
      * @throws IllegalObjectTypeException
      * @throws NotFoundExceptionInterface
      * @throws ReflectionException
@@ -72,6 +74,7 @@ class CleanupService implements LoggerAwareInterface
         $this->addMissingSlugs();
         $this->addMissingUuids();
         $this->trimNotes();
+        $this->updateEventDates();
     }
 
     /**
@@ -254,5 +257,47 @@ class CleanupService implements LoggerAwareInterface
                 $trimmedNotes++;
             }
         }
+    }
+
+    /**
+     * Converts old property $date to new nullable properties $day, $month, $year.
+     * $year is set to null if the property $yearUnknown is true.
+     *
+     * @return void
+     * @throws IllegalObjectTypeException
+     * @throws UnknownObjectException
+     */
+    private function updateEventDates(): void
+    {
+        $events = $this->eventRepository->findAll();
+        $updatedEvents = 0;
+
+        /** @var Event $event */
+        foreach ($events as $event) {
+            if (null === $event->getDay() && null === $event->getMonth() && null === $event->getYear(
+                ) && null !== $event->getDateLegacy()) {
+                $event->setDay(
+                    (int)$event->getDateLegacy()
+                        ->format('d')
+                );
+                $event->setMonth(
+                    (int)$event->getDateLegacy()
+                        ->format('m')
+                );
+                $event->setYear(
+                    $event->isYearUnknown() ? null : (int)$event->getDateLegacy()
+                        ->format('Y')
+                );
+                $this->eventRepository->update($event);
+                $updatedEvents++;
+            }
+        }
+
+        $this->persistenceManager->persistAll();
+
+        if (0 < $updatedEvents) {
+            $this->logger->info('Updated ' . $updatedEvents . ' event dates.');
+        }
+        die((string)$updatedEvents);
     }
 }

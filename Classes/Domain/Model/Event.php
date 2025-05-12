@@ -14,8 +14,10 @@ use DateTime;
 use JsonException;
 use PSB\PsbContacts\Domain\Enum\EventType;
 use PSB\PsbContacts\Utility\ContactUtility;
+use PSB\PsbFoundation\Attribute\TCA\Column;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Check;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Datetime as TcaDatetime;
+use PSB\PsbFoundation\Attribute\TCA\ColumnType\Number;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
 use PSB\PsbFoundation\Enum\SelectRenderType;
@@ -23,6 +25,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use function sprintf;
 
 /**
  * Class Event
@@ -45,6 +48,14 @@ class Event extends AbstractContactRelatedEntity
     #[TcaDatetime]
     protected DateTime $date;
 
+    #[Column(databaseDefinition: 'INT UNSIGNED DEFAULT NULL', nullable: true)]
+    #[Number(rangeLower: 1, rangeUpper: 31)]
+    protected ?int $day = null;
+
+    #[Column(databaseDefinition: 'INT UNSIGNED DEFAULT NULL', nullable: true)]
+    #[Number(rangeLower: 1, rangeUpper: 12)]
+    protected ?int $month = null;
+
     #[Check]
     protected bool $showAnniversaries = false;
 
@@ -62,6 +73,10 @@ class Event extends AbstractContactRelatedEntity
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
     protected EventType $type = EventType::Birthday;
 
+    #[Column(databaseDefinition: 'INT DEFAULT NULL', nullable: true)]
+    #[Number]
+    protected ?int $year = null;
+
     #[Check]
     protected bool $yearUnknown = false;
 
@@ -71,7 +86,7 @@ class Event extends AbstractContactRelatedEntity
             return 0;
         }
 
-        $anniversary = $year - (int)$this->date->format('Y');
+        $anniversary = $year - $this->year;
 
         if (1 > $anniversary) {
             return 0;
@@ -88,7 +103,7 @@ class Event extends AbstractContactRelatedEntity
      */
     public function getCompactValue(): string
     {
-        return $this->getLabel() . ': ' . $this->date->format('d.m.Y');
+        return $this->getLabel() . ': ' . $this->getDateFormatted();
     }
 
     /**
@@ -102,9 +117,59 @@ class Event extends AbstractContactRelatedEntity
         return ContactUtility::createEnumeration($this->contacts->toArray());
     }
 
-    public function getDate(): DateTime
+    public function getDateLegacy(): DateTime
     {
         return $this->date;
+    }
+
+    public function getDate(bool $useFallbacks = false): ?DateTime
+    {
+        if (!$useFallbacks && !$this->isDateComplete()) {
+            return null;
+        }
+
+        $dateString = sprintf('%04d-%02d-%02d', $this->year ?? 0, $this->month ?? 1, $this->day ?? 1);
+
+        return DateTime::createFromFormat('Y-m-d', $dateString);
+    }
+
+    public function getDateFormatted(): ?string
+    {
+        if ($this->isDateComplete()) {
+            return $this->getDate()
+                ?->format('d.m.Y');
+        }
+
+        if ($this->isMonthAndDayGiven()) {
+            return $this->getDate(true)
+                ?->format('d.m.');
+        }
+
+        if (null !== $this->year && null !== $this->month) {
+            return $this->getDate(true)
+                ?->format('m.Y');
+        }
+
+        if (null !== $this->year && null !== $this->day) {
+            return $this->getDate(true)
+                ?->format('d.??.Y');
+        }
+
+        if (null !== $this->year) {
+            return (string)$this->year;
+        }
+
+        if (null !== $this->month) {
+            return $this->getDate(true)
+                ?->format('M');
+        }
+
+        return null;
+    }
+
+    public function getDay(): ?int
+    {
+        return $this->day;
     }
 
     /**
@@ -130,20 +195,27 @@ class Event extends AbstractContactRelatedEntity
         return $this->type->getLabel($this->isAnniversary() ? 'anniversary' : '');
     }
 
+    public function getMonth(): ?int
+    {
+        return $this->month;
+    }
+
     public function getNextAnniversary(): int
     {
-        if ($this->isYearUnknown()) {
+        if (!$this->isDateComplete()) {
             return 0;
         }
 
         $now = new DateTime();
-        $anniversary = (int)$now->format('Y') - (int)$this->date->format('Y');
+        $anniversary = (int)$now->format('Y') - $this->year;
 
         if (1 > $anniversary) {
             return 0;
         }
 
-        if ($now->format('md') > $this->date->format('md')) {
+        if ($now->format('m') > $this->month || ($now->format('m') === $this->month && $now->format(
+                    'd'
+                ) > $this->day)) {
             $anniversary++;
         }
 
@@ -155,9 +227,44 @@ class Event extends AbstractContactRelatedEntity
         return $this->type;
     }
 
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
     public function isAnniversary(): bool
     {
-        return $this->isYearUnknown() || date('Y') > $this->date->format('Y');
+        return $this->isYearUnknown() || date('Y') > $this->year;
+    }
+
+    public function isDateComplete(): bool
+    {
+        if (null === $this->year) {
+            return false;
+        }
+
+        if (null === $this->month) {
+            return false;
+        }
+
+        if (null === $this->day) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function isMonthAndDayGiven(): bool
+    {
+        if (null === $this->month) {
+            return false;
+        }
+
+        if (null === $this->day) {
+            return false;
+        }
+
+        return true;
     }
 
     public function isShowAnniversaries(): bool
@@ -172,12 +279,30 @@ class Event extends AbstractContactRelatedEntity
 
     public function isYearUnknown(): bool
     {
-        return $this->yearUnknown;
+        if (property_exists($this, 'yearUnknown')) {
+            return $this->yearUnknown;
+        }
+
+        return null === $this->year;
     }
 
     public function setDate(DateTime $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function setDay(?int $day): self
+    {
+        $this->day = $day;
+
+        return $this;
+    }
+
+    public function setMonth(?int $month): self
+    {
+        $this->month = $month;
 
         return $this;
     }
@@ -203,9 +328,9 @@ class Event extends AbstractContactRelatedEntity
         return $this;
     }
 
-    public function setYearUnknown(bool $yearUnknown): self
+    public function setYear(?int $year): self
     {
-        $this->yearUnknown = $yearUnknown;
+        $this->year = $year;
 
         return $this;
     }

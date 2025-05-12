@@ -15,9 +15,13 @@
                 <source>Event</source>
                 <target>Ereignis</target>
             </trans-unit>
-            <trans-unit id="date">
-                <source>Date</source>
-                <target>Datum</target>
+            <trans-unit id="day">
+                <source>Day</source>
+                <target>Tag</target>
+            </trans-unit>
+            <trans-unit id="month">
+                <source>Month</source>
+                <target>Monat</target>
             </trans-unit>
             <trans-unit id="notes">
                 <source>Notes</source>
@@ -63,9 +67,9 @@
                 <source>Wedding</source>
                 <target>Hochzeit</target>
             </trans-unit>
-            <trans-unit id="yearUnknown">
-                <source>Unknown year</source>
-                <target>Unbekanntes Jahr</target>
+            <trans-unit id="year">
+                <source>Year</source>
+                <target>Jahr</target>
             </trans-unit>
         </body>
     </file>

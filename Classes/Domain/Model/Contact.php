@@ -12,6 +12,7 @@ namespace PSB\PsbContacts\Domain\Model;
 
 use InvalidArgumentException;
 use PSB\PsbContacts\Domain\Enum\ContactType;
+use PSB\PsbContacts\Domain\Enum\EventType;
 use PSB\PsbContacts\Utility\NameUtility;
 use PSB\PsbFoundation\Attribute\TCA\Column;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Inline;
@@ -640,6 +641,17 @@ class Contact extends AbstractEntity
         $this->events = new ObjectStorage();
         $this->phoneNumbers = new ObjectStorage();
         $this->websites = new ObjectStorage();
+    }
+
+    public function isAlive(): bool
+    {
+        foreach ($this->events as $event) {
+            if (EventType::Death === $event->getType()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public function removeAddress(Address $address): self

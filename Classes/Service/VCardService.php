@@ -86,7 +86,13 @@ readonly class VCardService
         $birthEvent = ContactUtility::getBirthEvent($contact);
 
         if ($birthEvent instanceof Event) {
-            if ($birthEvent->isYearUnknown()) {
+            if ($birthEvent->isDateComplete()) {
+                $this->addLine(
+                    'BDAY:' . $birthEvent->getDate()
+                        ->format('Ymd'),
+                    $vCard
+                );
+            } elseif ($birthEvent->isMonthAndDayGiven()) {
                 // Incomplete birth dates are only supported in VCard 4.0.
                 if (VCardVersion::V4_0 !== $version) {
                     /*
@@ -95,23 +101,17 @@ readonly class VCardService
                      * This is a hack, but it works for Apple.
                      */
                     $this->addLine(
-                        'BDAY;X-APPLE-OMIT-YEAR=1604:' . $birthEvent->getDate()
+                        'BDAY;X-APPLE-OMIT-YEAR=1604:' . $birthEvent->getDate(true)
                             ->format('1604-m-d'),
                         $vCard
                     );
+                } else {
+                    $this->addLine(
+                        'BDAY:' . $birthEvent->getDate(true)
+                            ->format('--md'),
+                        $vCard
+                    );
                 }
-
-                $this->addLine(
-                    'BDAY:' . $birthEvent->getDate()
-                        ->format('--md'),
-                    $vCard
-                );
-            } else {
-                $this->addLine(
-                    'BDAY:' . $birthEvent->getDate()
-                        ->format('Ymd'),
-                    $vCard
-                );
             }
         }
     }

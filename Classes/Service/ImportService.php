@@ -195,7 +195,9 @@ readonly class ImportService
             case 'BDAY':
                 $event = new Event();
                 $eventDate = DateTime::createFromFormat('Ymd', $value) ?: DateTime::createFromFormat('Y-m-d', $value);
-                $event->setDate($eventDate)
+                $event->setDay((int)$eventDate->format('d'))
+                    ->setMonth((int)$eventDate->format('m'))
+                    ->setYear((int)$eventDate->format('Y'))
                     ->setShowAnniversaries(true)
                     ->setShowInCalendar(true)
                     ->setType(EventType::Birthday);

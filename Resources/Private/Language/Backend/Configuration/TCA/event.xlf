@@ -12,8 +12,11 @@
             <trans-unit id="ctrl.title">
                 <source>Event</source>
             </trans-unit>
-            <trans-unit id="date">
-                <source>Date</source>
+            <trans-unit id="day">
+                <source>Day</source>
+            </trans-unit>
+            <trans-unit id="month">
+                <source>Month</source>
             </trans-unit>
             <trans-unit id="notes">
                 <source>Notes</source>
@@ -48,8 +51,8 @@
             <trans-unit id="type.wedding">
                 <source>Wedding</source>
             </trans-unit>
-            <trans-unit id="yearUnknown">
-                <source>Unknown year</source>
+            <trans-unit id="year">
+                <source>Year</source>
             </trans-unit>
         </body>
     </file>

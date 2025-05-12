@@ -38,8 +38,38 @@ class EventRepository extends Repository
 
         if (null !== $demand->getMinDate()) {
             $constraints[] = $query->logicalOr(
-                $query->greaterThanOrEqual('date', $demand->getMinDate()),
                 $query->equals('showAnniversaries', true),
+                $query->greaterThan(
+                    'year',
+                    $demand->getMinDate()
+                        ->format('Y')
+                ),
+                $query->logicalAnd(
+                    $query->equals(
+                        'year',
+                        $demand->getMinDate()
+                            ->format('Y')
+                    ),
+                    $query->logicalOr(
+                        $query->greaterThan(
+                            'month',
+                            $demand->getMinDate()
+                                ->format('m')
+                        ),
+                        $query->logicalAnd(
+                            $query->equals(
+                                'month',
+                                $demand->getMinDate()
+                                    ->format('m')
+                            ),
+                            $query->greaterThanOrEqual(
+                                'day',
+                                $demand->getMinDate()
+                                    ->format('d')
+                            )
+                        )
+                    )
+                )
             );
         }
 
