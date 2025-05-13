@@ -173,6 +173,10 @@
                             <f:if condition="{event.location}">
                                 in {event.location}
                             </f:if>
+
+                            <f:if condition="{event.notes}">
+                                ({event.notesInline})
+                            </f:if>
                         </span>
                         <psbTemplates:additionalContent
                             eventClass="{psbvh:variable.convertString(string: 'PSB\PsbContacts\Event\AdditionalEventListContentEvent::class')}"
