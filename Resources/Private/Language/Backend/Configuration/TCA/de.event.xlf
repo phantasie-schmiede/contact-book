@@ -19,6 +19,10 @@
                 <source>Day</source>
                 <target>Tag</target>
             </trans-unit>
+            <trans-unit id="location">
+                <source>Location</source>
+                <target>Ort</target>
+            </trans-unit>
             <trans-unit id="month">
                 <source>Month</source>
                 <target>Monat</target>

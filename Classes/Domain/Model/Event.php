@@ -18,8 +18,10 @@ use PSB\PsbFoundation\Attribute\TCA\Column;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Check;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Number;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
+use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
 use PSB\PsbFoundation\Enum\SelectRenderType;
+use PSB\PsbFoundation\Utility\StringUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
@@ -47,6 +49,9 @@ class Event extends AbstractContactRelatedEntity
     #[Column(databaseDefinition: 'INT UNSIGNED DEFAULT NULL', nullable: true)]
     #[Number(rangeLower: 1, rangeUpper: 31)]
     protected ?int $day = null;
+
+    #[Text]
+    protected string $location = '';
 
     #[Column(databaseDefinition: 'INT UNSIGNED DEFAULT NULL', nullable: true)]
     #[Number(rangeLower: 1, rangeUpper: 12)]
@@ -183,6 +188,11 @@ class Event extends AbstractContactRelatedEntity
         return $this->type->getLabel($this->isAnniversary() ? 'anniversary' : '');
     }
 
+    public function getLocation(): string
+    {
+        return implode(', ', StringUtility::explodeByLineBreaks($this->location));
+    }
+
     public function getMonth(): ?int
     {
         return $this->month;
@@ -268,6 +278,13 @@ class Event extends AbstractContactRelatedEntity
     public function setDay(?int $day): self
     {
         $this->day = $day;
+
+        return $this;
+    }
+
+    public function setLocation(string $location): self
+    {
+        $this->location = $location;
 
         return $this;
     }

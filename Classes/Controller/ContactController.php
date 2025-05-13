@@ -509,6 +509,7 @@ class ContactController extends ActionController
     private function updateEventProperties(Event $entity, array $entityData): void
     {
         $entity->setDay($entityData['day'] ? (int)$entityData['day'] : null)
+            ->setLocation($entityData['location'])
             ->setMonth($entityData['month'] ? (int)$entityData['month'] : null)
             ->setNotes($entityData['notes'])
             ->setShowAnniversaries((bool)$entityData['showAnniversaries'])

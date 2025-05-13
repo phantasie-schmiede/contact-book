@@ -131,6 +131,17 @@
 <div class="form-floating mb-3">
     <f:form.textarea
         class="form-control psb-templates-auto-size"
+        name="event[{uid}][location]"
+        placeholder="{psbFoundation:translate(id: 'event:location')}"
+        value="{record.location}" />
+    <label
+        class="form-label">
+        <psbFoundation:translate id="event:location" />
+    </label>
+</div>
+<div class="form-floating mb-3">
+    <f:form.textarea
+        class="form-control psb-templates-auto-size"
         name="event[{uid}][notes]"
         placeholder="{psbFoundation:translate(id: 'event:notes')}"
         value="{record.notes}" />

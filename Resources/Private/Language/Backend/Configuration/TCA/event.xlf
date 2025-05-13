@@ -15,6 +15,9 @@
             <trans-unit id="day">
                 <source>Day</source>
             </trans-unit>
+            <trans-unit id="location">
+                <source>Location</source>
+            </trans-unit>
             <trans-unit id="month">
                 <source>Month</source>
             </trans-unit>

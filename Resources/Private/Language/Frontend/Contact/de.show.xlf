@@ -19,6 +19,14 @@
                 <source>Delete</source>
                 <target>Löschen</target>
             </trans-unit>
+            <trans-unit id="dyn.event.otherContactPreposition.divorce">
+                <source>from</source>
+                <target>von</target>
+            </trans-unit>
+            <trans-unit id="dyn.event.otherContactPreposition.wedding">
+                <source>with</source>
+                <target>mit</target>
+            </trans-unit>
             <trans-unit id="edit">
                 <source>Edit</source>
                 <target>Bearbeiten</target>

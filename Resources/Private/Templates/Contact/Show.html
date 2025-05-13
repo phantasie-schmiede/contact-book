@@ -1,6 +1,7 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbContacts="http://typo3.org/ns/PSB/PsbContacts/ViewHelpers"
     xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers"
     xmlns:psbTemplates="http://typo3.org/ns/PSB/PsbTemplates/ViewHelpers"
     xmlns:psbvh="http://typo3.org/ns/PSB/PsbViewHelpers/ViewHelpers">
@@ -149,6 +150,29 @@
                                     </f:else>
                                 </f:if>
                             </span>
+
+                            <f:if condition="('divorce' == {event.type.value} || 'wedding' == {event.type.value}) && {event.contacts}">
+                                <f:variable
+                                    name="spouse"
+                                    value="{psbContacts:event.otherContacts(contact: contact, event: event, returnFirst: 'true')}" />
+
+                                <psbFoundation:translate id="dyn.event.otherContactPreposition.{event.type.value}" />
+                                <f:link.action
+                                    action="show"
+                                    arguments="{contact: spouse}">
+                                    {spouse.fullName}
+
+                                    <f:if condition="{spouse.birthName}">
+                                        (<psbFoundation:translate
+                                            arguments="{birthName: spouse.birthName}"
+                                            id="birthName" />)
+                                    </f:if>
+                                </f:link.action>
+                            </f:if>
+
+                            <f:if condition="{event.location}">
+                                in {event.location}
+                            </f:if>
                         </span>
                         <psbTemplates:additionalContent
                             eventClass="{psbvh:variable.convertString(string: 'PSB\PsbContacts\Event\AdditionalEventListContentEvent::class')}"
