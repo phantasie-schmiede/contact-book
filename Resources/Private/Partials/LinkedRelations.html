@@ -39,6 +39,10 @@
                         default="{record.compactValue}"
                         optional="true"
                         partial="{record.recordType}" />
+
+                    <f:if condition="{record.notes}">
+                        ({record.notesInline})
+                    </f:if>
                 </span>
             </a>
 
