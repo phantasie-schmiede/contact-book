@@ -160,7 +160,7 @@
                                 <f:link.action
                                     action="show"
                                     arguments="{contact: spouse}">
-                                    {spouse.fullName}
+                                    {spouse.shortName}
 
                                     <f:if condition="{spouse.birthName}">
                                         (<psbFoundation:translate
@@ -224,7 +224,7 @@
 
 <f:render
     arguments="{
-        body: '{psbFoundation:translate(arguments: {name: contact.displayName}, id: \'modal:body\')}',
+        body: '{psbFoundation:translate(arguments: {name: contact.fullName}, id: \'modal:body\')}',
         footer: '{f:render(arguments: {contact: contact}, section: \'modalFooter\')}',
         id: 'delete-contact-{contact.uid}-modal',
         title: '{psbFoundation:translate(id: \'modal:title\')}'

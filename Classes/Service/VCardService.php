@@ -141,7 +141,7 @@ readonly class VCardService
     private function addIndividualInformation(Contact $contact, string &$vCard, VCardVersion $version): void
     {
         $this->addBirthday($contact, $vCard, $version);
-        $this->addLine('FN:' . $contact->getFullName(), $vCard);
+        $this->addLine('FN:' . $contact->getShortName(), $vCard);
         $this->addLine(
             'N:' . $contact->getLastName() . ';' . $contact->getFirstName() . ';' . $contact->getMiddleNames(
             ) . ';' . $contact->getTitle() . ';',

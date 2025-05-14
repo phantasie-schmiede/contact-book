@@ -590,6 +590,25 @@ class Contact extends AbstractEntity
         return implode(' ', array_unique($searchTerms));
     }
 
+    public function getShortName(): string
+    {
+        if (ContactType::Company === $this->type && '' !== $this->getCompanyName()) {
+            return $this->getCompanyName();
+        }
+
+        $nameParts = [];
+
+        if ('' !== $this->getFirstName()) {
+            $nameParts[] = $this->getFirstName();
+        }
+
+        if ('' !== $this->getLastName()) {
+            $nameParts[] = $this->getLastName();
+        }
+
+        return implode(' ', $nameParts);
+    }
+
     public function getSlug(): string
     {
         return $this->slug;
