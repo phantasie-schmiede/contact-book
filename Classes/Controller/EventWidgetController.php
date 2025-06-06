@@ -112,7 +112,7 @@ class EventWidgetController extends ActionController
             'typeCount' => count($types),
             'typeList'  => StringUtility::createEnumeration(
                 array_map(
-                    static fn($type) => EventType::tryFrom($type)
+                    static fn($type) => EventType::from($type)
                         ->getLabel(),
                     $types
                 )

@@ -18,7 +18,7 @@
 
     <f:for
         as="version"
-        each="{0: '3.0', 1: '4.0'}"
+        each="{0: 'Apple', 1: 'v3.0', 2: 'v4.0'}"
         iteration="iterator">
         <f:link.action
             action="export"
@@ -26,7 +26,7 @@
             class="btn btn-outline-secondary d-flex w-100{f:if(condition: '!{iterator.isLast}', then: ' mb-2')}"
             controller="{f:if(condition: '{contactGroup}', then: 'ContactGroup', else: 'Contact')}"
             title="{psbFoundation:translate(id: 'exportModal:exportVCard')}">
-            v{version}
+            {version}
             <span class="ms-auto">
                 <core:icon
                     identifier="psb-templates-download"

@@ -40,7 +40,7 @@ readonly class VCardService
     {
         $vCard = '';
         $this->addLine('BEGIN:VCARD', $vCard);
-        $this->addLine('VERSION:' . $version->value, $vCard);
+        $this->addLine('VERSION:' . $version->getVersionNumber(), $vCard);
 
         if (ContactType::Company === $contact->getType()) {
             $this->addCompanyInformation($contact, $vCard);
@@ -89,7 +89,7 @@ readonly class VCardService
             if ($birthEvent->isDateComplete()) {
                 $this->addLine(
                     'BDAY:' . $birthEvent->getDate()
-                        ->format('Ymd'),
+                        ->format('Y-m-d'),
                     $vCard
                 );
             } elseif ($birthEvent->isMonthAndDayGiven()) {
@@ -143,8 +143,9 @@ readonly class VCardService
         $this->addBirthday($contact, $vCard, $version);
         $this->addLine('FN:' . $contact->getShortName(), $vCard);
         $this->addLine(
-            'N:' . $contact->getLastName() . ';' . $contact->getFirstName() . ';' . $contact->getMiddleNames(
-            ) . ';' . $contact->getTitle() . ';',
+            'N:' . $contact->getLastName() . ';' . $contact->getFirstName(
+            ) . ';' . (VCardVersion::Apple !== $version ? $contact->getMiddleNames() : '') . ';' . $contact->getTitle(
+            ) . ';',
             $vCard
         );
 
@@ -167,12 +168,33 @@ readonly class VCardService
 
         /** @var PhoneNumber $phoneNumber */
         foreach ($contact->getPhoneNumbers() as $phoneNumber) {
+            $line = 'TEL;' . (VCardVersion::V4_0 === $version ? 'VALUE=uri;' : '');
+
+            /*
+             * Apple doesn't follow the official specifications and can't handle multiple comma-separated types.
+             * Instead, it uses several TYPE attributes, which are separated by a semicolon. According to the RFC,
+             * duplicate attributes are not allowed. Additionally, 'mobile' is not shown as phone number type in iOS,
+             * if TYPE=cell does not stand alone.
+             */
+            if (VCardVersion::Apple === $version) {
+                if (GeneralType::Private === $phoneNumber->getGeneralType(
+                    ) && PhoneNumberType::Mobile === $phoneNumber->getPhoneNumberType()) {
+                    $line .= 'TYPE=cell';
+                } else {
+                    $line .= $this->getGeneralType($phoneNumber->getGeneralType());
+                    $line .= ';TYPE=' . $this->getPhoneNumberType($phoneNumber->getPhoneNumberType());
+                }
+            } else {
+                $line .= $this->getGeneralType(
+                        $phoneNumber->getGeneralType()
+                    ) . ',' . $this->getPhoneNumberType(
+                        $phoneNumber->getPhoneNumberType()
+                    );
+            }
+
+            $line .= ':' . (VCardVersion::V4_0 === $version ? 'tel:' : '') . $phoneNumber->getCompleteNumber();
             $this->addLine(
-                'TEL;' . (VCardVersion::V4_0 === $version ? 'VALUE=uri;' : '') . $this->getGeneralType(
-                    $phoneNumber->getGeneralType()
-                ) . ',' . $this->getPhoneNumberType(
-                    $phoneNumber->getPhoneNumberType()
-                ) . ':' . (VCardVersion::V4_0 === $version ? 'tel:' : '') . $phoneNumber->getCompleteNumber(),
+                $line,
                 $vCard
             );
         }
@@ -186,7 +208,11 @@ readonly class VCardService
             );
         }
 
-        $this->addLine('UID:' . (VCardVersion::V4_0 === $version ? 'urn:uuid:' : '') . $contact->getUuid(), $vCard);
+        if (VCardVersion::Apple === $version) {
+            $this->addLine('X-ABUID:' . $contact->getUuid() . ':ABPerson', $vCard);
+        } else {
+            $this->addLine('UID:' . (VCardVersion::V4_0 === $version ? 'urn:uuid:' : '') . $contact->getUuid(), $vCard);
+        }
     }
 
     private function addWebsites(Contact $contact, string &$vCard): void

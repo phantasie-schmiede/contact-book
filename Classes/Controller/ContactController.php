@@ -134,7 +134,7 @@ class ContactController extends ActionController
     public function deleteAction(Contact $contact): ResponseInterface
     {
         $this->contactRepository->remove($contact);
-        $this->deletePagesCache(self::CACHE_TAG);
+        $this->deletePagesCache(self::CACHE_TAG, self::CACHE_TAG . '_' . $contact->getUid());
 
         return $this->redirect('list');
     }
@@ -210,7 +210,7 @@ class ContactController extends ActionController
     #[PluginAction]
     public function showAction(Contact $contact): ResponseInterface
     {
-        $this->setCacheTags(self::CACHE_TAG);
+        $this->setCacheTags(self::CACHE_TAG . '_' . $contact->getUid());
         $this->view->assign('contact', $contact);
 
         return $this->htmlResponse();
@@ -239,7 +239,7 @@ class ContactController extends ActionController
         $this->contactService->updateSlug($contact);
         $this->persistenceManager->persistAll();
         $this->cleanupService->cleanAll();
-        $this->deletePagesCache(self::CACHE_TAG);
+        $this->deletePagesCache(self::CACHE_TAG, self::CACHE_TAG . '_' . $contact->getUid());
 
         return $this->redirect(
             actionName: 'show',

@@ -91,7 +91,7 @@ class ContactGroupController extends ActionController
     public function deleteAction(ContactGroup $contactGroup): ResponseInterface
     {
         $this->contactGroupRepository->remove($contactGroup);
-        $this->deletePagesCache(self::CACHE_TAG);
+        $this->deletePagesCache(self::CACHE_TAG, self::CACHE_TAG . '_' . $contactGroup->getUid());
 
         return $this->redirect('list');
     }
@@ -150,7 +150,14 @@ class ContactGroupController extends ActionController
     #[PluginAction]
     public function showAction(ContactGroup $contactGroup): ResponseInterface
     {
-        $this->setCacheTags(self::CACHE_TAG);
+        $cacheTags = [self::CACHE_TAG . '_' . $contactGroup->getUid()];
+
+        foreach ($contactGroup->getContacts() as $contact) {
+            $cacheTags[] = ContactController::CACHE_TAG . '_' . $contact->getUid();
+        }
+
+        $this->setCacheTags(...$cacheTags);
+
         $this->view->assign('contactGroup', $contactGroup);
 
         return $this->htmlResponse();
@@ -177,7 +184,7 @@ class ContactGroupController extends ActionController
         $this->contactGroupRepository->update($contactGroup);
         $this->persistenceManager->persistAll();
         $this->contactGroupService->updateSlug($contactGroup);
-        $this->deletePagesCache(self::CACHE_TAG);
+        $this->deletePagesCache(self::CACHE_TAG, self::CACHE_TAG . '_' . $contactGroup->getUid());
 
         return $this->redirect(actionName: 'show', arguments: ['contactGroup' => $contactGroup]);
     }
