@@ -1,0 +1,42 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/contactList.xlf" />
+
+<f:asset.script
+    identifier="clearInput"
+    src="EXT:psb_templates/Resources/Public/JavaScript/clearInput.js"
+    type="module" />
+<f:asset.script
+    identifier="filter"
+    src="EXT:psb_templates/Resources/Public/JavaScript/filter.js"
+    type="module" />
+
+<div class="mb-1 position-relative">
+    <input
+        autocomplete="on"
+        class="form-control psb-templates-clear-input"
+        data-psb-filter-target=".js-contact-list-item"
+        data-psb-filter-value="data-search-terms"
+        id="search{pluginUid}"
+        placeholder="{psbFoundation:translate(id: 'contactList:search')}"
+        type="text" />
+</div>
+
+<f:if condition="{list}">
+    <f:then>
+        <f:asset.script
+            identifier="ajaxContent"
+            src="EXT:psb_templates/Resources/Public/JavaScript/ajaxContent.js"
+            type="module" />
+
+        <div data-psb-ajax-url="{f:uri.action(action: 'refreshList', pageType: 1749246027)}">
+            <f:format.raw>{list}</f:format.raw>
+        </div>
+    </f:then>
+    <f:else>
+        <psbFoundation:translate id="contactList:noContacts" />
+    </f:else>
+</f:if>
+</html>

@@ -34,10 +34,12 @@ class ExtensionInformation extends AbstractExtensionInformation
         $mainModuleKey = $this->buildModuleKeyPrefix() . 'main';
         $this->addMainModule(
             GeneralUtility::makeInstance(
-                MainModuleConfiguration::class, key: $mainModuleKey, position: [
-                'after'  => 'file',
-                'before' => 'site',
-            ]
+                MainModuleConfiguration::class,
+                key: $mainModuleKey,
+                position: [
+                    'after'  => 'file',
+                    'before' => 'site',
+                ]
             )
         );
         $this->addModule(
@@ -67,6 +69,14 @@ class ExtensionInformation extends AbstractExtensionInformation
                 PluginConfiguration::class,
                 controllers: [ContactController::class],
                 name       : 'ContactList'
+            )
+        );
+        $this->addPlugin(
+            GeneralUtility::makeInstance(
+                PluginConfiguration::class,
+                controllers: [ContactController::class => ['refreshList']],
+                name       : 'ContactListAjaxRefresh',
+                typeNum    : 1749246027
             )
         );
         $this->addPlugin(

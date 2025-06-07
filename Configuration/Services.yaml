@@ -4,5 +4,14 @@ services:
     autowire: true
     public: false
 
+  cache.contacts_list:
+    class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+    factory: [ '@TYPO3\CMS\Core\Cache\CacheManager', 'getCache' ]
+    arguments: [ 'contacts_list' ]
+
   PSB\PsbContacts\:
     resource: '../Classes/*'
+
+  PSB\PsbContacts\Controller\ContactController:
+    arguments:
+      $frontendCache: '@cache.contacts_list'

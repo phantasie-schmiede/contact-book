@@ -1,0 +1,116 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/contactList.xlf" />
+
+<f:if condition="{contacts}">
+    <ul class="list-group list-group-flush overflow-auto">
+        <f:for
+            as="contact"
+            each="{contacts}">
+            <li
+                class="d-flex js-contact-list-item list-group-item list-group-item-action p-0"
+                data-search-terms="{contact.searchTerms}">
+                <f:link.action
+                    action="show"
+                    arguments="{contact: contact}"
+                    class="d-block flex-grow-1 p-2 text-decoration-none text-reset"
+                    controller="Contact"
+                    pluginName="ContactList">
+                    {contact.displayName}
+                </f:link.action>
+
+                <f:render
+                    arguments="{property: 'websites', records: contact.websites, uid: contact.uid}"
+                    section="Details" />
+                <f:render
+                    arguments="{property: 'eMails', records: contact.eMails, uid: contact.uid}"
+                    section="Details" />
+                <f:render
+                    arguments="{property: 'addresses', records: contact.addresses, uid: contact.uid}"
+                    section="Details" />
+                <f:render
+                    arguments="{property: 'phoneNumbers', records: contact.phoneNumbers, uid: contact.uid}"
+                    section="Details" />
+            </li>
+        </f:for>
+    </ul>
+
+    <f:for
+        as="contact"
+        each="{contacts}">
+        <f:render
+            arguments="{property: 'websites', records: contact.websites, uid: contact.uid}"
+            section="Modal" />
+        <f:render
+            arguments="{property: 'eMails', records: contact.eMails, uid: contact.uid}"
+            section="Modal" />
+        <f:render
+            arguments="{property: 'addresses', records: contact.addresses, uid: contact.uid}"
+            section="Modal" />
+        <f:render
+            arguments="{property: 'phoneNumbers', records: contact.phoneNumbers, uid: contact.uid}"
+            section="Modal" />
+    </f:for>
+</f:if>
+
+<f:section name="Details">
+    <f:if condition="{records}">
+        <f:then>
+            <f:if condition="1 == {records -> f:count()}">
+                <f:then>
+                    <a
+                        class="p-2"
+                        href="{records.0.link}"
+                        target="_blank">
+                        <core:icon
+                            identifier="psb-templates-{records.0.actionIconIdentifier}"
+                            size="small" />
+                    </a>
+                </f:then>
+                <f:else>
+                    <a
+                        class="p-2"
+                        data-bs-target="#contact-{uid}-{property}-modal"
+                        data-bs-toggle="modal"
+                        href="#">
+                        <core:icon
+                            identifier="psb-templates-{records.0.actionIconIdentifier}"
+                            size="small" />
+                    </a>
+                </f:else>
+            </f:if>
+        </f:then>
+        <f:else>
+            <span style="width: 32px;"></span>
+        </f:else>
+    </f:if>
+</f:section>
+
+<f:section name="Modal">
+    <f:if condition="1 < {records -> f:count()}">
+        <div
+            aria-hidden="true"
+            aria-label="{psbFoundation:translate(id: 'contact:{property}')}"
+            class="modal fade"
+            id="contact-{uid}-{property}-modal"
+            tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body p-1">
+                        <button
+                            aria-label="{psbFoundation:translate(id: 'close')}"
+                            class="btn-close end-0 position-absolute top-0 z-2"
+                            data-bs-dismiss="modal"
+                            type="button"></button>
+                        <f:render
+                            arguments="{records: records}"
+                            partial="LinkedRelations" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </f:if>
+</f:section>
+</html>

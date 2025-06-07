@@ -56,9 +56,12 @@ use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use ReflectionException;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
@@ -88,10 +91,12 @@ class ContactController extends ActionController
         protected readonly EMailRepository        $eMailRepository,
         protected readonly EventRepository        $eventRepository,
         protected readonly ExtensionInformation   $extensionInformation,
+        protected readonly FrontendInterface      $frontendCache,
         protected readonly PersistenceManager     $persistenceManager,
         protected readonly PhoneNumberRepository  $phoneNumberRepository,
         protected readonly UploadService          $uploadService,
         protected readonly VCardService           $vCardService,
+        protected readonly ViewFactoryInterface   $viewFactory,
         protected readonly WebsiteRepository      $websiteRepository,
     ) {
     }
@@ -150,6 +155,12 @@ class ContactController extends ActionController
         return $this->htmlResponse();
     }
 
+    /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws JsonException
+     * @throws NotFoundExceptionInterface
+     */
     #[NoReturn]
     #[PluginAction(uncached: true)]
     public function exportAction(?Contact $contact = null, ?VCardVersion $version = null): void
@@ -181,15 +192,17 @@ class ContactController extends ActionController
         exit;
     }
 
-    #[PluginAction(default: true)]
+    #[PluginAction(default: true, uncached: true)]
     public function listAction(): ResponseInterface
     {
-        $this->setCacheTags(self::CACHE_TAG);
+        $list = $this->frontendCache->get('list');
+
+        if (false === $list) {
+            $list = $this->renderListAndUpdateCache();
+        }
+
         $this->view->assignMultiple([
-            'contacts'  => ContactUtility::sortByDisplayName(
-                $this->contactRepository->findAll()
-                    ->toArray()
-            ),
+            'list'      => $list,
             'pluginUid' => $this->request->getAttribute('currentContentObject')->data['uid'],
         ]);
 
@@ -205,6 +218,15 @@ class ContactController extends ActionController
         $this->prepareFormView($contact);
 
         return $this->htmlResponse();
+    }
+
+    /**
+     * @throws JsonException
+     */
+    #[PluginAction(uncached: true)]
+    public function refreshListAction(): ResponseInterface
+    {
+        return $this->jsonResponse(json_encode(['html' => $this->renderListAndUpdateCache()], JSON_THROW_ON_ERROR));
     }
 
     #[PluginAction]
@@ -417,6 +439,27 @@ class ContactController extends ActionController
                 }
             }
         }
+    }
+
+    private function renderListAndUpdateCache(): string
+    {
+        $contacts = ContactUtility::sortByDisplayName(
+            $this->contactRepository->findAll()
+                ->toArray()
+        );
+        $viewFactoryData = new ViewFactoryData(
+            templateRootPaths: ['EXT:psb_contacts/Resources/Private/Templates/Cache'],
+            partialRootPaths : ['EXT:psb_contacts/Resources/Private/Partials'],
+            layoutRootPaths  : ['EXT:psb_contacts/Resources/Private/Layouts'],
+            request          : $this->request,
+        );
+
+        $view = $this->viewFactory->create($viewFactoryData);
+        $view->assign('contacts', $contacts);
+        $list = $view->render('ContactList');
+        $this->frontendCache->set('list', $list, [], 0);
+
+        return $list;
     }
 
     private function updateAddressProperties(Address $entity, array $entityData): void
