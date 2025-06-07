@@ -12,17 +12,23 @@ namespace PSB\PsbContacts\Service;
 
 use Doctrine\DBAL\Exception;
 use JsonException;
+use PSB\PsbContacts\Data\ExtensionInformation;
 use PSB\PsbContacts\Domain\Demand\ContactDemand;
 use PSB\PsbContacts\Domain\Model\Contact;
 use PSB\PsbContacts\Domain\Model\ContactRelationInterface;
 use PSB\PsbContacts\Domain\Repository\ContactRepository;
 use PSB\PsbContacts\Utility\ContactUtility;
 use PSB\PsbFoundation\Service\Configuration\TcaService;
+use PSB\PsbFoundation\Utility\Configuration\FilePathUtility;
 use PSB\PsbTemplates\Utility\SlugUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use ReflectionException;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use function is_string;
@@ -35,8 +41,11 @@ use function is_string;
 readonly class ContactService
 {
     public function __construct(
-        protected ContactRepository $contactRepository,
-        protected TcaService        $tcaService,
+        protected ContactRepository    $contactRepository,
+        protected ExtensionInformation $extensionInformation,
+        protected FrontendInterface    $frontendCache,
+        protected TcaService           $tcaService,
+        protected ViewFactoryInterface $viewFactory,
     ) {
     }
 
@@ -63,6 +72,34 @@ readonly class ContactService
             ),
             JSON_THROW_ON_ERROR
         );
+    }
+
+    public function getCachedList(string $cacheEntryIdentifier): false|string
+    {
+        return $this->frontendCache->get($cacheEntryIdentifier);
+    }
+
+    public function renderListAndUpdateCache(
+        string           $cacheEntryIdentifier,
+        array            $contacts,
+        RequestInterface $request,
+    ): string {
+        $privateResourcePath = FilePathUtility::getPrivateResourcePath($this->extensionInformation);
+
+        $viewFactoryData = new ViewFactoryData(
+            templateRootPaths: [$privateResourcePath . 'Templates/Cache'],
+            partialRootPaths : [$privateResourcePath . 'Partials'],
+            layoutRootPaths  : [$privateResourcePath . 'Layouts'],
+            request          : $request,
+        );
+
+        $view = $this->viewFactory->create($viewFactoryData);
+        $view->assign('contacts', $contacts);
+
+        $list = $view->render('ContactList');
+        $this->frontendCache->set($cacheEntryIdentifier, $list, [], 0);
+
+        return $list;
     }
 
     /**

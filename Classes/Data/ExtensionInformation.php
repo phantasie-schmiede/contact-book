@@ -74,7 +74,10 @@ class ExtensionInformation extends AbstractExtensionInformation
         $this->addPlugin(
             GeneralUtility::makeInstance(
                 PluginConfiguration::class,
-                controllers: [ContactController::class => ['refreshList']],
+                controllers: [
+                    ContactController::class      => ['refreshList'],
+                    ContactGroupController::class => ['refreshList'],
+                ],
                 name       : 'ContactListAjaxRefresh',
                 typeNum    : 1749246027
             )

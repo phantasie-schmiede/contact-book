@@ -12,6 +12,6 @@ services:
   PSB\PsbContacts\:
     resource: '../Classes/*'
 
-  PSB\PsbContacts\Controller\ContactController:
+  PSB\PsbContacts\Service\ContactService:
     arguments:
       $frontendCache: '@cache.contacts_list'

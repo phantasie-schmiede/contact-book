@@ -20,7 +20,11 @@
 <div class="row">
     <div class="col-12">
         <f:render
-            arguments="{list: list, pluginUid: pluginUid}"
+            arguments="{
+                list: list,
+                pluginUid: pluginUid,
+                refreshUrl: '{f:uri.action(action: \'refreshList\', controller: \'Contact\', pageType: 1749246027, pluginName: \'ContactListAjaxRefresh\')}'
+            }"
             partial="SearchableContactList" />
     </div>
 </div>

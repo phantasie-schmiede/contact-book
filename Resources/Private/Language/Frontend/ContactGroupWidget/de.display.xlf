@@ -7,6 +7,14 @@
         source-language="en"
         target-language="de">
         <body>
+            <trans-unit id="error.message">
+                <source>Contact group (ID: {uid}) could not be found!</source>
+                <target>Kontaktgruppe (ID: {uid}) konnte nicht gefunden werden!</target>
+            </trans-unit>
+            <trans-unit id="error.title">
+                <source>Error</source>
+                <target>Fehler</target>
+            </trans-unit>
             <trans-unit id="showAll">
                 <source>Show all</source>
                 <target>Alle anzeigen</target>

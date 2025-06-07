@@ -10,10 +10,19 @@ declare(strict_types=1);
 
 namespace PSB\PsbContacts\Controller;
 
+use JsonException;
+use PSB\PsbContacts\Data\ExtensionInformation;
 use PSB\PsbContacts\Domain\Repository\ContactGroupRepository;
+use PSB\PsbContacts\Service\ContactGroupService;
+use PSB\PsbContacts\Service\ContactService;
 use PSB\PsbFoundation\Attribute\PluginAction;
-use PSB\PsbFoundation\Traits\ControllerCacheTrait;
+use PSB\PsbFoundation\Utility\Configuration\FilePathUtility;
+use PSB\PsbFoundation\Utility\LocalizationUtility;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
@@ -23,21 +32,42 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  */
 class ContactGroupWidgetController extends ActionController
 {
-    use ControllerCacheTrait;
-
     public function __construct(
+        protected readonly ContactGroupService    $contactGroupService,
         protected readonly ContactGroupRepository $contactGroupRepository,
+        protected readonly ContactService         $contactService,
+        protected readonly ExtensionInformation   $extensionInformation,
     ) {
     }
 
+    /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws JsonException
+     * @throws NotFoundExceptionInterface
+     */
     #[PluginAction]
     public function displayAction(): ResponseInterface
     {
-        $this->setCacheTags(ContactController::CACHE_TAG, ContactGroupController::CACHE_TAG);
-        $this->view->assignMultiple([
-            'contactGroup' => $this->contactGroupRepository->findByUid($this->settings['contactGroup']),
-            'pluginUid'    => $this->request->getAttribute('currentContentObject')->data['uid'],
-        ]);
+        $contactGroup = $this->contactGroupRepository->findByUid($this->settings['contactGroup']);
+        $languageFilePath = FilePathUtility::getLanguageFilePath(
+                $this->extensionInformation
+            ) . 'Frontend/ContactGroupWidget/display.xlf:error.';
+
+        if (null === $contactGroup) {
+            $this->addFlashMessage(
+                LocalizationUtility::translate(
+                    key      : $languageFilePath . 'message',
+                    arguments: ['uid' => $this->settings['contactGroup']],
+                ),
+                LocalizationUtility::translate($languageFilePath . 'title'),
+                ContextualFeedbackSeverity::ERROR
+            );
+
+            return $this->htmlResponse();
+        }
+
+        $this->contactGroupService->prepareView($contactGroup, $this->request, $this->view);
 
         return $this->htmlResponse();
     }

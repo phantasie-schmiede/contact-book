@@ -24,19 +24,14 @@
         type="text" />
 </div>
 
-<f:if condition="{list}">
-    <f:then>
-        <f:asset.script
-            identifier="ajaxContent"
-            src="EXT:psb_templates/Resources/Public/JavaScript/ajaxContent.js"
-            type="module" />
+<f:asset.script
+    identifier="ajaxContent"
+    src="EXT:psb_templates/Resources/Public/JavaScript/ajaxContent.js"
+    type="module" />
 
-        <div data-psb-ajax-url="{f:uri.action(action: 'refreshList', pageType: 1749246027)}">
-            <f:format.raw>{list}</f:format.raw>
-        </div>
-    </f:then>
-    <f:else>
-        <psbFoundation:translate id="contactList:noContacts" />
-    </f:else>
-</f:if>
+<div
+    class="overflow-auto"
+    data-psb-ajax-url="{refreshUrl}">
+    <f:format.raw>{list}</f:format.raw>
+</div>
 </html>

@@ -6,34 +6,47 @@
 
 <div class="h-100 position-relative">
     <div class="d-flex flex-column h-100 pb-5">
-        <h1>
-            {contactGroup.name}
-        </h1>
         <f:render
-            arguments="{contacts: contactGroup.contactsSorted, pluginUid: pluginUid}"
-            partial="SearchableContactList" />
+            arguments="{dismissable: 1}"
+            partial="FlashMessages" />
+
+        <f:if condition="{contactGroup}">
+            <h1>
+                {contactGroup.name}
+            </h1>
+
+            <f:render
+                arguments="{
+                list: list,
+                pluginUid: pluginUid,
+                refreshUrl: '{f:uri.action(action: \'refreshList\', arguments: {contactGroup: contactGroup}, controller: \'ContactGroup\', pageType: 1749246027, pluginName: \'ContactListAjaxRefresh\')}'
+            }"
+                partial="SearchableContactList" />
+        </f:if>
     </div>
 
     <div class="bg-white bottom-0 d-flex end-0 position-absolute pt-3 start-0 z-1">
         <f:link.action
             action="list"
-            class="bg-secondary-subtle btn flex-grow-1 me-2"
+            class="bg-secondary-subtle btn flex-grow-1"
             controller="Contact"
             pluginName="ContactList">
             <psbFoundation:translate id="showAll" />
         </f:link.action>
 
-        <f:link.action
-            action="edit"
-            arguments="{contactGroup: contactGroup}"
-            class="bg-primary-subtle btn"
-            controller="ContactGroup"
-            pluginName="ContactGroups">
-            <core:icon
-                identifier="psb-templates-pencil"
-                size="small" />
-            <psbFoundation:translate id="show:edit" />
-        </f:link.action>
+        <f:if condition="{contactGroup}">
+            <f:link.action
+                action="edit"
+                arguments="{contactGroup: contactGroup}"
+                class="bg-primary-subtle btn ms-2"
+                controller="ContactGroup"
+                pluginName="ContactGroups">
+                <core:icon
+                    identifier="psb-templates-pencil"
+                    size="small" />
+                <psbFoundation:translate id="show:edit" />
+            </f:link.action>
+        </f:if>
     </div>
 </div>
 </html>

@@ -20,6 +20,8 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use ReflectionException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\View\ViewInterface;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 
@@ -32,6 +34,7 @@ readonly class ContactGroupService
 {
     public function __construct(
         protected ContactGroupRepository $contactGroupRepository,
+        protected ContactService         $contactService,
         protected TcaService             $tcaService,
     ) {
     }
@@ -52,6 +55,32 @@ readonly class ContactGroupService
             ),
             JSON_THROW_ON_ERROR
         );
+    }
+
+    public function getCacheEntryIdentifier(ContactGroup $contactGroup): string
+    {
+        return 'list_group_' . $contactGroup->getUid();
+    }
+
+    public function prepareView(ContactGroup $contactGroup, RequestInterface $request, ViewInterface $view): void
+    {
+        $list = $this->contactService->getCachedList(
+            $this->getCacheEntryIdentifier($contactGroup)
+        );
+
+        if (false === $list) {
+            $list = $this->contactService->renderListAndUpdateCache(
+                $this->getCacheEntryIdentifier($contactGroup),
+                $contactGroup->getContactsSorted(),
+                $request
+            );
+        }
+
+        $view->assignMultiple([
+            'contactGroup' => $contactGroup,
+            'list'         => $list,
+            'pluginUid'    => $request->getAttribute('currentContentObject')->data['uid'],
+        ]);
     }
 
     /**

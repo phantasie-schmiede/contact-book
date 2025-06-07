@@ -56,11 +56,9 @@ use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use ReflectionException;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
-use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
@@ -91,7 +89,6 @@ class ContactController extends ActionController
         protected readonly EMailRepository        $eMailRepository,
         protected readonly EventRepository        $eventRepository,
         protected readonly ExtensionInformation   $extensionInformation,
-        protected readonly FrontendInterface      $frontendCache,
         protected readonly PersistenceManager     $persistenceManager,
         protected readonly PhoneNumberRepository  $phoneNumberRepository,
         protected readonly UploadService          $uploadService,
@@ -195,10 +192,10 @@ class ContactController extends ActionController
     #[PluginAction(default: true, uncached: true)]
     public function listAction(): ResponseInterface
     {
-        $list = $this->frontendCache->get('list');
+        $list = $this->contactService->getCachedList('list');
 
         if (false === $list) {
-            $list = $this->renderListAndUpdateCache();
+            $list = $this->getList();
         }
 
         $this->view->assignMultiple([
@@ -226,7 +223,7 @@ class ContactController extends ActionController
     #[PluginAction(uncached: true)]
     public function refreshListAction(): ResponseInterface
     {
-        return $this->jsonResponse(json_encode(['html' => $this->renderListAndUpdateCache()], JSON_THROW_ON_ERROR));
+        return $this->jsonResponse(json_encode(['html' => $this->getList()], JSON_THROW_ON_ERROR));
     }
 
     #[PluginAction]
@@ -267,6 +264,16 @@ class ContactController extends ActionController
             actionName: 'show',
             arguments: ['contact' => $contact]
         );
+    }
+
+    private function getList(): string
+    {
+        $contacts = ContactUtility::sortByDisplayName(
+            $this->contactRepository->findAll()
+                ->toArray()
+        );
+
+        return $this->contactService->renderListAndUpdateCache('list', $contacts, $this->request);
     }
 
     /**
@@ -439,27 +446,6 @@ class ContactController extends ActionController
                 }
             }
         }
-    }
-
-    private function renderListAndUpdateCache(): string
-    {
-        $contacts = ContactUtility::sortByDisplayName(
-            $this->contactRepository->findAll()
-                ->toArray()
-        );
-        $viewFactoryData = new ViewFactoryData(
-            templateRootPaths: ['EXT:psb_contacts/Resources/Private/Templates/Cache'],
-            partialRootPaths : ['EXT:psb_contacts/Resources/Private/Partials'],
-            layoutRootPaths  : ['EXT:psb_contacts/Resources/Private/Layouts'],
-            request          : $this->request,
-        );
-
-        $view = $this->viewFactory->create($viewFactoryData);
-        $view->assign('contacts', $contacts);
-        $list = $view->render('ContactList');
-        $this->frontendCache->set('list', $list, [], 0);
-
-        return $list;
     }
 
     private function updateAddressProperties(Address $entity, array $entityData): void

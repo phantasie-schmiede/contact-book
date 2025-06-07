@@ -147,18 +147,25 @@ class ContactGroupController extends ActionController
         return $this->htmlResponse();
     }
 
-    #[PluginAction]
+    /**
+     * @throws JsonException
+     */
+    #[PluginAction(uncached: true)]
+    public function refreshListAction(ContactGroup $contactGroup): ResponseInterface
+    {
+        $list = $this->contactService->renderListAndUpdateCache(
+            $this->contactGroupService->getCacheEntryIdentifier($contactGroup),
+            $contactGroup->getContactsSorted(),
+            $this->request
+        );
+
+        return $this->jsonResponse(json_encode(['html' => $list], JSON_THROW_ON_ERROR));
+    }
+
+    #[PluginAction(uncached: true)]
     public function showAction(ContactGroup $contactGroup): ResponseInterface
     {
-        $cacheTags = [self::CACHE_TAG . '_' . $contactGroup->getUid()];
-
-        foreach ($contactGroup->getContacts() as $contact) {
-            $cacheTags[] = ContactController::CACHE_TAG . '_' . $contact->getUid();
-        }
-
-        $this->setCacheTags(...$cacheTags);
-
-        $this->view->assign('contactGroup', $contactGroup);
+        $this->contactGroupService->prepareView($contactGroup, $this->request, $this->view);
 
         return $this->htmlResponse();
     }

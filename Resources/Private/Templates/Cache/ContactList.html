@@ -5,54 +5,59 @@
 <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/contactList.xlf" />
 
 <f:if condition="{contacts}">
-    <ul class="list-group list-group-flush overflow-auto">
+    <f:then>
+        <ul class="list-group list-group-flush">
+            <f:for
+                as="contact"
+                each="{contacts}">
+                <li
+                    class="d-flex js-contact-list-item list-group-item list-group-item-action p-0"
+                    data-search-terms="{contact.searchTerms}">
+                    <f:link.action
+                        action="show"
+                        arguments="{contact: contact}"
+                        class="d-block flex-grow-1 p-2 text-decoration-none text-reset"
+                        controller="Contact"
+                        pluginName="ContactList">
+                        {contact.displayName}
+                    </f:link.action>
+
+                    <f:render
+                        arguments="{property: 'websites', records: contact.websites, uid: contact.uid}"
+                        section="Details" />
+                    <f:render
+                        arguments="{property: 'eMails', records: contact.eMails, uid: contact.uid}"
+                        section="Details" />
+                    <f:render
+                        arguments="{property: 'addresses', records: contact.addresses, uid: contact.uid}"
+                        section="Details" />
+                    <f:render
+                        arguments="{property: 'phoneNumbers', records: contact.phoneNumbers, uid: contact.uid}"
+                        section="Details" />
+                </li>
+            </f:for>
+        </ul>
+
         <f:for
             as="contact"
             each="{contacts}">
-            <li
-                class="d-flex js-contact-list-item list-group-item list-group-item-action p-0"
-                data-search-terms="{contact.searchTerms}">
-                <f:link.action
-                    action="show"
-                    arguments="{contact: contact}"
-                    class="d-block flex-grow-1 p-2 text-decoration-none text-reset"
-                    controller="Contact"
-                    pluginName="ContactList">
-                    {contact.displayName}
-                </f:link.action>
-
-                <f:render
-                    arguments="{property: 'websites', records: contact.websites, uid: contact.uid}"
-                    section="Details" />
-                <f:render
-                    arguments="{property: 'eMails', records: contact.eMails, uid: contact.uid}"
-                    section="Details" />
-                <f:render
-                    arguments="{property: 'addresses', records: contact.addresses, uid: contact.uid}"
-                    section="Details" />
-                <f:render
-                    arguments="{property: 'phoneNumbers', records: contact.phoneNumbers, uid: contact.uid}"
-                    section="Details" />
-            </li>
+            <f:render
+                arguments="{property: 'websites', records: contact.websites, uid: contact.uid}"
+                section="Modal" />
+            <f:render
+                arguments="{property: 'eMails', records: contact.eMails, uid: contact.uid}"
+                section="Modal" />
+            <f:render
+                arguments="{property: 'addresses', records: contact.addresses, uid: contact.uid}"
+                section="Modal" />
+            <f:render
+                arguments="{property: 'phoneNumbers', records: contact.phoneNumbers, uid: contact.uid}"
+                section="Modal" />
         </f:for>
-    </ul>
-
-    <f:for
-        as="contact"
-        each="{contacts}">
-        <f:render
-            arguments="{property: 'websites', records: contact.websites, uid: contact.uid}"
-            section="Modal" />
-        <f:render
-            arguments="{property: 'eMails', records: contact.eMails, uid: contact.uid}"
-            section="Modal" />
-        <f:render
-            arguments="{property: 'addresses', records: contact.addresses, uid: contact.uid}"
-            section="Modal" />
-        <f:render
-            arguments="{property: 'phoneNumbers', records: contact.phoneNumbers, uid: contact.uid}"
-            section="Modal" />
-    </f:for>
+    </f:then>
+    <f:else>
+        <psbFoundation:translate id="contactList:noContacts" />
+    </f:else>
 </f:if>
 
 <f:section name="Details">

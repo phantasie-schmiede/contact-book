@@ -14,7 +14,11 @@
             <f:render partial="ExportModal/Toggle" />
         </h1>
         <f:render
-            arguments="{contacts: contactGroup.contactsSorted}"
+            arguments="{
+                list: list,
+                pluginUid: pluginUid,
+                refreshUrl: '{f:uri.action(action: \'refreshList\', arguments: {contactGroup: contactGroup}, controller: \'ContactGroup\', pageType: 1749246027, pluginName: \'ContactListAjaxRefresh\')}'
+            }"
             partial="SearchableContactList" />
     </div>
 </div>
