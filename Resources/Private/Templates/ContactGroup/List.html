@@ -1,7 +1,7 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
 <f:if condition="{contactGroups}">
     <f:then>
         <ul class="list-group list-group-flush">
@@ -19,7 +19,7 @@
     </f:then>
     <f:else>
         <div class="alert alert-info">
-            <psbFoundation:translate id="noContactGroups" />
+            <foundation:translate id="noContactGroups" />
         </div>
     </f:else>
 </f:if>
@@ -30,6 +30,6 @@
     <core:icon
         identifier="psb-templates-plus-lg"
         size="small" />
-    <psbFoundation:translate id="createContactGroup" />
+    <foundation:translate id="createContactGroup" />
 </f:link.action>
 </html>

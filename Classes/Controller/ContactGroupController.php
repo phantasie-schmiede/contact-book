@@ -2,28 +2,28 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Controller;
+namespace PSBits\ContactBook\Controller;
 
 use Doctrine\DBAL\Exception;
 use JetBrains\PhpStorm\NoReturn;
 use JsonException;
-use PSB\PsbContacts\Data\ExtensionInformation;
-use PSB\PsbContacts\Domain\Model\ContactGroup;
-use PSB\PsbContacts\Domain\Repository\ContactGroupRepository;
-use PSB\PsbContacts\Domain\Repository\ContactRepository;
-use PSB\PsbContacts\Service\ContactGroupService;
-use PSB\PsbContacts\Service\ContactService;
-use PSB\PsbContacts\Service\Enum\VCardVersion;
-use PSB\PsbContacts\Service\VCardService;
-use PSB\PsbFoundation\Attribute\PluginAction;
-use PSB\PsbFoundation\Traits\ControllerCacheTrait;
-use PSB\PsbFoundation\Utility\FileUtility;
+use PSBits\ContactBook\Data\ExtensionInformation;
+use PSBits\ContactBook\Domain\Model\ContactGroup;
+use PSBits\ContactBook\Domain\Repository\ContactGroupRepository;
+use PSBits\ContactBook\Domain\Repository\ContactRepository;
+use PSBits\ContactBook\Service\ContactGroupService;
+use PSBits\ContactBook\Service\ContactService;
+use PSBits\ContactBook\Service\Enum\VCardVersion;
+use PSBits\ContactBook\Service\VCardService;
+use PSBits\Foundation\Attribute\PluginAction;
+use PSBits\Foundation\Traits\ControllerCacheTrait;
+use PSBits\Foundation\Utility\FileUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -38,13 +38,13 @@ use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 /**
  * Class ContactGroupController
  *
- * @package PSB\PsbContacts\Controller
+ * @package PSBits\ContactBook\Controller
  */
 class ContactGroupController extends ActionController
 {
     use ControllerCacheTrait;
 
-    public const string CACHE_TAG = 'tx_psbcontactgroups';
+    public const string CACHE_TAG = 'tx_contactbook_groups';
 
     public function __construct(
         protected readonly ContactGroupRepository $contactGroupRepository,

@@ -1,10 +1,10 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbContacts="http://typo3.org/ns/PSB/PsbContacts/ViewHelpers"
-    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
-<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/phoneNumber.xlf" />
-<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/Contact/edit.xlf" />
+    xmlns:contactBook="http://typo3.org/ns/PSBits/ContactBook/ViewHelpers"
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
+<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/phoneNumber.xlf" />
+<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/Contact/edit.xlf" />
 
 <f:if condition="{record}">
     <f:then>
@@ -29,13 +29,13 @@
             each="{generalTypes}"
             key="value">
             <f:form.select.option value="{value}">
-                <psbFoundation:translate id="phoneNumber:generalType.{value}" />
+                <foundation:translate id="phoneNumber:generalType.{value}" />
             </f:form.select.option>
         </f:for>
     </f:form.select>
     <label
         class="form-label">
-        <psbFoundation:translate id="phoneNumber:generalType" />
+        <foundation:translate id="phoneNumber:generalType" />
     </label>
 </div>
 <div class="form-floating mb-3">
@@ -48,13 +48,13 @@
             each="{phoneNumberTypes}"
             key="value">
             <f:form.select.option value="{value}">
-                <psbFoundation:translate id="phoneNumber:phoneNumberType.{value}" />
+                <foundation:translate id="phoneNumber:phoneNumberType.{value}" />
             </f:form.select.option>
         </f:for>
     </f:form.select>
     <label
         class="form-label">
-        <psbFoundation:translate id="phoneNumber:phoneNumberType" />
+        <foundation:translate id="phoneNumber:phoneNumberType" />
     </label>
 </div>
 <div class="mb-3">
@@ -69,7 +69,7 @@
                 <f:form.textfield
                     class="form-control"
                     name="phoneNumber[{uid}][internationalDiallingCode]"
-                    placeholder="{psbFoundation:translate(id: 'phoneNumber:internationalDiallingCode')}"
+                    placeholder="{foundation:translate(id: 'phoneNumber:internationalDiallingCode')}"
                     type="tel"
                     value="{record.internationalDiallingCode -> f:or(alternative: '49')}" />
                 <span class="input-group-text">0</span>
@@ -86,14 +86,14 @@
                 <f:form.textfield
                     class="form-control"
                     name="phoneNumber[{uid}][connectionIdentifier]"
-                    placeholder="{psbFoundation:translate(id: 'phoneNumber:connectionIdentifier')}"
+                    placeholder="{foundation:translate(id: 'phoneNumber:connectionIdentifier')}"
                     type="tel"
                     value="{record.connectionIdentifier}" />
                 <span class="input-group-text">-</span>
                 <f:form.textfield
                     class="form-control"
                     name="phoneNumber[{uid}][extension]"
-                    placeholder="{psbFoundation:translate(id: 'phoneNumber:extension')}"
+                    placeholder="{foundation:translate(id: 'phoneNumber:extension')}"
                     type="tel"
                     value="{record.extension}" />
             </div>
@@ -105,14 +105,14 @@
         autocomplete="off"
         class="form-control psb-templates-clear-input"
         data-psb-autocomplete-items="{allContacts}"
-        data-psb-autocomplete-preselection="{psbContacts:json.relatedContacts(relatedEntity: record, contact: contact)}"
+        data-psb-autocomplete-preselection="{contactBook:json.relatedContacts(relatedEntity: record, contact: contact)}"
         data-psb-autocomplete-selection-target="#contact-selection-{uid}"
         data-psb-autocomplete-value-target="#contact-value-{uid}"
-        placeholder="{psbFoundation:translate(id: 'edit:additionalContacts.phoneNumber')}"
+        placeholder="{foundation:translate(id: 'edit:additionalContacts.phoneNumber')}"
         type="text" />
     <label
         class="form-label">
-        <psbFoundation:translate id="edit:additionalContacts.phoneNumber" />
+        <foundation:translate id="edit:additionalContacts.phoneNumber" />
     </label>
     <ul
         class="list-group list-group-flush"
@@ -126,17 +126,17 @@
     <f:form.textarea
         class="form-control psb-templates-auto-size"
         name="phoneNumber[{uid}][notes]"
-        placeholder="{psbFoundation:translate(id: 'phoneNumber:notes')}"
+        placeholder="{foundation:translate(id: 'phoneNumber:notes')}"
         value="{record.notes}" />
     <label
         class="form-label">
-        <psbFoundation:translate id="phoneNumber:notes" />
+        <foundation:translate id="phoneNumber:notes" />
     </label>
 </div>
 <div
     class="btn btn-danger"
     data-psb-delete-mode="closest"
     data-psb-delete-target=".accordion-item">
-    <psbFoundation:translate id="edit:remove" />
+    <foundation:translate id="edit:remove" />
 </div>
 </html>

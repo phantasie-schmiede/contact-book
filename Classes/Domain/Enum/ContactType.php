@@ -2,20 +2,20 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Domain\Enum;
+namespace PSBits\ContactBook\Domain\Enum;
 
-use PSB\PsbContacts\Trait\EnumToArrayTrait;
+use PSBits\ContactBook\Trait\EnumToArrayTrait;
 
 /**
  * Class ContactType
  *
- * @package PSB\PsbContacts\Domain\Enum
+ * @package PSBits\ContactBook\Domain\Enum
  */
 enum ContactType: string
 {

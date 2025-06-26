@@ -1,8 +1,8 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
-<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/ContactGroup/show.xlf" />
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
+<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/ContactGroup/show.xlf" />
 
 <div class="h-100 position-relative">
     <div class="d-flex flex-column h-100 pb-5">
@@ -31,7 +31,7 @@
             class="bg-secondary-subtle btn flex-grow-1"
             controller="Contact"
             pluginName="ContactList">
-            <psbFoundation:translate id="showAll" />
+            <foundation:translate id="showAll" />
         </f:link.action>
 
         <f:if condition="{contactGroup}">
@@ -44,7 +44,7 @@
                 <core:icon
                     identifier="psb-templates-pencil"
                     size="small" />
-                <psbFoundation:translate id="show:edit" />
+                <foundation:translate id="show:edit" />
             </f:link.action>
         </f:if>
     </div>

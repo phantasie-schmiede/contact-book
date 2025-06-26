@@ -1,10 +1,10 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers"
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:psbTemplates="http://typo3.org/ns/PSB/PsbTemplates/ViewHelpers">
-<psbFoundation:translation.registerLanguageFile
-    file="EXT:psb_contacts/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
+<foundation:translation.registerLanguageFile
+    file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
     name="modal" />
 
 <div class="row">
@@ -30,7 +30,7 @@
         <core:icon
             identifier="psb-templates-arrow-left"
             size="small" />
-        <psbFoundation:translate id="backToList" />
+        <foundation:translate id="backToList" />
     </f:link.action>
 
     <f:link.action
@@ -40,7 +40,7 @@
         <core:icon
             identifier="psb-templates-pencil"
             size="small" />
-        <psbFoundation:translate id="edit" />
+        <foundation:translate id="edit" />
     </f:link.action>
 
     <f:render
@@ -48,17 +48,17 @@
             classes: 'bg-danger btn ms-auto',
             modalId: 'delete-contactGroup-{contactGroup.uid}-modal',
             text: '{psbTemplates:svgIcon(identifier: \'psb-templates-trash\')}',
-            title: '{psbFoundation:translate(id: \'delete\')}'
+            title: '{foundation:translate(id: \'delete\')}'
         }"
         partial="Component/Modal/Toggle" />
 </div>
 
 <f:render
     arguments="{
-        body: '{psbFoundation:translate(arguments: {name: contactGroup.name}, id: \'modal:body\')}',
+        body: '{foundation:translate(arguments: {name: contactGroup.name}, id: \'modal:body\')}',
         footer: '{f:render(arguments: {contactGroup: contactGroup}, section: \'modalFooter\')}',
         id: 'delete-contactGroup-{contactGroup.uid}-modal',
-        title: '{psbFoundation:translate(id: \'modal:title\')}'
+        title: '{foundation:translate(id: \'modal:title\')}'
     }"
     partial="Component/Modal/Dialog" />
 
@@ -67,21 +67,21 @@
     partial="ExportModal/Dialog" />
 
 <f:section name="modalFooter">
-    <psbFoundation:translation.registerLanguageFile
-        file="EXT:psb_contacts/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
+    <foundation:translation.registerLanguageFile
+        file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
         name="modal" />
 
     <button
         class="bg-secondary-subtle btn"
         data-bs-dismiss="modal"
         type="button">
-        <psbFoundation:translate id="modal:cancel" />
+        <foundation:translate id="modal:cancel" />
     </button>
     <f:link.action
         action="delete"
         arguments="{contactGroup: contactGroup}"
         class="btn btn-danger">
-        <psbFoundation:translate id="modal:delete" />
+        <foundation:translate id="modal:delete" />
     </f:link.action>
 </f:section>
 </html>

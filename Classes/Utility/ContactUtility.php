@@ -2,18 +2,18 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Utility;
+namespace PSBits\ContactBook\Utility;
 
 use JsonException;
-use PSB\PsbContacts\Domain\Enum\EventType;
-use PSB\PsbContacts\Domain\Model\Contact;
-use PSB\PsbContacts\Domain\Model\Event;
+use PSBits\ContactBook\Domain\Enum\EventType;
+use PSBits\ContactBook\Domain\Model\Contact;
+use PSBits\ContactBook\Domain\Model\Event;
 use PSB\PsbTemplates\Utility\StringUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 /**
  * Class ContactUtility
  *
- * @package PSB\PsbContacts\Utility
+ * @package PSBits\ContactBook\Utility
  */
 class ContactUtility
 {

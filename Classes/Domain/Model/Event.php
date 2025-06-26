@@ -2,26 +2,26 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Domain\Model;
+namespace PSBits\ContactBook\Domain\Model;
 
 use DateTime;
 use JsonException;
-use PSB\PsbContacts\Domain\Enum\EventType;
-use PSB\PsbContacts\Utility\ContactUtility;
-use PSB\PsbFoundation\Attribute\TCA\Column;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Check;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Number;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
-use PSB\PsbFoundation\Attribute\TCA\Ctrl;
-use PSB\PsbFoundation\Enum\SelectRenderType;
-use PSB\PsbFoundation\Utility\StringUtility;
+use PSBits\ContactBook\Domain\Enum\EventType;
+use PSBits\ContactBook\Utility\ContactUtility;
+use PSBits\Foundation\Attribute\TCA\Column;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Check;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Number;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Select;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Text;
+use PSBits\Foundation\Attribute\TCA\Ctrl;
+use PSBits\Foundation\Enum\SelectRenderType;
+use PSBits\Foundation\Utility\StringUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
@@ -31,7 +31,7 @@ use function sprintf;
 /**
  * Class Event
  *
- * @package PSB\PsbContacts\Domain\Model
+ * @package PSBits\ContactBook\Domain\Model
  */
 #[Ctrl(label        : 'date', labelAlt: [
     'type',
@@ -43,7 +43,7 @@ use function sprintf;
 class Event extends AbstractContactRelatedEntity
 {
     /** @var ObjectStorage<Contact> */
-    #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_events', mmOppositeField: 'events', renderType: SelectRenderType::selectMultipleSideBySide)]
+    #[Select(linkedModel: Contact::class, mm: 'tx_contactbook_contacts_events', mmOppositeField: 'events', renderType: SelectRenderType::selectMultipleSideBySide)]
     protected ObjectStorage $contacts;
 
     #[Column(databaseDefinition: 'INT UNSIGNED DEFAULT NULL', nullable: true)]

@@ -2,17 +2,17 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Domain\Model;
+namespace PSBits\ContactBook\Domain\Model;
 
-use PSB\PsbContacts\Utility\ContactUtility;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
-use PSB\PsbFoundation\Utility\StringUtility;
+use PSBits\ContactBook\Utility\ContactUtility;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Text;
+use PSBits\Foundation\Utility\StringUtility;
 use ReflectionClass;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -20,7 +20,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Class AbstractContactRelatedEntity
  *
- * @package PSB\PsbContacts\Domain\Model
+ * @package PSBits\ContactBook\Domain\Model
  */
 abstract class AbstractContactRelatedEntity extends AbstractEntity implements ContactRelationInterface
 {

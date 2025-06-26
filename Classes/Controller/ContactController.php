@@ -2,55 +2,55 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Controller;
+namespace PSBits\ContactBook\Controller;
 
 use Doctrine\DBAL\Exception as DbalException;
 use Exception;
 use JetBrains\PhpStorm\NoReturn;
 use JsonException;
-use PSB\PsbContacts\Data\ExtensionInformation;
-use PSB\PsbContacts\Domain\Demand\ContactDemand;
-use PSB\PsbContacts\Domain\Enum\ContactType;
-use PSB\PsbContacts\Domain\Enum\EventType;
-use PSB\PsbContacts\Domain\Enum\GeneralType;
-use PSB\PsbContacts\Domain\Enum\PhoneNumberType;
-use PSB\PsbContacts\Domain\Model\Address;
-use PSB\PsbContacts\Domain\Model\Contact;
-use PSB\PsbContacts\Domain\Model\ContactGroup;
-use PSB\PsbContacts\Domain\Model\ContactRelationInterface;
-use PSB\PsbContacts\Domain\Model\Document;
-use PSB\PsbContacts\Domain\Model\EMail;
-use PSB\PsbContacts\Domain\Model\Event;
-use PSB\PsbContacts\Domain\Model\PhoneNumber;
-use PSB\PsbContacts\Domain\Model\Website;
-use PSB\PsbContacts\Domain\Repository\AddressRepository;
-use PSB\PsbContacts\Domain\Repository\ContactGroupRepository;
-use PSB\PsbContacts\Domain\Repository\ContactRepository;
-use PSB\PsbContacts\Domain\Repository\DocumentRepository;
-use PSB\PsbContacts\Domain\Repository\EMailRepository;
-use PSB\PsbContacts\Domain\Repository\EventRepository;
-use PSB\PsbContacts\Domain\Repository\PhoneNumberRepository;
-use PSB\PsbContacts\Domain\Repository\WebsiteRepository;
-use PSB\PsbContacts\Service\CleanupService;
-use PSB\PsbContacts\Service\ContactGroupService;
-use PSB\PsbContacts\Service\ContactService;
-use PSB\PsbContacts\Service\Enum\VCardVersion;
-use PSB\PsbContacts\Service\VCardService;
-use PSB\PsbContacts\Utility\ContactUtility;
-use PSB\PsbFoundation\Attribute\PluginAction;
-use PSB\PsbFoundation\Exceptions\MisconfiguredTcaException;
-use PSB\PsbFoundation\Service\GlobalVariableProviders\RequestParameterProvider;
-use PSB\PsbFoundation\Service\GlobalVariableService;
-use PSB\PsbFoundation\Service\UploadService;
-use PSB\PsbFoundation\Traits\ControllerCacheTrait;
-use PSB\PsbFoundation\Utility\FileUtility;
-use PSB\PsbFoundation\Utility\LocalizationUtility;
+use PSBits\ContactBook\Data\ExtensionInformation;
+use PSBits\ContactBook\Domain\Demand\ContactDemand;
+use PSBits\ContactBook\Domain\Enum\ContactType;
+use PSBits\ContactBook\Domain\Enum\EventType;
+use PSBits\ContactBook\Domain\Enum\GeneralType;
+use PSBits\ContactBook\Domain\Enum\PhoneNumberType;
+use PSBits\ContactBook\Domain\Model\Address;
+use PSBits\ContactBook\Domain\Model\Contact;
+use PSBits\ContactBook\Domain\Model\ContactGroup;
+use PSBits\ContactBook\Domain\Model\ContactRelationInterface;
+use PSBits\ContactBook\Domain\Model\Document;
+use PSBits\ContactBook\Domain\Model\EMail;
+use PSBits\ContactBook\Domain\Model\Event;
+use PSBits\ContactBook\Domain\Model\PhoneNumber;
+use PSBits\ContactBook\Domain\Model\Website;
+use PSBits\ContactBook\Domain\Repository\AddressRepository;
+use PSBits\ContactBook\Domain\Repository\ContactGroupRepository;
+use PSBits\ContactBook\Domain\Repository\ContactRepository;
+use PSBits\ContactBook\Domain\Repository\DocumentRepository;
+use PSBits\ContactBook\Domain\Repository\EMailRepository;
+use PSBits\ContactBook\Domain\Repository\EventRepository;
+use PSBits\ContactBook\Domain\Repository\PhoneNumberRepository;
+use PSBits\ContactBook\Domain\Repository\WebsiteRepository;
+use PSBits\ContactBook\Service\CleanupService;
+use PSBits\ContactBook\Service\ContactGroupService;
+use PSBits\ContactBook\Service\ContactService;
+use PSBits\ContactBook\Service\Enum\VCardVersion;
+use PSBits\ContactBook\Service\VCardService;
+use PSBits\ContactBook\Utility\ContactUtility;
+use PSBits\Foundation\Attribute\PluginAction;
+use PSBits\Foundation\Exceptions\MisconfiguredTcaException;
+use PSBits\Foundation\Service\GlobalVariableProviders\RequestParameterProvider;
+use PSBits\Foundation\Service\GlobalVariableService;
+use PSBits\Foundation\Service\UploadService;
+use PSBits\Foundation\Traits\ControllerCacheTrait;
+use PSBits\Foundation\Utility\FileUtility;
+use PSBits\Foundation\Utility\LocalizationUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -70,13 +70,13 @@ use function is_array;
 /**
  * Class ContactController
  *
- * @package PSB\PsbContacts\Controller
+ * @package PSBits\ContactBook\Controller
  */
 class ContactController extends ActionController
 {
     use ControllerCacheTrait;
 
-    public const string CACHE_TAG = 'tx_psbcontacts';
+    public const string CACHE_TAG = 'tx_contactbook_contacts';
 
     public function __construct(
         protected readonly AddressRepository      $addressRepository,
@@ -172,7 +172,7 @@ class ContactController extends ActionController
             $contactDemand->setHasPhoneNumber(true);
             $allContacts = $this->contactRepository->findByDemand($contactDemand);
             $fileName = LocalizationUtility::translate(
-                'LLL:EXT:psb_contacts/Resources/Private/Language/Frontend/exportModal.xlf:allContacts'
+                'LLL:EXT:contact_book/Resources/Private/Language/Frontend/exportModal.xlf:allContacts'
             );
 
             foreach ($allContacts as $singleContact) {

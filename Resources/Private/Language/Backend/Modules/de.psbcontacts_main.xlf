@@ -3,7 +3,7 @@
     <file datatype="plaintext"
         date="2024-09-19T20:57:00+01:00"
         original="messages"
-        product-name="psb_contacts"
+        product-name="contact_book"
         source-language="en"
         target-language="de">
         <body>
@@ -19,8 +19,8 @@
             </trans-unit>
             <!-- title -->
             <trans-unit id="mlang_tabs_tab">
-                <source>PSB Contacts</source>
-                <target>PSB Kontakte</target>
+                <source>PSBits Contact Book</source>
+                <target>PSBits Kontaktbuch</target>
             </trans-unit>
         </body>
     </file>

@@ -2,20 +2,20 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Hooks;
+namespace PSBits\ContactBook\Hooks;
 
-use PSB\PsbContacts\Domain\Enum\EventType;
+use PSBits\ContactBook\Domain\Enum\EventType;
 
 /**
  * Class ItemsProcFunc
  *
- * @package PSB\PsbContacts\Hooks
+ * @package PSBits\ContactBook\Hooks
  */
 class ItemsProcFunc
 {
@@ -25,7 +25,7 @@ class ItemsProcFunc
 
         foreach (EventType::toArray(EventType::Birthday) as $value => $name) {
             $params['items'][] = [
-                'label' => 'LLL:EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/event.xlf:type.' . $value,
+                'label' => 'LLL:EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/event.xlf:type.' . $value,
                 'value' => $value,
             ];
         }

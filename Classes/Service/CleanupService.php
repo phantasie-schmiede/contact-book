@@ -2,24 +2,24 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Service;
+namespace PSBits\ContactBook\Service;
 
 use Doctrine\DBAL\Exception;
-use PSB\PsbContacts\Domain\Model\AbstractContactRelatedEntity;
-use PSB\PsbContacts\Domain\Model\Contact;
-use PSB\PsbContacts\Domain\Repository\AddressRepository;
-use PSB\PsbContacts\Domain\Repository\ContactRepository;
-use PSB\PsbContacts\Domain\Repository\DocumentRepository;
-use PSB\PsbContacts\Domain\Repository\EMailRepository;
-use PSB\PsbContacts\Domain\Repository\EventRepository;
-use PSB\PsbContacts\Domain\Repository\PhoneNumberRepository;
-use PSB\PsbContacts\Domain\Repository\WebsiteRepository;
+use PSBits\ContactBook\Domain\Model\AbstractContactRelatedEntity;
+use PSBits\ContactBook\Domain\Model\Contact;
+use PSBits\ContactBook\Domain\Repository\AddressRepository;
+use PSBits\ContactBook\Domain\Repository\ContactRepository;
+use PSBits\ContactBook\Domain\Repository\DocumentRepository;
+use PSBits\ContactBook\Domain\Repository\EMailRepository;
+use PSBits\ContactBook\Domain\Repository\EventRepository;
+use PSBits\ContactBook\Domain\Repository\PhoneNumberRepository;
+use PSBits\ContactBook\Domain\Repository\WebsiteRepository;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -34,7 +34,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 /**
  * Class CleanupService
  *
- * @package PSB\PsbContacts\Service
+ * @package PSBits\ContactBook\Service
  */
 class CleanupService implements LoggerAwareInterface
 {

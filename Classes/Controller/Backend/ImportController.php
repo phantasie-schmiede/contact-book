@@ -2,21 +2,21 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Controller\Backend;
+namespace PSBits\ContactBook\Controller\Backend;
 
 use JsonException;
-use PSB\PsbContacts\Data\ExtensionInformation;
-use PSB\PsbContacts\Service\ImportService;
-use PSB\PsbFoundation\Attribute\ModuleAction;
-use PSB\PsbFoundation\Controller\Backend\AbstractModuleController;
-use PSB\PsbFoundation\Utility\Configuration\FilePathUtility;
-use PSB\PsbFoundation\Utility\LocalizationUtility;
+use PSBits\ContactBook\Data\ExtensionInformation;
+use PSBits\ContactBook\Service\ImportService;
+use PSBits\Foundation\Attribute\ModuleAction;
+use PSBits\Foundation\Controller\Backend\AbstractModuleController;
+use PSBits\Foundation\Utility\Configuration\FilePathUtility;
+use PSBits\Foundation\Utility\LocalizationUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -30,7 +30,7 @@ use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 /**
  * Class ImportController
  *
- * @package PSB\PsbContacts\Controller\Backend
+ * @package PSBits\ContactBook\Controller\Backend
  */
 #[AsController]
 class ImportController extends AbstractModuleController

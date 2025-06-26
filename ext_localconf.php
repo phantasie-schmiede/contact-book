@@ -7,10 +7,10 @@ use TYPO3\CMS\Core\Log\Writer\DatabaseWriter;
 
 defined('TYPO3') or die();
 
-$GLOBALS['TYPO3_CONF_VARS']['LOG']['PSB']['PsbContacts']['Service']['writerConfiguration'] = [
+$GLOBALS['TYPO3_CONF_VARS']['LOG']['PSBits']['ContactBook']['Service']['writerConfiguration'] = [
     LogLevel::INFO => [
         DatabaseWriter::class => [
-            'logTable' => 'tx_psbcontacts_log',
+            'logTable' => 'tx_contactbook_log',
         ],
     ],
 ];

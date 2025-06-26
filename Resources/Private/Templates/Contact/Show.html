@@ -1,13 +1,13 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbContacts="http://typo3.org/ns/PSB/PsbContacts/ViewHelpers"
-    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers"
+    xmlns:contactBook="http://typo3.org/ns/PSBits/ContactBook/ViewHelpers"
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:psbTemplates="http://typo3.org/ns/PSB/PsbTemplates/ViewHelpers"
     xmlns:psbvh="http://typo3.org/ns/PSB/PsbViewHelpers/ViewHelpers">
-<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
-<psbFoundation:translation.registerLanguageFile
-    file="EXT:psb_contacts/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
+<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+<foundation:translation.registerLanguageFile
+    file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
     name="modal" />
 
 <f:asset.script
@@ -51,7 +51,7 @@
 
         <f:if condition="{contact.birthName}">
             <h2>
-                <psbFoundation:translate
+                <foundation:translate
                     arguments="{birthName: contact.birthName}"
                     id="birthName" />
             </h2>
@@ -59,7 +59,7 @@
 
         <f:if condition="{contact.notes}">
             <h3 class="mt-3">
-                <psbFoundation:translate id="contact:notes" />
+                <foundation:translate id="contact:notes" />
             </h3>
             <p>
                 <f:format.nl2br>{contact.notes}</f:format.nl2br>
@@ -68,7 +68,7 @@
 
         <f:if condition="{contact.companies}">
             <h3 class="mt-3">
-                <psbFoundation:translate id="contact:companies" />
+                <foundation:translate id="contact:companies" />
             </h3>
             <ul class="list-group list-group-flush">
                 <f:for
@@ -86,7 +86,7 @@
 
         <f:if condition="{contact.addresses}">
             <h3 class="mt-3">
-                <psbFoundation:translate id="contact:addresses" />
+                <foundation:translate id="contact:addresses" />
             </h3>
             <f:render
                 arguments="{linkTarget: '_blank', records: contact.addresses, showActionIcon: true}"
@@ -95,7 +95,7 @@
 
         <f:if condition="{contact.phoneNumbers}">
             <h3 class="mt-3">
-                <psbFoundation:translate id="contact:phoneNumbers" />
+                <foundation:translate id="contact:phoneNumbers" />
             </h3>
             <f:render
                 arguments="{records: contact.phoneNumbers, showActionIcon: true}"
@@ -104,7 +104,7 @@
 
         <f:if condition="{contact.eMails}">
             <h3 class="mt-3">
-                <psbFoundation:translate id="contact:eMails" />
+                <foundation:translate id="contact:eMails" />
             </h3>
             <f:render
                 arguments="{records: contact.eMails, showActionIcon: true}"
@@ -113,7 +113,7 @@
 
         <f:if condition="{contact.websites}">
             <h3 class="mt-3">
-                <psbFoundation:translate id="contact:websites" />
+                <foundation:translate id="contact:websites" />
             </h3>
             <f:render
                 arguments="{linkTarget: '_blank', records: contact.websites, showActionIcon: true}"
@@ -122,7 +122,7 @@
 
         <f:if condition="{contact.documentsWithoutImages}">
             <h3 class="mt-3">
-                <psbFoundation:translate id="contact:documents" />
+                <foundation:translate id="contact:documents" />
             </h3>
             <f:render
                 arguments="{linkTarget: '_blank', records: contact.documentsWithoutImages, showActionIcon: true}"
@@ -131,7 +131,7 @@
 
         <f:if condition="{contact.eventsInDescendingOrder}">
             <h3 class="mt-3">
-                <psbFoundation:translate id="contact:events" />
+                <foundation:translate id="contact:events" />
             </h3>
             <ul class="list-group list-group-flush">
                 <f:for
@@ -154,16 +154,16 @@
                             <f:if condition="('divorce' == {event.type.value} || 'wedding' == {event.type.value}) && {event.contacts}">
                                 <f:variable
                                     name="spouse"
-                                    value="{psbContacts:event.otherContacts(contact: contact, event: event, returnFirst: 'true')}" />
+                                    value="{contactBook:event.otherContacts(contact: contact, event: event, returnFirst: 'true')}" />
 
-                                <psbFoundation:translate id="dyn.event.otherContactPreposition.{event.type.value}" />
+                                <foundation:translate id="dyn.event.otherContactPreposition.{event.type.value}" />
                                 <f:link.action
                                     action="show"
                                     arguments="{contact: spouse}">
                                     {spouse.shortName}
 
                                     <f:if condition="{spouse.birthName}">
-                                        (<psbFoundation:translate
+                                        (<foundation:translate
                                             arguments="{birthName: spouse.birthName}"
                                             id="birthName" />)
                                     </f:if>
@@ -179,7 +179,7 @@
                             </f:if>
                         </span>
                         <psbTemplates:additionalContent
-                            eventClass="{psbvh:variable.convertString(string: 'PSB\PsbContacts\Event\AdditionalEventListContentEvent::class')}"
+                            eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalEventListContentEvent::class')}"
                             parameters="{event: event}" />
                     </li>
                 </f:for>
@@ -187,7 +187,7 @@
         </f:if>
 
         <psbTemplates:additionalContent
-            eventClass="{psbvh:variable.convertString(string: 'PSB\PsbContacts\Event\AdditionalContactContentEvent::class')}"
+            eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalContactContentEvent::class')}"
             parameters="{contact: contact}" />
     </div>
 </div>
@@ -199,7 +199,7 @@
         <core:icon
             identifier="psb-templates-arrow-left"
             size="small" />
-        <psbFoundation:translate id="backToList" />
+        <foundation:translate id="backToList" />
     </f:link.action>
 
     <f:link.action
@@ -209,7 +209,7 @@
         <core:icon
             identifier="psb-templates-pencil"
             size="small" />
-        <psbFoundation:translate id="edit" />
+        <foundation:translate id="edit" />
     </f:link.action>
 
     <f:render
@@ -217,17 +217,17 @@
             classes: 'bg-danger btn ms-auto',
             modalId: 'delete-contact-{contact.uid}-modal',
             text: '{psbTemplates:svgIcon(identifier: \'psb-templates-trash\')}',
-            title: '{psbFoundation:translate(id: \'delete\')}'
+            title: '{foundation:translate(id: \'delete\')}'
         }"
         partial="Component/Modal/Toggle" />
 </div>
 
 <f:render
     arguments="{
-        body: '{psbFoundation:translate(arguments: {name: contact.fullName}, id: \'modal:body\')}',
+        body: '{foundation:translate(arguments: {name: contact.fullName}, id: \'modal:body\')}',
         footer: '{f:render(arguments: {contact: contact}, section: \'modalFooter\')}',
         id: 'delete-contact-{contact.uid}-modal',
-        title: '{psbFoundation:translate(id: \'modal:title\')}'
+        title: '{foundation:translate(id: \'modal:title\')}'
     }"
     partial="Component/Modal/Dialog" />
 
@@ -236,21 +236,21 @@
     partial="ExportModal/Dialog" />
 
 <f:section name="modalFooter">
-    <psbFoundation:translation.registerLanguageFile
-        file="EXT:psb_contacts/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
+    <foundation:translation.registerLanguageFile
+        file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
         name="modal" />
 
     <button
         class="bg-secondary-subtle btn"
         data-bs-dismiss="modal"
         type="button">
-        <psbFoundation:translate id="modal:cancel" />
+        <foundation:translate id="modal:cancel" />
     </button>
     <f:link.action
         action="delete"
         arguments="{contact: contact}"
         class="btn btn-danger">
-        <psbFoundation:translate id="modal:delete" />
+        <foundation:translate id="modal:delete" />
     </f:link.action>
 </f:section>
 </html>

@@ -1,15 +1,15 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
-<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/exportModal.xlf" />
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
+<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/exportModal.xlf" />
 
 <f:render
     arguments="{
                 classes: 'align-self-center bg-secondary-subtle btn',
                 modalId: 'vcard-export-modal',
                 text: '{core:icon(identifier: \'psb-templates-download\', size: \'small\', title: iconTitle)}',
-                title: '{psbFoundation:translate(id: \'exportModal:exportVCard\')}'
+                title: '{foundation:translate(id: \'exportModal:exportVCard\')}'
             }"
     partial="Component/Modal/Toggle" />
 </html>

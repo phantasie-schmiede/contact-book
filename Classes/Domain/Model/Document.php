@@ -2,19 +2,19 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Domain\Model;
+namespace PSBits\ContactBook\Domain\Model;
 
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\File;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
-use PSB\PsbFoundation\Attribute\TCA\Ctrl;
-use PSB\PsbFoundation\Enum\SelectRenderType;
+use PSBits\Foundation\Attribute\TCA\ColumnType\File;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Input;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Select;
+use PSBits\Foundation\Attribute\TCA\Ctrl;
+use PSBits\Foundation\Enum\SelectRenderType;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -22,7 +22,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Class EMail
  *
- * @package PSB\PsbContacts\Domain\Model
+ * @package PSBits\ContactBook\Domain\Model
  */
 #[Ctrl(label: 'notes', searchFields: [
     'notes',
@@ -33,7 +33,7 @@ class Document extends AbstractContactRelatedEntity
     public const string TYPE_ICON_IDENTIFIER   = 'file-earmark-text';
 
     /** @var ObjectStorage<Contact> */
-    #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_documents', mmOppositeField: 'documents', renderType: SelectRenderType::selectMultipleSideBySide)]
+    #[Select(linkedModel: Contact::class, mm: 'tx_contactbook_contacts_documents', mmOppositeField: 'documents', renderType: SelectRenderType::selectMultipleSideBySide)]
     protected ObjectStorage $contacts;
 
     #[File(allowed : [
@@ -45,7 +45,7 @@ class Document extends AbstractContactRelatedEntity
         'pdf',
         'rtf',
         'txt',
-    ],     maxItems: 1, uploadDuplicationBehaviour: DuplicationBehavior::RENAME, uploadFileNameGeneratorPartSeparator: '_', uploadFileNameGeneratorPrefix: 'document', uploadFileNameGeneratorProperties: ['uid'], uploadFileNameGeneratorSuffix: 'file', uploadTargetFolder: 'user_upload/psb_contacts/documents',)]
+    ],     maxItems: 1, uploadDuplicationBehaviour: DuplicationBehavior::RENAME, uploadFileNameGeneratorPartSeparator: '_', uploadFileNameGeneratorPrefix: 'document', uploadFileNameGeneratorProperties: ['uid'], uploadFileNameGeneratorSuffix: 'file', uploadTargetFolder: 'user_upload/contact_book/documents',)]
     protected ?FileReference $file = null;
 
     #[Input]

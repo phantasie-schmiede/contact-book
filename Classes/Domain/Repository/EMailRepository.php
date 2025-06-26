@@ -2,17 +2,17 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Domain\Repository;
+namespace PSBits\ContactBook\Domain\Repository;
 
-use PSB\PsbContacts\Domain\Demand\EMailDemand;
-use PSB\PsbContacts\Domain\Model\EMail;
-use PSB\PsbFoundation\Utility\QueryUtility;
+use PSBits\ContactBook\Domain\Demand\EMailDemand;
+use PSBits\ContactBook\Domain\Model\EMail;
+use PSBits\Foundation\Utility\QueryUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
@@ -20,7 +20,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  * Class EMailRepository
  *
  * @extends Repository<EMail>
- * @package PSB\PsbContacts\Domain\Repository
+ * @package PSBits\ContactBook\Domain\Repository
  */
 class EMailRepository extends Repository
 {

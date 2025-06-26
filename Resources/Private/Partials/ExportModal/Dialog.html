@@ -1,20 +1,20 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
-<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/exportModal.xlf" />
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
+<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/exportModal.xlf" />
 
 <f:render
     arguments="{
         body: '{f:render(arguments: {contact: contact, contactGroup: contactGroup}, section: \'modalBody\')}',
         classes: 'modal-dialog-centered',
         id: 'vcard-export-modal',
-        title: '{psbFoundation:translate(id: \'exportModal:selectVCardVersion\')}'
+        title: '{foundation:translate(id: \'exportModal:selectVCardVersion\')}'
     }"
     partial="Component/Modal/Dialog" />
 
 <f:section name="modalBody">
-    <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/exportModal.xlf" />
+    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/exportModal.xlf" />
 
     <f:for
         as="version"
@@ -25,7 +25,7 @@
             arguments="{contact: contact, contactGroup: contactGroup, version: version}"
             class="btn btn-outline-secondary d-flex w-100{f:if(condition: '!{iterator.isLast}', then: ' mb-2')}"
             controller="{f:if(condition: '{contactGroup}', then: 'ContactGroup', else: 'Contact')}"
-            title="{psbFoundation:translate(id: 'exportModal:exportVCard')}">
+            title="{foundation:translate(id: 'exportModal:exportVCard')}">
             {version}
             <span class="ms-auto">
                 <core:icon

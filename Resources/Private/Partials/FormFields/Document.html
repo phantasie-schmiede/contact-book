@@ -1,10 +1,10 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbContacts="http://typo3.org/ns/PSB/PsbContacts/ViewHelpers"
-    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
-<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/TCA/document.xlf" />
-<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/Contact/edit.xlf" />
+    xmlns:contactBook="http://typo3.org/ns/PSBits/ContactBook/ViewHelpers"
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
+<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/document.xlf" />
+<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/Contact/edit.xlf" />
 
 <f:if condition="{record}">
     <f:then>
@@ -39,10 +39,10 @@
     <f:form.textfield
         class="form-control"
         name="document[{uid}][title]"
-        placeholder="{psbFoundation:translate(id: 'document:title')}"
+        placeholder="{foundation:translate(id: 'document:title')}"
         value="{record.title}" />
     <label class="form-label">
-        <psbFoundation:translate id="document:title" />
+        <foundation:translate id="document:title" />
     </label>
 </div>
 
@@ -50,10 +50,10 @@
     <f:form.textarea
         class="form-control psb-templates-auto-size"
         name="document[{uid}][notes]"
-        placeholder="{psbFoundation:translate(id: 'document:notes')}"
+        placeholder="{foundation:translate(id: 'document:notes')}"
         value="{record.notes}" />
     <label class="form-label">
-        <psbFoundation:translate id="document:notes" />
+        <foundation:translate id="document:notes" />
     </label>
 </div>
 
@@ -62,13 +62,13 @@
         autocomplete="off"
         class="form-control psb-templates-clear-input"
         data-psb-autocomplete-items="{allContacts}"
-        data-psb-autocomplete-preselection="{psbContacts:json.relatedContacts(relatedEntity: record, contact: contact)}"
+        data-psb-autocomplete-preselection="{contactBook:json.relatedContacts(relatedEntity: record, contact: contact)}"
         data-psb-autocomplete-selection-target="#contact-selection-{uid}"
         data-psb-autocomplete-value-target="#contact-value-{uid}"
-        placeholder="{psbFoundation:translate(id: 'edit:additionalContacts.document')}"
+        placeholder="{foundation:translate(id: 'edit:additionalContacts.document')}"
         type="text" />
     <label class="form-label">
-        <psbFoundation:translate id="edit:additionalContacts.document" />
+        <foundation:translate id="edit:additionalContacts.document" />
     </label>
     <ul
         class="list-group list-group-flush"
@@ -83,6 +83,6 @@
     class="btn btn-danger"
     data-psb-delete-mode="closest"
     data-psb-delete-target=".accordion-item">
-    <psbFoundation:translate id="edit:remove" />
+    <foundation:translate id="edit:remove" />
 </div>
 </html>

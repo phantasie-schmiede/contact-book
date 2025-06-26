@@ -2,25 +2,25 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\ViewHelpers\Json;
+namespace PSBits\ContactBook\ViewHelpers\Json;
 
 use JsonException;
-use PSB\PsbContacts\Domain\Model\Contact;
-use PSB\PsbContacts\Domain\Model\ContactRelationInterface;
-use PSB\PsbContacts\Utility\ContactUtility;
+use PSBits\ContactBook\Domain\Model\Contact;
+use PSBits\ContactBook\Domain\Model\ContactRelationInterface;
+use PSBits\ContactBook\Utility\ContactUtility;
 use RuntimeException;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Class RelatedContactsViewHelper
  *
- * @package PSB\PsbContacts\ViewHelpers\Json
+ * @package PSBits\ContactBook\ViewHelpers\Json
  */
 class RelatedContactsViewHelper extends AbstractViewHelper
 {

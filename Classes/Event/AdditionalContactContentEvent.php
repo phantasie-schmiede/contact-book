@@ -2,22 +2,22 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Event;
+namespace PSBits\ContactBook\Event;
 
 use InvalidArgumentException;
-use PSB\PsbContacts\Domain\Model\Contact;
+use PSBits\ContactBook\Domain\Model\Contact;
 use PSB\PsbTemplates\Event\AbstractAdditionalContentEvent;
 
 /**
  * Class AdditionalContactContentEvent
  *
- * @package PSB\PsbContacts\Event
+ * @package PSBits\ContactBook\Event
  */
 class AdditionalContactContentEvent extends AbstractAdditionalContentEvent
 {

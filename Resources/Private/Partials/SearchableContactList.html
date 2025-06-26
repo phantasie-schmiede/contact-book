@@ -1,8 +1,8 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
-<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/contactList.xlf" />
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
+<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/contactList.xlf" />
 
 <f:asset.script
     identifier="clearInput"
@@ -20,7 +20,7 @@
         data-psb-filter-target=".js-contact-list-item"
         data-psb-filter-value="data-search-terms"
         id="search{pluginUid}"
-        placeholder="{psbFoundation:translate(id: 'contactList:search')}"
+        placeholder="{foundation:translate(id: 'contactList:search')}"
         type="text" />
 </div>
 

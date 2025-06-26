@@ -1,7 +1,7 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
 <div class="mb-2 row">
     <div class="col-12 d-flex justify-content-end">
         <f:render partial="ExportModal/Toggle" />
@@ -9,7 +9,7 @@
         <f:link.action
             action="new"
             class="bg-primary-subtle btn ms-2"
-            title="{psbFoundation:translate(id: 'addNewContact')}">
+            title="{foundation:translate(id: 'addNewContact')}">
             <core:icon
                 identifier="psb-templates-person-add"
                 size="small" />

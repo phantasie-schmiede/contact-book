@@ -2,19 +2,19 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Service;
+namespace PSBits\ContactBook\Service;
 
 use Doctrine\DBAL\Exception;
 use JsonException;
-use PSB\PsbContacts\Domain\Model\ContactGroup;
-use PSB\PsbContacts\Domain\Repository\ContactGroupRepository;
-use PSB\PsbFoundation\Service\Configuration\TcaService;
+use PSBits\ContactBook\Domain\Model\ContactGroup;
+use PSBits\ContactBook\Domain\Repository\ContactGroupRepository;
+use PSBits\Foundation\Service\Configuration\TcaService;
 use PSB\PsbTemplates\Utility\SlugUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -28,7 +28,7 @@ use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 /**
  * Class ContactGroupService
  *
- * @package PSB\PsbContacts\Service
+ * @package PSBits\ContactBook\Service
  */
 readonly class ContactGroupService
 {

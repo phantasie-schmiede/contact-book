@@ -2,29 +2,29 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Data;
+namespace PSBits\ContactBook\Data;
 
-use PSB\PsbContacts\Controller\Backend\ImportController;
-use PSB\PsbContacts\Controller\ContactController;
-use PSB\PsbContacts\Controller\ContactGroupController;
-use PSB\PsbContacts\Controller\ContactGroupWidgetController;
-use PSB\PsbContacts\Controller\EventWidgetController;
-use PSB\PsbFoundation\Data\AbstractExtensionInformation;
-use PSB\PsbFoundation\Data\MainModuleConfiguration;
-use PSB\PsbFoundation\Data\ModuleConfiguration;
-use PSB\PsbFoundation\Data\PluginConfiguration;
+use PSBits\ContactBook\Controller\Backend\ImportController;
+use PSBits\ContactBook\Controller\ContactController;
+use PSBits\ContactBook\Controller\ContactGroupController;
+use PSBits\ContactBook\Controller\ContactGroupWidgetController;
+use PSBits\ContactBook\Controller\EventWidgetController;
+use PSBits\Foundation\Data\AbstractExtensionInformation;
+use PSBits\Foundation\Data\MainModuleConfiguration;
+use PSBits\Foundation\Data\ModuleConfiguration;
+use PSBits\Foundation\Data\PluginConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class ExtensionInformation
  *
- * @package PSB\PsbContacts\Data
+ * @package PSBits\ContactBook\Data
  */
 class ExtensionInformation extends AbstractExtensionInformation
 {

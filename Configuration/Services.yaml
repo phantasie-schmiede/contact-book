@@ -9,9 +9,9 @@ services:
     factory: [ '@TYPO3\CMS\Core\Cache\CacheManager', 'getCache' ]
     arguments: [ 'contacts_list' ]
 
-  PSB\PsbContacts\:
+  PSBits\ContactBook\:
     resource: '../Classes/*'
 
-  PSB\PsbContacts\Service\ContactService:
+  PSBits\ContactBook\Service\ContactService:
     arguments:
       $frontendCache: '@cache.contacts_list'

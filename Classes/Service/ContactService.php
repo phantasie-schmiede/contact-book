@@ -2,24 +2,24 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Service;
+namespace PSBits\ContactBook\Service;
 
 use Doctrine\DBAL\Exception;
 use JsonException;
-use PSB\PsbContacts\Data\ExtensionInformation;
-use PSB\PsbContacts\Domain\Demand\ContactDemand;
-use PSB\PsbContacts\Domain\Model\Contact;
-use PSB\PsbContacts\Domain\Model\ContactRelationInterface;
-use PSB\PsbContacts\Domain\Repository\ContactRepository;
-use PSB\PsbContacts\Utility\ContactUtility;
-use PSB\PsbFoundation\Service\Configuration\TcaService;
-use PSB\PsbFoundation\Utility\Configuration\FilePathUtility;
+use PSBits\ContactBook\Data\ExtensionInformation;
+use PSBits\ContactBook\Domain\Demand\ContactDemand;
+use PSBits\ContactBook\Domain\Model\Contact;
+use PSBits\ContactBook\Domain\Model\ContactRelationInterface;
+use PSBits\ContactBook\Domain\Repository\ContactRepository;
+use PSBits\ContactBook\Utility\ContactUtility;
+use PSBits\Foundation\Service\Configuration\TcaService;
+use PSBits\Foundation\Utility\Configuration\FilePathUtility;
 use PSB\PsbTemplates\Utility\SlugUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -36,7 +36,7 @@ use function is_string;
 /**
  * Class ContactService
  *
- * @package PSB\PsbContacts\Service
+ * @package PSBits\ContactBook\Service
  */
 readonly class ContactService
 {

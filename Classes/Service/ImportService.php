@@ -2,37 +2,37 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Service;
+namespace PSBits\ContactBook\Service;
 
 use DateTime;
-use PSB\PsbContacts\Domain\Demand\AddressDemand;
-use PSB\PsbContacts\Domain\Demand\ContactDemand;
-use PSB\PsbContacts\Domain\Demand\EMailDemand;
-use PSB\PsbContacts\Domain\Demand\PhoneNumberDemand;
-use PSB\PsbContacts\Domain\Demand\WebsiteDemand;
-use PSB\PsbContacts\Domain\Enum\ContactType;
-use PSB\PsbContacts\Domain\Enum\EventType;
-use PSB\PsbContacts\Domain\Enum\GeneralType;
-use PSB\PsbContacts\Domain\Enum\PhoneNumberType;
-use PSB\PsbContacts\Domain\Model\Address;
-use PSB\PsbContacts\Domain\Model\Contact;
-use PSB\PsbContacts\Domain\Model\EMail;
-use PSB\PsbContacts\Domain\Model\Event;
-use PSB\PsbContacts\Domain\Model\Website;
-use PSB\PsbContacts\Domain\Repository\AddressRepository;
-use PSB\PsbContacts\Domain\Repository\ContactRepository;
-use PSB\PsbContacts\Domain\Repository\EMailRepository;
-use PSB\PsbContacts\Domain\Repository\PhoneNumberRepository;
-use PSB\PsbContacts\Domain\Repository\WebsiteRepository;
-use PSB\PsbContacts\Utility\AddressUtility;
-use PSB\PsbContacts\Utility\PhoneNumberUtility;
-use PSB\PsbFoundation\Utility\StringUtility;
+use PSBits\ContactBook\Domain\Demand\AddressDemand;
+use PSBits\ContactBook\Domain\Demand\ContactDemand;
+use PSBits\ContactBook\Domain\Demand\EMailDemand;
+use PSBits\ContactBook\Domain\Demand\PhoneNumberDemand;
+use PSBits\ContactBook\Domain\Demand\WebsiteDemand;
+use PSBits\ContactBook\Domain\Enum\ContactType;
+use PSBits\ContactBook\Domain\Enum\EventType;
+use PSBits\ContactBook\Domain\Enum\GeneralType;
+use PSBits\ContactBook\Domain\Enum\PhoneNumberType;
+use PSBits\ContactBook\Domain\Model\Address;
+use PSBits\ContactBook\Domain\Model\Contact;
+use PSBits\ContactBook\Domain\Model\EMail;
+use PSBits\ContactBook\Domain\Model\Event;
+use PSBits\ContactBook\Domain\Model\Website;
+use PSBits\ContactBook\Domain\Repository\AddressRepository;
+use PSBits\ContactBook\Domain\Repository\ContactRepository;
+use PSBits\ContactBook\Domain\Repository\EMailRepository;
+use PSBits\ContactBook\Domain\Repository\PhoneNumberRepository;
+use PSBits\ContactBook\Domain\Repository\WebsiteRepository;
+use PSBits\ContactBook\Utility\AddressUtility;
+use PSBits\ContactBook\Utility\PhoneNumberUtility;
+use PSBits\Foundation\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -42,7 +42,7 @@ use function in_array;
 /**
  * Class ImportService
  *
- * @package PSB\PsbContacts\Service
+ * @package PSBits\ContactBook\Service
  */
 readonly class ImportService
 {

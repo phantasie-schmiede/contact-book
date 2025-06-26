@@ -2,17 +2,17 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Domain\Repository;
+namespace PSBits\ContactBook\Domain\Repository;
 
-use PSB\PsbContacts\Domain\Demand\ContactDemand;
-use PSB\PsbContacts\Domain\Enum\ContactType;
-use PSB\PsbFoundation\Utility\QueryUtility;
+use PSBits\ContactBook\Domain\Demand\ContactDemand;
+use PSBits\ContactBook\Domain\Enum\ContactType;
+use PSBits\Foundation\Utility\QueryUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
@@ -21,7 +21,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  * Class ContactRepository
  *
  * @extends Repository<Contact>
- * @package PSB\PsbContacts\Domain\Repository
+ * @package PSBits\ContactBook\Domain\Repository
  */
 class ContactRepository extends Repository
 {

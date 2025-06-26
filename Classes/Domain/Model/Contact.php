@@ -2,27 +2,27 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Domain\Model;
+namespace PSBits\ContactBook\Domain\Model;
 
 use InvalidArgumentException;
-use PSB\PsbContacts\Domain\Enum\ContactType;
-use PSB\PsbContacts\Domain\Enum\EventType;
-use PSB\PsbContacts\Utility\NameUtility;
-use PSB\PsbFoundation\Attribute\TCA\Column;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Inline;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Slug;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
-use PSB\PsbFoundation\Attribute\TCA\Ctrl;
-use PSB\PsbFoundation\Enum\SelectRenderType;
-use PSB\PsbFoundation\Utility\StringUtility;
+use PSBits\ContactBook\Domain\Enum\ContactType;
+use PSBits\ContactBook\Domain\Enum\EventType;
+use PSBits\ContactBook\Utility\NameUtility;
+use PSBits\Foundation\Attribute\TCA\Column;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Inline;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Input;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Select;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Slug;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Text;
+use PSBits\Foundation\Attribute\TCA\Ctrl;
+use PSBits\Foundation\Enum\SelectRenderType;
+use PSBits\Foundation\Utility\StringUtility;
 use Ramsey\Uuid\Uuid;
 use RuntimeException;
 use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
@@ -32,7 +32,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Class Contact
  *
- * @package PSB\PsbContacts\Domain\Model
+ * @package PSBits\ContactBook\Domain\Model
  */
 #[Ctrl(label        : 'lastName', labelAlt: [
     'firstName',
@@ -65,7 +65,7 @@ class Contact extends AbstractEntity
     ];
 
     /** @var ObjectStorage<Address> */
-    #[Inline(linkedModel: Address::class, mm: 'tx_psbcontacts_contacts_addresses')]
+    #[Inline(linkedModel: Address::class, mm: 'tx_contactbook_contacts_addresses')]
     #[Lazy]
     protected ObjectStorage $addresses;
 
@@ -74,7 +74,7 @@ class Contact extends AbstractEntity
     protected string $birthName = '';
 
     /** @var ObjectStorage<Contact> */
-    #[Select(foreignTableWhere: 'AND {#tx_psbcontacts_domain_model_contact}.{#type} = "company"', linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_companies', renderType: SelectRenderType::selectMultipleSideBySide)]
+    #[Select(foreignTableWhere: 'AND {#tx_contactbook_domain_model_contact}.{#type} = "company"', linkedModel: Contact::class, mm: 'tx_contactbook_contacts_companies', renderType: SelectRenderType::selectMultipleSideBySide)]
     #[Lazy]
     protected ObjectStorage $companies;
 
@@ -82,22 +82,22 @@ class Contact extends AbstractEntity
     protected string $companyName = '';
 
     /** @var ObjectStorage<ContactGroup> */
-    #[Inline(linkedModel: ContactGroup::class, mm: 'tx_psbcontacts_contacts_contactgroups')]
+    #[Inline(linkedModel: ContactGroup::class, mm: 'tx_contactbook_contacts_contactgroups')]
     #[Lazy]
     protected ObjectStorage $contactGroups;
 
     /** @var ObjectStorage<Document> */
-    #[Inline(linkedModel: Document::class, mm: 'tx_psbcontacts_contacts_documents')]
+    #[Inline(linkedModel: Document::class, mm: 'tx_contactbook_contacts_documents')]
     #[Lazy]
     protected ObjectStorage $documents;
 
     /** @var ObjectStorage<EMail> */
-    #[Inline(linkedModel: EMail::class, mm: 'tx_psbcontacts_contacts_emails')]
+    #[Inline(linkedModel: EMail::class, mm: 'tx_contactbook_contacts_emails')]
     #[Lazy]
     protected ObjectStorage $eMails;
 
     /** @var ObjectStorage<Event> */
-    #[Inline(linkedModel: Event::class, mm: 'tx_psbcontacts_contacts_events')]
+    #[Inline(linkedModel: Event::class, mm: 'tx_contactbook_contacts_events')]
     #[Lazy]
     protected ObjectStorage $events;
 
@@ -128,7 +128,7 @@ class Contact extends AbstractEntity
     protected string $notes = '';
 
     /** @var ObjectStorage<PhoneNumber> */
-    #[Inline(linkedModel: PhoneNumber::class, mm: 'tx_psbcontacts_contacts_phonenumbers')]
+    #[Inline(linkedModel: PhoneNumber::class, mm: 'tx_contactbook_contacts_phonenumbers')]
     #[Lazy]
     protected ObjectStorage $phoneNumbers;
 
@@ -151,7 +151,7 @@ class Contact extends AbstractEntity
     protected string $uuid = '';
 
     /** @var ObjectStorage<Website> */
-    #[Inline(linkedModel: Website::class, mm: 'tx_psbcontacts_contacts_websites')]
+    #[Inline(linkedModel: Website::class, mm: 'tx_contactbook_contacts_websites')]
     #[Lazy]
     protected ObjectStorage $websites;
 

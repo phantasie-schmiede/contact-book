@@ -1,7 +1,7 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
 <f:render
     arguments="{allContacts: allContacts, contact: contact, generalTypes: generalTypes, recordType: 'Address'}"
     section="AccordionItem" />
@@ -47,7 +47,7 @@
     type="module" />
 
 <f:section name="AccordionItem">
-    <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/Contact/edit.xlf" />
+    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/Contact/edit.xlf" />
 
     <div
         class="d-none"
@@ -61,7 +61,7 @@
                     _data-bs-target="#accordion{recordType}-###uid###"
                     data-bs-toggle="collapse"
                     type="button">
-                    <psbFoundation:translate id="edit:new{recordType}" />
+                    <foundation:translate id="edit:new{recordType}" />
                 </button>
             </h2>
             <div

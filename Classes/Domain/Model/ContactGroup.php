@@ -2,25 +2,25 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Domain\Model;
+namespace PSBits\ContactBook\Domain\Model;
 
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Slug;
-use PSB\PsbFoundation\Attribute\TCA\Ctrl;
-use PSB\PsbFoundation\Enum\SelectRenderType;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Input;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Select;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Slug;
+use PSBits\Foundation\Attribute\TCA\Ctrl;
+use PSBits\Foundation\Enum\SelectRenderType;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * Class ContactGroup
  *
- * @package PSB\PsbContacts\Domain\Model
+ * @package PSBits\ContactBook\Domain\Model
  */
 #[Ctrl(label: 'name', searchFields: [
     'name',
@@ -41,7 +41,7 @@ class ContactGroup extends AbstractContactRelatedEntity
     ];
 
     /** @var ObjectStorage<Contact> */
-    #[Select(linkedModel: Contact::class, mm: 'tx_psbcontacts_contacts_contactgroups', mmOppositeField: 'contactGroups', renderType: SelectRenderType::selectMultipleSideBySide)]
+    #[Select(linkedModel: Contact::class, mm: 'tx_contactbook_contacts_contactgroups', mmOppositeField: 'contactGroups', renderType: SelectRenderType::selectMultipleSideBySide)]
     protected ObjectStorage $contacts;
 
     #[Input]

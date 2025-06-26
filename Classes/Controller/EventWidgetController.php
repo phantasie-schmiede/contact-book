@@ -2,22 +2,22 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Controller;
+namespace PSBits\ContactBook\Controller;
 
 use DateMalformedStringException;
 use DateTime;
 use JsonException;
-use PSB\PsbContacts\Domain\Demand\EventDemand;
-use PSB\PsbContacts\Domain\Enum\EventType;
-use PSB\PsbContacts\Domain\Model\Event;
-use PSB\PsbContacts\Domain\Repository\EventRepository;
-use PSB\PsbFoundation\Attribute\PluginAction;
+use PSBits\ContactBook\Domain\Demand\EventDemand;
+use PSBits\ContactBook\Domain\Enum\EventType;
+use PSBits\ContactBook\Domain\Model\Event;
+use PSBits\ContactBook\Domain\Repository\EventRepository;
+use PSBits\Foundation\Attribute\PluginAction;
 use PSB\PsbTemplates\Utility\StringUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -31,7 +31,7 @@ use function count;
 /**
  * Class EventWidgetController
  *
- * @package PSB\PsbContacts\Controller
+ * @package PSBits\ContactBook\Controller
  */
 class EventWidgetController extends ActionController
 {

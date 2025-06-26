@@ -2,18 +2,18 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Trait;
+namespace PSBits\ContactBook\Trait;
 
 /**
  * Trait EnumToArrayTrait
  *
- * @package PSB\PsbContacts\Trait
+ * @package PSBits\ContactBook\Trait
  */
 trait EnumToArrayTrait
 {

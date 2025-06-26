@@ -2,20 +2,20 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Utility;
+namespace PSBits\ContactBook\Utility;
 
-use PSB\PsbContacts\Domain\Model\PhoneNumber;
+use PSBits\ContactBook\Domain\Model\PhoneNumber;
 
 /**
  * Class PhoneNumberUtility
  *
- * @package PSB\PsbContacts\Utility
+ * @package PSBits\ContactBook\Utility
  */
 class PhoneNumberUtility
 {

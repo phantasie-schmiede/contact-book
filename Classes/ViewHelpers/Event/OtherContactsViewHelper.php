@@ -2,22 +2,22 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\ViewHelpers\Event;
+namespace PSBits\ContactBook\ViewHelpers\Event;
 
-use PSB\PsbContacts\Domain\Model\Contact;
-use PSB\PsbContacts\Domain\Model\Event;
+use PSBits\ContactBook\Domain\Model\Contact;
+use PSBits\ContactBook\Domain\Model\Event;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Class OtherContactsViewHelper
  *
- * @package PSB\PsbContacts\ViewHelpers\Event
+ * @package PSBits\ContactBook\ViewHelpers\Event
  */
 class OtherContactsViewHelper extends AbstractViewHelper
 {

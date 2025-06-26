@@ -1,7 +1,7 @@
 #
-# Table structure for table 'tx_psbcontacts_log'
+# Table structure for table 'tx_contactbook_log'
 #
-CREATE TABLE tx_psbcontacts_log
+CREATE TABLE tx_contactbook_log
 (
     uid int(11) NOT NULL auto_increment,
     request_id varchar(13) DEFAULT '' NOT NULL,

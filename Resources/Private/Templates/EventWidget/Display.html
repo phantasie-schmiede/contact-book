@@ -1,10 +1,10 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers"
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:psbTemplates="http://typo3.org/ns/PSB/PsbTemplates/ViewHelpers"
     xmlns:psbvh="http://typo3.org/ns/PSB/PsbViewHelpers/ViewHelpers">
-<psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/eventType.xlf" />
+<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/eventType.xlf" />
 
 <f:if condition="{events}">
     <f:then>
@@ -25,21 +25,21 @@
                                 <f:then>
                                     <f:variable
                                         name="eventType"
-                                        value="{psbFoundation:translate(id: 'eventType:{event.type.value}.anniversary')}" />
+                                        value="{foundation:translate(id: 'eventType:{event.type.value}.anniversary')}" />
                                 </f:then>
                                 <f:else>
                                     <f:variable
                                         name="eventType"
-                                        value="{psbFoundation:translate(id: 'eventType:{event.type.value}')}" />
+                                        value="{foundation:translate(id: 'eventType:{event.type.value}')}" />
                                 </f:else>
                             </f:if>
 
                             <li class="d-flex list-group-item">
-                                <psbFoundation:translate
+                                <foundation:translate
                                     arguments="{anniversary: event.nextAnniversary, persons: event.contactsAsEnumeration, type: eventType}"
                                     id="{f:if(condition: event.nextAnniversary, then: 'eventTitle.anniversary', else: 'eventTitle')}" />
                                 <psbTemplates:additionalContent
-                                    eventClass="{psbvh:variable.convertString(string: 'PSB\PsbContacts\Event\AdditionalEventListContentEvent::class')}"
+                                    eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalEventListContentEvent::class')}"
                                     parameters="{event: event}" />
                             </li>
                         </f:for>
@@ -50,7 +50,7 @@
     </f:then>
     <f:else>
         <div class="alert alert-info">
-            <psbFoundation:translate
+            <foundation:translate
                 arguments="{quantity: typeCount, typeList: typeList}"
                 id="noUpcomingEvents" />
         </div>

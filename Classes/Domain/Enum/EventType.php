@@ -2,17 +2,17 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Domain\Enum;
+namespace PSBits\ContactBook\Domain\Enum;
 
 use JsonException;
-use PSB\PsbContacts\Trait\EnumToArrayTrait;
-use PSB\PsbFoundation\Utility\LocalizationUtility;
+use PSBits\ContactBook\Trait\EnumToArrayTrait;
+use PSBits\Foundation\Utility\LocalizationUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 /**
  * Class EventType
  *
- * @package PSB\PsbContacts\Domain\Enum
+ * @package PSBits\ContactBook\Domain\Enum
  */
 enum EventType: string
 {
@@ -45,7 +45,7 @@ enum EventType: string
         $key = $this->value . ($subType ? ('.' . $subType) : '');
 
         return LocalizationUtility::translate(
-            'LLL:EXT:psb_contacts/Resources/Private/Language/Frontend/eventType.xlf:' . $key
+            'LLL:EXT:contact_book/Resources/Private/Language/Frontend/eventType.xlf:' . $key
         );
     }
 }

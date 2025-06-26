@@ -2,18 +2,18 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Domain\Demand;
+namespace PSBits\ContactBook\Domain\Demand;
 
 /**
  * Class AddressDemand
  *
- * @package PSB\PsbContacts\Domain\Demand
+ * @package PSBits\ContactBook\Domain\Demand
  */
 class AddressDemand
 {

@@ -2,32 +2,32 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Service;
+namespace PSBits\ContactBook\Service;
 
-use PSB\PsbContacts\Domain\Enum\ContactType;
-use PSB\PsbContacts\Domain\Enum\GeneralType;
-use PSB\PsbContacts\Domain\Enum\PhoneNumberType;
-use PSB\PsbContacts\Domain\Model\Address;
-use PSB\PsbContacts\Domain\Model\Contact;
-use PSB\PsbContacts\Domain\Model\EMail;
-use PSB\PsbContacts\Domain\Model\Event;
-use PSB\PsbContacts\Domain\Model\PhoneNumber;
-use PSB\PsbContacts\Domain\Model\Website;
-use PSB\PsbContacts\Service\Enum\VCardVersion;
-use PSB\PsbContacts\Utility\ContactUtility;
+use PSBits\ContactBook\Domain\Enum\ContactType;
+use PSBits\ContactBook\Domain\Enum\GeneralType;
+use PSBits\ContactBook\Domain\Enum\PhoneNumberType;
+use PSBits\ContactBook\Domain\Model\Address;
+use PSBits\ContactBook\Domain\Model\Contact;
+use PSBits\ContactBook\Domain\Model\EMail;
+use PSBits\ContactBook\Domain\Model\Event;
+use PSBits\ContactBook\Domain\Model\PhoneNumber;
+use PSBits\ContactBook\Domain\Model\Website;
+use PSBits\ContactBook\Service\Enum\VCardVersion;
+use PSBits\ContactBook\Utility\ContactUtility;
 use PSB\PsbTemplates\Service\CountryNamesService;
 use RuntimeException;
 
 /**
  * Class VCardService
  *
- * @package PSB\PsbContacts\Service
+ * @package PSBits\ContactBook\Service
  */
 readonly class VCardService
 {

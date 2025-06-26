@@ -5,17 +5,17 @@
                 <el>
                     <settings.contactGroup>
                         <config>
-                            <foreign_table>tx_psbcontacts_domain_model_contactgroup</foreign_table>
+                            <foreign_table>tx_contactbook_domain_model_contactgroup</foreign_table>
                             <renderType>selectSingle</renderType>
                             <type>select</type>
                         </config>
                         <label>
-                            LLL:EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/FlexForms/contactGroupWidget.xlf:settings.contactGroup
+                            LLL:EXT:contact_book/Resources/Private/Language/Backend/Configuration/FlexForms/contactGroupWidget.xlf:settings.contactGroup
                         </label>
                     </settings.contactGroup>
                 </el>
                 <sheetTitle>
-                    LLL:EXT:psb_contacts/Resources/Private/Language/Backend/Configuration/FlexForms/contactGroupWidget.xlf:sheetTitle
+                    LLL:EXT:contact_book/Resources/Private/Language/Backend/Configuration/FlexForms/contactGroupWidget.xlf:sheetTitle
                 </sheetTitle>
                 <type>array</type>
             </ROOT>

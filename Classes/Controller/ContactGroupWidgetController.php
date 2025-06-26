@@ -2,22 +2,22 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSB Contacts.
+ * This file is part of PSBits Contact Book.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbContacts\Controller;
+namespace PSBits\ContactBook\Controller;
 
 use JsonException;
-use PSB\PsbContacts\Data\ExtensionInformation;
-use PSB\PsbContacts\Domain\Repository\ContactGroupRepository;
-use PSB\PsbContacts\Service\ContactGroupService;
-use PSB\PsbContacts\Service\ContactService;
-use PSB\PsbFoundation\Attribute\PluginAction;
-use PSB\PsbFoundation\Utility\Configuration\FilePathUtility;
-use PSB\PsbFoundation\Utility\LocalizationUtility;
+use PSBits\ContactBook\Data\ExtensionInformation;
+use PSBits\ContactBook\Domain\Repository\ContactGroupRepository;
+use PSBits\ContactBook\Service\ContactGroupService;
+use PSBits\ContactBook\Service\ContactService;
+use PSBits\Foundation\Attribute\PluginAction;
+use PSBits\Foundation\Utility\Configuration\FilePathUtility;
+use PSBits\Foundation\Utility\LocalizationUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -28,7 +28,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 /**
  * Class ContactGroupWidgetController
  *
- * @package PSB\PsbContacts\Controller
+ * @package PSBits\ContactBook\Controller
  */
 class ContactGroupWidgetController extends ActionController
 {
