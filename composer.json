@@ -39,7 +39,7 @@
 		"ext-gmp": "*",
 		"php": "^8.3",
 		"psbits/foundation": "^3.0",
-		"psbits/templates": "^0.1",
+		"psbits/templates": "@dev",
 		"ramsey/uuid": "^4.7",
 		"typo3/cms-core": "^13.4"
 	},
