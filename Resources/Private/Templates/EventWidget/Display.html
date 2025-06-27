@@ -2,8 +2,8 @@
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
-    xmlns:psbTemplates="http://typo3.org/ns/PSB/PsbTemplates/ViewHelpers"
-    xmlns:psbvh="http://typo3.org/ns/PSB/PsbViewHelpers/ViewHelpers">
+    xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers"
+    xmlns:psbvh="http://typo3.org/ns/PSBits/ViewHelpers/ViewHelpers">
 <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/eventType.xlf" />
 
 <f:if condition="{events}">
@@ -38,7 +38,7 @@
                                 <foundation:translate
                                     arguments="{anniversary: event.nextAnniversary, persons: event.contactsAsEnumeration, type: eventType}"
                                     id="{f:if(condition: event.nextAnniversary, then: 'eventTitle.anniversary', else: 'eventTitle')}" />
-                                <psbTemplates:additionalContent
+                                <templates:additionalContent
                                     eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalEventListContentEvent::class')}"
                                     parameters="{event: event}" />
                             </li>

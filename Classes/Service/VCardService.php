@@ -21,7 +21,7 @@ use PSBits\ContactBook\Domain\Model\PhoneNumber;
 use PSBits\ContactBook\Domain\Model\Website;
 use PSBits\ContactBook\Service\Enum\VCardVersion;
 use PSBits\ContactBook\Utility\ContactUtility;
-use PSB\PsbTemplates\Service\CountryNamesService;
+use PSBits\Templates\Service\CountryNamesService;
 use RuntimeException;
 
 /**

@@ -20,7 +20,7 @@ use PSBits\ContactBook\Domain\Repository\ContactRepository;
 use PSBits\ContactBook\Utility\ContactUtility;
 use PSBits\Foundation\Service\Configuration\TcaService;
 use PSBits\Foundation\Utility\Configuration\FilePathUtility;
-use PSB\PsbTemplates\Utility\SlugUtility;
+use PSBits\Templates\Utility\SlugUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use ReflectionException;

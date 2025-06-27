@@ -3,7 +3,7 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:contactBook="http://typo3.org/ns/PSBits/ContactBook/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
-    xmlns:psbTemplates="http://typo3.org/ns/PSB/PsbTemplates/ViewHelpers">
+    xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
 <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/address.xlf" />
 <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/Contact/edit.xlf" />
 
@@ -101,7 +101,7 @@
 <div class="form-floating mb-3">
     <f:form.select
         class="form-select"
-        options="{psbTemplates:data.countryNames()}"
+        options="{templates:data.countryNames()}"
         name="address[{uid}][country]"
         value="{record.country -> f:or(alternative: 'DE')}" />
     <label

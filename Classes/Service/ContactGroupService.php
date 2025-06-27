@@ -15,7 +15,7 @@ use JsonException;
 use PSBits\ContactBook\Domain\Model\ContactGroup;
 use PSBits\ContactBook\Domain\Repository\ContactGroupRepository;
 use PSBits\Foundation\Service\Configuration\TcaService;
-use PSB\PsbTemplates\Utility\SlugUtility;
+use PSBits\Templates\Utility\SlugUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use ReflectionException;

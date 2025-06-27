@@ -3,8 +3,8 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:contactBook="http://typo3.org/ns/PSBits/ContactBook/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
-    xmlns:psbTemplates="http://typo3.org/ns/PSB/PsbTemplates/ViewHelpers"
-    xmlns:psbvh="http://typo3.org/ns/PSB/PsbViewHelpers/ViewHelpers">
+    xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers"
+    xmlns:psbvh="http://typo3.org/ns/PSBits/ViewHelpers/ViewHelpers">
 <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
 <foundation:translation.registerLanguageFile
     file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
@@ -178,7 +178,7 @@
                                 ({event.notesInline})
                             </f:if>
                         </span>
-                        <psbTemplates:additionalContent
+                        <templates:additionalContent
                             eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalEventListContentEvent::class')}"
                             parameters="{event: event}" />
                     </li>
@@ -186,7 +186,7 @@
             </ul>
         </f:if>
 
-        <psbTemplates:additionalContent
+        <templates:additionalContent
             eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalContactContentEvent::class')}"
             parameters="{contact: contact}" />
     </div>
@@ -197,7 +197,7 @@
         action="list"
         class="bg-secondary-subtle btn me-2">
         <core:icon
-            identifier="psb-templates-arrow-left"
+            identifier="templates-arrow-left"
             size="small" />
         <foundation:translate id="backToList" />
     </f:link.action>
@@ -207,7 +207,7 @@
         arguments="{contact: contact}"
         class="bg-primary-subtle btn">
         <core:icon
-            identifier="psb-templates-pencil"
+            identifier="templates-pencil"
             size="small" />
         <foundation:translate id="edit" />
     </f:link.action>
@@ -216,7 +216,7 @@
         arguments="{
             classes: 'bg-danger btn ms-auto',
             modalId: 'delete-contact-{contact.uid}-modal',
-            text: '{psbTemplates:svgIcon(identifier: \'psb-templates-trash\')}',
+            text: '{templates:svgIcon(identifier: \'templates-trash\')}',
             title: '{foundation:translate(id: \'delete\')}'
         }"
         partial="Component/Modal/Toggle" />

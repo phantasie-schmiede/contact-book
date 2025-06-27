@@ -18,7 +18,7 @@ use PSBits\ContactBook\Domain\Enum\EventType;
 use PSBits\ContactBook\Domain\Model\Event;
 use PSBits\ContactBook\Domain\Repository\EventRepository;
 use PSBits\Foundation\Attribute\PluginAction;
-use PSB\PsbTemplates\Utility\StringUtility;
+use PSBits\Templates\Utility\StringUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;

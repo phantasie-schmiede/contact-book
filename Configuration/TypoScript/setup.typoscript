@@ -5,7 +5,7 @@ plugin {
     }
 
     view {
-      partialRootPaths.10 = {$plugin.tx_psbtemplates.view.partialRootPath}
+      partialRootPaths.10 = {$plugin.tx_templates.view.partialRootPath}
     }
   }
 

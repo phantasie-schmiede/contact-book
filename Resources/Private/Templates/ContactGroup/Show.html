@@ -2,7 +2,7 @@
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
-    xmlns:psbTemplates="http://typo3.org/ns/PSB/PsbTemplates/ViewHelpers">
+    xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
 <foundation:translation.registerLanguageFile
     file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
     name="modal" />
@@ -28,7 +28,7 @@
         action="list"
         class="bg-secondary-subtle btn me-2 p-2">
         <core:icon
-            identifier="psb-templates-arrow-left"
+            identifier="templates-arrow-left"
             size="small" />
         <foundation:translate id="backToList" />
     </f:link.action>
@@ -38,7 +38,7 @@
         arguments="{contactGroup: contactGroup}"
         class="bg-primary-subtle btn">
         <core:icon
-            identifier="psb-templates-pencil"
+            identifier="templates-pencil"
             size="small" />
         <foundation:translate id="edit" />
     </f:link.action>
@@ -47,7 +47,7 @@
         arguments="{
             classes: 'bg-danger btn ms-auto',
             modalId: 'delete-contactGroup-{contactGroup.uid}-modal',
-            text: '{psbTemplates:svgIcon(identifier: \'psb-templates-trash\')}',
+            text: '{templates:svgIcon(identifier: \'templates-trash\')}',
             title: '{foundation:translate(id: \'delete\')}'
         }"
         partial="Component/Modal/Toggle" />
