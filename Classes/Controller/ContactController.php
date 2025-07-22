@@ -268,8 +268,9 @@ class ContactController extends ActionController
 
     private function getList(): string
     {
+        // Find all contacts.
         $contacts = ContactUtility::sortByDisplayName(
-            $this->contactRepository->findAll()
+            $this->contactRepository->findByDemand(new ContactDemand())
                 ->toArray()
         );
 
