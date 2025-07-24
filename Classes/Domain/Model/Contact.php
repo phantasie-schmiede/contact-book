@@ -13,6 +13,7 @@ namespace PSBits\ContactBook\Domain\Model;
 use InvalidArgumentException;
 use PSBits\ContactBook\Domain\Enum\ContactType;
 use PSBits\ContactBook\Domain\Enum\EventType;
+use PSBits\ContactBook\Utility\ContactUtility;
 use PSBits\ContactBook\Utility\NameUtility;
 use PSBits\Foundation\Attribute\TCA\Column;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Inline;
@@ -95,6 +96,11 @@ class Contact extends AbstractEntity
     #[Inline(linkedModel: EMail::class, mm: 'tx_contactbook_contacts_emails')]
     #[Lazy]
     protected ObjectStorage $eMails;
+
+    /** @var ObjectStorage<Contact> */
+    #[Select(linkedModel: Contact::class, mm: 'tx_contactbook_contacts_companies', mmOppositeField: 'companies', renderType: SelectRenderType::selectMultipleSideBySide)]
+    #[Lazy]
+    protected ObjectStorage $employees;
 
     /** @var ObjectStorage<Event> */
     #[Inline(linkedModel: Event::class, mm: 'tx_contactbook_contacts_events')]
@@ -392,6 +398,14 @@ class Contact extends AbstractEntity
         return $this->eMails;
     }
 
+    /**
+     * @return ObjectStorage<Contact>
+     */
+    public function getEmployees(): ObjectStorage
+    {
+        return $this->employees;
+    }
+
     public function getEventByUid(int $uid): Event
     {
         foreach ($this->events as $event) {
@@ -612,6 +626,14 @@ class Contact extends AbstractEntity
     public function getSlug(): string
     {
         return $this->slug;
+    }
+
+    /**
+     * @return Contact[]
+     */
+    public function getSortedEmployees(): array
+    {
+        return ContactUtility::sortByDisplayName($this->employees->toArray());
     }
 
     public function getTitle(): string

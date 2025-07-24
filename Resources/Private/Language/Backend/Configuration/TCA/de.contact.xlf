@@ -39,6 +39,10 @@
                 <source>E-mail addresses</source>
                 <target>E-Mail-Adressen</target>
             </trans-unit>
+            <trans-unit id="employees">
+                <source>Employees</source>
+                <target>Mitarbeiter</target>
+            </trans-unit>
             <trans-unit id="events">
                 <source>Events</source>
                 <target>Ereignisse</target>

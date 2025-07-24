@@ -186,6 +186,24 @@
             </ul>
         </f:if>
 
+        <f:if condition="{contact.employees}">
+            <h3 class="mt-3">
+                <foundation:translate id="contact:employees" />
+            </h3>
+            <ul class="list-group list-group-flush">
+                <f:for
+                    as="employee"
+                    each="{contact.sortedEmployees}">
+                    <f:link.action
+                        action="show"
+                        arguments="{contact: employee}"
+                        class="list-group-item-action">
+                        {employee.displayName}
+                    </f:link.action>
+                </f:for>
+            </ul>
+        </f:if>
+
         <templates:additionalContent
             eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalContactContentEvent::class')}"
             parameters="{contact: contact}" />

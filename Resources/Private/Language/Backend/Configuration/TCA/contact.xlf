@@ -30,6 +30,9 @@
             <trans-unit id="eMails">
                 <source>E-mail addresses</source>
             </trans-unit>
+            <trans-unit id="employees">
+                <source>Employees</source>
+            </trans-unit>
             <trans-unit id="events">
                 <source>Events</source>
             </trans-unit>
