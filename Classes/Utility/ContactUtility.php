@@ -52,9 +52,9 @@ class ContactUtility
                 $contact = array_shift($family);
 
                 if (empty($family)) {
-                    $familyMembers[] = $contact->getFullName();
+                    $familyMembers[] = $contact->getShortName();
                 } else {
-                    $familyMembers[] = $contact->getFirstNames();
+                    $familyMembers[] = $contact->getFirstName();
                 }
             }
 
@@ -75,13 +75,13 @@ class ContactUtility
         return null;
     }
 
-    public static function sortByDisplayName(array $contacts): array
+    public static function sortByListName(array $contacts): array
     {
         usort(
             $contacts,
             static fn(Contact $a, Contact $b) => strnatcasecmp(
-            NameUtility::getCompareString($a->getDisplayName()),
-            NameUtility::getCompareString($b->getDisplayName())
+            NameUtility::getCompareString($a->getListName()),
+            NameUtility::getCompareString($b->getListName())
         )
         );
 

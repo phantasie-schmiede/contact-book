@@ -60,13 +60,13 @@ class RelatedContactsViewHelper extends AbstractViewHelper
             $relatedContacts->detach($contact);
         }
 
-        $contacts = ContactUtility::sortByDisplayName($relatedContacts->toArray());
+        $contacts = ContactUtility::sortByListName($relatedContacts->toArray());
         $data = [];
 
         /** @var Contact $contact */
         foreach ($contacts as $contact) {
             $data[] = [
-                'label' => $contact->getDisplayName(),
+                'label' => $contact->getListName(),
                 'value' => $contact->getUid(),
             ];
         }

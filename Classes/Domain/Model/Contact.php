@@ -327,27 +327,6 @@ class Contact extends AbstractEntity
         return $this->contactGroups;
     }
 
-    public function getDisplayName(): string
-    {
-        if (ContactType::Company === $this->type && '' !== $this->getCompanyName()) {
-            return $this->getCompanyName();
-        }
-
-        $displayName = '';
-
-        if ('' !== $this->getLastName()) {
-            $displayName = $this->getLastName();
-
-            if ('' !== $this->getFirstName()) {
-                $displayName .= ', ' . $this->getFirstName();
-            }
-        } elseif ('' !== $this->getFirstName()) {
-            $displayName = $this->getFirstNames();
-        }
-
-        return $displayName;
-    }
-
     public function getDocumentByUid(int $uid): Document
     {
         foreach ($this->documents as $document) {
@@ -512,6 +491,31 @@ class Contact extends AbstractEntity
         return $this->lastName;
     }
 
+    public function getListName(): string
+    {
+        if (ContactType::Company === $this->type && '' !== $this->getCompanyName()) {
+            return $this->getCompanyName();
+        }
+
+        $listName = '';
+
+        if (!$this->isAlive()) {
+            $listName .= '† ';
+        }
+
+        if ('' !== $this->getLastName()) {
+            $listName .= $this->getLastName();
+
+            if ('' !== $this->getFirstName()) {
+                $listName .= ', ' . $this->getFirstName();
+            }
+        } elseif ('' !== $this->getFirstName()) {
+            $listName .= $this->getFirstNames();
+        }
+
+        return $listName;
+    }
+
     public function getMiddleNames(): string
     {
         return $this->middleNames;
@@ -633,7 +637,7 @@ class Contact extends AbstractEntity
      */
     public function getSortedEmployees(): array
     {
-        return ContactUtility::sortByDisplayName($this->employees->toArray());
+        return ContactUtility::sortByListName($this->employees->toArray());
     }
 
     public function getTitle(): string
@@ -679,6 +683,7 @@ class Contact extends AbstractEntity
         $this->contactGroups = new ObjectStorage();
         $this->documents = new ObjectStorage();
         $this->eMails = new ObjectStorage();
+        $this->employees = new ObjectStorage();
         $this->events = new ObjectStorage();
         $this->phoneNumbers = new ObjectStorage();
         $this->websites = new ObjectStorage();

@@ -49,7 +49,7 @@ class RelatedCompaniesViewHelper extends AbstractViewHelper
         /** @var Contact $company */
         foreach ($contact->getCompanies() as $company) {
             $data[] = [
-                'label' => $company->getDisplayName(),
+                'label' => $company->getListName(),
                 'value' => $company->getUid(),
             ];
         }

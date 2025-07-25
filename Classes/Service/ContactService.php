@@ -61,11 +61,11 @@ readonly class ContactService
         return json_encode(
             array_map(
                 static fn(Contact $contact) => [
-                    'label'       => $contact->getDisplayName(),
+                    'label'       => $contact->getListName(),
                     'searchTerms' => $contact->getSearchTerms(),
                     'value'       => $contact->getUid(),
                 ],
-                ContactUtility::sortByDisplayName(
+                ContactUtility::sortByListName(
                     $contacts ?: $this->contactRepository->findByDemand($demand)
                         ->toArray()
                 )
