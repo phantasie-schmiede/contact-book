@@ -13,12 +13,13 @@
         partial="FormFields/Contact" />
 
     <div class="col-12 mt-3">
-        <f:link.action
-            action="show"
-            arguments="{contact: contact}"
-            class="bg-secondary-subtle btn">
-            <foundation:translate id="cancel" />
-        </f:link.action>
+        <f:variable
+            name="buttonLabel"
+            value="{foundation:translate(id: 'cancel')}" />
+
+        <f:render
+            arguments="{class: 'bg-secondary-subtle btn', contact: contact, label: buttonLabel}"
+            partial="ContactLink" />
         <button
             class="bg-primary-subtle btn"
             type="submit">

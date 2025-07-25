@@ -74,12 +74,9 @@
                 <f:for
                     as="company"
                     each="{contact.companies}">
-                    <f:link.action
-                        action="show"
-                        arguments="{contact: company}"
-                        class="list-group-item list-group-item-action">
-                        {company.companyName}
-                    </f:link.action>
+                    <f:render
+                        arguments="{class: 'list-group-item list-group-item-action', contact: company}"
+                        partial="ContactLink" />
                 </f:for>
             </ul>
         </f:if>
@@ -194,12 +191,9 @@
                 <f:for
                     as="employee"
                     each="{contact.sortedEmployees}">
-                    <f:link.action
-                        action="show"
-                        arguments="{contact: employee}"
-                        class="list-group-item list-group-item-action">
-                        {employee.listName}
-                    </f:link.action>
+                    <f:render
+                        arguments="{class: 'list-group-item list-group-item-action', contact: employee}"
+                        partial="ContactLink" />
                 </f:for>
             </ul>
         </f:if>

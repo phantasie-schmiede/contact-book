@@ -13,14 +13,9 @@
                 <li
                     class="d-flex js-contact-list-item list-group-item list-group-item-action p-0"
                     data-search-terms="{contact.searchTerms}">
-                    <f:link.action
-                        action="show"
-                        arguments="{contact: contact}"
-                        class="d-block flex-grow-1 p-2 text-decoration-none text-reset"
-                        controller="Contact"
-                        pluginName="ContactList">
-                        {contact.listName}
-                    </f:link.action>
+                    <f:render
+                        arguments="{class: 'd-block flex-grow-1 p-2 text-decoration-none text-reset', contact: contact}"
+                        partial="ContactLink" />
 
                     <f:render
                         arguments="{property: 'websites', records: contact.websites, uid: contact.uid}"

@@ -1,0 +1,13 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+<f:link.action
+    action="show"
+    arguments="{contact: contact}"
+    class="{class}"
+    controller="Contact"
+    extensionName="ContactBook"
+    pluginName="ContactList">
+    {label -> f:or(alternative: contact.listName)}
+</f:link.action>
+</html>
