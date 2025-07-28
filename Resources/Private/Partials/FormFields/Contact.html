@@ -19,8 +19,8 @@
 
 <div
     class="form-floating mb-3{f:if(condition: 'company != {contact.type.value}', then: ' visually-hidden')}"
-    data-psb-form-condition-field="#type"
-    data-psb-form-condition-value="company">
+    data-psbits-form-condition-field="#type"
+    data-psbits-form-condition-value="company">
     <f:form.textfield
         class="form-control"
         id="companyName"
@@ -34,16 +34,16 @@
 </div>
 
 <div class="form-floating mb-3 position-relative{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
-    data-psb-form-condition-field="#type"
-    data-psb-form-condition-mode="hide"
-    data-psb-form-condition-value="company">
+    data-psbits-form-condition-field="#type"
+    data-psbits-form-condition-mode="hide"
+    data-psbits-form-condition-value="company">
     <input
         autocomplete="off"
-        class="form-control psb-templates-clear-input"
-        data-psb-autocomplete-items="{allCompanies}"
-        data-psb-autocomplete-preselection="{contactBook:json.relatedCompanies(contact: contact)}"
-        data-psb-autocomplete-selection-target="#companies-selection"
-        data-psb-autocomplete-value-target="#companies-value"
+        class="form-control psbits-clear-input"
+        data-psbits-autocomplete-items="{allCompanies}"
+        data-psbits-autocomplete-preselection="{contactBook:json.relatedCompanies(contact: contact)}"
+        data-psbits-autocomplete-selection-target="#companies-selection"
+        data-psbits-autocomplete-value-target="#companies-value"
         placeholder="{foundation:translate(id: 'contact:companies')}"
         type="text" />
     <label
@@ -62,9 +62,9 @@
 
 <div
     class="form-floating mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
-    data-psb-form-condition-field="#type"
-    data-psb-form-condition-mode="hide"
-    data-psb-form-condition-value="company">
+    data-psbits-form-condition-field="#type"
+    data-psbits-form-condition-mode="hide"
+    data-psbits-form-condition-value="company">
     <f:form.textfield
         class="form-control"
         id="title"
@@ -79,9 +79,9 @@
 
 <div
     class="form-floating mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
-    data-psb-form-condition-field="#type"
-    data-psb-form-condition-mode="hide"
-    data-psb-form-condition-value="company">
+    data-psbits-form-condition-field="#type"
+    data-psbits-form-condition-mode="hide"
+    data-psbits-form-condition-value="company">
     <f:form.textfield
         class="form-control"
         id="firstName"
@@ -96,9 +96,9 @@
 
 <div
     class="form-floating mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
-    data-psb-form-condition-field="#type"
-    data-psb-form-condition-mode="hide"
-    data-psb-form-condition-value="company">
+    data-psbits-form-condition-field="#type"
+    data-psbits-form-condition-mode="hide"
+    data-psbits-form-condition-value="company">
     <f:form.textfield
         class="form-control"
         id="middleNames"
@@ -113,9 +113,9 @@
 
 <div
     class="form-floating mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
-    data-psb-form-condition-field="#type"
-    data-psb-form-condition-mode="hide"
-    data-psb-form-condition-value="company">
+    data-psbits-form-condition-field="#type"
+    data-psbits-form-condition-mode="hide"
+    data-psbits-form-condition-value="company">
     <f:form.textfield
         class="form-control"
         id="lastName"
@@ -130,9 +130,9 @@
 
 <div
     class="form-floating mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
-    data-psb-form-condition-field="#type"
-    data-psb-form-condition-mode="hide"
-    data-psb-form-condition-value="company">
+    data-psbits-form-condition-field="#type"
+    data-psbits-form-condition-mode="hide"
+    data-psbits-form-condition-value="company">
     <f:form.textfield
         class="form-control"
         id="birthName"
@@ -147,9 +147,9 @@
 
 <div
     class="form-floating mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
-    data-psb-form-condition-field="#type"
-    data-psb-form-condition-mode="hide"
-    data-psb-form-condition-value="company">
+    data-psbits-form-condition-field="#type"
+    data-psbits-form-condition-mode="hide"
+    data-psbits-form-condition-value="company">
     <f:form.textfield
         class="form-control"
         id="nickname"
@@ -165,11 +165,11 @@
 <div class="form-floating mb-3">
     <input
         autocomplete="off"
-        class="form-control psb-templates-clear-input"
-        data-psb-autocomplete-items="{allContactGroups}"
-        data-psb-autocomplete-preselection="{contactBook:json.relatedContactGroups(contact: contact)}"
-        data-psb-autocomplete-selection-target="#contactGroups-selection"
-        data-psb-autocomplete-value-target="#contactGroups-value"
+        class="form-control psbits-clear-input"
+        data-psbits-autocomplete-items="{allContactGroups}"
+        data-psbits-autocomplete-preselection="{contactBook:json.relatedContactGroups(contact: contact)}"
+        data-psbits-autocomplete-selection-target="#contactGroups-selection"
+        data-psbits-autocomplete-value-target="#contactGroups-value"
         placeholder="{foundation:translate(id: 'contact:contactGroups')}"
         type="text" />
     <label
@@ -188,7 +188,7 @@
 
 <div class="form-floating mb-3">
     <f:form.textarea
-        class="form-control psb-templates-auto-size"
+        class="form-control psbits-auto-size"
         id="notes"
         placeholder="{foundation:translate(id: 'contact:notes')}"
         property="notes"
@@ -285,9 +285,9 @@
 
     <span
         class="bg-secondary-subtle btn"
-        data-psb-copy-mode="append"
-        data-psb-copy-source="#template{recordType}"
-        data-psb-copy-target="#accordion{recordType}">
+        data-psbits-copy-mode="append"
+        data-psbits-copy-source="#template{recordType}"
+        data-psbits-copy-target="#accordion{recordType}">
         <foundation:translate id="edit:addNew{recordType}" />
     </span>
 </f:section>

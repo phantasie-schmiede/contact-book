@@ -109,11 +109,11 @@
 <div class="form-floating mb-3">
     <input
         autocomplete="off"
-        class="form-control psb-templates-clear-input"
-        data-psb-autocomplete-items="{allContacts}"
-        data-psb-autocomplete-preselection="{contactBook:json.relatedContacts(relatedEntity: record, contact: contact)}"
-        data-psb-autocomplete-selection-target="#contact-selection-{uid}"
-        data-psb-autocomplete-value-target="#contact-value-{uid}"
+        class="form-control psbits-clear-input"
+        data-psbits-autocomplete-items="{allContacts}"
+        data-psbits-autocomplete-preselection="{contactBook:json.relatedContacts(relatedEntity: record, contact: contact)}"
+        data-psbits-autocomplete-selection-target="#contact-selection-{uid}"
+        data-psbits-autocomplete-value-target="#contact-value-{uid}"
         placeholder="{foundation:translate(id: 'edit:additionalContacts.event')}"
         type="text" />
     <label
@@ -130,7 +130,7 @@
 </div>
 <div class="form-floating mb-3">
     <f:form.textarea
-        class="form-control psb-templates-auto-size"
+        class="form-control psbits-auto-size"
         name="event[{uid}][location]"
         placeholder="{foundation:translate(id: 'event:location')}"
         value="{record.location}" />
@@ -141,7 +141,7 @@
 </div>
 <div class="form-floating mb-3">
     <f:form.textarea
-        class="form-control psb-templates-auto-size"
+        class="form-control psbits-auto-size"
         name="event[{uid}][notes]"
         placeholder="{foundation:translate(id: 'event:notes')}"
         value="{record.notes}" />
@@ -152,8 +152,8 @@
 </div>
 <div
     class="btn btn-danger"
-    data-psb-delete-mode="closest"
-    data-psb-delete-target=".accordion-item">
+    data-psbits-delete-mode="closest"
+    data-psbits-delete-target=".accordion-item">
     <foundation:translate id="edit:remove" />
 </div>
 </html>
