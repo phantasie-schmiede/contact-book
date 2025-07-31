@@ -342,6 +342,17 @@ class Contact extends AbstractEntity
         return $this->contactGroups;
     }
 
+    public function getDecoratedListName(): string
+    {
+        $decorations = '';
+
+        if (!$this->isAlive()) {
+            $decorations .= '† ';
+        }
+
+        return $decorations . $this->getListName();
+    }
+
     public function getDocumentByUid(int $uid): Document
     {
         foreach ($this->documents as $document) {
@@ -513,10 +524,6 @@ class Contact extends AbstractEntity
         }
 
         $listName = '';
-
-        if (!$this->isAlive()) {
-            $listName .= '† ';
-        }
 
         if ('' !== $this->getLastName()) {
             $listName .= $this->getLastName();
