@@ -5,6 +5,10 @@
 <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/contactList.xlf" />
 
 <f:asset.script
+    identifier="ajaxContent"
+    src="EXT:templates/Resources/Public/JavaScript/ajaxContent.js"
+    type="module" />
+<f:asset.script
     identifier="clearInput"
     src="EXT:templates/Resources/Public/JavaScript/clearInput.js"
     type="module" />
@@ -23,11 +27,6 @@
         placeholder="{foundation:translate(id: 'contactList:search')}"
         type="text" />
 </div>
-
-<f:asset.script
-    identifier="ajaxContent"
-    src="EXT:templates/Resources/Public/JavaScript/ajaxContent.js"
-    type="module" />
 
 <div
     class="overflow-auto"

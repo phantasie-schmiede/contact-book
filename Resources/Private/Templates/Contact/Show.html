@@ -9,10 +9,11 @@
 <foundation:translation.registerLanguageFile
     file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
     name="modal" />
+<foundation:translation.registerLanguageFile file="EXT:templates/Resources/Private/Language/Frontend/Component/loadingSpinner.xlf" />
 
 <f:asset.script
-    identifier="dynamicModal"
-    src="EXT:templates/Resources/Public/JavaScript/dynamicModal.js"
+    identifier="loadingSpinner"
+    src="EXT:templates/Resources/Public/JavaScript/loadingSpinner.js"
     type="module" />
 
 <div class="row">
@@ -217,10 +218,13 @@
     <f:link.action
         action="edit"
         arguments="{contact: contact}"
-        class="bg-primary-subtle btn">
-        <core:icon
-            identifier="templates-pencil"
-            size="small" />
+        class="bg-primary-subtle btn"
+        data-psbits-spinner-text-hidden="{foundation:translate(id: 'loadingSpinner:pageLoading')}">
+        <span data-psbits-spinner-phase-out>
+            <core:icon
+                identifier="templates-pencil"
+                size="small" />
+        </span>
         <foundation:translate id="edit" />
     </f:link.action>
 

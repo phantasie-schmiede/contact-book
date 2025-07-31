@@ -3,6 +3,12 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
 <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/ContactGroup/show.xlf" />
+<foundation:translation.registerLanguageFile file="EXT:templates/Resources/Private/Language/Frontend/Component/loadingSpinner.xlf" />
+
+<f:asset.script
+    identifier="loadingSpinner"
+    src="EXT:templates/Resources/Public/JavaScript/loadingSpinner.js"
+    type="module" />
 
 <div class="h-100 position-relative">
     <div class="d-flex flex-column h-100 pb-5">
@@ -30,6 +36,7 @@
             action="list"
             class="bg-secondary-subtle btn flex-grow-1"
             controller="Contact"
+            data-psbits-spinner-text-hidden="{foundation:translate(id: 'loadingSpinner:pageLoading')}"
             pluginName="ContactList">
             <foundation:translate id="showAll" />
         </f:link.action>

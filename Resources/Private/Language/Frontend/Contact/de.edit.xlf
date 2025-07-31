@@ -7,30 +7,6 @@
         source-language="en"
         target-language="de">
         <body>
-            <trans-unit id="addNewAddress">
-                <source>Add new address</source>
-                <target>Neue Adresse hinzufügen</target>
-            </trans-unit>
-            <trans-unit id="addNewDocument">
-                <source>Add new document</source>
-                <target>Neues Dokument hinzufügen</target>
-            </trans-unit>
-            <trans-unit id="addNewEMail">
-                <source>Add new e-mail address</source>
-                <target>Neue E-Mail-Adresse hinzufügen</target>
-            </trans-unit>
-            <trans-unit id="addNewEvent">
-                <source>Add new event</source>
-                <target>Neues Ereignis hinzufügen</target>
-            </trans-unit>
-            <trans-unit id="addNewPhoneNumber">
-                <source>Add new phone number</source>
-                <target>Neue Rufnummer hinzufügen</target>
-            </trans-unit>
-            <trans-unit id="addNewWebsite">
-                <source>Add new website</source>
-                <target>Neue Webseite hinzufügen</target>
-            </trans-unit>
             <trans-unit id="additionalContacts.address">
                 <source>other residents</source>
                 <target>weitere Bewohner</target>
@@ -58,6 +34,30 @@
             <trans-unit id="cancel">
                 <source>Cancel</source>
                 <target>Abbrechen</target>
+            </trans-unit>
+            <trans-unit id="dyn.addNewAddress">
+                <source>Add new address</source>
+                <target>Neue Adresse hinzufügen</target>
+            </trans-unit>
+            <trans-unit id="dyn.addNewDocument">
+                <source>Add new document</source>
+                <target>Neues Dokument hinzufügen</target>
+            </trans-unit>
+            <trans-unit id="dyn.addNewEMail">
+                <source>Add new e-mail address</source>
+                <target>Neue E-Mail-Adresse hinzufügen</target>
+            </trans-unit>
+            <trans-unit id="dyn.addNewEvent">
+                <source>Add new event</source>
+                <target>Neues Ereignis hinzufügen</target>
+            </trans-unit>
+            <trans-unit id="dyn.addNewPhoneNumber">
+                <source>Add new phone number</source>
+                <target>Neue Rufnummer hinzufügen</target>
+            </trans-unit>
+            <trans-unit id="dyn.addNewWebsite">
+                <source>Add new website</source>
+                <target>Neue Webseite hinzufügen</target>
             </trans-unit>
             <trans-unit id="newAddress">
                 <source>&#60;new address&#62;</source>
