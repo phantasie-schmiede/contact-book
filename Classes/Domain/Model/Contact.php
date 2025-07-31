@@ -288,6 +288,21 @@ class Contact extends AbstractEntity
         return $this->birthName;
     }
 
+    public function getColleagues(): array
+    {
+        $colleagues = [];
+
+        foreach ($this->companies as $company) {
+            foreach ($company->getEmployees() as $employee) {
+                if ($employee->getUid() !== $this->getUid()) {
+                    $colleagues[] = $employee;
+                }
+            }
+        }
+
+        return ContactUtility::sortByListName($colleagues);
+    }
+
     public function getCompanies(): ObjectStorage
     {
         return $this->companies;

@@ -82,6 +82,31 @@
             </ul>
         </f:if>
 
+        <f:if condition="{contact.colleagues}">
+            <f:if condition="3 < {contact.colleagues -> f:count()}">
+                <f:then>
+                    <f:variable
+                        name="collabsibleContent"
+                        value="{f:render(arguments: '{colleagues: contact.colleagues}', section: 'colleagues')}" />
+                    <f:variable
+                        name="collabsibleLabel"
+                        value="{foundation:translate(id: 'contact.colleagues')}" />
+
+                    <f:render
+                        arguments="{class: 'mt-3', content: collabsibleContent, id: 'colleagues-list', label: collabsibleLabel, tag: 'h3'}"
+                        partial="Component/Collapsible" />
+                </f:then>
+                <f:else>
+                    <h3 class="mt-3">
+                        <foundation:translate id="contact.colleagues" />
+                    </h3>
+                    <f:render
+                        arguments="{colleagues: contact.colleagues}"
+                        section="colleagues" />
+                </f:else>
+            </f:if>
+        </f:if>
+
         <f:if condition="{contact.addresses}">
             <h3 class="mt-3">
                 <foundation:translate id="contact:addresses" />
@@ -162,8 +187,8 @@
 
                                     <f:if condition="{spouse.birthName}">
                                         (<foundation:translate
-                                            arguments="{birthName: spouse.birthName}"
-                                            id="birthName" />)
+                                        arguments="{birthName: spouse.birthName}"
+                                        id="birthName" />)
                                     </f:if>
                                 </f:link.action>
                             </f:if>
@@ -250,6 +275,18 @@
 <f:render
     arguments="{contact: contact}"
     partial="ExportModal/Dialog" />
+
+<f:section name="colleagues">
+    <ul class="list-group list-group-flush">
+        <f:for
+            as="colleague"
+            each="{colleagues}">
+            <f:render
+                arguments="{class: 'list-group-item list-group-item-action', contact: colleague}"
+                partial="ContactLink" />
+        </f:for>
+    </ul>
+</f:section>
 
 <f:section name="modalFooter">
     <foundation:translation.registerLanguageFile
