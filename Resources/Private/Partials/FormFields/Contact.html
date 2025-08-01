@@ -41,6 +41,90 @@
     </label>
 </div>
 
+<fieldset
+    class="mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
+    data-psbits-form-condition-field="#type"
+    data-psbits-form-condition-mode="hide"
+    data-psbits-form-condition-value="company">
+    <div class="form-floating mb-3">
+        <f:form.textfield
+            class="form-control"
+            id="title"
+            placeholder="{foundation:translate(id: 'contact:title')}"
+            property="title" />
+        <label
+            class="form-label"
+            for="title">
+            <foundation:translate id="contact:title" />
+        </label>
+    </div>
+
+    <div class="form-floating mb-3">
+        <f:form.textfield
+            class="form-control"
+            id="firstName"
+            placeholder="{foundation:translate(id: 'contact:firstName')}"
+            property="firstName" />
+        <label
+            class="form-label"
+            for="firstName">
+            <foundation:translate id="contact:firstName" />
+        </label>
+    </div>
+
+    <div class="form-floating mb-3">
+        <f:form.textfield
+            class="form-control"
+            id="middleNames"
+            placeholder="{foundation:translate(id: 'contact:middleNames')}"
+            property="middleNames" />
+        <label
+            class="form-label"
+            for="middleNames">
+            <foundation:translate id="contact:middleNames" />
+        </label>
+    </div>
+
+    <div class="form-floating mb-3">
+        <f:form.textfield
+            class="form-control"
+            id="lastName"
+            placeholder="{foundation:translate(id: 'contact:lastName')}"
+            property="lastName" />
+        <label
+            class="form-label"
+            for="lastName">
+            <foundation:translate id="contact:lastName" />
+        </label>
+    </div>
+
+    <div class="form-floating mb-3">
+        <f:form.textfield
+            class="form-control"
+            id="birthName"
+            placeholder="{foundation:translate(id: 'contact:birthName')}"
+            property="birthName" />
+        <label
+            class="form-label"
+            for="birthName">
+            <foundation:translate id="contact:birthName" />
+        </label>
+    </div>
+
+    <div class="form-floating">
+        <f:form.textfield
+            class="form-control"
+            id="nickname"
+            placeholder="{foundation:translate(id: 'contact:nickname')}"
+            property="nickname" />
+        <label
+            class="form-label"
+            for="nickname">
+            <foundation:translate id="contact:nickname" />
+        </label>
+    </div>
+</fieldset>
+
 <div class="form-floating mb-3 position-relative{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
     data-psbits-form-condition-field="#type"
     data-psbits-form-condition-mode="hide"
@@ -66,108 +150,6 @@
     <f:form.hidden
         id="companies-value"
         name="companies" />
-</div>
-
-<div
-    class="form-floating mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
-    data-psbits-form-condition-field="#type"
-    data-psbits-form-condition-mode="hide"
-    data-psbits-form-condition-value="company">
-    <f:form.textfield
-        class="form-control"
-        id="title"
-        placeholder="{foundation:translate(id: 'contact:title')}"
-        property="title" />
-    <label
-        class="form-label"
-        for="title">
-        <foundation:translate id="contact:title" />
-    </label>
-</div>
-
-<div
-    class="form-floating mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
-    data-psbits-form-condition-field="#type"
-    data-psbits-form-condition-mode="hide"
-    data-psbits-form-condition-value="company">
-    <f:form.textfield
-        class="form-control"
-        id="firstName"
-        placeholder="{foundation:translate(id: 'contact:firstName')}"
-        property="firstName" />
-    <label
-        class="form-label"
-        for="firstName">
-        <foundation:translate id="contact:firstName" />
-    </label>
-</div>
-
-<div
-    class="form-floating mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
-    data-psbits-form-condition-field="#type"
-    data-psbits-form-condition-mode="hide"
-    data-psbits-form-condition-value="company">
-    <f:form.textfield
-        class="form-control"
-        id="middleNames"
-        placeholder="{foundation:translate(id: 'contact:middleNames')}"
-        property="middleNames" />
-    <label
-        class="form-label"
-        for="middleNames">
-        <foundation:translate id="contact:middleNames" />
-    </label>
-</div>
-
-<div
-    class="form-floating mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
-    data-psbits-form-condition-field="#type"
-    data-psbits-form-condition-mode="hide"
-    data-psbits-form-condition-value="company">
-    <f:form.textfield
-        class="form-control"
-        id="lastName"
-        placeholder="{foundation:translate(id: 'contact:lastName')}"
-        property="lastName" />
-    <label
-        class="form-label"
-        for="lastName">
-        <foundation:translate id="contact:lastName" />
-    </label>
-</div>
-
-<div
-    class="form-floating mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
-    data-psbits-form-condition-field="#type"
-    data-psbits-form-condition-mode="hide"
-    data-psbits-form-condition-value="company">
-    <f:form.textfield
-        class="form-control"
-        id="birthName"
-        placeholder="{foundation:translate(id: 'contact:birthName')}"
-        property="birthName" />
-    <label
-        class="form-label"
-        for="birthName">
-        <foundation:translate id="contact:birthName" />
-    </label>
-</div>
-
-<div
-    class="form-floating mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
-    data-psbits-form-condition-field="#type"
-    data-psbits-form-condition-mode="hide"
-    data-psbits-form-condition-value="company">
-    <f:form.textfield
-        class="form-control"
-        id="nickname"
-        placeholder="{foundation:translate(id: 'contact:nickname')}"
-        property="nickname" />
-    <label
-        class="form-label"
-        for="nickname">
-        <foundation:translate id="contact:nickname" />
-    </label>
 </div>
 
 <div class="form-floating mb-3">
