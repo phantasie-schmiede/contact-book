@@ -18,20 +18,32 @@
             <trans-unit id="ctrl.title">
                 <source>Phone number</source>
             </trans-unit>
-            <trans-unit id="generalType">
-                <source>General type</source>
-            </trans-unit>
-            <trans-unit id="generalType.business">
+            <trans-unit id="dyn.generaltype.business">
                 <source>Business</source>
             </trans-unit>
             <trans-unit id="extension">
                 <source>Extension</source>
             </trans-unit>
-            <trans-unit id="generalType.other">
+            <trans-unit id="dyn.generaltype.other">
                 <source>Other</source>
             </trans-unit>
-            <trans-unit id="generalType.private">
+            <trans-unit id="dyn.generaltype.private">
                 <source>Private</source>
+            </trans-unit>
+            <trans-unit id="dyn.phoneNumbertype.fax">
+                <source>Fax</source>
+            </trans-unit>
+            <trans-unit id="dyn.phoneNumbertype.landline">
+                <source>Landline</source>
+            </trans-unit>
+            <trans-unit id="dyn.phoneNumbertype.mobile">
+                <source>Mobile</source>
+            </trans-unit>
+            <trans-unit id="dyn.phoneNumbertype.other">
+                <source>Other</source>
+            </trans-unit>
+            <trans-unit id="generalType">
+                <source>General type</source>
             </trans-unit>
             <trans-unit id="internationalDiallingCode">
                 <source>International dialling code</source>
@@ -41,18 +53,6 @@
             </trans-unit>
             <trans-unit id="phoneNumberType">
                 <source>Phone number type</source>
-            </trans-unit>
-            <trans-unit id="phoneNumberType.fax">
-                <source>Fax</source>
-            </trans-unit>
-            <trans-unit id="phoneNumberType.landline">
-                <source>Landline</source>
-            </trans-unit>
-            <trans-unit id="phoneNumberType.mobile">
-                <source>Mobile</source>
-            </trans-unit>
-            <trans-unit id="phoneNumberType.other">
-                <source>Other</source>
             </trans-unit>
         </body>
     </file>

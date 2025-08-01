@@ -19,6 +19,34 @@
                 <source>Day</source>
                 <target>Tag</target>
             </trans-unit>
+            <trans-unit id="dyn.type.baptism">
+                <source>Baptism</source>
+                <target>Taufe</target>
+            </trans-unit>
+            <trans-unit id="dyn.type.birthday">
+                <source>Date of birth</source>
+                <target>Geburt</target>
+            </trans-unit>
+            <trans-unit id="dyn.type.confirmation">
+                <source>Confirmation</source>
+                <target>Konfirmation</target>
+            </trans-unit>
+            <trans-unit id="dyn.type.death">
+                <source>Death</source>
+                <target>Tod</target>
+            </trans-unit>
+            <trans-unit id="dyn.type.divorce">
+                <source>Divorce</source>
+                <target>Scheidung</target>
+            </trans-unit>
+            <trans-unit id="dyn.type.other">
+                <source>Other</source>
+                <target>Anderes</target>
+            </trans-unit>
+            <trans-unit id="dyn.type.wedding">
+                <source>Wedding</source>
+                <target>Hochzeit</target>
+            </trans-unit>
             <trans-unit id="location">
                 <source>Location</source>
                 <target>Ort</target>
@@ -42,34 +70,6 @@
             <trans-unit id="type">
                 <source>Category</source>
                 <target>Kategorie</target>
-            </trans-unit>
-            <trans-unit id="type.baptism">
-                <source>Baptism</source>
-                <target>Taufe</target>
-            </trans-unit>
-            <trans-unit id="type.birthday">
-                <source>Date of birth</source>
-                <target>Geburt</target>
-            </trans-unit>
-            <trans-unit id="type.confirmation">
-                <source>Confirmation</source>
-                <target>Konfirmation</target>
-            </trans-unit>
-            <trans-unit id="type.death">
-                <source>Death</source>
-                <target>Tod</target>
-            </trans-unit>
-            <trans-unit id="type.divorce">
-                <source>Divorce</source>
-                <target>Scheidung</target>
-            </trans-unit>
-            <trans-unit id="type.other">
-                <source>Other</source>
-                <target>Anderes</target>
-            </trans-unit>
-            <trans-unit id="type.wedding">
-                <source>Wedding</source>
-                <target>Hochzeit</target>
             </trans-unit>
             <trans-unit id="year">
                 <source>Year</source>

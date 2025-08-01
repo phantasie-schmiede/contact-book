@@ -23,6 +23,34 @@
                 <source>Phone number</source>
                 <target>Rufnummer</target>
             </trans-unit>
+            <trans-unit id="dyn.generaltype.business">
+                <source>Business</source>
+                <target>Geschäftlich</target>
+            </trans-unit>
+            <trans-unit id="dyn.generaltype.other">
+                <source>Other</source>
+                <target>Anderer</target>
+            </trans-unit>
+            <trans-unit id="dyn.generaltype.private">
+                <source>Private</source>
+                <target>Privat</target>
+            </trans-unit>
+            <trans-unit id="dyn.phoneNumbertype.fax">
+                <source>Fax</source>
+                <target>Fax</target>
+            </trans-unit>
+            <trans-unit id="dyn.phoneNumbertype.landline">
+                <source>Landline</source>
+                <target>Festnetz</target>
+            </trans-unit>
+            <trans-unit id="dyn.phoneNumbertype.mobile">
+                <source>Mobile</source>
+                <target>Mobil</target>
+            </trans-unit>
+            <trans-unit id="dyn.phoneNumbertype.other">
+                <source>Other</source>
+                <target>Anderer</target>
+            </trans-unit>
             <trans-unit id="extension">
                 <source>Extension</source>
                 <target>Durchwahl</target>
@@ -30,18 +58,6 @@
             <trans-unit id="generalType">
                 <source>General type</source>
                 <target>Allgemeiner Typ</target>
-            </trans-unit>
-            <trans-unit id="generalType.business">
-                <source>Business</source>
-                <target>Geschäftlich</target>
-            </trans-unit>
-            <trans-unit id="generalType.other">
-                <source>Other</source>
-                <target>Anderer</target>
-            </trans-unit>
-            <trans-unit id="generalType.private">
-                <source>Private</source>
-                <target>Privat</target>
             </trans-unit>
             <trans-unit id="internationalDiallingCode">
                 <source>International dialling code</source>
@@ -54,22 +70,6 @@
             <trans-unit id="phoneNumberType">
                 <source>Phone number type</source>
                 <target>Anschlusstyp</target>
-            </trans-unit>
-            <trans-unit id="phoneNumberType.fax">
-                <source>Fax</source>
-                <target>Fax</target>
-            </trans-unit>
-            <trans-unit id="phoneNumberType.landline">
-                <source>Landline</source>
-                <target>Festnetz</target>
-            </trans-unit>
-            <trans-unit id="phoneNumberType.mobile">
-                <source>Mobile</source>
-                <target>Mobil</target>
-            </trans-unit>
-            <trans-unit id="phoneNumberType.other">
-                <source>Other</source>
-                <target>Anderer</target>
             </trans-unit>
         </body>
     </file>

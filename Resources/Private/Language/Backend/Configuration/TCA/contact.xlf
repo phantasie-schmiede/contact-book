@@ -27,6 +27,12 @@
             <trans-unit id="documents">
                 <source>Documents</source>
             </trans-unit>
+            <trans-unit id="dyn.type.company">
+                <source>Company</source>
+            </trans-unit>
+            <trans-unit id="dyn.type.person">
+                <source>Person</source>
+            </trans-unit>
             <trans-unit id="eMails">
                 <source>E-mail addresses</source>
             </trans-unit>
@@ -62,12 +68,6 @@
             </trans-unit>
             <trans-unit id="type">
                 <source>Type</source>
-            </trans-unit>
-            <trans-unit id="type.company">
-                <source>Company</source>
-            </trans-unit>
-            <trans-unit id="type.person">
-                <source>Person</source>
             </trans-unit>
             <trans-unit id="uuid">
                 <source>UUID</source>
