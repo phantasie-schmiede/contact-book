@@ -601,6 +601,12 @@ class Contact extends AbstractEntity
                 $searchTerms[] = $this->getNickname();
             }
 
+            $birthEvent = ContactUtility::getBirthEvent($this);
+
+            if (null !== $birthEvent?->getYear()) {
+                $searchTerms[] = $birthEvent->getYear();
+            }
+
             foreach ($this->companies as $company) {
                 $searchTerms[] = $company->getCompanyName();
             }

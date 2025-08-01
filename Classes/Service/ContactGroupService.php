@@ -80,6 +80,8 @@ readonly class ContactGroupService
             'contactGroup' => $contactGroup,
             'list'         => $list,
             'pluginUid'    => $request->getAttribute('currentContentObject')->data['uid'],
+            'totalCount'   => $contactGroup->getContacts()
+                ->count(),
         ]);
     }
 

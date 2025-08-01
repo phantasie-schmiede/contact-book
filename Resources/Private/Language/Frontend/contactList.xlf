@@ -6,11 +6,17 @@
         product-name="contact_book"
         source-language="en">
         <body>
+            <trans-unit id="contacts">
+                <source>contacts</source>
+            </trans-unit>
             <trans-unit id="noContacts">
                 <source>There are no contacts yet.</source>
             </trans-unit>
             <trans-unit id="search">
                 <source>Search ...</source>
+            </trans-unit>
+            <trans-unit id="totalNumberOfContacts">
+                <source>of {number} contacts</source>
             </trans-unit>
         </body>
     </file>

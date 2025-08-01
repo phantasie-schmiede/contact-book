@@ -199,8 +199,10 @@ class ContactController extends ActionController
         }
 
         $this->view->assignMultiple([
-            'list'      => $list,
-            'pluginUid' => $this->request->getAttribute('currentContentObject')->data['uid'],
+            'list'       => $list,
+            'pluginUid'  => $this->request->getAttribute('currentContentObject')->data['uid'],
+            'totalCount' => $this->contactRepository->findByDemand(new ContactDemand())
+                ->count(),
         ]);
 
         return $this->htmlResponse();

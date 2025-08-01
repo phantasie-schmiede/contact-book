@@ -21,16 +21,29 @@
     <input
         autocomplete="on"
         class="form-control psbits-clear-input"
-        data-psbits-filter-target=".js-contact-list-item"
+        data-psbits-filter-count="#filter-count-{pluginUid}"
+        data-psbits-filter-prefer-text
+        data-psbits-filter-target="#contact-list-{pluginUid} .js-contact-list-item"
         data-psbits-filter-value="data-search-terms"
         id="search{pluginUid}"
         placeholder="{foundation:translate(id: 'contactList:search')}"
         type="text" />
+    <div
+        class="form-text"
+        id="filter-count-{pluginUid}">
+        <span data-psbits-filter-count-number>{totalCount}</span>
+        <span data-psbits-filter-count-text="{foundation:translate(arguments: '{number: totalCount}', id: 'contactList:totalNumberOfContacts')}">
+            <foundation:translate
+                arguments="{number: totalCount}"
+                id="contactList:contacts" />
+        </span>
+    </div>
 </div>
 
 <div
     class="overflow-auto"
-    data-psbits-ajax-url="{refreshUrl}">
+    data-psbits-ajax-url="{refreshUrl}"
+    id="contact-list-{pluginUid}">
     <f:format.raw>{list}</f:format.raw>
 </div>
 </html>
