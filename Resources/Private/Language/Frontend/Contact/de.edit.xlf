@@ -91,6 +91,14 @@
                 <source>Save</source>
                 <target>Speichern</target>
             </trans-unit>
+            <trans-unit id="tab.name">
+                <source>Name</source>
+                <target>Name</target>
+            </trans-unit>
+            <trans-unit id="tab.other">
+                <source>Other</source>
+                <target>Sonstiges</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

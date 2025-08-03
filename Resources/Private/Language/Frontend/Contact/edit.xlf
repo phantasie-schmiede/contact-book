@@ -69,6 +69,12 @@
             <trans-unit id="save">
                 <source>Save</source>
             </trans-unit>
+            <trans-unit id="tab.name">
+                <source>Name</source>
+            </trans-unit>
+            <trans-unit id="tab.other">
+                <source>Other</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -23,31 +23,31 @@
                 <source>Phone number</source>
                 <target>Rufnummer</target>
             </trans-unit>
-            <trans-unit id="dyn.generaltype.business">
+            <trans-unit id="dyn.generalType.business">
                 <source>Business</source>
                 <target>Geschäftlich</target>
             </trans-unit>
-            <trans-unit id="dyn.generaltype.other">
+            <trans-unit id="dyn.generalType.other">
                 <source>Other</source>
                 <target>Anderer</target>
             </trans-unit>
-            <trans-unit id="dyn.generaltype.private">
+            <trans-unit id="dyn.generalType.private">
                 <source>Private</source>
                 <target>Privat</target>
             </trans-unit>
-            <trans-unit id="dyn.phoneNumbertype.fax">
+            <trans-unit id="dyn.phoneNumberType.fax">
                 <source>Fax</source>
                 <target>Fax</target>
             </trans-unit>
-            <trans-unit id="dyn.phoneNumbertype.landline">
+            <trans-unit id="dyn.phoneNumberType.landline">
                 <source>Landline</source>
                 <target>Festnetz</target>
             </trans-unit>
-            <trans-unit id="dyn.phoneNumbertype.mobile">
+            <trans-unit id="dyn.phoneNumberType.mobile">
                 <source>Mobile</source>
                 <target>Mobil</target>
             </trans-unit>
-            <trans-unit id="dyn.phoneNumbertype.other">
+            <trans-unit id="dyn.phoneNumberType.other">
                 <source>Other</source>
                 <target>Anderer</target>
             </trans-unit>
