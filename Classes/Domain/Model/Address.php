@@ -100,7 +100,7 @@ class Address extends AbstractContactRelatedEntity
 
     public function getLink(): string
     {
-        return 'https://www.google.com/maps/dir//' . $this->getCompactValue();
+        return 'https://www.google.com/maps/dir/?api=1&destination=' . $this->getCompactValue();
     }
 
     public function getStreet(): string
