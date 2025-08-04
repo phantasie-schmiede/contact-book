@@ -75,6 +75,9 @@
             <trans-unit id="tab.other">
                 <source>Other</source>
             </trans-unit>
+            <trans-unit id="tab.work">
+                <source>Work</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

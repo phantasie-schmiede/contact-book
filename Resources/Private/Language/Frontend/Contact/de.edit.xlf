@@ -99,6 +99,10 @@
                 <source>Other</source>
                 <target>Sonstiges</target>
             </trans-unit>
+            <trans-unit id="tab.work">
+                <source>Work</source>
+                <target>Arbeit</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
