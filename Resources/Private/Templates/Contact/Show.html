@@ -5,7 +5,6 @@
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers"
     xmlns:psbvh="http://typo3.org/ns/PSBits/ViewHelpers/ViewHelpers">
-<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
 <foundation:translation.registerLanguageFile
     file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
     name="modal" />
@@ -15,6 +14,61 @@
     identifier="loadingSpinner"
     src="EXT:templates/Resources/Public/JavaScript/loadingSpinner.js"
     type="module" />
+
+<f:variable
+    name="tabAddressesContent"
+    value="{f:render(arguments: {linkTarget: '_blank', records: contact.addresses}, section: 'TabLinkedRelationsContent')}" />
+<f:variable
+    name="tabAddressesLabel"
+    value="{f:render(arguments: {identifier: 'geo-alt'}, section: 'Icon')}" />
+<f:variable
+    name="tabDocumentsContent"
+    value="{f:render(arguments: {linkTarget: '_blank', records: contact.documents}, section: 'TabLinkedRelationsContent')}" />
+<f:variable
+    name="tabDocumentsLabel"
+    value="{f:render(arguments: {identifier: 'files'}, section: 'Icon')}" />
+<f:variable
+    name="tabEMailsContent"
+    value="{f:render(arguments: {records: contact.eMails}, section: 'TabLinkedRelationsContent')}" />
+<f:variable
+    name="tabEMailsLabel"
+    value="{f:render(arguments: {identifier: 'envelope-at'}, section: 'Icon')}" />
+<f:variable
+    name="tabEventsContent"
+    value="{f:render(arguments: {contact: contact}, section: 'TabEventsContent')}" />
+<f:variable
+    name="tabEventsLabel"
+    value="{f:render(arguments: {identifier: 'calendar-event'}, section: 'Icon')}" />
+<f:variable
+    name="tabNameContent"
+    value="{f:render(arguments: {contact: contact}, section: 'TabNameContent')}" />
+<f:variable
+    name="tabNameLabel"
+    value="{f:render(arguments: {identifier: 'tag'}, section: 'Icon')}" />
+<f:variable
+    name="tabOtherContent"
+    value="{f:render(arguments: {allContactGroups: allContactGroups, contact: contact}, section: 'TabOtherContent')}" />
+<f:variable
+    name="tabOtherLabel"
+    value="{f:render(arguments: {identifier: 'three-dots'}, section: 'Icon')}" />
+<f:variable
+    name="tabPhoneNumbersContent"
+    value="{f:render(arguments: {records: contact.phoneNumbers}, section: 'TabLinkedRelationsContent')}" />
+<f:variable
+    name="tabPhoneNumbersLabel"
+    value="{f:render(arguments: {identifier: 'telephone'}, section: 'Icon')}" />
+<f:variable
+    name="tabWebsitesContent"
+    value="{f:render(arguments: {linkTarget: '_blank', records: contact.websites}, section: 'TabLinkedRelationsContent')}" />
+<f:variable
+    name="tabWebsitesLabel"
+    value="{f:render(arguments: {identifier: 'globe'}, section: 'Icon')}" />
+<f:variable
+    name="tabWorkContent"
+    value="{f:render(arguments: {allCompanies: allCompanies, contact: contact}, section: 'TabWorkContent')}" />
+<f:variable
+    name="tabWorkLabel"
+    value="{f:render(arguments: {identifier: 'briefcase'}, section: 'Icon')}" />
 
 <div class="contact-show row">
     <div class="col-12">
@@ -42,187 +96,65 @@
         </f:if>
 
         <h1 class="d-flex justify-content-between">
-            {contact.fullName}
+            {contact.shortName}
             <f:render partial="ExportModal/Toggle" />
         </h1>
 
-        <f:if condition="{contact.nickname}">
-            <h2>&raquo;{contact.nickname}&laquo;</h2>
-        </f:if>
+        <hr>
 
-        <f:if condition="{contact.birthName}">
-            <h2>
-                <foundation:translate
-                    arguments="{birthName: contact.birthName}"
-                    id="birthName" />
-            </h2>
-        </f:if>
-
-        <f:if condition="{contact.notes}">
-            <h3 class="mt-3">
-                <foundation:translate id="contact:notes" />
-            </h3>
-            <p>
-                <f:format.nl2br>{contact.notes}</f:format.nl2br>
-            </p>
-        </f:if>
-
-        <f:if condition="{contact.companies}">
-            <h3 class="mt-3">
-                <foundation:translate id="contact:companies" />
-            </h3>
-            <ul class="list-group list-group-flush">
-                <f:for
-                    as="company"
-                    each="{contact.companies}">
-                    <f:render
-                        arguments="{class: 'list-group-item list-group-item-action', contact: company}"
-                        partial="ContactLink" />
-                </f:for>
-            </ul>
-        </f:if>
-
-        <f:if condition="{contact.colleagues}">
-            <f:if condition="3 < {contact.colleagues -> f:count()}">
-                <f:then>
-                    <f:variable
-                        name="collabsibleContent"
-                        value="{f:render(arguments: '{colleagues: contact.colleagues}', section: 'colleagues')}" />
-                    <f:variable
-                        name="collabsibleLabel"
-                        value="{foundation:translate(id: 'contact.colleagues')}" />
-
-                    <f:render
-                        arguments="{classes: 'mt-3', content: collabsibleContent, id: 'colleagues-list', label: collabsibleLabel, tag: 'h3'}"
-                        partial="Component/Collapsible" />
-                </f:then>
-                <f:else>
-                    <h3 class="mt-3">
-                        <foundation:translate id="contact.colleagues" />
-                    </h3>
-                    <f:render
-                        arguments="{colleagues: contact.colleagues}"
-                        section="colleagues" />
-                </f:else>
-            </f:if>
-        </f:if>
-
-        <f:if condition="{contact.addresses}">
-            <h3 class="mt-3">
-                <foundation:translate id="contact:addresses" />
-            </h3>
-            <f:render
-                arguments="{linkTarget: '_blank', records: contact.addresses, showActionIcon: true}"
-                partial="LinkedRelations" />
-        </f:if>
-
-        <f:if condition="{contact.phoneNumbers}">
-            <h3 class="mt-3">
-                <foundation:translate id="contact:phoneNumbers" />
-            </h3>
-            <f:render
-                arguments="{records: contact.phoneNumbers, showActionIcon: true}"
-                partial="LinkedRelations" />
-        </f:if>
-
-        <f:if condition="{contact.eMails}">
-            <h3 class="mt-3">
-                <foundation:translate id="contact:eMails" />
-            </h3>
-            <f:render
-                arguments="{records: contact.eMails, showActionIcon: true}"
-                partial="LinkedRelations" />
-        </f:if>
-
-        <f:if condition="{contact.websites}">
-            <h3 class="mt-3">
-                <foundation:translate id="contact:websites" />
-            </h3>
-            <f:render
-                arguments="{linkTarget: '_blank', records: contact.websites, showActionIcon: true}"
-                partial="LinkedRelations" />
-        </f:if>
-
-        <f:if condition="{contact.documentsWithoutImages}">
-            <h3 class="mt-3">
-                <foundation:translate id="contact:documents" />
-            </h3>
-            <f:render
-                arguments="{linkTarget: '_blank', records: contact.documentsWithoutImages, showActionIcon: true}"
-                partial="LinkedRelations" />
-        </f:if>
-
-        <f:if condition="{contact.eventsInDescendingOrder}">
-            <h3 class="mt-3">
-                <foundation:translate id="contact:events" />
-            </h3>
-            <ul class="list-group list-group-flush">
-                <f:for
-                    as="event"
-                    each="{contact.eventsInDescendingOrder}">
-                    <li class="d-flex list-group-item p-0">
-                        <span class="p-2">
-                            {event.dateFormatted}
-                            <span class="fw-bold ms-2">
-                                <f:if condition="!{event.year}">
-                                    <f:then>
-                                        {event.label}
-                                    </f:then>
-                                    <f:else>
-                                        {event.type.label}
-                                    </f:else>
-                                </f:if>
-                            </span>
-
-                            <f:if condition="('divorce' == {event.type.value} || 'wedding' == {event.type.value}) && {event.contacts}">
-                                <f:variable
-                                    name="spouse"
-                                    value="{contactBook:event.otherContacts(contact: contact, event: event, returnFirst: 'true')}" />
-
-                                <foundation:translate id="dyn.event.otherContactPreposition.{event.type.value}" />
-                                <f:link.action
-                                    action="show"
-                                    arguments="{contact: spouse}">
-                                    {spouse.shortName}
-
-                                    <f:if condition="{spouse.birthName}">
-                                        (<foundation:translate
-                                        arguments="{birthName: spouse.birthName}"
-                                        id="birthName" />)
-                                    </f:if>
-                                </f:link.action>
-                            </f:if>
-
-                            <f:if condition="{event.location}">
-                                in {event.location}
-                            </f:if>
-
-                            <f:if condition="{event.notes}">
-                                ({event.notesInline})
-                            </f:if>
-                        </span>
-                        <templates:additionalContent
-                            eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalEventListContentEvent::class')}"
-                            parameters="{event: event}" />
-                    </li>
-                </f:for>
-            </ul>
-        </f:if>
-
-        <f:if condition="{contact.employees}">
-            <h3 class="mt-3">
-                <foundation:translate id="contact:employees" />
-            </h3>
-            <ul class="list-group list-group-flush">
-                <f:for
-                    as="employee"
-                    each="{contact.sortedEmployees}">
-                    <f:render
-                        arguments="{class: 'list-group-item list-group-item-action', contact: employee}"
-                        partial="ContactLink" />
-                </f:for>
-            </ul>
-        </f:if>
+        <f:render
+            arguments="{
+                tabClass: 'px-1',
+                tabs: '{
+                    0: {
+                        content: tabNameContent,
+                        id: \'name\',
+                        label: tabNameLabel
+                    },
+                    1: {
+                        content: tabWorkContent,
+                        id: \'work\',
+                        label: tabWorkLabel
+                    },
+                    2: {
+                        content: tabAddressesContent,
+                        id: \'addresses\',
+                        label: tabAddressesLabel
+                    },
+                    3: {
+                        content: tabPhoneNumbersContent,
+                        id: \'phone-numbers\',
+                        label: tabPhoneNumbersLabel
+                    },
+                    4: {
+                        content: tabEMailsContent,
+                        id: \'e-mails\',
+                        label: tabEMailsLabel
+                    },
+                    5: {
+                        content: tabWebsitesContent,
+                        id: \'websites\',
+                        label: tabWebsitesLabel
+                    },
+                    6: {
+                        content: tabEventsContent,
+                        id: \'events\',
+                        label: tabEventsLabel
+                    },
+                    7: {
+                        content: tabDocumentsContent,
+                        id: \'documents\',
+                        label: tabDocumentsLabel
+                    },
+                    8: {
+                        content: tabOtherContent,
+                        id: \'other\',
+                        label: tabOtherLabel
+                    }
+                }',
+                vertical: true,
+            }"
+            partial="Component/Tabs" />
 
         <templates:additionalContent
             eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalContactContentEvent::class')}"
@@ -266,7 +198,7 @@
 <f:render
     arguments="{
         body: '{foundation:translate(arguments: {name: contact.fullName}, id: \'modal:body\')}',
-        footer: '{f:render(arguments: {contact: contact}, section: \'modalFooter\')}',
+        footer: '{f:render(arguments: {contact: contact}, section: \'ModalFooter\')}',
         id: 'delete-contact-{contact.uid}-modal',
         title: '{foundation:translate(id: \'modal:title\')}'
     }"
@@ -276,7 +208,7 @@
     arguments="{contact: contact}"
     partial="ExportModal/Dialog" />
 
-<f:section name="colleagues">
+<f:section name="Colleagues">
     <ul class="list-group list-group-flush">
         <f:for
             as="colleague"
@@ -288,7 +220,13 @@
     </ul>
 </f:section>
 
-<f:section name="modalFooter">
+<f:section name="Icon">
+    <core:icon
+        identifier="templates-{identifier}"
+        size="medium" />
+</f:section>
+
+<f:section name="ModalFooter">
     <foundation:translation.registerLanguageFile
         file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
         name="modal" />
@@ -305,5 +243,166 @@
         class="btn btn-danger">
         <foundation:translate id="modal:delete" />
     </f:link.action>
+</f:section>
+
+<f:section name="TabLinkedRelationsContent">
+    <f:if condition="{records}">
+        <f:render
+            arguments="{linkTarget: linkTarget, records: records, showActionIcon: true}"
+            partial="LinkedRelations" />
+    </f:if>
+</f:section>
+
+<f:section name="TabEventsContent">
+    <f:if condition="{contact.eventsInDescendingOrder}">
+        <f:render
+            contentAs="content"
+            partial="Component/LabelledList">
+            <f:for
+                as="event"
+                each="{contact.eventsInDescendingOrder}">
+                <f:render
+                    arguments="{label: event.dateFormatted}"
+                    contentAs="value"
+                    partial="Component/LabelledListItem">
+                    <f:if condition="!{event.year}">
+                        <f:then>
+                            {event.label}
+                        </f:then>
+                        <f:else>
+                            {event.type.label}
+                        </f:else>
+                    </f:if>
+
+                    <f:if condition="('divorce' == {event.type.value} || 'wedding' == {event.type.value}) && {event.contacts}">
+                        <f:variable
+                            name="spouse"
+                            value="{contactBook:event.otherContacts(contact: contact, event: event, returnFirst: 'true')}" />
+
+                        <foundation:translate id="dyn.event.otherContactPreposition.{event.type.value}" />
+                        <f:link.action
+                            action="show"
+                            arguments="{contact: spouse}">
+                            {spouse.shortName}
+
+                            <f:if condition="{spouse.birthName}">
+                                (<foundation:translate
+                                arguments="{birthName: spouse.birthName}"
+                                id="birthName" />)
+                            </f:if>
+                        </f:link.action>
+                    </f:if>
+
+                    <f:if condition="{event.location}">
+                        in {event.location}
+                    </f:if>
+
+                    <f:if condition="{event.notes}">
+                        ({event.notesInline})
+                    </f:if>
+                </f:render>
+            </f:for>
+        </f:render>
+    </f:if>
+</f:section>
+
+<f:section name="TabNameContent">
+    <f:render
+        contentAs="content"
+        partial="Component/LabelledList">
+        <f:render
+            arguments="{label: 'Vollständiger Name:'}"
+            contentAs="value"
+            partial="Component/LabelledListItem">
+            {contact.fullName}
+        </f:render>
+
+        <f:if condition="{contact.birthName}">
+            <f:render
+                arguments="{label: 'Geburtsname'}"
+                contentAs="value"
+                partial="Component/LabelledListItem">
+                {contact.birthName}
+            </f:render>
+        </f:if>
+
+        <f:if condition="{contact.nickname}">
+            <f:render
+                arguments="{label: 'Spitzname:'}"
+                contentAs="value"
+                partial="Component/LabelledListItem">
+                {contact.nickname}
+            </f:render>
+        </f:if>
+    </f:render>
+</f:section>
+
+<f:section name="TabOtherContent">
+    <f:if condition="{contact.notes}">
+        <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+
+        <h3>
+            <foundation:translate id="contact:notes" />
+        </h3>
+        <p>
+            <f:format.nl2br>{contact.notes}</f:format.nl2br>
+        </p>
+    </f:if>
+</f:section>
+
+<f:section name="TabWorkContent">
+    <f:if condition="{contact.companies}">
+        <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+
+        <ul class="list-group list-group-flush">
+            <f:for
+                as="company"
+                each="{contact.companies}">
+                <f:render
+                    arguments="{class: 'list-group-item list-group-item-action', contact: company}"
+                    partial="ContactLink" />
+            </f:for>
+        </ul>
+    </f:if>
+
+    <f:if condition="{contact.colleagues}">
+        <f:if condition="3 < {contact.colleagues -> f:count()}">
+            <f:then>
+                <f:variable
+                    name="collabsibleContent"
+                    value="{f:render(arguments: '{colleagues: contact.colleagues}', section: 'Colleagues')}" />
+                <f:variable
+                    name="collabsibleLabel"
+                    value="{foundation:translate(id: 'contact.colleagues')}" />
+
+                <f:render
+                    arguments="{classes: 'mt-3', content: collabsibleContent, id: 'colleagues-list', label: collabsibleLabel, tag: 'h3'}"
+                    partial="Component/Collapsible" />
+            </f:then>
+            <f:else>
+                <h3 class="mt-3">
+                    <foundation:translate id="contact.colleagues" />
+                </h3>
+                <f:render
+                    arguments="{colleagues: contact.colleagues}"
+                    section="Colleagues" />
+            </f:else>
+        </f:if>
+    </f:if>
+
+    <f:if condition="{contact.employees}">
+        <h3 class="mt-3">
+            <foundation:translate id="contact:employees" />
+        </h3>
+        <ul class="list-group list-group-flush">
+            <f:for
+                as="employee"
+                each="{contact.sortedEmployees}">
+                <f:render
+                    arguments="{class: 'list-group-item list-group-item-action', contact: employee}"
+                    partial="ContactLink" />
+            </f:for>
+        </ul>
+    </f:if>
 </f:section>
 </html>

@@ -57,7 +57,7 @@
 <f:render
     arguments="{
         body: '{foundation:translate(arguments: {name: contactGroup.name}, id: \'modal:body\')}',
-        footer: '{f:render(arguments: {contactGroup: contactGroup}, section: \'modalFooter\')}',
+        footer: '{f:render(arguments: {contactGroup: contactGroup}, section: \'ModalFooter\')}',
         id: 'delete-contactGroup-{contactGroup.uid}-modal',
         title: '{foundation:translate(id: \'modal:title\')}'
     }"
@@ -67,7 +67,7 @@
     arguments="{contactGroup: contactGroup}"
     partial="ExportModal/Dialog" />
 
-<f:section name="modalFooter">
+<f:section name="ModalFooter">
     <foundation:translation.registerLanguageFile
         file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
         name="modal" />

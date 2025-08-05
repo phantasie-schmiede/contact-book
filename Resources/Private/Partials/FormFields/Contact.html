@@ -27,61 +27,62 @@
 
 <f:variable
     name="tabAddressesContent"
-    value="{f:render(arguments: {allContacts: allContacts, contact: contact, generalTypes: generalTypes, label: 'addresses', recordType: 'Address', records: contact.addresses}, section: 'Accordion')}" />
+    value="{f:render(arguments: {allContacts: allContacts, contact: contact, generalTypes: generalTypes, recordType: 'Address', records: contact.addresses}, section: 'Accordion')}" />
 <f:variable
     name="tabAddressesLabel"
-    value="{core:icon(identifier: 'templates-geo-alt', size: 'small')}" />
+    value="{f:render(arguments: {identifier: 'geo-alt'}, section: 'Icon')}" />
 <f:variable
     name="tabDocumentsContent"
-    value="{f:render(arguments: {allContacts: allContacts, contact: contact, label: 'documents', recordType: 'Document', records: contact.documents}, section: 'Accordion')}" />
+    value="{f:render(arguments: {allContacts: allContacts, contact: contact, recordType: 'Document', records: contact.documents}, section: 'Accordion')}" />
 <f:variable
     name="tabDocumentsLabel"
-    value="{core:icon(identifier: 'templates-files', size: 'small')}" />
+    value="{f:render(arguments: {identifier: 'files'}, section: 'Icon')}" />
 <f:variable
     name="tabEMailsContent"
-    value="{f:render(arguments: {allContacts: allContacts, contact: contact, generalTypes: generalTypes, label: 'eMails', recordType: 'EMail', records: contact.eMails}, section: 'Accordion')}" />
+    value="{f:render(arguments: {allContacts: allContacts, contact: contact, generalTypes: generalTypes, recordType: 'EMail', records: contact.eMails}, section: 'Accordion')}" />
 <f:variable
     name="tabEMailsLabel"
-    value="{core:icon(identifier: 'templates-envelope-at', size: 'small')}" />
+    value="{f:render(arguments: {identifier: 'envelope-at'}, section: 'Icon')}" />
 <f:variable
     name="tabEventsContent"
-    value="{f:render(arguments: {allContacts: allContacts, contact: contact, eventTypes: eventTypes, label: 'events', recordType: 'Event', records: contact.events}, section: 'Accordion')}" />
+    value="{f:render(arguments: {allContacts: allContacts, contact: contact, eventTypes: eventTypes, recordType: 'Event', records: contact.events}, section: 'Accordion')}" />
 <f:variable
     name="tabEventsLabel"
-    value="{core:icon(identifier: 'templates-calendar-event', size: 'small')}" />
+    value="{f:render(arguments: {identifier: 'calendar-event'}, section: 'Icon')}" />
 <f:variable
     name="tabNameContent"
     value="{f:render(arguments: {contact: contact}, section: 'TabNameContent')}" />
 <f:variable
     name="tabNameLabel"
-    value="{core:icon(identifier: 'templates-tag', size: 'small')}" />
+    value="{f:render(arguments: {identifier: 'tag'}, section: 'Icon')}" />
 <f:variable
     name="tabOtherContent"
     value="{f:render(arguments: {allContactGroups: allContactGroups, contact: contact}, section: 'TabOtherContent')}" />
 <f:variable
     name="tabOtherLabel"
-    value="{core:icon(identifier: 'templates-three-dots', size: 'small')}" />
+    value="{f:render(arguments: {identifier: 'three-dots'}, section: 'Icon')}" />
 <f:variable
     name="tabPhoneNumbersContent"
-    value="{f:render(arguments: {allContacts: allContacts, contact: contact, generalTypes: generalTypes, label: 'phoneNumbers', phoneNumberTypes: phoneNumberTypes, recordType: 'PhoneNumber', records: contact.phoneNumbers}, section: 'Accordion')}" />
+    value="{f:render(arguments: {allContacts: allContacts, contact: contact, generalTypes: generalTypes, phoneNumberTypes: phoneNumberTypes, recordType: 'PhoneNumber', records: contact.phoneNumbers}, section: 'Accordion')}" />
 <f:variable
     name="tabPhoneNumbersLabel"
-    value="{core:icon(identifier: 'templates-telephone', size: 'small')}" />
+    value="{f:render(arguments: {identifier: 'telephone'}, section: 'Icon')}" />
 <f:variable
     name="tabWebsitesContent"
-    value="{f:render(arguments: {allContacts: allContacts, contact: contact, generalTypes: generalTypes, label: 'websites', recordType: 'Website', records: contact.websites}, section: 'Accordion')}" />
+    value="{f:render(arguments: {allContacts: allContacts, contact: contact, generalTypes: generalTypes, recordType: 'Website', records: contact.websites}, section: 'Accordion')}" />
 <f:variable
     name="tabWebsitesLabel"
-    value="{core:icon(identifier: 'templates-globe', size: 'small')}" />
+    value="{f:render(arguments: {identifier: 'globe'}, section: 'Icon')}" />
 <f:variable
     name="tabWorkContent"
     value="{f:render(arguments: {allCompanies: allCompanies, contact: contact}, section: 'TabWorkContent')}" />
 <f:variable
     name="tabWorkLabel"
-    value="{core:icon(identifier: 'templates-briefcase', size: 'small')}" />
+    value="{f:render(arguments: {identifier: 'briefcase'}, section: 'Icon')}" />
 
 <f:render
     arguments="{
+        tabClass: 'px-1',
         tabs: '{
             0: {
                 content: tabNameContent,
@@ -134,12 +135,8 @@
     partial="Component/Tabs" />
 
 <f:section name="Accordion">
-    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
     <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/Contact/edit.xlf" />
 
-    <h5>
-        <foundation:translate id="contact:{label}" />
-    </h5>
     <div
         class="accordion accordion-flush mb-3"
         id="accordion{recordType}">
@@ -182,13 +179,15 @@
     </button>
 </f:section>
 
+<f:section name="Icon">
+    <core:icon
+        identifier="templates-{identifier}"
+        size="medium" />
+</f:section>
+
 <f:section name="TabNameContent">
     <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
-    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/Contact/edit.xlf" />
 
-    <h5>
-        <foundation:translate id="edit:tab.name" />
-    </h5>
     <div
         class="form-floating mb-3{f:if(condition: 'company != {contact.type.value}', then: ' visually-hidden')}"
         data-psbits-form-condition-field="#type"
@@ -292,11 +291,6 @@
 
 <f:section name="TabOtherContent">
     <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
-    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/Contact/edit.xlf" />
-
-    <h5>
-        <foundation:translate id="edit:tab.other" />
-    </h5>
 
     <div class="form-floating mb-3">
         <f:form.textarea
@@ -339,11 +333,7 @@
 
 <f:section name="TabWorkContent">
     <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
-    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/Contact/edit.xlf" />
 
-    <h5>
-        <foundation:translate id="edit:tab.work" />
-    </h5>
     <div
         class="form-floating mb-3 position-relative{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
         data-psbits-form-condition-field="#type"
