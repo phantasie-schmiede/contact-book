@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Service;
 
 use Doctrine\DBAL\Exception;
-use JsonException;
 use PSBits\ContactBook\Domain\Model\ContactGroup;
 use PSBits\ContactBook\Domain\Repository\ContactGroupRepository;
 use PSBits\Foundation\Service\Configuration\TcaService;
@@ -37,24 +36,6 @@ readonly class ContactGroupService
         protected ContactService         $contactService,
         protected TcaService             $tcaService,
     ) {
-    }
-
-    /**
-     * @throws JsonException
-     */
-    public function getAsJson(): string
-    {
-        return json_encode(
-            array_map(
-                static fn(ContactGroup $contactGroup) => [
-                    'label' => $contactGroup->getName(),
-                    'value' => $contactGroup->getUid(),
-                ],
-                $this->contactGroupRepository->findAll()
-                    ->toArray()
-            ),
-            JSON_THROW_ON_ERROR
-        );
     }
 
     public function getCacheEntryIdentifier(ContactGroup $contactGroup): string

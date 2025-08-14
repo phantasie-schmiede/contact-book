@@ -10,7 +10,9 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Domain\Model;
 
+use JsonException;
 use PSBits\ContactBook\Utility\ContactUtility;
+use PSBits\ContactBook\Utility\JsonUtility;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Text;
 use PSBits\Foundation\Utility\StringUtility;
 use ReflectionClass;
@@ -47,6 +49,14 @@ abstract class AbstractContactRelatedEntity extends AbstractEntity implements Co
     public function getActionIconIdentifier(): string
     {
         return static::ACTION_ICON_IDENTIFIER;
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function getContactUidsAsJson(): false|string
+    {
+        return JsonUtility::getUidsAsJsonArray(...$this->getContactsSorted());
     }
 
     public function getContacts(): ObjectStorage

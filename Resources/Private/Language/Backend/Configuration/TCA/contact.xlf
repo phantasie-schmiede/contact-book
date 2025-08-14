@@ -12,9 +12,6 @@
             <trans-unit id="birthName">
                 <source>Birth name</source>
             </trans-unit>
-            <trans-unit id="companies">
-                <source>Companies</source>
-            </trans-unit>
             <trans-unit id="companyName">
                 <source>Company name</source>
             </trans-unit>
@@ -36,14 +33,14 @@
             <trans-unit id="eMails">
                 <source>E-mail addresses</source>
             </trans-unit>
-            <trans-unit id="employees">
-                <source>Employees</source>
-            </trans-unit>
             <trans-unit id="events">
                 <source>Events</source>
             </trans-unit>
             <trans-unit id="firstName">
                 <source>First name</source>
+            </trans-unit>
+            <trans-unit id="jobs">
+                <source>Jobs</source>
             </trans-unit>
             <trans-unit id="lastName">
                 <source>Last name</source>

@@ -9,14 +9,17 @@
     src="EXT:templates/Resources/Public/JavaScript/loadingSpinner.js"
     type="module" />
 
+<f:render
+    arguments="{contact: contact, loadContacts: true}"
+    partial="AjaxRequests" />
+
 <f:form
     action="update"
-    enctype="multipart/form-data"
     method="post"
     name="contactGroup"
     object="{contactGroup}">
     <f:render
-        arguments="{allContacts: allContacts, contactGroup: contactGroup}"
+        arguments="{contactGroup: contactGroup}"
         partial="FormFields/ContactGroup" />
 
     <div class="col-12 mt-3">

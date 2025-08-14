@@ -27,6 +27,7 @@ use PSBits\ContactBook\Domain\Model\ContactRelationInterface;
 use PSBits\ContactBook\Domain\Model\Document;
 use PSBits\ContactBook\Domain\Model\EMail;
 use PSBits\ContactBook\Domain\Model\Event;
+use PSBits\ContactBook\Domain\Model\Job;
 use PSBits\ContactBook\Domain\Model\PhoneNumber;
 use PSBits\ContactBook\Domain\Model\Website;
 use PSBits\ContactBook\Domain\Repository\AddressRepository;
@@ -35,6 +36,7 @@ use PSBits\ContactBook\Domain\Repository\ContactRepository;
 use PSBits\ContactBook\Domain\Repository\DocumentRepository;
 use PSBits\ContactBook\Domain\Repository\EMailRepository;
 use PSBits\ContactBook\Domain\Repository\EventRepository;
+use PSBits\ContactBook\Domain\Repository\JobRepository;
 use PSBits\ContactBook\Domain\Repository\PhoneNumberRepository;
 use PSBits\ContactBook\Domain\Repository\WebsiteRepository;
 use PSBits\ContactBook\Service\CleanupService;
@@ -89,6 +91,7 @@ class ContactController extends ActionController
         protected readonly EMailRepository        $eMailRepository,
         protected readonly EventRepository        $eventRepository,
         protected readonly ExtensionInformation   $extensionInformation,
+        protected readonly JobRepository          $jobRepository,
         protected readonly PersistenceManager     $persistenceManager,
         protected readonly PhoneNumberRepository  $phoneNumberRepository,
         protected readonly UploadService          $uploadService,
@@ -189,6 +192,33 @@ class ContactController extends ActionController
         exit;
     }
 
+    /**
+     * @throws JsonException
+     */
+    #[PluginAction(uncached: true)]
+    public function getAutoCompleteListAction(bool $companies = false, Contact $contact = null): ResponseInterface
+    {
+        $demand = new ContactDemand();
+
+        if ($companies) {
+            $demand->addType(ContactType::Company);
+        }
+
+        if ($contact) {
+            $demand->addExcludedContact($contact);
+        }
+
+        $contacts = ContactUtility::sortByListName(
+            $this->contactRepository->findByDemand($demand)
+                ->toArray()
+        );
+
+        return $this->jsonResponse(
+            json_encode(['html' => $this->contactService->renderAutocompleteList($contacts, $this->request)],
+                JSON_THROW_ON_ERROR)
+        );
+    }
+
     #[PluginAction(default: true, uncached: true)]
     public function listAction(): ResponseInterface
     {
@@ -284,21 +314,8 @@ class ContactController extends ActionController
      */
     private function prepareFormView(?Contact $contact = null): void
     {
-        $allCompaniesDemand = new ContactDemand();
-        $allCompaniesDemand->addType(ContactType::Company);
-
-        $allContactsDemand = new ContactDemand();
-        $allContactsDemand->addType(ContactType::Person);
-
-        if ($contact instanceof Contact) {
-            $allContactsDemand->addExcludedContact($contact);
-        }
-
         $this->view->assignMultiple([
-            'allCompanies'     => $this->contactService->getAsJson($allCompaniesDemand),
-            'allContactGroups' => $this->contactGroupService->getAsJson(),
-            'allContacts'      => $this->contactService->getAsJson($allContactsDemand),
-            'companies'        => $this->contactRepository->findByType(ContactType::Company),
+            'allContactGroups' => $this->contactGroupRepository->findAll(),
             'contact'          => $contact,
             'contactTypes'     => ContactType::toArray(ContactType::Person),
             'eventTypes'       => EventType::toArray(EventType::Birthday),
@@ -320,17 +337,6 @@ class ContactController extends ActionController
      */
     private function processRelations(Contact $contact): void
     {
-        $contact->removeAllCompanies();
-        $companyUids = json_decode($this->request->getArgument('companies') ?: '[]', true, 512, JSON_THROW_ON_ERROR);
-
-        foreach ($companyUids as $companyUid) {
-            $company = $this->contactRepository->findByUid($companyUid);
-
-            if ($company instanceof Contact) {
-                $contact->addCompany($company);
-            }
-        }
-
         $contact->removeAllContactGroups();
         $contactGroupUids = json_decode(
             $this->request->getArgument('contactGroups') ?: '[]',
@@ -352,6 +358,7 @@ class ContactController extends ActionController
                      'document',
                      'eMail',
                      'event',
+                     'job',
                      'phoneNumber',
                      'website',
                  ] as $relationType) {
@@ -360,6 +367,7 @@ class ContactController extends ActionController
                 'document'    => clone $contact->getDocuments(),
                 'eMail'       => clone $contact->getEMails(),
                 'event'       => clone $contact->getEvents(),
+                'job'         => clone $contact->getJobs(),
                 'phoneNumber' => clone $contact->getPhoneNumbers(),
                 'website'     => clone $contact->getWebsites(),
             };
@@ -376,6 +384,7 @@ class ContactController extends ActionController
                         'document'    => $contact->getDocumentByUid($uid),
                         'eMail'       => $contact->getEMailByUid($uid),
                         'event'       => $contact->getEventByUid($uid),
+                        'job'         => $contact->getJobByUid($uid),
                         'phoneNumber' => $contact->getPhoneNumberByUid($uid),
                         'website'     => $contact->getWebsiteByUid($uid),
                     };
@@ -399,6 +408,9 @@ class ContactController extends ActionController
                             break;
                         case 'event':
                             $contact->removeEvent($entity);
+                            break;
+                        case 'job':
+                            $contact->removeJob($entity);
                             break;
                         case 'phoneNumber':
                             $contact->removePhoneNumber($entity);
@@ -435,6 +447,11 @@ class ContactController extends ActionController
                             $this->updateEntityProperties($contact, $event, $entityData);
                             $this->eventRepository->add($event);
                             break;
+                        case 'job':
+                            $job = new Job();
+                            $this->updateEntityProperties($contact, $job, $entityData);
+                            $this->jobRepository->add($job);
+                            break;
                         case 'phoneNumber':
                             $phoneNumber = new PhoneNumber();
                             $this->updateEntityProperties($contact, $phoneNumber, $entityData);
@@ -451,9 +468,9 @@ class ContactController extends ActionController
         }
     }
 
-    private function updateAddressProperties(Address $entity, array $entityData): void
+    private function updateAddressProperties(Address $address, array $entityData): void
     {
-        $entity->setCity($entityData['city'])
+        $address->setCity($entityData['city'])
             ->setCountry($entityData['country'])
             ->setCounty($entityData['county'])
             ->setHouseNumber((string)$entityData['houseNumber'])
@@ -471,7 +488,7 @@ class ContactController extends ActionController
      * @throws PropertyNotAccessibleException
      * @throws ReflectionException
      */
-    private function updateDocumentProperties(Document $entity, array $entityData, int $tempUid = null): void
+    private function updateDocumentProperties(Document $document, array $entityData, int $tempUid = null): void
     {
         if (null !== $tempUid) {
             $uploadedFiles = ServerRequestFactory::fromGlobals()
@@ -480,20 +497,20 @@ class ContactController extends ActionController
             if (isset($uploadedFiles['document'][$tempUid]['file'])) {
                 $uploadedFile = $uploadedFiles['document'][$tempUid]['file'];
                 $this->uploadService->uploadForDomainObject(
-                    $entity,
+                    $document,
                     'file',
                     $uploadedFile
                 );
             }
         }
 
-        $entity->setNotes($entityData['notes'])
+        $document->setNotes($entityData['notes'])
             ->setTitle($entityData['title']);
     }
 
-    private function updateEMailProperties(EMail $entity, array $entityData): void
+    private function updateEMailProperties(EMail $eMail, array $entityData): void
     {
-        $entity->setEMailAddress($entityData['eMailAddress'])
+        $eMail->setEMailAddress($entityData['eMailAddress'])
             ->setNotes($entityData['notes'])
             ->setType(GeneralType::from($entityData['type']));
     }
@@ -514,7 +531,7 @@ class ContactController extends ActionController
         array                    $entityData,
         int                      $tempUid = null,
     ): void {
-        $this->contactService->setContactsOfRelatedEntity($entity, $contact, $entityData['contacts']);
+        $this->contactService->setContactsOfRelatedEntity($entity, $contact, $entityData['contacts'] ?? []);
 
         switch (true) {
             case $entity instanceof Address:
@@ -529,6 +546,9 @@ class ContactController extends ActionController
             case $entity instanceof Event:
                 $this->updateEventProperties($entity, $entityData);
                 break;
+            case $entity instanceof Job:
+                $this->updateJobProperties($entity, $entityData);
+                break;
             case $entity instanceof PhoneNumber:
                 $this->updatePhoneNumberProperties($entity, $entityData);
                 break;
@@ -538,9 +558,9 @@ class ContactController extends ActionController
         }
     }
 
-    private function updateEventProperties(Event $entity, array $entityData): void
+    private function updateEventProperties(Event $event, array $entityData): void
     {
-        $entity->setDay($entityData['day'] ? (int)$entityData['day'] : null)
+        $event->setDay($entityData['day'] ? (int)$entityData['day'] : null)
             ->setLocation($entityData['location'])
             ->setMonth($entityData['month'] ? (int)$entityData['month'] : null)
             ->setNotes($entityData['notes'])
@@ -550,9 +570,17 @@ class ContactController extends ActionController
             ->setYear($entityData['year'] ? (int)$entityData['year'] : null);
     }
 
-    private function updatePhoneNumberProperties(PhoneNumber $entity, array $entityData): void
+    private function updateJobProperties(Job $job, array $entityData): void
     {
-        $entity->setAreaCode((string)$entityData['areaCode'])
+        $job->setCompany($entityData['company'] ? $this->contactRepository->findByUid($entityData['company']) : null)
+            ->setNotes($entityData['notes'])
+            ->setPosition($entityData['position'])
+            ->setRole($entityData['role']);
+    }
+
+    private function updatePhoneNumberProperties(PhoneNumber $phoneNumber, array $entityData): void
+    {
+        $phoneNumber->setAreaCode((string)$entityData['areaCode'])
             ->setConnectionIdentifier((string)$entityData['connectionIdentifier'])
             ->setExtension((string)$entityData['extension'])
             ->setGeneralType(GeneralType::from($entityData['generalType']))
@@ -561,9 +589,9 @@ class ContactController extends ActionController
             ->setPhoneNumberType(PhoneNumberType::from($entityData['phoneNumberType']));
     }
 
-    private function updateWebsiteProperties(Website $entity, array $entityData): void
+    private function updateWebsiteProperties(Website $website, array $entityData): void
     {
-        $entity->setNotes($entityData['notes'])
+        $website->setNotes($entityData['notes'])
             ->setType(GeneralType::from($entityData['type']))
             ->setUrl($entityData['url']);
     }

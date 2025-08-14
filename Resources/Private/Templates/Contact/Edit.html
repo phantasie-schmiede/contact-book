@@ -9,6 +9,10 @@
     src="EXT:templates/Resources/Public/JavaScript/loadingSpinner.js"
     type="module" />
 
+<f:render
+    arguments="{contact: contact, loadCompanies: true, loadContacts: true}"
+    partial="AjaxRequests" />
+
 <f:form
     action="update"
     enctype="multipart/form-data"
@@ -26,7 +30,7 @@
 
         <f:render
             arguments="{class: 'bg-secondary-subtle btn', contact: contact, label: buttonLabel}"
-            partial="ContactLink" />
+            partial="Link/Contact" />
         <button
             class="bg-primary-subtle btn"
             data-psbits-spinner-text="{foundation:translate(id: 'form:submit.loadingSpinner')}"

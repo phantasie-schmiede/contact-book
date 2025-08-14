@@ -24,6 +24,7 @@ use PSBits\ContactBook\Domain\Model\Address;
 use PSBits\ContactBook\Domain\Model\Contact;
 use PSBits\ContactBook\Domain\Model\EMail;
 use PSBits\ContactBook\Domain\Model\Event;
+use PSBits\ContactBook\Domain\Model\Job;
 use PSBits\ContactBook\Domain\Model\Website;
 use PSBits\ContactBook\Domain\Repository\AddressRepository;
 use PSBits\ContactBook\Domain\Repository\ContactRepository;
@@ -103,9 +104,9 @@ readonly class ImportService
     private function addProperties(Contact $contact, Contact $existingContact): void
     {
         $existingContact->addAddresses(...$contact->getAddresses());
-        $existingContact->addCompanies(...$contact->getCompanies());
         $existingContact->addEMails(...$contact->getEMails());
         $existingContact->addEvents(...$contact->getEvents());
+        $existingContact->addJobs(...$contact->getJobs());
 
         if ('' === $existingContact->getMiddleNames()) {
             $existingContact->setMiddleNames($contact->getMiddleNames());
@@ -244,7 +245,9 @@ readonly class ImportService
                 $company = $this->contactRepository->findByDemand($contactDemand)
                     ->getFirst() ?? (new Contact())->setCompanyName($value)
                     ->setType(ContactType::Company);
-                $contact->addCompanies($company);
+                $job = new Job();
+                $job->setCompany($company);
+                $contact->addJob($job);
                 break;
             case 'TEL':
                 if (!str_starts_with($value, '+49')) {

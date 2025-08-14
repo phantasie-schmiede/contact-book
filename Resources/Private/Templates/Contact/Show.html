@@ -3,8 +3,8 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:contactBook="http://typo3.org/ns/PSBits/ContactBook/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
-    xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers"
-    xmlns:psbvh="http://typo3.org/ns/PSBits/ViewHelpers/ViewHelpers">
+    xmlns:psbvh="http://typo3.org/ns/PSBits/ViewHelpers/ViewHelpers"
+    xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
 <foundation:translation.registerLanguageFile
     file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
     name="modal" />
@@ -65,7 +65,7 @@
     value="{f:render(arguments: {identifier: 'globe'}, section: 'Icon')}" />
 <f:variable
     name="tabWorkContent"
-    value="{f:render(arguments: {allCompanies: allCompanies, contact: contact}, section: 'TabWorkContent')}" />
+    value="{f:render(arguments: {contact: contact}, section: 'TabWorkContent')}" />
 <f:variable
     name="tabWorkLabel"
     value="{f:render(arguments: {identifier: 'briefcase'}, section: 'Icon')}" />
@@ -215,7 +215,7 @@
             each="{colleagues}">
             <f:render
                 arguments="{class: 'list-group-item list-group-item-action', contact: colleague}"
-                partial="ContactLink" />
+                partial="Link/Contact" />
         </f:for>
     </ul>
 </f:section>
@@ -262,7 +262,7 @@
                 as="event"
                 each="{contact.eventsInDescendingOrder}">
                 <f:render
-                    arguments="{label: event.dateFormatted}"
+                    arguments="{valueClass: 'd-flex', label: event.dateFormatted}"
                     contentAs="value"
                     partial="Component/LabelledListItem">
                     <f:if condition="!{event.year}">
@@ -300,6 +300,10 @@
                     <f:if condition="{event.notes}">
                         ({event.notesInline})
                     </f:if>
+
+                    <templates:additionalContent
+                        eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalEventListContentEvent::class')}"
+                        parameters="{event: event}" />
                 </f:render>
             </f:for>
         </f:render>
@@ -338,9 +342,9 @@
 </f:section>
 
 <f:section name="TabOtherContent">
-    <f:if condition="{contact.notes}">
-        <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
 
+    <f:if condition="{contact.notes}">
         <h3>
             <foundation:translate id="contact:notes" />
         </h3>
@@ -348,61 +352,54 @@
             <f:format.nl2br>{contact.notes}</f:format.nl2br>
         </p>
     </f:if>
-</f:section>
 
-<f:section name="TabWorkContent">
-    <f:if condition="{contact.companies}">
-        <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
-
-        <ul class="list-group list-group-flush">
-            <f:for
-                as="company"
-                each="{contact.companies}">
-                <f:render
-                    arguments="{class: 'list-group-item list-group-item-action', contact: company}"
-                    partial="ContactLink" />
-            </f:for>
-        </ul>
-    </f:if>
-
-    <f:if condition="{contact.colleagues}">
-        <f:if condition="3 < {contact.colleagues -> f:count()}">
-            <f:then>
-                <f:variable
-                    name="collabsibleContent"
-                    value="{f:render(arguments: '{colleagues: contact.colleagues}', section: 'Colleagues')}" />
-                <f:variable
-                    name="collabsibleLabel"
-                    value="{foundation:translate(id: 'contact.colleagues')}" />
-
-                <f:render
-                    arguments="{classes: 'mt-3', content: collabsibleContent, id: 'colleagues-list', label: collabsibleLabel, tag: 'h3'}"
-                    partial="Component/Collapsible" />
-            </f:then>
-            <f:else>
-                <h3 class="mt-3">
-                    <foundation:translate id="contact.colleagues" />
-                </h3>
-                <f:render
-                    arguments="{colleagues: contact.colleagues}"
-                    section="Colleagues" />
-            </f:else>
-        </f:if>
-    </f:if>
-
-    <f:if condition="{contact.employees}">
-        <h3 class="mt-3">
-            <foundation:translate id="contact:employees" />
+    <f:if condition="{contact.contactGroups}">
+        <h3>
+            <foundation:translate id="contact:contactGroups" />
         </h3>
         <ul class="list-group list-group-flush">
             <f:for
-                as="employee"
-                each="{contact.sortedEmployees}">
+                as="contactGroup"
+                each="{contact.contactGroups}">
                 <f:render
-                    arguments="{class: 'list-group-item list-group-item-action', contact: employee}"
-                    partial="ContactLink" />
+                    arguments="{class: 'list-group-item list-group-item-action', contactGroup: contactGroup}"
+                    partial="Link/ContactGroup" />
             </f:for>
         </ul>
+    </f:if>
+</f:section>
+
+<f:section name="TabWorkContent">
+    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+
+    <f:if condition="{contact.jobs}">
+        <h3 class="mb-3">
+            <foundation:translate id="{f:if(condition: contact.ofTypePerson, then: 'contact:jobs', else: 'contact.employees')}" />
+        </h3>
+        <f:for
+            as="job"
+            each="{contact.jobs}"
+            iteration="jobIterator">
+            <div class="card{f:if(condition: jobIterator.isLast, else: ' mb-3')}">
+                <div class="card-body">
+                    <f:if condition="{job.company}">
+                        {job.company.fullName} -
+                    </f:if>
+
+                    <f:if condition="{job.position}">
+                        {job.position}
+                    </f:if>
+
+                    <f:if condition="{job.role}">
+                        {job.role}
+                    </f:if>
+
+                    <f:if condition="{job.notes}">
+                        {job.notes -> f:format.nl2br()}
+                    </f:if>
+                </div>
+            </div>
+        </f:for>
     </f:if>
 </f:section>
 </html>

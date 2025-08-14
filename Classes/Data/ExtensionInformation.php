@@ -53,6 +53,17 @@ class ExtensionInformation extends AbstractExtensionInformation
         $this->addPlugin(
             GeneralUtility::makeInstance(
                 PluginConfiguration::class,
+                addToElementWizard: false,
+                controllers       : [
+                    ContactController::class => ['getAutoCompleteList'],
+                ],
+                name              : 'AutocompleteList',
+                typeNum           : 1754735201
+            )
+        );
+        $this->addPlugin(
+            GeneralUtility::makeInstance(
+                PluginConfiguration::class,
                 controllers: [ContactGroupController::class],
                 name       : 'ContactGroups'
             )

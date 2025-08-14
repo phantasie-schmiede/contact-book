@@ -5,6 +5,11 @@
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
 <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
 
+<f:asset.script
+    identifier="copyContent"
+    src="EXT:templates/Resources/Public/JavaScript/copyContent.js"
+    type="module" />
+
 <div class="form-floating mb-3">
     <f:form.select
         class="form-select"
@@ -27,25 +32,25 @@
 
 <f:variable
     name="tabAddressesContent"
-    value="{f:render(arguments: {allContacts: allContacts, contact: contact, generalTypes: generalTypes, recordType: 'Address', records: contact.addresses}, section: 'Accordion')}" />
+    value="{f:render(arguments: {contact: contact, generalTypes: generalTypes, recordType: 'Address', records: contact.addresses}, section: 'Accordion')}" />
 <f:variable
     name="tabAddressesLabel"
     value="{f:render(arguments: {identifier: 'geo-alt'}, section: 'Icon')}" />
 <f:variable
     name="tabDocumentsContent"
-    value="{f:render(arguments: {allContacts: allContacts, contact: contact, recordType: 'Document', records: contact.documents}, section: 'Accordion')}" />
+    value="{f:render(arguments: {contact: contact, recordType: 'Document', records: contact.documents}, section: 'Accordion')}" />
 <f:variable
     name="tabDocumentsLabel"
     value="{f:render(arguments: {identifier: 'files'}, section: 'Icon')}" />
 <f:variable
     name="tabEMailsContent"
-    value="{f:render(arguments: {allContacts: allContacts, contact: contact, generalTypes: generalTypes, recordType: 'EMail', records: contact.eMails}, section: 'Accordion')}" />
+    value="{f:render(arguments: {contact: contact, generalTypes: generalTypes, recordType: 'EMail', records: contact.eMails}, section: 'Accordion')}" />
 <f:variable
     name="tabEMailsLabel"
     value="{f:render(arguments: {identifier: 'envelope-at'}, section: 'Icon')}" />
 <f:variable
     name="tabEventsContent"
-    value="{f:render(arguments: {allContacts: allContacts, contact: contact, eventTypes: eventTypes, recordType: 'Event', records: contact.events}, section: 'Accordion')}" />
+    value="{f:render(arguments: {contact: contact, eventTypes: eventTypes, recordType: 'Event', records: contact.events}, section: 'Accordion')}" />
 <f:variable
     name="tabEventsLabel"
     value="{f:render(arguments: {identifier: 'calendar-event'}, section: 'Icon')}" />
@@ -63,19 +68,19 @@
     value="{f:render(arguments: {identifier: 'three-dots'}, section: 'Icon')}" />
 <f:variable
     name="tabPhoneNumbersContent"
-    value="{f:render(arguments: {allContacts: allContacts, contact: contact, generalTypes: generalTypes, phoneNumberTypes: phoneNumberTypes, recordType: 'PhoneNumber', records: contact.phoneNumbers}, section: 'Accordion')}" />
+    value="{f:render(arguments: {contact: contact, generalTypes: generalTypes, phoneNumberTypes: phoneNumberTypes, recordType: 'PhoneNumber', records: contact.phoneNumbers}, section: 'Accordion')}" />
 <f:variable
     name="tabPhoneNumbersLabel"
     value="{f:render(arguments: {identifier: 'telephone'}, section: 'Icon')}" />
 <f:variable
     name="tabWebsitesContent"
-    value="{f:render(arguments: {allContacts: allContacts, contact: contact, generalTypes: generalTypes, recordType: 'Website', records: contact.websites}, section: 'Accordion')}" />
+    value="{f:render(arguments: {contact: contact, generalTypes: generalTypes, recordType: 'Website', records: contact.websites}, section: 'Accordion')}" />
 <f:variable
     name="tabWebsitesLabel"
     value="{f:render(arguments: {identifier: 'globe'}, section: 'Icon')}" />
 <f:variable
     name="tabWorkContent"
-    value="{f:render(arguments: {allCompanies: allCompanies, contact: contact}, section: 'TabWorkContent')}" />
+    value="{f:render(arguments: {contact: contact, recordType: 'Job', records: contact.jobs}, section: 'Accordion')}" />
 <f:variable
     name="tabWorkLabel"
     value="{f:render(arguments: {identifier: 'briefcase'}, section: 'Icon')}" />
@@ -307,59 +312,20 @@
     </div>
 
     <div class="form-floating mb-3">
-        <input
-            autocomplete="off"
-            class="form-control psbits-clear-input"
-            data-psbits-autocomplete-items="{allContactGroups}"
-            data-psbits-autocomplete-preselection="{contactBook:json.relatedContactGroups(contact: contact)}"
-            data-psbits-autocomplete-selection-target="#contactGroups-selection"
-            data-psbits-autocomplete-value-target="#contactGroups-value"
-            placeholder="{foundation:translate(id: 'contact:contactGroups')}"
-            type="text" />
-        <label
-            class="form-label"
-            for="contactGroups">
-            <foundation:translate id="contact:contactGroups" />
-        </label>
-        <ul
-            class="list-group list-group-flush"
-            id="contactGroups-selection">
-        </ul>
-        <f:form.hidden
-            id="contactGroups-value"
-            name="contactGroups" />
-    </div>
-</f:section>
-
-<f:section name="TabWorkContent">
-    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
-
-    <div
-        class="form-floating mb-3 position-relative{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
-        data-psbits-form-condition-field="#type"
-        data-psbits-form-condition-mode="hide"
-        data-psbits-form-condition-value="company">
-        <input
-            autocomplete="off"
-            class="form-control psbits-clear-input"
-            data-psbits-autocomplete-items="{allCompanies}"
-            data-psbits-autocomplete-preselection="{contactBook:json.relatedCompanies(contact: contact)}"
-            data-psbits-autocomplete-selection-target="#companies-selection"
-            data-psbits-autocomplete-value-target="#companies-value"
-            placeholder="{foundation:translate(id: 'contact:companies')}"
-            type="text" />
-        <label
-            class="form-label"
-            for="companies">
-            <foundation:translate id="contact:companies" />
-        </label>
-        <ul
-            class="list-group list-group-flush"
-            id="companies-selection">
-        </ul>
-        <f:form.hidden
-            id="companies-value"
-            name="companies" />
+        <f:render
+            arguments="{
+                altValueField: 1,
+                id: 'contact-groups',
+                items: allContactGroups,
+                itemLabelField: 'name',
+                itemValueField: 'uid',
+                label: '{foundation:translate(id: \'contact:contactGroups\')}',
+                multiple: 1,
+                name: 'contactGroups',
+                preselection: contact.contactGroupUidsAsJson,
+            }"
+            contentAs="renderedItems"
+            partial="Component/InputAutocomplete" />
     </div>
 </f:section>
 </html>

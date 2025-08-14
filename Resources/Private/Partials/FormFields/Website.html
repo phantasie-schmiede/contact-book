@@ -9,10 +9,16 @@
 <f:if condition="{record}">
     <f:then>
         <f:variable
+            name="postponed"
+            value="" />
+        <f:variable
             name="uid"
             value="{record.uid}" />
     </f:then>
     <f:else>
+        <f:variable
+            name="postponed"
+            value="1" />
         <f:variable
             name="uid"
             value="###uid###" />
@@ -51,26 +57,23 @@
     </label>
 </div>
 <div class="form-floating mb-3">
-    <input
-        autocomplete="off"
-        class="form-control psbits-clear-input"
-        data-psbits-autocomplete-items="{allContacts}"
-        data-psbits-autocomplete-preselection="{contactBook:json.relatedContacts(relatedEntity: record, contact: contact)}"
-        data-psbits-autocomplete-selection-target="#contact-selection-{uid}"
-        data-psbits-autocomplete-value-target="#contact-value-{uid}"
-        placeholder="{foundation:translate(id: 'edit:additionalContacts.website')}"
-        type="text" />
-    <label
-        class="form-label">
-        <foundation:translate id="edit:additionalContacts.website" />
-    </label>
-    <ul
-        class="list-group list-group-flush"
-        id="contact-selection-{uid}">
-    </ul>
-    <f:form.hidden
-        id="contact-value-{uid}"
-        name="website[{uid}][contacts]" />
+    <f:render
+        arguments="{
+            altValueField: 1,
+            filterOptions: {
+                itemSearchField: 'searchTerms',
+                preferText: 1,
+            },
+            id: 'website-contacts-{uid}',
+            label: '{foundation:translate(id: \'edit:additionalContacts.website\')}',
+            listClass: 'js-autocomplete-contacts',
+            multiple: 1,
+            name: 'website[{uid}][contacts]',
+            postponed: postponed,
+            preselection: record.contactUidsAsJson
+        }"
+        contentAs="renderedItems"
+        partial="Component/InputAutocomplete" />
 </div>
 <div class="form-floating mb-3">
     <f:form.textarea

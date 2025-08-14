@@ -19,6 +19,10 @@
                 <source>Colleagues</source>
                 <target>Kollegen</target>
             </trans-unit>
+            <trans-unit id="contact.employees">
+                <source>Employees</source>
+                <target>Mitarbeiter</target>
+            </trans-unit>
             <trans-unit id="delete">
                 <source>Delete</source>
                 <target>Löschen</target>

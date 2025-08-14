@@ -11,9 +11,11 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Domain\Model;
 
 use InvalidArgumentException;
+use JsonException;
 use PSBits\ContactBook\Domain\Enum\ContactType;
 use PSBits\ContactBook\Domain\Enum\EventType;
 use PSBits\ContactBook\Utility\ContactUtility;
+use PSBits\ContactBook\Utility\JsonUtility;
 use PSBits\ContactBook\Utility\NameUtility;
 use PSBits\Foundation\Attribute\TCA\Column;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Inline;
@@ -22,7 +24,6 @@ use PSBits\Foundation\Attribute\TCA\ColumnType\Select;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Slug;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Text;
 use PSBits\Foundation\Attribute\TCA\Ctrl;
-use PSBits\Foundation\Enum\SelectRenderType;
 use PSBits\Foundation\Utility\StringUtility;
 use Ramsey\Uuid\Uuid;
 use RuntimeException;
@@ -74,11 +75,6 @@ class Contact extends AbstractEntity
     #[Input]
     protected string $birthName = '';
 
-    /** @var ObjectStorage<Contact> */
-    #[Select(foreignTableWhere: 'AND {#tx_contactbook_domain_model_contact}.{#type} = "company"', linkedModel: Contact::class, mm: 'tx_contactbook_contacts_companies', renderType: SelectRenderType::selectMultipleSideBySide)]
-    #[Lazy]
-    protected ObjectStorage $companies;
-
     #[Input]
     protected string $companyName = '';
 
@@ -97,11 +93,6 @@ class Contact extends AbstractEntity
     #[Lazy]
     protected ObjectStorage $eMails;
 
-    /** @var ObjectStorage<Contact> */
-    #[Select(linkedModel: Contact::class, mm: 'tx_contactbook_contacts_companies', mmOppositeField: 'companies', renderType: SelectRenderType::selectMultipleSideBySide)]
-    #[Lazy]
-    protected ObjectStorage $employees;
-
     /** @var ObjectStorage<Event> */
     #[Inline(linkedModel: Event::class, mm: 'tx_contactbook_contacts_events')]
     #[Lazy]
@@ -110,6 +101,11 @@ class Contact extends AbstractEntity
     #[Column(position: 'after:title')]
     #[Input]
     protected string $firstName = '';
+
+    /** @var ObjectStorage<Job> */
+    #[Inline(foreignField: 'contact', linkedModel: Job::class)]
+    #[Lazy]
+    protected ObjectStorage $jobs;
 
     #[Column(position: 'after:middleNames')]
     #[Input]
@@ -181,24 +177,6 @@ class Contact extends AbstractEntity
         return $this;
     }
 
-    public function addCompanies(Contact ...$companies): self
-    {
-        foreach ($companies as $company) {
-            if (!$this->companies->contains($company)) {
-                $this->companies->attach($company);
-            }
-        }
-
-        return $this;
-    }
-
-    public function addCompany(Contact $company): self
-    {
-        $this->companies->attach($company);
-
-        return $this;
-    }
-
     public function addContactGroup(ContactGroup $contactGroup): self
     {
         $this->contactGroups->attach($contactGroup);
@@ -229,6 +207,24 @@ class Contact extends AbstractEntity
             }
 
             $this->events->attach($event);
+        }
+
+        return $this;
+    }
+
+    public function addJob(Job $job): self
+    {
+        $this->jobs->attach($job);
+
+        return $this;
+    }
+
+    public function addJobs(Contact ...$jobs): self
+    {
+        foreach ($jobs as $job) {
+            if (!$this->jobs->contains($job)) {
+                $this->jobs->attach($job);
+            }
         }
 
         return $this;
@@ -292,31 +288,16 @@ class Contact extends AbstractEntity
     {
         $colleagues = [];
 
-        foreach ($this->companies as $company) {
-            foreach ($company->getEmployees() as $employee) {
-                if ($employee->getUid() !== $this->getUid()) {
-                    $colleagues[] = $employee;
+        foreach ($this->jobs as $job) {
+            foreach ($job->getCompany()
+                         ->getJobs() as $job) {
+                if ($job->getContact()->getUid() !== $this->getUid()) {
+                    $colleagues[] = $job->getContact();
                 }
             }
         }
 
         return ContactUtility::sortByListName($colleagues);
-    }
-
-    public function getCompanies(): ObjectStorage
-    {
-        return $this->companies;
-    }
-
-    public function getCompanyByUid(int $uid): Contact
-    {
-        foreach ($this->companies as $company) {
-            if ($uid === $company->getUid()) {
-                return $company;
-            }
-        }
-
-        throw new InvalidArgumentException(__CLASS__ . ': Company with UID ' . $uid . ' was not found!', 1729023370);
     }
 
     public function getCompanyName(): string
@@ -335,6 +316,14 @@ class Contact extends AbstractEntity
         throw new InvalidArgumentException(
             __CLASS__ . ': Contact group with UID ' . $uid . ' was not found!', 1728419001
         );
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function getContactGroupUidsAsJson(): false|string
+    {
+        return JsonUtility::getUidsAsJsonArray(...$this->getContactGroups());
     }
 
     public function getContactGroups(): ObjectStorage
@@ -401,14 +390,6 @@ class Contact extends AbstractEntity
     public function getEMails(): ObjectStorage
     {
         return $this->eMails;
-    }
-
-    /**
-     * @return ObjectStorage<Contact>
-     */
-    public function getEmployees(): ObjectStorage
-    {
-        return $this->employees;
     }
 
     public function getEventByUid(int $uid): Event
@@ -512,6 +493,22 @@ class Contact extends AbstractEntity
         return $images;
     }
 
+    public function getJobByUid(int $uid): Job
+    {
+        foreach ($this->jobs as $job) {
+            if ($uid === $job->getUid()) {
+                return $job;
+            }
+        }
+
+        throw new InvalidArgumentException(__CLASS__ . ': Job with UID ' . $uid . ' was not found!', 1729023370);
+    }
+
+    public function getJobs(): ObjectStorage
+    {
+        return $this->jobs;
+    }
+
     public function getLastName(): string
     {
         return $this->lastName;
@@ -607,8 +604,19 @@ class Contact extends AbstractEntity
                 $searchTerms[] = $birthEvent->getYear();
             }
 
-            foreach ($this->companies as $company) {
-                $searchTerms[] = $company->getCompanyName();
+            foreach ($this->jobs as $job) {
+                if (null !== $job->getCompany()) {
+                    $searchTerms[] = $job->getCompany()
+                        ->getFullName();
+                }
+
+                if ('' !== $job->getPosition()) {
+                    $searchTerms[] = $job->getPosition();
+                }
+
+                if ('' !== $job->getRole()) {
+                    $searchTerms[] = $job->getRole();
+                }
             }
         }
 
@@ -707,12 +715,11 @@ class Contact extends AbstractEntity
     public function initializeObject(): void
     {
         $this->addresses = new ObjectStorage();
-        $this->companies = new ObjectStorage();
         $this->contactGroups = new ObjectStorage();
         $this->documents = new ObjectStorage();
         $this->eMails = new ObjectStorage();
-        $this->employees = new ObjectStorage();
         $this->events = new ObjectStorage();
+        $this->jobs = new ObjectStorage();
         $this->phoneNumbers = new ObjectStorage();
         $this->websites = new ObjectStorage();
     }
@@ -728,16 +735,19 @@ class Contact extends AbstractEntity
         return true;
     }
 
+    public function isOfTypeCompany(): bool
+    {
+        return ContactType::Company === $this->type;
+    }
+
+    public function isOfTypePerson(): bool
+    {
+        return ContactType::Person === $this->type;
+    }
+
     public function removeAddress(Address $address): self
     {
         $this->addresses->detach($address);
-
-        return $this;
-    }
-
-    public function removeAllCompanies(): self
-    {
-        $this->companies = new ObjectStorage();
 
         return $this;
     }
@@ -770,6 +780,13 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    public function removeJob(Job $job): self
+    {
+        $this->jobs->detach($job);
+
+        return $this;
+    }
+
     public function removePhoneNumber(PhoneNumber $phoneNumber): self
     {
         $this->phoneNumbers->detach($phoneNumber);
@@ -794,13 +811,6 @@ class Contact extends AbstractEntity
     public function setBirthName(string $birthName): self
     {
         $this->birthName = $birthName;
-
-        return $this;
-    }
-
-    public function setCompanies(ObjectStorage $companies): self
-    {
-        $this->companies = $companies;
 
         return $this;
     }
@@ -836,6 +846,13 @@ class Contact extends AbstractEntity
     public function setFirstName(string $firstName): self
     {
         $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function setJobs(ObjectStorage $jobs): self
+    {
+        $this->jobs = $jobs;
 
         return $this;
     }

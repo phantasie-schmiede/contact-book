@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2025-08-06T11:14:00+01:00"
+        original="messages"
+        product-name="contact_book"
+        source-language="en">
+        <body>
+            <trans-unit id="company">
+                <source>Company</source>
+            </trans-unit>
+            <trans-unit id="company.default">
+                <source>--- no company ---</source>
+            </trans-unit>
+            <trans-unit id="contact">
+                <source>Contact</source>
+            </trans-unit>
+            <trans-unit id="ctrl.title">
+                <source>Job</source>
+            </trans-unit>
+            <trans-unit id="notes">
+                <source>Notes</source>
+            </trans-unit>
+            <trans-unit id="position">
+                <source>Position</source>
+            </trans-unit>
+            <trans-unit id="role">
+                <source>Role</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

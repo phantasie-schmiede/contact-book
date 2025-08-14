@@ -9,10 +9,6 @@
     identifier="clearInput"
     src="EXT:templates/Resources/Public/JavaScript/clearInput.js"
     type="module" />
-<f:asset.script
-    identifier="inputAutocomplete"
-    src="EXT:templates/Resources/Public/JavaScript/inputAutocomplete.js"
-    type="module" />
 
 <div class="form-floating mb-3">
     <f:form.textfield
@@ -26,26 +22,23 @@
         <foundation:translate id="contactGroup:name" />
     </label>
 </div>
+
 <div class="form-floating">
-    <input
-        autocomplete="off"
-        class="form-control psbits-clear-input"
-        data-psbits-autocomplete-items="{allContacts}"
-        data-psbits-autocomplete-preselection="{contactBook:json.relatedContacts(relatedEntity: contactGroup)}"
-        data-psbits-autocomplete-selection-target="#contact-selection"
-        data-psbits-autocomplete-value-target="#contact-value"
-        placeholder="Kontakte"
-        type="text" />
-    <label
-        class="form-label">
-        Kontakte
-    </label>
-    <ul
-        class="list-group list-group-flush"
-        id="contact-selection">
-    </ul>
-    <f:form.hidden
-        id="contact-value"
-        name="contacts" />
+    <f:render
+        arguments="{
+            altValueField: 1,
+            filterOptions: {
+                itemSearchField: 'searchTerms',
+                preferText: 1,
+            },
+            id: 'contact-group-contacts',
+            label: '{foundation:translate(id: \'contactGroup:contacts\')}',
+            listClass: 'js-autocomplete-contacts',
+            multiple: 1,
+            name: 'contacts',
+            preselection: contactGroup.contactUidsAsJson,
+        }"
+        contentAs="renderedItems"
+        partial="Component/InputAutocomplete" />
 </div>
 </html>

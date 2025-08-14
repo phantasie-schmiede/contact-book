@@ -13,13 +13,12 @@ namespace PSBits\ContactBook\Service;
 use Doctrine\DBAL\Exception;
 use JsonException;
 use PSBits\ContactBook\Data\ExtensionInformation;
-use PSBits\ContactBook\Domain\Demand\ContactDemand;
 use PSBits\ContactBook\Domain\Model\Contact;
 use PSBits\ContactBook\Domain\Model\ContactRelationInterface;
 use PSBits\ContactBook\Domain\Repository\ContactRepository;
-use PSBits\ContactBook\Utility\ContactUtility;
 use PSBits\Foundation\Service\Configuration\TcaService;
 use PSBits\Foundation\Utility\Configuration\FilePathUtility;
+use PSBits\Templates\Data\ExtensionInformation as TemplatesExtensionInformation;
 use PSBits\Templates\Utility\SlugUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -41,42 +40,42 @@ use function is_string;
 readonly class ContactService
 {
     public function __construct(
-        protected ContactRepository    $contactRepository,
-        protected ExtensionInformation $extensionInformation,
-        protected FrontendInterface    $frontendCache,
-        protected TcaService           $tcaService,
-        protected ViewFactoryInterface $viewFactory,
+        protected ContactRepository             $contactRepository,
+        protected ExtensionInformation          $extensionInformation,
+        protected FrontendInterface             $frontendCache,
+        protected TcaService                    $tcaService,
+        protected TemplatesExtensionInformation $templatesExtensionInformation,
+        protected ViewFactoryInterface          $viewFactory,
     ) {
-    }
-
-    /**
-     * @throws JsonException
-     */
-    public function getAsJson(ContactDemand $demand = null, Contact ...$contacts): string
-    {
-        if (!$demand instanceof ContactDemand && empty($contacts)) {
-            $demand = new ContactDemand();
-        }
-
-        return json_encode(
-            array_map(
-                static fn(Contact $contact) => [
-                    'label'       => $contact->getListName(),
-                    'searchTerms' => $contact->getSearchTerms(),
-                    'value'       => $contact->getUid(),
-                ],
-                ContactUtility::sortByListName(
-                    $contacts ?: $this->contactRepository->findByDemand($demand)
-                        ->toArray()
-                )
-            ),
-            JSON_THROW_ON_ERROR
-        );
     }
 
     public function getCachedList(string $cacheEntryIdentifier): false|string
     {
         return $this->frontendCache->get($cacheEntryIdentifier);
+    }
+
+    public function renderAutocompleteList(
+        array            $contacts,
+        RequestInterface $request,
+    ): string {
+        $privateResourcePath = FilePathUtility::getPrivateResourcePath($this->extensionInformation);
+
+        // @formatter:off
+        $viewFactoryData = new ViewFactoryData(
+            templateRootPaths: [$privateResourcePath . 'Templates/Ajax'],
+            partialRootPaths : [
+                FilePathUtility::getPrivateResourcePath($this->templatesExtensionInformation) . 'Partials',
+                $privateResourcePath . 'Partials',
+            ],
+            layoutRootPaths  : [$privateResourcePath . 'Layouts'],
+            request          : $request,
+        );
+        // @formatter:on
+
+        $view = $this->viewFactory->create($viewFactoryData);
+        $view->assign('contacts', $contacts);
+
+        return $view->render('AutocompleteList');
     }
 
     public function renderListAndUpdateCache(
@@ -127,6 +126,7 @@ readonly class ContactService
         $contactIds = array_map('\intval', $contactIds ?? $additionalContacts);
 
         foreach ($contactIds as $contactId) {
+            /** @var Contact $additionalContact */
             $additionalContact = $this->contactRepository->findByUid($contactId);
 
             if (null !== $additionalContact) {

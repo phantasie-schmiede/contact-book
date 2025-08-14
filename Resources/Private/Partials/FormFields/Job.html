@@ -1,0 +1,85 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:contactBook="http://typo3.org/ns/PSBits/ContactBook/ViewHelpers"
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
+<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/job.xlf" />
+<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/Contact/edit.xlf" />
+
+<f:if condition="{record}">
+    <f:then>
+        <f:variable
+            name="postponed"
+            value="" />
+        <f:variable
+            name="uid"
+            value="{record.uid}" />
+    </f:then>
+    <f:else>
+        <f:variable
+            name="postponed"
+            value="1" />
+        <f:variable
+            name="uid"
+            value="###uid###" />
+    </f:else>
+</f:if>
+
+<div class="form-floating mb-3">
+    <f:render
+        arguments="{
+            altValueField: 1,
+            filterOptions: {
+                itemSearchField: 'searchTerms',
+                preferText: 1,
+            },
+            id: 'company-{uid}',
+            label: '{foundation:translate(id: \'job:company\')}',
+            listClass: 'js-autocomplete-companies',
+            name: 'job[{uid}][company]',
+            postponed: postponed,
+            preselection: record.companyUidAsJson,
+        }"
+        contentAs="renderedItems"
+        partial="Component/InputAutocomplete" />
+</div>
+<div class="form-floating mb-3">
+    <f:form.textfield
+        class="form-control"
+        name="job[{uid}][position]"
+        placeholder="{foundation:translate(id: 'job:position')}"
+        value="{record.position}" />
+    <label
+        class="form-label">
+        <foundation:translate id="job:position" />
+    </label>
+</div>
+<div class="form-floating mb-3">
+    <f:form.textfield
+        class="form-control"
+        name="job[{uid}][role]"
+        placeholder="{foundation:translate(id: 'job:role')}"
+        value="{record.role}" />
+    <label
+        class="form-label">
+        <foundation:translate id="job:role" />
+    </label>
+</div>
+<div class="form-floating mb-3">
+    <f:form.textarea
+        class="form-control psbits-auto-size"
+        name="job[{uid}][notes]"
+        placeholder="{foundation:translate(id: 'job:notes')}"
+        value="{record.notes}" />
+    <label
+        class="form-label">
+        <foundation:translate id="job:notes" />
+    </label>
+</div>
+<div
+    class="btn btn-danger"
+    data-psbits-delete-mode="closest"
+    data-psbits-delete-target=".accordion-item">
+    <foundation:translate id="edit:remove" />
+</div>
+</html>

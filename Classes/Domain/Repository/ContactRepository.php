@@ -78,13 +78,4 @@ class ContactRepository extends Repository
 
         return $contacts;
     }
-
-    public function findByType(ContactType $type): QueryResultInterface
-    {
-        $query = $this->createQuery();
-        $query->matching($query->equals('type', $type->value));
-        $query->setOrderings(['companyName' => QueryInterface::ORDER_ASCENDING]);
-
-        return $query->execute();
-    }
 }

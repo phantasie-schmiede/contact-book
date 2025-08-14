@@ -15,6 +15,9 @@
             <trans-unit id="contact.colleagues">
                 <source>Colleagues</source>
             </trans-unit>
+            <trans-unit id="contact.employees">
+                <source>Employees</source>
+            </trans-unit>
             <trans-unit id="delete">
                 <source>Delete</source>
             </trans-unit>

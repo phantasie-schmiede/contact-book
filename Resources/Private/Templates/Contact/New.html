@@ -9,6 +9,10 @@
     src="EXT:templates/Resources/Public/JavaScript/loadingSpinner.js"
     type="module" />
 
+<f:render
+    arguments="{contact: contact, loadCompanies: true, loadContacts: true}"
+    partial="AjaxRequests" />
+
 <f:form
     action="create"
     enctype="multipart/form-data"

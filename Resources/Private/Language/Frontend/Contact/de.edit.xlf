@@ -51,6 +51,10 @@
                 <source>Add new event</source>
                 <target>Neues Ereignis hinzufügen</target>
             </trans-unit>
+            <trans-unit id="dyn.addNewJob">
+                <source>Add new job</source>
+                <target>Neue Tätigkeit hinzufügen</target>
+            </trans-unit>
             <trans-unit id="dyn.addNewPhoneNumber">
                 <source>Add new phone number</source>
                 <target>Neue Rufnummer hinzufügen</target>
@@ -59,27 +63,31 @@
                 <source>Add new website</source>
                 <target>Neue Webseite hinzufügen</target>
             </trans-unit>
-            <trans-unit id="newAddress">
+            <trans-unit id="dyn.newAddress">
                 <source>&#60;new address&#62;</source>
                 <target>&#60;neue Adresse&#62;</target>
             </trans-unit>
-            <trans-unit id="newDocument">
+            <trans-unit id="dyn.newDocument">
                 <source>&#60;new document&#62;</source>
                 <target>&#60;neues Dokument&#62;</target>
             </trans-unit>
-            <trans-unit id="newEMail">
+            <trans-unit id="dyn.newEMail">
                 <source>&#60;new e-mail address&#62;</source>
                 <target>&#60;neue E-Mail-Adresse&#62;</target>
             </trans-unit>
-            <trans-unit id="newEvent">
+            <trans-unit id="dyn.newEvent">
                 <source>&#60;new event&#62;</source>
                 <target>&#60;neues Ereignis&#62;</target>
             </trans-unit>
-            <trans-unit id="newPhoneNumber">
+            <trans-unit id="dyn.newJob">
+                <source>&#60;new job&#62;</source>
+                <target>&#60;neue Tätigkeit&#62;</target>
+            </trans-unit>
+            <trans-unit id="dyn.newPhoneNumber">
                 <source>&#60;new phone number&#62;</source>
                 <target>&#60;neue Rufnummer&#62;</target>
             </trans-unit>
-            <trans-unit id="newWebsite">
+            <trans-unit id="dyn.newWebsite">
                 <source>&#60;new website&#62;</source>
                 <target>&#60;neue Webseite&#62;</target>
             </trans-unit>

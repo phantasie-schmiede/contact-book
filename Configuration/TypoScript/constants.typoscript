@@ -3,4 +3,9 @@ plugin.tx_contactbook {
     # cat=plugin.tx_contactbook//a; type=int+; label=Default storage PID
     storagePid =
   }
+
+  view {
+    # cat=plugin.tx_contactbook//b; type=string; label=Path to the partials
+    partialRootPath = EXT:contact_book/Resources/Private/Partials/
+  }
 }
