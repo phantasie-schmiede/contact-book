@@ -64,11 +64,11 @@ class ContactRepository extends Repository
 
         $contacts = $query->execute();
 
-        if (null !== $demand->getHasPhoneNumber()) {
+        if ($demand->getOnlyExportRelevantInformation()) {
             $filteredContacts = [];
 
             foreach ($contacts as $contact) {
-                if ($demand->getHasPhoneNumber() === $contact->hasPhoneNumber()) {
+                if ($contact->hasExportRelevantInformation()) {
                     $filteredContacts[] = $contact;
                 }
             }

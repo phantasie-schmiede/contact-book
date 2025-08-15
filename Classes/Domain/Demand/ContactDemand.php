@@ -20,12 +20,12 @@ use PSBits\ContactBook\Domain\Model\Contact;
  */
 class ContactDemand
 {
-    protected string $companyName      = '';
-    protected array  $excludedContacts = [];
-    protected string $firstName        = '';
-    protected ?bool  $hasPhoneNumber   = null;
-    protected string $lastName         = '';
-    protected array  $types            = [];
+    protected string $companyName                   = '';
+    protected array  $excludedContacts              = [];
+    protected string $firstName                     = '';
+    protected string $lastName                      = '';
+    protected bool   $onlyExportRelevantInformation = false;
+    protected array  $types                         = [];
 
     public function addExcludedContact(Contact|int $contact): self
     {
@@ -60,14 +60,14 @@ class ContactDemand
         return $this->firstName;
     }
 
-    public function getHasPhoneNumber(): ?bool
-    {
-        return $this->hasPhoneNumber;
-    }
-
     public function getLastName(): string
     {
         return $this->lastName;
+    }
+
+    public function getOnlyExportRelevantInformation(): bool
+    {
+        return $this->onlyExportRelevantInformation;
     }
 
     public function getTypes(): array
@@ -89,16 +89,16 @@ class ContactDemand
         return $this;
     }
 
-    public function setHasPhoneNumber(?bool $hasPhoneNumber): self
+    public function setLastName(string $lastName): self
     {
-        $this->hasPhoneNumber = $hasPhoneNumber;
+        $this->lastName = $lastName;
 
         return $this;
     }
 
-    public function setLastName(string $lastName): self
+    public function setOnlyExportRelevantInformation(bool $onlyExportRelevantInformation): self
     {
-        $this->lastName = $lastName;
+        $this->onlyExportRelevantInformation = $onlyExportRelevantInformation;
 
         return $this;
     }

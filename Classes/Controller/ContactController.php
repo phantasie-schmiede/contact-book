@@ -172,7 +172,7 @@ class ContactController extends ActionController
             $vCards[] = $this->vCardService->getVCard($contact, $version ?? VCardVersion::V4_0);
         } else {
             $contactDemand = new ContactDemand();
-            $contactDemand->setHasPhoneNumber(true);
+            $contactDemand->setOnlyExportRelevantInformation(true);
             $allContacts = $this->contactRepository->findByDemand($contactDemand);
             $fileName = LocalizationUtility::translate(
                 'LLL:EXT:contact_book/Resources/Private/Language/Frontend/exportModal.xlf:allContacts'

@@ -289,10 +289,15 @@ class Contact extends AbstractEntity
         $colleagues = [];
 
         foreach ($this->jobs as $job) {
+            if (null === $job->getCompany()) {
+                continue;
+            }
+
             foreach ($job->getCompany()
-                         ->getJobs() as $job) {
-                if ($job->getContact()->getUid() !== $this->getUid()) {
-                    $colleagues[] = $job->getContact();
+                         ->getJobs() as $companyJob) {
+                if ($companyJob->getContact()
+                        ->getUid() !== $this->getUid()) {
+                    $colleagues[] = $companyJob->getContact();
                 }
             }
         }
@@ -707,9 +712,23 @@ class Contact extends AbstractEntity
         return $this->websites;
     }
 
-    public function hasPhoneNumber(): bool
+    /**
+     * Checks if the contact has at least one set of information that is relevant on another device like a phone or
+     * tablet.
+     */
+    public function hasExportRelevantInformation(): bool
     {
-        return $this->phoneNumbers->count() > 0;
+        if (!$this->isAlive()) {
+            return false;
+        }
+
+        // @formatter:off
+        return 0 < $this->addresses->count()
+            || 0 < $this->eMails->count()
+            || 0 < $this->phoneNumbers->count()
+            || 0 < $this->websites->count()
+            || null !== ContactUtility::getBirthEvent($this);
+        // @formatter:on
     }
 
     public function initializeObject(): void
