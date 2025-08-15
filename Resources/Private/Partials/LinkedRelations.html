@@ -10,40 +10,44 @@
                 class="d-block flex-grow-1 p-2 text-decoration-none text-reset"
                 href="{record.link}"
                 target="{linkTarget}">
-                <f:if condition="{record.phoneNumberType}">
-                    <f:then>
-                        <core:icon
-                            identifier="templates-{record.generalType.iconIdentifier}"
-                            size="small" />
-                        <span class="ms-1">
+                <div class="d-flex">
+                    <f:if condition="{record.phoneNumberType}">
+                        <f:then>
+                            <core:icon
+                                identifier="templates-{record.generalType.iconIdentifier}"
+                                size="small" />
+                            <span class="ms-1">
                             <core:icon
                                 identifier="templates-{record.phoneNumberType.iconIdentifier}"
                                 size="small" />
                         </span>
-                    </f:then>
-                    <f:else if="{record.typeIconIdentifier}">
-                        <core:icon
-                            identifier="templates-{record.typeIconIdentifier}"
-                            size="small" />
-                    </f:else>
-                    <f:else>
-                        <core:icon
-                            identifier="templates-{record.type.iconIdentifier}"
-                            size="small" />
-                    </f:else>
-                </f:if>
-
-                <span class="ms-2">
-                    <f:render
-                        arguments="{record: record}"
-                        default="{record.compactValue}"
-                        optional="true"
-                        partial="{record.recordType}" />
-
-                    <f:if condition="{record.notes}">
-                        ({record.notesInline})
+                        </f:then>
+                        <f:else if="{record.typeIconIdentifier}">
+                            <core:icon
+                                identifier="templates-{record.typeIconIdentifier}"
+                                size="small" />
+                        </f:else>
+                        <f:else>
+                            <core:icon
+                                identifier="templates-{record.type.iconIdentifier}"
+                                size="small" />
+                        </f:else>
                     </f:if>
-                </span>
+
+                    <div class="ms-2">
+                        <f:render
+                            arguments="{record: record}"
+                            default="{record.compactValue}"
+                            optional="true"
+                            partial="{record.recordType}" />
+
+                        <f:if condition="{record.notes}">
+                            <div class="small text-muted mt-1">
+                                {record.notes -> f:format.nl2br()}
+                            </div>
+                        </f:if>
+                    </div>
+                </div>
             </a>
 
             <f:if condition="{showActionIcon}">

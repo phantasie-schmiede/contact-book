@@ -11,10 +11,6 @@
                 <source>Back to list</source>
                 <target>Zur Liste</target>
             </trans-unit>
-            <trans-unit id="birthName">
-                <source>née {birthName}</source>
-                <target>geb. {birthName}</target>
-            </trans-unit>
             <trans-unit id="contact.colleagues">
                 <source>Colleagues</source>
                 <target>Kollegen</target>
@@ -38,6 +34,10 @@
             <trans-unit id="edit">
                 <source>Edit</source>
                 <target>Bearbeiten</target>
+            </trans-unit>
+            <trans-unit id="nameWithBirthName">
+                <source>{name} née {birthName}</source>
+                <target>{name} geb. {birthName}</target>
             </trans-unit>
         </body>
     </file>

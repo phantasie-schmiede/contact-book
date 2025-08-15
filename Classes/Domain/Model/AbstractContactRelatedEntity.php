@@ -74,14 +74,6 @@ abstract class AbstractContactRelatedEntity extends AbstractEntity implements Co
         return StringUtility::isEmpty($this->notes) ? '' : $this->notes;
     }
 
-    public function getNotesInline(): string
-    {
-        return StringUtility::isEmpty($this->notes) ? '' : implode(
-            '; ',
-            StringUtility::explodeByLineBreaks($this->notes)
-        );
-    }
-
     public function getRecordType(): string
     {
         return (new ReflectionClass($this))->getShortName();

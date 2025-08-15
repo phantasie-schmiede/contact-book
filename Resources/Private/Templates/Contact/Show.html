@@ -265,41 +265,55 @@
                     arguments="{valueClass: 'd-flex', label: event.dateFormatted}"
                     contentAs="value"
                     partial="Component/LabelledListItem">
-                    <f:if condition="!{event.year}">
-                        <f:then>
-                            {event.label}
-                        </f:then>
-                        <f:else>
-                            {event.type.label}
-                        </f:else>
-                    </f:if>
+                    <f:comment>
+                        <!-- The wrapping element is needed for correct formatting of the text inside the d-flex container. -->
+                    </f:comment>
+                    <div>
+                        <f:if condition="!{event.year}">
+                            <f:then>
+                                {event.label}
+                            </f:then>
+                            <f:else>
+                                {event.type.label}
+                            </f:else>
+                        </f:if>
 
-                    <f:if condition="('divorce' == {event.type.value} || 'wedding' == {event.type.value}) && {event.contacts}">
-                        <f:variable
-                            name="spouse"
-                            value="{contactBook:event.otherContacts(contact: contact, event: event, returnFirst: 'true')}" />
+                        <f:if condition="('divorce' == {event.type.value} || 'wedding' == {event.type.value}) && {event.contacts}">
+                            <f:variable
+                                name="spouse"
+                                value="{contactBook:event.otherContacts(contact: contact, event: event, returnFirst: 'true')}" />
 
-                        <foundation:translate id="dyn.event.otherContactPreposition.{event.type.value}" />
-                        <f:link.action
-                            action="show"
-                            arguments="{contact: spouse}">
-                            {spouse.shortName}
+                            <foundation:translate id="dyn.event.otherContactPreposition.{event.type.value}" />
 
                             <f:if condition="{spouse.birthName}">
-                                (<foundation:translate
-                                arguments="{birthName: spouse.birthName}"
-                                id="birthName" />)
+                                <f:then>
+                                    <f:variable
+                                        name="name"
+                                        value="{foundation:translate(arguments: '{
+                                            birthName: spouse.birthName,
+                                            name: spouse.shortName
+                                        }', id: 'nameWithBirthName')}" />
+                                </f:then>
+                                <f:else>
+                                    <f:variable
+                                        name="name"
+                                        value="{spouse.shortName}" />
+                                </f:else>
                             </f:if>
-                        </f:link.action>
-                    </f:if>
 
-                    <f:if condition="{event.location}">
-                        in {event.location}
-                    </f:if>
+                            {name -> f:link.action(action: 'show', arguments: {contact: spouse})}
+                        </f:if>
 
-                    <f:if condition="{event.notes}">
-                        ({event.notesInline})
-                    </f:if>
+                        <f:if condition="{event.location}">
+                            in {event.location}
+                        </f:if>
+
+                        <f:if condition="{event.notes}">
+                            <div class="mt-1 small text-muted">
+                                {event.notes -> f:format.nl2br()}
+                            </div>
+                        </f:if>
+                    </div>
 
                     <templates:additionalContent
                         eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalEventListContentEvent::class')}"

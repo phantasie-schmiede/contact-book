@@ -14,7 +14,7 @@
     name="phoneNumberLabelId"
     value="formatted.international" />
 
-<f:if condition="'' !== {phoneNumber.extension}">
+<f:if condition="{phoneNumber.extension}">
     <f:variable
         name="phoneNumberLabelId"
         value="{phoneNumberLabelId}.withExtension" />

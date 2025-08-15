@@ -129,7 +129,8 @@ readonly class ContactService
             /** @var Contact $additionalContact */
             $additionalContact = $this->contactRepository->findByUid($contactId);
 
-            if (null !== $additionalContact) {
+            if (null !== $additionalContact && !$entity->getContacts()
+                    ->contains($additionalContact)) {
                 $entity->addContact($additionalContact);
             }
         }

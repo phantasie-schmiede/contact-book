@@ -9,9 +9,6 @@
             <trans-unit id="backToList">
                 <source>Back to list</source>
             </trans-unit>
-            <trans-unit id="birthName">
-                <source>née {birthName}</source>
-            </trans-unit>
             <trans-unit id="contact.colleagues">
                 <source>Colleagues</source>
             </trans-unit>
@@ -29,6 +26,9 @@
             </trans-unit>
             <trans-unit id="edit">
                 <source>Edit</source>
+            </trans-unit>
+            <trans-unit id="nameWithBirthName">
+                <source>{name} née {birthName}</source>
             </trans-unit>
         </body>
     </file>
