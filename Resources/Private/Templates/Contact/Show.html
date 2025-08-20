@@ -102,61 +102,65 @@
 
         <hr>
 
+        <f:variable
+            name="tabs"
+            value="{contactBook:psrEvent.modifyTabs(contact: contact, tabs: {
+                0: {
+                    content: tabNameContent,
+                    id: 'name',
+                    label: tabNameLabel
+                },
+                1: {
+                    content: tabWorkContent,
+                    id: 'work',
+                    label: tabWorkLabel
+                },
+                2: {
+                    content: tabAddressesContent,
+                    id: 'addresses',
+                    label: tabAddressesLabel
+                },
+                3: {
+                    content: tabPhoneNumbersContent,
+                    id: 'phone-numbers',
+                    label: tabPhoneNumbersLabel
+                },
+                4: {
+                    content: tabEMailsContent,
+                    id: 'e-mails',
+                    label: tabEMailsLabel
+                },
+                5: {
+                    content: tabWebsitesContent,
+                    id: 'websites',
+                    label: tabWebsitesLabel
+                },
+                6: {
+                    content: tabEventsContent,
+                    id: 'events',
+                    label: tabEventsLabel
+                },
+                7: {
+                    content: tabDocumentsContent,
+                    id: 'documents',
+                    label: tabDocumentsLabel
+                },
+                8: {
+                    content: tabOtherContent,
+                    id: 'other',
+                    label: tabOtherLabel
+                }
+            })}" />
+
         <f:render
             arguments="{
                 tabClass: 'px-1',
-                tabs: '{
-                    0: {
-                        content: tabNameContent,
-                        id: \'name\',
-                        label: tabNameLabel
-                    },
-                    1: {
-                        content: tabWorkContent,
-                        id: \'work\',
-                        label: tabWorkLabel
-                    },
-                    2: {
-                        content: tabAddressesContent,
-                        id: \'addresses\',
-                        label: tabAddressesLabel
-                    },
-                    3: {
-                        content: tabPhoneNumbersContent,
-                        id: \'phone-numbers\',
-                        label: tabPhoneNumbersLabel
-                    },
-                    4: {
-                        content: tabEMailsContent,
-                        id: \'e-mails\',
-                        label: tabEMailsLabel
-                    },
-                    5: {
-                        content: tabWebsitesContent,
-                        id: \'websites\',
-                        label: tabWebsitesLabel
-                    },
-                    6: {
-                        content: tabEventsContent,
-                        id: \'events\',
-                        label: tabEventsLabel
-                    },
-                    7: {
-                        content: tabDocumentsContent,
-                        id: \'documents\',
-                        label: tabDocumentsLabel
-                    },
-                    8: {
-                        content: tabOtherContent,
-                        id: \'other\',
-                        label: tabOtherLabel
-                    }
-                }',
+                tabs: tabs,
                 vertical: true,
             }"
             partial="Component/Tabs" />
 
-        <templates:additionalContent
+        <templates:event.additionalContent
             eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalContactContentEvent::class')}"
             parameters="{contact: contact}" />
     </div>
@@ -315,7 +319,7 @@
                         </f:if>
                     </div>
 
-                    <templates:additionalContent
+                    <templates:event.additionalContent
                         eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalEventListContentEvent::class')}"
                         parameters="{event: event}" />
                 </f:render>
