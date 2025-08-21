@@ -36,6 +36,12 @@
             <trans-unit id="divorce.anniversary">
                 <source>Anniversary of the divorce</source>
             </trans-unit>
+            <trans-unit id="firstDayAtSchool">
+                <source>First day at school</source>
+            </trans-unit>
+            <trans-unit id="firstDayAtSchool.anniversary">
+                <source>Anniversary of the first day at school</source>
+            </trans-unit>
             <trans-unit id="other">
                 <source>Other</source>
             </trans-unit>

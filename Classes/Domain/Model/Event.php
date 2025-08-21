@@ -33,12 +33,12 @@ use function sprintf;
  *
  * @package PSBits\ContactBook\Domain\Model
  */
-#[Ctrl(label        : 'date', labelAlt: [
+#[Ctrl(label        : 'year', labelAlt: [
     'type',
     'contacts',
 ],     labelAltForce: true, searchFields: [
-    'date',
     'notes',
+    'year',
 ])]
 class Event extends AbstractContactRelatedEntity
 {
@@ -64,13 +64,14 @@ class Event extends AbstractContactRelatedEntity
     protected bool $showInCalendar = false;
 
     #[Select(items   : [
-        'Baptism'      => 'baptism',
-        'Birthday'     => 'birthday',
-        'Confirmation' => 'confirmation',
-        'Death'        => 'death',
-        'Divorce'      => 'divorce',
-        'Wedding'      => 'wedding',
-        'Other'        => 'other',
+        'Baptism'          => 'baptism',
+        'Birthday'         => 'birthday',
+        'Confirmation'     => 'confirmation',
+        'Death'            => 'death',
+        'Divorce'          => 'divorce',
+        'FirstDayAtSchool' => 'firstDayAtSchool',
+        'Wedding'          => 'wedding',
+        'Other'            => 'other',
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
     protected EventType $type = EventType::Birthday;
 

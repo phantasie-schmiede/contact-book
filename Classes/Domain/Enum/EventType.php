@@ -26,13 +26,14 @@ enum EventType: string
 {
     use EnumToArrayTrait;
 
-    case Baptism      = 'baptism';
-    case Birthday     = 'birthday';
-    case Confirmation = 'confirmation';
-    case Death        = 'death';
-    case Divorce      = 'divorce';
-    case Other        = 'other';
-    case Wedding      = 'wedding';
+    case Baptism          = 'baptism';
+    case Birthday         = 'birthday';
+    case Confirmation     = 'confirmation';
+    case Death            = 'death';
+    case Divorce          = 'divorce';
+    case FirstDayAtSchool = 'firstDayAtSchool';
+    case Other            = 'other';
+    case Wedding          = 'wedding';
 
     /**
      * @throws AspectNotFoundException

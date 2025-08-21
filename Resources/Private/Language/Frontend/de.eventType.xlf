@@ -47,6 +47,14 @@
                 <source>Anniversary of the divorce</source>
                 <target>Jahrestag der Scheidung</target>
             </trans-unit>
+            <trans-unit id="firstDayAtSchool">
+                <source>First day at school</source>
+                <target>Einschulung</target>
+            </trans-unit>
+            <trans-unit id="firstDayAtSchool.anniversary">
+                <source>Anniversary of the first day at school</source>
+                <target>Jahrestag der Einschulung</target>
+            </trans-unit>
             <trans-unit id="other">
                 <source>Other</source>
                 <target>Anderes</target>

@@ -31,14 +31,6 @@
                 <source>Documents</source>
                 <target>Dokumente</target>
             </trans-unit>
-            <trans-unit id="dyn.type.company">
-                <source>Company</source>
-                <target>Unternehmen</target>
-            </trans-unit>
-            <trans-unit id="dyn.type.person">
-                <source>Person</source>
-                <target>Person</target>
-            </trans-unit>
             <trans-unit id="eMails">
                 <source>E-mail addresses</source>
                 <target>E-Mail-Adressen</target>
@@ -86,6 +78,14 @@
             <trans-unit id="type">
                 <source>Type</source>
                 <target>Typ</target>
+            </trans-unit>
+            <trans-unit id="type.company">
+                <source>Company</source>
+                <target>Unternehmen</target>
+            </trans-unit>
+            <trans-unit id="type.person">
+                <source>Person</source>
+                <target>Person</target>
             </trans-unit>
             <trans-unit id="uuid">
                 <source>UUID</source>

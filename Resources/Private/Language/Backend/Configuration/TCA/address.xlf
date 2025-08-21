@@ -21,15 +21,6 @@
             <trans-unit id="ctrl.title">
                 <source>Address</source>
             </trans-unit>
-            <trans-unit id="dyn.type.business">
-                <source>Business</source>
-            </trans-unit>
-            <trans-unit id="dyn.type.other">
-                <source>Other</source>
-            </trans-unit>
-            <trans-unit id="dyn.type.private">
-                <source>Private</source>
-            </trans-unit>
             <trans-unit id="houseNumber">
                 <source>House number</source>
             </trans-unit>
@@ -41,6 +32,15 @@
             </trans-unit>
             <trans-unit id="type">
                 <source>Type</source>
+            </trans-unit>
+            <trans-unit id="type.business">
+                <source>Business</source>
+            </trans-unit>
+            <trans-unit id="type.other">
+                <source>Other</source>
+            </trans-unit>
+            <trans-unit id="type.private">
+                <source>Private</source>
             </trans-unit>
             <trans-unit id="zipCode">
                 <source>zip code</source>

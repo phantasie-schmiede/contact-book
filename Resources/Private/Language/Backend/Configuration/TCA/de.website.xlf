@@ -15,18 +15,6 @@
                 <source>Website</source>
                 <target>Webseite</target>
             </trans-unit>
-            <trans-unit id="dyn.type.business">
-                <source>Business</source>
-                <target>Geschäftlich</target>
-            </trans-unit>
-            <trans-unit id="dyn.type.other">
-                <source>Other</source>
-                <target>Anderer</target>
-            </trans-unit>
-            <trans-unit id="dyn.type.private">
-                <source>Private</source>
-                <target>Privat</target>
-            </trans-unit>
             <trans-unit id="notes">
                 <source>Notes</source>
                 <target>Notizen</target>
@@ -34,6 +22,18 @@
             <trans-unit id="type">
                 <source>Type</source>
                 <target>Typ</target>
+            </trans-unit>
+            <trans-unit id="type.business">
+                <source>Business</source>
+                <target>Geschäftlich</target>
+            </trans-unit>
+            <trans-unit id="type.other">
+                <source>Other</source>
+                <target>Anderer</target>
+            </trans-unit>
+            <trans-unit id="type.private">
+                <source>Private</source>
+                <target>Privat</target>
             </trans-unit>
             <trans-unit id="url">
                 <source>URL</source>

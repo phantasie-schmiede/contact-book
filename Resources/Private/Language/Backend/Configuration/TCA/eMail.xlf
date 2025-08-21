@@ -12,15 +12,6 @@
             <trans-unit id="ctrl.title">
                 <source>E-mail</source>
             </trans-unit>
-            <trans-unit id="dyn.type.business">
-                <source>Business</source>
-            </trans-unit>
-            <trans-unit id="dyn.type.other">
-                <source>Other</source>
-            </trans-unit>
-            <trans-unit id="dyn.type.private">
-                <source>Private</source>
-            </trans-unit>
             <trans-unit id="eMailAddress">
                 <source>E-mail address</source>
             </trans-unit>
@@ -29,6 +20,15 @@
             </trans-unit>
             <trans-unit id="type">
                 <source>Type</source>
+            </trans-unit>
+            <trans-unit id="type.business">
+                <source>Business</source>
+            </trans-unit>
+            <trans-unit id="type.other">
+                <source>Other</source>
+            </trans-unit>
+            <trans-unit id="type.private">
+                <source>Private</source>
             </trans-unit>
         </body>
     </file>
