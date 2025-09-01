@@ -29,29 +29,33 @@ use RuntimeException;
  *
  * @package PSBits\ContactBook\Service
  */
-readonly class VCardService
+class VCardService
 {
+    protected VCardVersion $version = VCardVersion::V2_1;
+
     public function __construct(
-        protected CountryNamesService $countryNamesService,
+        protected readonly CountryNamesService $countryNamesService,
     ) {
     }
 
     public function getVCard(Contact $contact, VCardVersion $version): string
     {
         $vCard = '';
+        $this->version = $version;
         $this->addLine('BEGIN:VCARD', $vCard);
         $this->addLine('VERSION:' . $version->getVersionNumber(), $vCard);
 
         if (ContactType::Company === $contact->getType()) {
             $this->addCompanyInformation($contact, $vCard);
         } else {
-            $this->addIndividualInformation($contact, $vCard, $version);
+            $this->addIndividualInformation($contact, $vCard);
         }
 
         $this->addAddresses($contact, $vCard);
         $this->addEMails($contact, $vCard);
-        $this->addPhoneNumbers($contact, $vCard, $version);
-        $this->addUid($contact, $vCard, $version);
+        $this->addPhoneNumbers($contact, $vCard);
+        // $this->addRevision($contact, $vCard);
+        $this->addUid($contact, $vCard);
         $this->addWebsites($contact, $vCard);
         $this->addLine('END:VCARD', $vCard);
 
@@ -81,7 +85,7 @@ readonly class VCardService
         }
     }
 
-    private function addBirthday(Contact $contact, string &$vCard, VCardVersion $version): void
+    private function addBirthday(Contact $contact, string &$vCard): void
     {
         $birthEvent = ContactUtility::getBirthEvent($contact);
 
@@ -94,7 +98,7 @@ readonly class VCardService
                 );
             } elseif ($birthEvent->isMonthAndDayGiven()) {
                 // Incomplete birth dates are only supported in VCard 4.0.
-                if (VCardVersion::V4_0 !== $version) {
+                if (VCardVersion::V4_0 !== $this->version) {
                     /*
                      * Apple does not support incomplete birth dates in VCard 3.0. As a workaround, we set the year
                      * to 1604, which is the year of the first known birth date in the Gregorian calendar.
@@ -119,7 +123,10 @@ readonly class VCardService
     private function addCompanyInformation(Contact $contact, string &$vCard): void
     {
         $this->addLine('FN:' . $contact->getCompanyName(), $vCard);
-        $this->addLine('KIND:org', $vCard);
+
+        if (VCardVersion::V4_0 === $this->version) {
+            $this->addLine('KIND:organization', $vCard);
+        }
     }
 
     private function addEMails(Contact $contact, string &$vCard): void
@@ -138,19 +145,23 @@ readonly class VCardService
         }
     }
 
-    private function addIndividualInformation(Contact $contact, string &$vCard, VCardVersion $version): void
+    private function addIndividualInformation(Contact $contact, string &$vCard): void
     {
-        $this->addBirthday($contact, $vCard, $version);
+        $this->addBirthday($contact, $vCard);
         $this->addLine('FN:' . $contact->getShortName(), $vCard);
         $this->addLine(
             'N:' . $contact->getLastName() . ';' . $contact->getFirstName(
-            ) . ';' . (VCardVersion::Apple !== $version ? $contact->getMiddleNames() : '') . ';' . $contact->getTitle(
-            ) . ';',
+            ) . ';' . (VCardVersion::Apple !== $this->version ? $contact->getMiddleNames(
+            ) : '') . ';' . $contact->getTitle() . ';',
             $vCard
         );
 
-        if ('' !== $contact->getNickname()) {
+        if (VCardVersion::V2_1 !== $this->version && '' !== $contact->getNickname()) {
             $this->addLine('NICKNAME:' . $contact->getNickname(), $vCard);
+        }
+
+        if (VCardVersion::V4_0 === $this->version) {
+            $this->addLine('KIND:individual', $vCard);
         }
     }
 
@@ -159,7 +170,7 @@ readonly class VCardService
         $vCard .= $line . PHP_EOL;
     }
 
-    private function addPhoneNumbers(Contact $contact, string &$vCard, VCardVersion $version): void
+    private function addPhoneNumbers(Contact $contact, string &$vCard): void
     {
         if (0 === $contact->getPhoneNumbers()
                 ->count()) {
@@ -168,7 +179,7 @@ readonly class VCardService
 
         /** @var PhoneNumber $phoneNumber */
         foreach ($contact->getPhoneNumbers() as $phoneNumber) {
-            $line = 'TEL;' . (VCardVersion::V4_0 === $version ? 'VALUE=uri;' : '');
+            $line = 'TEL;' . (VCardVersion::V4_0 === $this->version ? 'VALUE=uri;' : '');
 
             /*
              * Apple doesn't follow the official specifications and can't handle multiple comma-separated types.
@@ -176,7 +187,7 @@ readonly class VCardService
              * duplicate attributes are not allowed. Additionally, 'mobile' is not shown as phone number type in iOS,
              * if TYPE=cell does not stand alone.
              */
-            if (VCardVersion::Apple === $version) {
+            if (VCardVersion::Apple === $this->version) {
                 if (GeneralType::Private === $phoneNumber->getGeneralType(
                     ) && PhoneNumberType::Mobile === $phoneNumber->getPhoneNumberType()) {
                     $line .= 'TYPE=cell';
@@ -187,12 +198,12 @@ readonly class VCardService
             } else {
                 $line .= $this->getGeneralType(
                         $phoneNumber->getGeneralType()
-                    ) . ',' . $this->getPhoneNumberType(
+                    ) . (VCardVersion::V2_1 === $this->version ? ';' : ',') . $this->getPhoneNumberType(
                         $phoneNumber->getPhoneNumberType()
                     );
             }
 
-            $line .= ':' . (VCardVersion::V4_0 === $version ? 'tel:' : '') . $phoneNumber->getCompleteNumber();
+            $line .= ':' . (VCardVersion::V4_0 === $this->version ? 'tel:' : '') . $phoneNumber->getCompleteNumber();
             $this->addLine(
                 $line,
                 $vCard
@@ -200,7 +211,7 @@ readonly class VCardService
         }
     }
 
-    private function addUid(Contact $contact, string &$vCard, VCardVersion $version): void
+    private function addUid(Contact $contact, string &$vCard): void
     {
         if ('' === $contact->getUuid()) {
             throw new RuntimeException(
@@ -208,10 +219,13 @@ readonly class VCardService
             );
         }
 
-        if (VCardVersion::Apple === $version) {
+        if (VCardVersion::Apple === $this->version) {
             $this->addLine('X-ABUID:' . $contact->getUuid() . ':ABPerson', $vCard);
         } else {
-            $this->addLine('UID:' . (VCardVersion::V4_0 === $version ? 'urn:uuid:' : '') . $contact->getUuid(), $vCard);
+            $this->addLine(
+                'UID:' . (VCardVersion::V4_0 === $this->version ? 'urn:uuid:' : '') . $contact->getUuid(),
+                $vCard
+            );
         }
     }
 
@@ -230,7 +244,13 @@ readonly class VCardService
 
     private function getGeneralType(GeneralType $type): string
     {
-        return 'TYPE=' . match ($type) {
+        $typeString = '';
+
+        if (VCardVersion::V2_1 !== $this->version) {
+            $typeString .= 'TYPE=';
+        }
+
+        return $typeString . match ($type) {
                 GeneralType::Private  => 'home',
                 GeneralType::Business => 'work',
                 GeneralType::Other    => 'other',

@@ -18,6 +18,7 @@ namespace PSBits\ContactBook\Service\Enum;
 enum VCardVersion: string
 {
     case Apple = 'Apple';
+    case V2_1  = 'v2.1';
     case V3_0  = 'v3.0';
     case V4_0  = 'v4.0';
 
