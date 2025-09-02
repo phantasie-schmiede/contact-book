@@ -390,26 +390,76 @@
 <f:section name="TabWorkContent">
     <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
 
-    <f:if condition="{contact.jobs}">
+    <f:variable
+        name="records"
+        value="{f:if(condition: contact.ofTypePerson, then: contact.jobs, else: contact.employees)}" />
+
+    <f:if condition="{records}">
         <h3 class="mb-3">
             <foundation:translate id="{f:if(condition: contact.ofTypePerson, then: 'contact:jobs', else: 'contact.employees')}" />
         </h3>
         <f:for
             as="job"
-            each="{contact.jobs}"
+            each="{records}"
             iteration="jobIterator">
-            <div class="card{f:if(condition: jobIterator.isLast, else: ' mb-3')}">
-                <div class="card-body">
-                    <f:if condition="{job.company}">
-                        {job.company.fullName} -
-                    </f:if>
+            <f:variable
+                name="cardTitle"
+                value="" />
+            <f:variable
+                name="cardSubtitle"
+                value="" />
+            <f:variable
+                name="jobContact"
+                value="{f:if(condition: contact.ofTypePerson, then: job.company, else: job.contact)}" />
 
-                    <f:if condition="{job.position}">
-                        {job.position}
+            <f:if condition="{jobContact.fullName}">
+                <f:then>
+                    <f:variable
+                        name="cardTitle"
+                        value="{f:render(arguments: {class: 'stretched-link text-decoration-none', contact: jobContact}, partial: 'Link/Contact')}" />
+
+                    <f:if condition="{job.position} || {job.role}">
+                        <f:variable
+                            name="cardSubtitle"
+                            value="{job.position -> f:or(alternative: job.role)}" />
+
+                        <f:if condition="{job.position} && {job.role}}">
+                            <f:variable
+                                name="cardSubtitle"
+                                value="{cardSubtitle} - {job.role}" />
+                        </f:if>
                     </f:if>
+                </f:then>
+                <f:else if="{job.position}">
+                    <f:variable
+                        name="cardTitle"
+                        value="{job.position}" />
 
                     <f:if condition="{job.role}">
-                        {job.role}
+                        <f:variable
+                            name="cardSubtitle"
+                            value="{job.role}" />
+                    </f:if>
+                </f:else>
+                <f:else if="{job.role}">
+                    <f:variable
+                        name="cardTitle"
+                        value="{job.role}" />
+                </f:else>
+            </f:if>
+
+            <div class="card{f:if(condition: jobIterator.isLast, else: ' mb-3')}">
+                <div class="card-body">
+                    <f:if condition="{cardTitle}">
+                        <h4 class="card-title h5{f:if(condition: '!{cardSubtitle} && !{job.notes}', then: ' mb-0')}">
+                            {cardTitle -> f:format.raw()}
+                        </h4>
+                    </f:if>
+
+                    <f:if condition="{cardSubtitle}">
+                        <h5 class="card-subtitle h6 text-body-secondary{f:if(condition: job.notes, then: ' mb-2')}">
+                            {cardSubtitle}
+                        </h5>
                     </f:if>
 
                     <f:if condition="{job.notes}">

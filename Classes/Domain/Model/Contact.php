@@ -93,6 +93,11 @@ class Contact extends AbstractEntity
     #[Lazy]
     protected ObjectStorage $eMails;
 
+    /** @var ObjectStorage<Job> */
+    #[Inline(foreignField: 'company', linkedModel: Job::class)]
+    #[Lazy]
+    protected ObjectStorage $employees;
+
     /** @var ObjectStorage<Event> */
     #[Inline(linkedModel: Event::class, mm: 'tx_contactbook_contacts_events')]
     #[Lazy]
@@ -274,6 +279,7 @@ class Contact extends AbstractEntity
         throw new InvalidArgumentException(__CLASS__ . ': Address with UID ' . $uid . ' was not found!', 1724164780);
     }
 
+    /** @return ObjectStorage<Address> */
     public function getAddresses(): ObjectStorage
     {
         return $this->addresses;
@@ -331,6 +337,7 @@ class Contact extends AbstractEntity
         return JsonUtility::getUidsAsJsonArray(...$this->getContactGroups());
     }
 
+    /** @return ObjectStorage<ContactGroup> */
     public function getContactGroups(): ObjectStorage
     {
         return $this->contactGroups;
@@ -358,6 +365,7 @@ class Contact extends AbstractEntity
         throw new InvalidArgumentException(__CLASS__ . ': Document with UID ' . $uid . ' was not found!', 1730819265);
     }
 
+    /** @return ObjectStorage<Document> */
     public function getDocuments(): ObjectStorage
     {
         return $this->documents;
@@ -392,9 +400,16 @@ class Contact extends AbstractEntity
         throw new InvalidArgumentException(__CLASS__ . ': E-Mail with UID ' . $uid . ' was not found!', 1724164830);
     }
 
+    /** @return ObjectStorage<EMail> */
     public function getEMails(): ObjectStorage
     {
         return $this->eMails;
+    }
+
+    /** @return ObjectStorage<Job> */
+    public function getEmployees(): ObjectStorage
+    {
+        return $this->employees;
     }
 
     public function getEventByUid(int $uid): Event
@@ -408,9 +423,7 @@ class Contact extends AbstractEntity
         throw new InvalidArgumentException(__CLASS__ . ': Event with UID ' . $uid . ' was not found!', 1720095212);
     }
 
-    /**
-     * @return ObjectStorage<Event>
-     */
+    /** @return ObjectStorage<Event> */
     public function getEvents(): ObjectStorage
     {
         return $this->events;
@@ -509,6 +522,7 @@ class Contact extends AbstractEntity
         throw new InvalidArgumentException(__CLASS__ . ': Job with UID ' . $uid . ' was not found!', 1729023370);
     }
 
+    /** @return ObjectStorage<Job> */
     public function getJobs(): ObjectStorage
     {
         return $this->jobs;
@@ -851,6 +865,13 @@ class Contact extends AbstractEntity
     public function setEMails(ObjectStorage $eMails): self
     {
         $this->eMails = $eMails;
+
+        return $this;
+    }
+
+    public function setEmployees(ObjectStorage $employees): self
+    {
+        $this->employees = $employees;
 
         return $this;
     }
