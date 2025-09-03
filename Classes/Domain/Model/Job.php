@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Domain\Model;
 
 use JsonException;
+use PSBits\ContactBook\Utility\ContactUtility;
 use PSBits\ContactBook\Utility\JsonUtility;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Input;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Select;
@@ -53,6 +54,26 @@ class Job extends AbstractContactRelatedEntity
         $this->contact = $contact;
 
         return $this;
+    }
+
+    public function getColleagues(): array
+    {
+        $colleagues = [];
+
+        if (null === $this->getCompany()) {
+            return $colleagues;
+        }
+
+        foreach ($this->getCompany()
+                     ->getEmployments() as $companyJob) {
+            if ($companyJob->getContact()
+                    ->getUid() !== $this->getContact()
+                    ->getUid()) {
+                $colleagues[] = $companyJob->getContact();
+            }
+        }
+
+        return ContactUtility::sortByListName($colleagues);
     }
 
     public function getCompactValue(): string
