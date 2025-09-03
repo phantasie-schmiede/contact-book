@@ -96,7 +96,7 @@ class Contact extends AbstractEntity
     /** @var ObjectStorage<Job> */
     #[Inline(foreignField: 'company', linkedModel: Job::class)]
     #[Lazy]
-    protected ObjectStorage $employees;
+    protected ObjectStorage $employments;
 
     /** @var ObjectStorage<Event> */
     #[Inline(linkedModel: Event::class, mm: 'tx_contactbook_contacts_events')]
@@ -407,9 +407,9 @@ class Contact extends AbstractEntity
     }
 
     /** @return ObjectStorage<Job> */
-    public function getEmployees(): ObjectStorage
+    public function getEmployments(): ObjectStorage
     {
-        return $this->employees;
+        return $this->employments;
     }
 
     public function getEventByUid(int $uid): Event
@@ -688,11 +688,27 @@ class Contact extends AbstractEntity
     }
 
     /**
-     * @return Contact[]
+     * @return Job[]
      */
-    public function getSortedEmployees(): array
+    public function getSortedEmployments(): array
     {
-        return ContactUtility::sortByListName($this->employees->toArray());
+        $jobs = $this->employments->toArray();
+
+        usort(
+            $jobs,
+            static fn(Job $a, Job $b) => strnatcasecmp(
+            NameUtility::getCompareString(
+                $a->getContact()
+                    ->getListName()
+            ),
+            NameUtility::getCompareString(
+                $b->getContact()
+                    ->getListName()
+            )
+        )
+        );
+
+        return $jobs;
     }
 
     public function getTitle(): string
@@ -869,9 +885,9 @@ class Contact extends AbstractEntity
         return $this;
     }
 
-    public function setEmployees(ObjectStorage $employees): self
+    public function setEmployments(ObjectStorage $employments): self
     {
-        $this->employees = $employees;
+        $this->employments = $employments;
 
         return $this;
     }

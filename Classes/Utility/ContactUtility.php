@@ -18,6 +18,8 @@ use PSBits\Templates\Utility\StringUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use function sprintf;
 
 /**
  * Class ContactUtility
@@ -32,7 +34,7 @@ class ContactUtility
      * @throws JsonException
      * @throws NotFoundExceptionInterface
      */
-    public static function createEnumeration(array $contacts): string
+    public static function createEnumeration(array $contacts, ?UriBuilder $uriBuilder = null): string
     {
         $contactsByFamilyName = [];
 
@@ -51,11 +53,19 @@ class ContactUtility
                 /** @var Contact $contact */
                 $contact = array_shift($family);
 
-                if (empty($family)) {
-                    $familyMembers[] = $contact->getShortName();
-                } else {
-                    $familyMembers[] = $contact->getFirstName();
+                $contactString = empty($family) ? $contact->getShortName() : $contact->getFirstName();
+
+                if ($uriBuilder instanceof UriBuilder) {
+                    $url = $uriBuilder->reset()
+                        ->uriFor('show', ['contact' => $contact], 'Contact', 'ContactBook', 'ContactList');
+                    $contactString = sprintf(
+                        '<a class="text-decoration-none" href="%s">%s</a>',
+                        $url,
+                        $contactString
+                    );
                 }
+
+                $familyMembers[] = $contactString;
             }
 
             $names[] = StringUtility::createEnumeration($familyMembers);

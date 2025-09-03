@@ -1,0 +1,58 @@
+<?php
+declare(strict_types=1);
+
+/*
+ * This file is part of PSBits Contact Book.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ */
+
+namespace PSBits\ContactBook\ViewHelpers\Contact;
+
+use JsonException;
+use PSBits\ContactBook\Utility\ContactUtility;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+/**
+ * Class LinkedEnumerationViewHelper
+ *
+ * @package PSBits\ContactBook\ViewHelpers\Contact
+ */
+class LinkedEnumerationViewHelper extends AbstractViewHelper
+{
+    public function __construct(
+        private readonly UriBuilder $uriBuilder,
+    ) {
+    }
+
+    public function initializeArguments(): void
+    {
+        parent::initializeArguments();
+        $this->registerArgument(
+            'contacts',
+            'array',
+            'the contacts to be listed',
+            true
+        );
+    }
+
+    /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws JsonException
+     * @throws NotFoundExceptionInterface
+     */
+    public function render(): string
+    {
+        $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
+        $this->uriBuilder->setRequest($request);
+
+        return ContactUtility::createEnumeration($this->arguments['contacts'], $this->uriBuilder);
+    }
+}

@@ -105,6 +105,11 @@ class Event extends AbstractContactRelatedEntity
         return $this->getLabel() . ': ' . $this->getDateFormatted();
     }
 
+    public function getContactsAsArray(): array
+    {
+        return $this->contacts->toArray();
+    }
+
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface

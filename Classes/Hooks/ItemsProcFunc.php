@@ -25,7 +25,7 @@ class ItemsProcFunc
 
         foreach (EventType::toArray(EventType::Birthday) as $value => $name) {
             $params['items'][] = [
-                'label' => 'LLL:EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/event.xlf:type.' . $value,
+                'label' => 'LLL:EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/event.xlf:type.' . strtolower($value),
                 'value' => $value,
             ];
         }

@@ -1,6 +1,7 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:contactBook="http://typo3.org/ns/PSBits/ContactBook/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers"
     xmlns:psbvh="http://typo3.org/ns/PSBits/ViewHelpers/ViewHelpers">
@@ -35,9 +36,21 @@
                             </f:if>
 
                             <li class="d-flex list-group-item">
-                                <foundation:translate
-                                    arguments="{anniversary: event.nextAnniversary, persons: event.contactsAsEnumeration, type: eventType}"
-                                    id="{f:if(condition: event.nextAnniversary, then: 'eventTitle.anniversary', else: 'eventTitle')}" />
+                                <f:comment>
+                                    <!-- The wrapping element is needed for correct formatting of the text inside the d-flex container. -->
+                                </f:comment>
+                                <div>
+                                    <f:variable
+                                        name="persons"
+                                        value="{contactBook:contact.linkedEnumeration(contacts: event.contactsAsArray)}" />
+
+                                    <f:format.raw>
+                                        <foundation:translate
+                                            arguments="{anniversary: event.nextAnniversary, persons: persons, type: eventType}"
+                                            id="{f:if(condition: event.nextAnniversary, then: 'eventTitle.anniversary', else: 'eventTitle')}" />
+                                    </f:format.raw>
+                                </div>
+
                                 <templates:event.additionalContent
                                     eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalEventListContentEvent::class')}"
                                     parameters="{event: event}" />

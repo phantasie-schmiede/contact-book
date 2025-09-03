@@ -305,7 +305,7 @@
                                 </f:else>
                             </f:if>
 
-                            {name -> f:link.action(action: 'show', arguments: {contact: spouse})}
+                            {name -> f:link.action(action: 'show', arguments: {contact: spouse}, class: 'text-decoration-none')}
                         </f:if>
 
                         <f:if condition="{event.location}">
@@ -392,11 +392,11 @@
 
     <f:variable
         name="records"
-        value="{f:if(condition: contact.ofTypePerson, then: contact.jobs, else: contact.employees)}" />
+        value="{f:if(condition: contact.ofTypePerson, then: contact.jobs, else: contact.sortedEmployments)}" />
 
     <f:if condition="{records}">
         <h3 class="mb-3">
-            <foundation:translate id="{f:if(condition: contact.ofTypePerson, then: 'contact:jobs', else: 'contact.employees')}" />
+            <foundation:translate id="{f:if(condition: contact.ofTypePerson, then: 'contact:jobs', else: 'contact.employments')}" />
         </h3>
         <f:for
             as="job"

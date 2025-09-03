@@ -13,6 +13,7 @@ namespace PSBits\ContactBook\Service;
 use Doctrine\DBAL\Exception;
 use PSBits\ContactBook\Domain\Model\AbstractContactRelatedEntity;
 use PSBits\ContactBook\Domain\Model\Contact;
+use PSBits\ContactBook\Domain\Model\Job;
 use PSBits\ContactBook\Domain\Repository\AddressRepository;
 use PSBits\ContactBook\Domain\Repository\ContactRepository;
 use PSBits\ContactBook\Domain\Repository\DocumentRepository;
@@ -31,6 +32,7 @@ use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\Repository;
+use function count;
 
 /**
  * Class CleanupService
@@ -174,8 +176,18 @@ class CleanupService implements LoggerAwareInterface
     private function deleteOrphanedJobs(): void
     {
         $deletedValues = [];
-        $numberOfDeletedRecords = $this->deleteOrphanedRecords($this->jobRepository, $deletedValues);
-        $this->logDeletion($deletedValues, $numberOfDeletedRecords, 'jobs');
+
+        /** @var Job $record */
+        foreach ($this->jobRepository->findAll() as $job) {
+            if (null === $job->getContact()) {
+                $this->jobRepository->remove($job);
+                $deletedValues[] = $job->getCompactValue();
+            }
+        }
+
+        $this->persistenceManager->persistAll();
+
+        $this->logDeletion($deletedValues, count($deletedValues), 'jobs');
     }
 
     /**
