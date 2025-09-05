@@ -6,12 +6,19 @@
 
 <f:render
     arguments="{
-        body: '{f:render(arguments: {contact: contact, contactGroup: contactGroup}, section: \'ModalBody\')}',
         classes: 'modal-dialog-centered',
         id: 'vcard-export-modal',
         title: '{foundation:translate(id: \'exportModal:selectVCardVersion\')}'
     }"
-    partial="Component/Modal/Dialog" />
+    contentAs="body"
+    partial="Component/Modal/Dialog">
+    <f:render
+        arguments="{
+            contact: contact,
+            contactGroup: contactGroup
+        }"
+        section="ModalBody" />
+</f:render>
 
 <f:section name="ModalBody">
     <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/exportModal.xlf" />

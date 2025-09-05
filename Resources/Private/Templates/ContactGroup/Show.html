@@ -57,11 +57,15 @@
 <f:render
     arguments="{
         body: '{foundation:translate(arguments: {name: contactGroup.name}, id: \'modal:body\')}',
-        footer: '{f:render(arguments: {contactGroup: contactGroup}, section: \'ModalFooter\')}',
         id: 'delete-contactGroup-{contactGroup.uid}-modal',
         title: '{foundation:translate(id: \'modal:title\')}'
     }"
-    partial="Component/Modal/Dialog" />
+    contentAs="footer"
+    partial="Component/Modal/Dialog">
+    <f:render
+        arguments="{contactGroup: contactGroup}"
+        section="ModalFooter" />
+</f:render>
 
 <f:render
     arguments="{contactGroup: contactGroup}"

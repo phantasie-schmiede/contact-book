@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
+use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
@@ -58,21 +59,7 @@ readonly class ContactService
         array            $contacts,
         RequestInterface $request,
     ): string {
-        $privateResourcePath = FilePathUtility::getPrivateResourcePath($this->extensionInformation);
-
-        // @formatter:off
-        $viewFactoryData = new ViewFactoryData(
-            templateRootPaths: [$privateResourcePath . 'Templates/Ajax'],
-            partialRootPaths : [
-                FilePathUtility::getPrivateResourcePath($this->templatesExtensionInformation) . 'Partials',
-                $privateResourcePath . 'Partials',
-            ],
-            layoutRootPaths  : [$privateResourcePath . 'Layouts'],
-            request          : $request,
-        );
-        // @formatter:on
-
-        $view = $this->viewFactory->create($viewFactoryData);
+        $view = $this->buildView($request, 'Ajax');
         $view->assign('contacts', $contacts);
 
         return $view->render('AutocompleteList');
@@ -83,16 +70,7 @@ readonly class ContactService
         array            $contacts,
         RequestInterface $request,
     ): string {
-        $privateResourcePath = FilePathUtility::getPrivateResourcePath($this->extensionInformation);
-
-        $viewFactoryData = new ViewFactoryData(
-            templateRootPaths: [$privateResourcePath . 'Templates/Cache'],
-            partialRootPaths : [$privateResourcePath . 'Partials'],
-            layoutRootPaths  : [$privateResourcePath . 'Layouts'],
-            request          : $request,
-        );
-
-        $view = $this->viewFactory->create($viewFactoryData);
+        $view = $this->buildView($request, 'Cache');
         $view->assign('contacts', $contacts);
 
         $list = $view->render('ContactList');
@@ -157,5 +135,24 @@ readonly class ContactService
         }
 
         $this->contactRepository->update($contact);
+    }
+
+    private function buildView(RequestInterface $request, string $templateSubdirectory = ''): ViewInterface
+    {
+        $privateResourcePath = FilePathUtility::getPrivateResourcePath($this->extensionInformation);
+
+        // @formatter:off
+        $viewFactoryData = new ViewFactoryData(
+            templateRootPaths: [$privateResourcePath . 'Templates' . ($templateSubdirectory ? ('/' . $templateSubdirectory) : '')],
+            partialRootPaths : [
+                FilePathUtility::getPrivateResourcePath($this->templatesExtensionInformation) . 'Partials',
+                $privateResourcePath . 'Partials',
+            ],
+            layoutRootPaths  : [$privateResourcePath . 'Layouts'],
+            request          : $request,
+        );
+        // @formatter:on
+
+        return $this->viewFactory->create($viewFactoryData);
     }
 }

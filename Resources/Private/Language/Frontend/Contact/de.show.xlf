@@ -11,6 +11,17 @@
                 <source>Back to list</source>
                 <target>Zur Liste</target>
             </trans-unit>
+            <group id="colleagues"
+                restype="x-gettext-plurals">
+                <trans-unit id="colleagues[0]">
+                    <source>{quantity} colleague</source>
+                    <target>ein Kollege</target>
+                </trans-unit>
+                <trans-unit id="colleagues[1]">
+                    <source>{quantity} colleagues</source>
+                    <target>{quantity} Kollegen</target>
+                </trans-unit>
+            </group>
             <trans-unit id="contact.colleagues">
                 <source>Colleagues</source>
                 <target>Kollegen</target>

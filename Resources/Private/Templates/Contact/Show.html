@@ -202,11 +202,15 @@
 <f:render
     arguments="{
         body: '{foundation:translate(arguments: {name: contact.fullName}, id: \'modal:body\')}',
-        footer: '{f:render(arguments: {contact: contact}, section: \'ModalFooter\')}',
         id: 'delete-contact-{contact.uid}-modal',
         title: '{foundation:translate(id: \'modal:title\')}'
     }"
-    partial="Component/Modal/Dialog" />
+    contentAs="footer"
+    partial="Component/Modal/Dialog">
+    <f:render
+        arguments="{contact: contact}"
+        section="ModalFooter" />
+</f:render>
 
 <f:render
     arguments="{contact: contact}"
@@ -465,9 +469,54 @@
                     <f:if condition="{job.notes}">
                         {job.notes -> f:format.nl2br()}
                     </f:if>
+
+                    <f:if condition="{contact.ofTypePerson} && {job.colleagues}">
+                        <f:render
+                            arguments="{job: job}"
+                            section="Colleagues" />
+                    </f:if>
                 </div>
             </div>
         </f:for>
     </f:if>
+</f:section>
+
+<f:section name="Colleagues">
+    <f:variable
+        name="modalId"
+        value="colleagues-{job.uid}" />
+    <f:variable
+        name="numberOfColleagues"
+        value="{job.colleagues -> f:count()}" />
+    <f:variable
+        name="iconIdentifier"
+        value="{f:if(condition: '1 == {numberOfColleagues}', then: 'templates-person-fill', else: 'templates-people-fill')}"/>
+
+    <f:render
+        arguments="{
+            classes: 'badge border-1 d-block mt-3 position-relative rounded-pill text-bg-light z-2',
+            modalId: modalId,
+            text: '{templates:svgIcon(identifier: iconIdentifier)} {foundation:translate(arguments: {quantity: numberOfColleagues}, id: \'colleagues\')}',
+            title: 'Kollegen anzeigen'
+        }"
+        partial="Component/Modal/Toggle" />
+
+    <f:render
+        arguments="{
+            classes: 'modal-dialog-centered',
+            id: modalId
+        }"
+        contentAs="body"
+        partial="Component/Modal/Dialog">
+        <ul class="list-group list-group-flush">
+            <f:for
+                as="colleague"
+                each="{job.colleagues}">
+                <f:render
+                    arguments="{class: 'list-group-item list-group-item-action', contact: colleague}"
+                    partial="Link/Contact" />
+            </f:for>
+        </ul>
+    </f:render>
 </f:section>
 </html>

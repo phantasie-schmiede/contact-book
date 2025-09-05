@@ -16,6 +16,7 @@ use PSBits\ContactBook\Utility\JsonUtility;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Input;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Select;
 use PSBits\Foundation\Attribute\TCA\Ctrl;
+use function in_array;
 
 /**
  * Class EMail
@@ -66,7 +67,8 @@ class Job extends AbstractContactRelatedEntity
 
         foreach ($this->getCompany()
                      ->getEmployments() as $companyJob) {
-            if ($companyJob->getContact()
+            // Ensure that we do not add duplicates or the current contact itself!
+            if (!in_array($companyJob->getContact(), $colleagues, true) && $companyJob->getContact()
                     ->getUid() !== $this->getContact()
                     ->getUid()) {
                 $colleagues[] = $companyJob->getContact();

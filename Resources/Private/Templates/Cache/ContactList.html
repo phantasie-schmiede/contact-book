@@ -1,7 +1,8 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
+    xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
 <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/contactList.xlf" />
 
 <f:if condition="{contacts}">
@@ -70,15 +71,13 @@
                     </a>
                 </f:then>
                 <f:else>
-                    <a
-                        class="p-2"
-                        data-bs-target="#contact-{uid}-{property}-modal"
-                        data-bs-toggle="modal"
-                        href="#">
-                        <core:icon
-                            identifier="templates-{records.0.actionIconIdentifier}"
-                            size="small" />
-                    </a>
+                    <f:render
+                        arguments="{
+                            classes: 'bg-transparent border-0 p-2',
+                            modalId: 'contact-{uid}-{property}-modal',
+                            text: '{templates:svgIcon(identifier: \'templates-{records.0.actionIconIdentifier}\')}'
+                        }"
+                        partial="Component/Modal/Toggle" />
                 </f:else>
             </f:if>
         </f:then>
@@ -90,27 +89,17 @@
 
 <f:section name="Modal">
     <f:if condition="1 < {records -> f:count()}">
-        <div
-            aria-hidden="true"
-            aria-label="{foundation:translate(id: 'contact:{property}')}"
-            class="modal fade"
-            id="contact-{uid}-{property}-modal"
-            tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-body p-1">
-                        <button
-                            aria-label="{foundation:translate(id: 'close')}"
-                            class="btn-close end-0 position-absolute top-0 z-2"
-                            data-bs-dismiss="modal"
-                            type="button"></button>
-                        <f:render
-                            arguments="{records: records}"
-                            partial="LinkedRelations" />
-                    </div>
-                </div>
-            </div>
-        </div>
+        <f:render
+            arguments="{
+                classes: 'modal-dialog-centered',
+                id: 'contact-{uid}-{property}-modal'
+            }"
+            contentAs="body"
+            partial="Component/Modal/Dialog">
+            <f:render
+                arguments="{records: records}"
+                partial="LinkedRelations" />
+        </f:render>
     </f:if>
 </f:section>
 </html>
