@@ -277,7 +277,7 @@
                         <!-- The wrapping element is needed for correct formatting of the text inside the d-flex container. -->
                     </f:comment>
                     <div>
-                        <f:if condition="!{event.year}">
+                        <f:if condition="!{event.year} && {event.monthAndDayGiven}">
                             <f:then>
                                 {event.label}
                             </f:then>
@@ -297,15 +297,15 @@
                                 <f:then>
                                     <f:variable
                                         name="name"
-                                        value="{foundation:translate(arguments: '{
+                                        value="{foundation:translate(arguments: {
                                             birthName: spouse.birthName,
-                                            name: spouse.shortName
-                                        }', id: 'nameWithBirthName')}" />
+                                            name: '{spouse.nameDecorations}{spouse.shortName}'
+                                        }, id: 'nameWithBirthName')}" />
                                 </f:then>
                                 <f:else>
                                     <f:variable
                                         name="name"
-                                        value="{spouse.shortName}" />
+                                        value="{spouse.nameDecorations}{spouse.shortName}" />
                                 </f:else>
                             </f:if>
 

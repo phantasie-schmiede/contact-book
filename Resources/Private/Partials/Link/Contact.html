@@ -8,6 +8,6 @@
     controller="Contact"
     extensionName="ContactBook"
     pluginName="ContactList">
-    {label -> f:or(alternative: contact.decoratedListName)}
+    {label -> f:or(alternative: '{contact.nameDecorations}{contact.listName}')}
 </f:link.action>
 </html>

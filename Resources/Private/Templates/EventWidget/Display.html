@@ -41,13 +41,31 @@
                                 </f:comment>
                                 <div>
                                     <f:variable
+                                        name="labelId"
+                                        value="eventTitle" />
+                                    <f:variable
                                         name="persons"
                                         value="{contactBook:contact.linkedEnumeration(contacts: event.contactsAsArray)}" />
+
+                                    <f:if condition="{event.nextAnniversary}">
+                                        <f:if condition="{event.deceasedContact}">
+                                            <f:then>
+                                                <f:variable
+                                                    name="labelId"
+                                                    value="{labelId}.deceased" />
+                                            </f:then>
+                                            <f:else>
+                                                <f:variable
+                                                    name="labelId"
+                                                    value="{labelId}.anniversary" />
+                                            </f:else>
+                                        </f:if>
+                                    </f:if>
 
                                     <f:format.raw>
                                         <foundation:translate
                                             arguments="{anniversary: event.nextAnniversary, persons: persons, type: eventType}"
-                                            id="{f:if(condition: event.nextAnniversary, then: 'eventTitle.anniversary', else: 'eventTitle')}" />
+                                            id="{labelId}" />
                                     </f:format.raw>
                                 </div>
 

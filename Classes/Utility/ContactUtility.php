@@ -53,7 +53,8 @@ class ContactUtility
                 /** @var Contact $contact */
                 $contact = array_shift($family);
 
-                $contactString = empty($family) ? $contact->getShortName() : $contact->getFirstName();
+                $contactString = $contact->getNameDecorations() . (empty($family) ? $contact->getShortName(
+                    ) : $contact->getFirstName());
 
                 if ($uriBuilder instanceof UriBuilder) {
                     $url = $uriBuilder->reset()

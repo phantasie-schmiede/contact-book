@@ -29,7 +29,7 @@ enum PhoneNumberType: string
     public function getIconIdentifier(): string
     {
         return match ($this) {
-            self::Fax      => 'file-text',
+            self::Fax      => 'printer',
             self::Landline => 'house',
             self::Mobile   => 'phone',
             self::Other    => 'question-circle',

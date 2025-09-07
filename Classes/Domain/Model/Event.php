@@ -236,9 +236,20 @@ class Event extends AbstractContactRelatedEntity
         return $this->year;
     }
 
+    public function hasDeceasedContact(): bool
+    {
+        foreach ($this->contacts as $contact) {
+            if (!$contact->isAlive()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function isAnniversary(): bool
     {
-        return null === $this->year || date('Y') > $this->year;
+        return $this->isDateComplete() && date('Y') > $this->year;
     }
 
     public function isDateComplete(): bool

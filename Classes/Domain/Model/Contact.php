@@ -322,17 +322,6 @@ class Contact extends AbstractEntity
         return $this->contactGroups;
     }
 
-    public function getDecoratedListName(): string
-    {
-        $decorations = '';
-
-        if (!$this->isAlive()) {
-            $decorations .= '† ';
-        }
-
-        return $decorations . $this->getListName();
-    }
-
     public function getDocumentByUid(int $uid): Document
     {
         foreach ($this->documents as $document) {
@@ -408,14 +397,39 @@ class Contact extends AbstractEntity
         return $this->events;
     }
 
+    /**
+     * Events without a year are considered to have taken place after the birth year (if given) or at the end of the
+     * list.
+     *
+     * @return Event[]
+     */
     public function getEventsInDescendingOrder(): array
     {
+        $birthYear = ContactUtility::getBirthEvent($this)
+            ?->getYear();
         $events = $this->events->toArray();
 
         usort(
             $events,
-            static function(Event $eventA, Event $eventB) {
-            return $eventB->getDate() <=> $eventA->getDate();
+            static function(Event $eventA, Event $eventB) use ($birthYear) {
+            $dateA = $eventA->getDate(true);
+            $dateB = $eventB->getDate(true);
+
+            if (null !== $birthYear) {
+                if (null === $eventA->getYear()) {
+                    $eventA->setYear($birthYear + 1);
+                    $dateA = $eventA->getDate(true);
+                    $eventA->setYear(null);
+                }
+
+                if (null === $eventB->getYear()) {
+                    $eventB->setYear($birthYear + 1);
+                    $dateB = $eventB->getDate(true);
+                    $eventB->setYear(null);
+                }
+            }
+
+            return $dateB <=> $dateA;
         }
         );
 
@@ -536,6 +550,21 @@ class Contact extends AbstractEntity
     public function getMiddleNames(): string
     {
         return $this->middleNames;
+    }
+
+    public function getNameDecorations(): string
+    {
+        $decorations = '';
+
+        if (!$this->isAlive()) {
+            $decorations .= '†';
+        }
+
+        if ('' !== $decorations) {
+            $decorations .= ' ';
+        }
+
+        return $decorations;
     }
 
     public function getNickname(): string
@@ -746,6 +775,7 @@ class Contact extends AbstractEntity
         $this->contactGroups = new ObjectStorage();
         $this->documents = new ObjectStorage();
         $this->eMails = new ObjectStorage();
+        $this->employments = new ObjectStorage();
         $this->events = new ObjectStorage();
         $this->jobs = new ObjectStorage();
         $this->phoneNumbers = new ObjectStorage();
