@@ -23,4 +23,12 @@ enum ContactType: string
 
     case Company = 'company';
     case Person  = 'person';
+
+    public function getGeneralRelationType(): GeneralType
+    {
+        return match ($this) {
+            self::Company => GeneralType::Business,
+            self::Person  => GeneralType::Private,
+        };
+    }
 }

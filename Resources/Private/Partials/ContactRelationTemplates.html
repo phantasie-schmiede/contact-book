@@ -3,25 +3,25 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
 <f:render
-    arguments="{contact: contact, generalTypes: generalTypes, recordType: 'Address'}"
+    arguments="{contactType: contact.type, generalTypes: generalTypes, recordType: 'Address'}"
     section="AccordionItem" />
 <f:render
-    arguments="{contact: contact, recordType: 'Document'}"
+    arguments="{contactType: contact.type, recordType: 'Document'}"
     section="AccordionItem" />
 <f:render
-    arguments="{contact: contact, generalTypes: generalTypes, recordType: 'EMail'}"
+    arguments="{contactType: contact.type, generalTypes: generalTypes, recordType: 'EMail'}"
     section="AccordionItem" />
 <f:render
-    arguments="{contact: contact, eventTypes: eventTypes, recordType: 'Event'}"
+    arguments="{contactType: contact.type, eventTypes: eventTypes, recordType: 'Event'}"
     section="AccordionItem" />
 <f:render
-    arguments="{contact: contact, recordType: 'Job'}"
+    arguments="{contactType: contact.type, recordType: 'Job'}"
     section="AccordionItem" />
 <f:render
-    arguments="{contact: contact, generalTypes: generalTypes, phoneNumberTypes: phoneNumberTypes, recordType: 'PhoneNumber'}"
+    arguments="{contactType: contact.type, generalTypes: generalTypes, phoneNumberTypes: phoneNumberTypes, recordType: 'PhoneNumber'}"
     section="AccordionItem" />
 <f:render
-    arguments="{contact: contact, generalTypes: generalTypes, recordType: 'Website'}"
+    arguments="{contactType: contact.type, generalTypes: generalTypes, recordType: 'Website'}"
     section="AccordionItem" />
 
 <f:asset.script
@@ -65,7 +65,12 @@
                 id="accordion{recordType}-###uid###">
                 <div class="accordion-body">
                     <f:render
-                        arguments="{_all}"
+                        arguments="{
+                            contactType: contactType,
+                            generalTypes: generalTypes,
+                            phoneNumberTypes: phoneNumberTypes,
+                            recordType: recordType
+                        }"
                         partial="FormFields/{recordType}" />
                 </div>
             </div>

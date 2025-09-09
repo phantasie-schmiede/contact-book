@@ -18,6 +18,9 @@
     </f:then>
     <f:else>
         <f:variable
+            name="defaultGeneralType"
+            value="{contactType.generalRelationType.value}" />
+        <f:variable
             name="postponed"
             value="1" />
         <f:variable
@@ -30,7 +33,7 @@
     <f:form.select
         class="form-select"
         name="address[{uid}][type]"
-        value="{record.type.value}">
+        value="{record.type.value -> f:or(alternative: defaultGeneralType)}">
         <f:for
             as="label"
             each="{generalTypes}"
