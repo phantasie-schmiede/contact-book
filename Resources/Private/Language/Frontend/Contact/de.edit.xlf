@@ -31,10 +31,6 @@
                 <source>other operators</source>
                 <target>weitere Betreiber</target>
             </trans-unit>
-            <trans-unit id="cancel">
-                <source>Cancel</source>
-                <target>Abbrechen</target>
-            </trans-unit>
             <trans-unit id="dyn.addNewAddress">
                 <source>Add new address</source>
                 <target>Neue Adresse hinzufügen</target>
@@ -94,10 +90,6 @@
             <trans-unit id="remove">
                 <source>Remove</source>
                 <target>Entfernen</target>
-            </trans-unit>
-            <trans-unit id="save">
-                <source>Save</source>
-                <target>Speichern</target>
             </trans-unit>
         </body>
     </file>

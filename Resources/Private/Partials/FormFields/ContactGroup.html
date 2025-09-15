@@ -15,7 +15,8 @@
         class="form-control"
         id="name"
         placeholder="{foundation:translate(id: 'contactGroup:name')}"
-        property="name" />
+        property="name"
+        required="true" />
     <label
         class="form-label"
         for="name">
@@ -38,7 +39,6 @@
             name: 'contacts',
             preselection: contactGroup.contactUidsAsJson,
         }"
-        contentAs="renderedItems"
         partial="Component/InputAutocomplete" />
 </div>
 </html>

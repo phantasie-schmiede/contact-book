@@ -31,6 +31,7 @@ use PSBits\ContactBook\Domain\Model\Job;
 use PSBits\ContactBook\Domain\Model\PhoneNumber;
 use PSBits\ContactBook\Domain\Model\Website;
 use PSBits\ContactBook\Domain\Repository\AddressRepository;
+use PSBits\ContactBook\Domain\Repository\ContactBookRepository;
 use PSBits\ContactBook\Domain\Repository\ContactGroupRepository;
 use PSBits\ContactBook\Domain\Repository\ContactRepository;
 use PSBits\ContactBook\Domain\Repository\DocumentRepository;
@@ -83,6 +84,7 @@ class ContactController extends ActionController
     public function __construct(
         protected readonly AddressRepository      $addressRepository,
         protected readonly CleanupService         $cleanupService,
+        protected readonly ContactBookRepository  $contactBookRepository,
         protected readonly ContactGroupRepository $contactGroupRepository,
         protected readonly ContactGroupService    $contactGroupService,
         protected readonly ContactRepository      $contactRepository,
@@ -122,7 +124,6 @@ class ContactController extends ActionController
         $this->contactRepository->add($contact);
         $this->persistenceManager->persistAll();
         $this->contactService->updateSlug($contact);
-        $this->persistenceManager->persistAll();
         $this->deletePagesCache(self::CACHE_TAG);
 
         return $this->redirect(
@@ -219,9 +220,17 @@ class ContactController extends ActionController
         );
     }
 
+    /**
+     * @throws Exception
+     */
     #[PluginAction(default: true, uncached: true)]
     public function listAction(): ResponseInterface
     {
+        if (0 === $this->contactBookRepository->findByOwner()
+                ->count()) {
+            return $this->redirect('list', 'ContactBook');
+        }
+
         $list = $this->contactService->getCachedList('list');
 
         if (false === $list) {
@@ -288,7 +297,6 @@ class ContactController extends ActionController
         $this->contactRepository->update($contact);
         $this->persistenceManager->persistAll();
         $this->contactService->updateSlug($contact);
-        $this->persistenceManager->persistAll();
         $this->cleanupService->cleanAll();
         $this->deletePagesCache(self::CACHE_TAG, self::CACHE_TAG . '_' . $contact->getUid());
 

@@ -1,0 +1,46 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:contactBook="http://typo3.org/ns/PSBits/ContactBook/ViewHelpers"
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
+<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contactBook.xlf" />
+
+<f:asset.script
+    identifier="clearInput"
+    src="EXT:templates/Resources/Public/JavaScript/clearInput.js"
+    type="module" />
+
+<div class="form-floating mb-3">
+    <f:form.textfield
+        class="form-control"
+        id="name"
+        placeholder="{foundation:translate(id: 'contactBook:name')}"
+        property="name"
+        required="true" />
+    <label
+        class="form-label"
+        for="name">
+        <foundation:translate id="contactBook:name" />
+    </label>
+</div>
+
+<div class="form-floating">
+    <f:render
+        arguments="{
+            altValueField: 1,
+            filterOptions: {
+                itemSearchField: 'searchTerms',
+                preferText: 1,
+            },
+            id: 'contact-book-owners',
+            items: frontendUsers,
+            itemLabelField: 'fullName',
+            itemValueField: 'uid',
+            label: '{foundation:translate(id: \'contactBook:owners\')}',
+            multiple: 1,
+            name: 'owners',
+            preselection: contactBook.ownerUidsAsJson,
+        }"
+        partial="Component/InputAutocomplete" />
+</div>
+</html>

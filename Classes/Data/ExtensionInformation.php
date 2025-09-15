@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Data;
 
 use PSBits\ContactBook\Controller\Backend\ImportController;
+use PSBits\ContactBook\Controller\ContactBookController;
 use PSBits\ContactBook\Controller\ContactController;
 use PSBits\ContactBook\Controller\ContactGroupController;
 use PSBits\ContactBook\Controller\ContactGroupWidgetController;
@@ -59,6 +60,13 @@ class ExtensionInformation extends AbstractExtensionInformation
                 ],
                 name              : 'AutocompleteList',
                 typeNum           : 1754735201
+            )
+        );
+        $this->addPlugin(
+            GeneralUtility::makeInstance(
+                PluginConfiguration::class,
+                controllers: [ContactBookController::class],
+                name       : 'ContactBooks'
             )
         );
         $this->addPlugin(

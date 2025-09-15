@@ -78,6 +78,9 @@ class Contact extends AbstractEntity
     #[Input]
     protected string $companyName = '';
 
+    #[Select(linkedModel: ContactBook::class, maxItems: 1)]
+    protected ?ContactBook $contactBook = null;
+
     /** @var ObjectStorage<ContactGroup> */
     #[Inline(linkedModel: ContactGroup::class, mm: 'tx_contactbook_contacts_contactgroups')]
     #[Lazy]
@@ -293,6 +296,11 @@ class Contact extends AbstractEntity
     public function getCompanyName(): string
     {
         return $this->companyName;
+    }
+
+    public function getContactBook(): ?ContactBook
+    {
+        return $this->contactBook;
     }
 
     public function getContactGroupByUid(int $uid): EMail
@@ -876,6 +884,13 @@ class Contact extends AbstractEntity
     public function setCompanyName(string $companyName): self
     {
         $this->companyName = $companyName;
+
+        return $this;
+    }
+
+    public function setContactBook(?ContactBook $contactBook): self
+    {
+        $this->contactBook = $contactBook;
 
         return $this;
     }

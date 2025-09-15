@@ -24,9 +24,6 @@
             <trans-unit id="additionalContacts.website">
                 <source>other operators</source>
             </trans-unit>
-            <trans-unit id="cancel">
-                <source>Cancel</source>
-            </trans-unit>
             <trans-unit id="dyn.addNewAddress">
                 <source>Add new address</source>
             </trans-unit>
@@ -65,9 +62,6 @@
             </trans-unit>
             <trans-unit id="remove">
                 <source>Remove</source>
-            </trans-unit>
-            <trans-unit id="save">
-                <source>Save</source>
             </trans-unit>
         </body>
     </file>

@@ -97,7 +97,6 @@ class CleanupService implements LoggerAwareInterface
         foreach ($this->contactRepository->findAll() as $contact) {
             if ('' === $contact->getSlug()) {
                 $this->contactService->updateSlug($contact);
-                $this->persistenceManager->persistAll();
                 $addedSlugs++;
             }
         }

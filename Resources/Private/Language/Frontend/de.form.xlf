@@ -7,6 +7,14 @@
         source-language="en"
         target-language="de">
         <body>
+            <trans-unit id="cancel">
+                <source>Cancel</source>
+                <target>Abbrechen</target>
+            </trans-unit>
+            <trans-unit id="save">
+                <source>Save</source>
+                <target>Speichern</target>
+            </trans-unit>
             <trans-unit id="submit.loadingSpinner">
                 <source>Saving ...</source>
                 <target>Wird gespeichert ...</target>

@@ -15,6 +15,7 @@ use JetBrains\PhpStorm\NoReturn;
 use JsonException;
 use PSBits\ContactBook\Data\ExtensionInformation;
 use PSBits\ContactBook\Domain\Model\ContactGroup;
+use PSBits\ContactBook\Domain\Repository\ContactBookRepository;
 use PSBits\ContactBook\Domain\Repository\ContactGroupRepository;
 use PSBits\ContactBook\Domain\Repository\ContactRepository;
 use PSBits\ContactBook\Service\ContactGroupService;
@@ -47,6 +48,7 @@ class ContactGroupController extends ActionController
     public const string CACHE_TAG = 'tx_contactbook_groups';
 
     public function __construct(
+        protected readonly ContactBookRepository  $contactBookRepository,
         protected readonly ContactGroupRepository $contactGroupRepository,
         protected readonly ContactGroupService    $contactGroupService,
         protected readonly ContactRepository      $contactRepository,

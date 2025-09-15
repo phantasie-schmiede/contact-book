@@ -6,6 +6,12 @@
         product-name="contact_book"
         source-language="en">
         <body>
+            <trans-unit id="cancel">
+                <source>Cancel</source>
+            </trans-unit>
+            <trans-unit id="save">
+                <source>Save</source>
+            </trans-unit>
             <trans-unit id="submit.loadingSpinner">
                 <source>Saving ...</source>
             </trans-unit>

@@ -9,6 +9,7 @@ plugin {
     }
   }
 
+  tx_contactbook_contactbooks.view.defaultPid = auto
   tx_contactbook_contactgroups.view.defaultPid = auto
   tx_contactbook_contactlist.view.defaultPid = auto
 }

@@ -10,11 +10,13 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Domain\Model;
 
+use PSBits\Foundation\Attribute\TCA\Column;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Input;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Select;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Slug;
 use PSBits\Foundation\Attribute\TCA\Ctrl;
 use PSBits\Foundation\Enum\SelectRenderType;
+use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
@@ -44,7 +46,9 @@ class ContactGroup extends AbstractContactRelatedEntity
     #[Select(linkedModel: Contact::class, mm: 'tx_contactbook_contacts_contactgroups', mmOppositeField: 'contactGroups', renderType: SelectRenderType::selectMultipleSideBySide)]
     protected ObjectStorage $contacts;
 
+    #[Column(required: true)]
     #[Input]
+    #[Validate(['validator' => 'NotEmpty'])]
     protected string $name = '';
 
     #[Slug(generatorOptions: self::SLUG_GENERATOR_OPTIONS)]

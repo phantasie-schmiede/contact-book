@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use function is_string;
 
 /**
@@ -44,6 +45,7 @@ readonly class ContactService
         protected ContactRepository             $contactRepository,
         protected ExtensionInformation          $extensionInformation,
         protected FrontendInterface             $frontendCache,
+        protected PersistenceManager            $persistenceManager,
         protected TcaService                    $tcaService,
         protected TemplatesExtensionInformation $templatesExtensionInformation,
         protected ViewFactoryInterface          $viewFactory,
@@ -135,6 +137,7 @@ readonly class ContactService
         }
 
         $this->contactRepository->update($contact);
+        $this->persistenceManager->persistAll();
     }
 
     private function buildView(RequestInterface $request, string $templateSubdirectory = ''): ViewInterface

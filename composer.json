@@ -38,7 +38,8 @@
 		"ext-bcmath": "*",
 		"ext-gmp": "*",
 		"php": "^8.3",
-		"psbits/foundation": "^3.0",
+		"psbits/foundation": "@dev",
+		"psbits/frontend-users": "@dev",
 		"psbits/templates": "@dev",
 		"ramsey/uuid": "^4.7",
 		"typo3/cms-core": "^13.4"

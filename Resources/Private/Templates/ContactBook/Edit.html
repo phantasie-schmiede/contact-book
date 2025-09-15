@@ -1,0 +1,39 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
+<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/form.xlf" />
+
+<f:asset.script
+    identifier="loadingSpinner"
+    src="EXT:templates/Resources/Public/JavaScript/loadingSpinner.js"
+    type="module" />
+
+<f:form
+    action="edit"
+    method="post"
+    name="contactBook"
+    object="{contactBook}">
+    <f:render
+        arguments="{
+            contactBook: contactBook,
+            frontendUsers: frontendUsers,
+        }"
+        partial="FormFields/ContactBook" />
+
+    <div class="col-12 mt-3">
+        <f:link.action
+            action="list"
+            class="bg-secondary-subtle btn">
+            <foundation:translate id="form:cancel" />
+        </f:link.action>
+        <button
+            class="bg-primary-subtle btn"
+            data-psbits-spinner-text="{foundation:translate(id: 'form:submit.loadingSpinner')}"
+            data-psbits-spinner-phase-out
+            type="submit">
+            <foundation:translate id="form:save" />
+        </button>
+    </div>
+</f:form>
+</html>

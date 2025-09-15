@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
 /**
  * Class ContactGroupService
@@ -34,6 +35,7 @@ readonly class ContactGroupService
     public function __construct(
         protected ContactGroupRepository $contactGroupRepository,
         protected ContactService         $contactService,
+        protected PersistenceManager     $persistenceManager,
         protected TcaService             $tcaService,
     ) {
     }
@@ -87,5 +89,6 @@ readonly class ContactGroupService
         }
 
         $this->contactGroupRepository->update($contactGroup);
+        $this->persistenceManager->persistAll();
     }
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2025-09-15T17:57:00+01:00"
+        original="messages"
+        product-name="contact_book"
+        source-language="en"
+        target-language="de">
+        <body>
+            <trans-unit id="createContactBook.additional">
+                <source>Create another contact book</source>
+                <target>Weiteres Kontaktbuch anlegen</target>
+            </trans-unit>
+            <trans-unit id="createContactBook.first">
+                <source>Create contact book</source>
+                <target>Kontaktbuch anlegen</target>
+            </trans-unit>
+            <trans-unit id="noContactBooks">
+                <source>You don't have created a contact book yet.</source>
+                <target>Du hast noch kein Kontaktbuch angelegt.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

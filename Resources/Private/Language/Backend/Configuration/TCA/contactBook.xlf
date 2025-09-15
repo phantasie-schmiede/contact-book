@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
     <file datatype="plaintext"
-        date="2024-08-21T08:55:00+01:00"
+        date="2025-09-15T18:20:00+01:00"
         original="messages"
         product-name="contact_book"
         source-language="en">
         <body>
-            <trans-unit id="cancel">
-                <source>Cancel</source>
+            <trans-unit id="ctrl.title">
+                <source>Contact book</source>
             </trans-unit>
-            <trans-unit id="save">
-                <source>Save</source>
+            <trans-unit id="name">
+                <source>Name</source>
+            </trans-unit>
+            <trans-unit id="owners">
+                <source>Owners</source>
             </trans-unit>
         </body>
     </file>
