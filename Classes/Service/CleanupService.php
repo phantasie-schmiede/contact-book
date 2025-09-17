@@ -11,10 +11,13 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Service;
 
 use Doctrine\DBAL\Exception;
+use JsonException;
 use PSBits\ContactBook\Domain\Model\AbstractContactRelatedEntity;
 use PSBits\ContactBook\Domain\Model\Contact;
+use PSBits\ContactBook\Domain\Model\ContactGroup;
 use PSBits\ContactBook\Domain\Model\Job;
 use PSBits\ContactBook\Domain\Repository\AddressRepository;
+use PSBits\ContactBook\Domain\Repository\ContactGroupRepository;
 use PSBits\ContactBook\Domain\Repository\ContactRepository;
 use PSBits\ContactBook\Domain\Repository\DocumentRepository;
 use PSBits\ContactBook\Domain\Repository\EMailRepository;
@@ -44,16 +47,18 @@ class CleanupService implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     public function __construct(
-        protected readonly AddressRepository     $addressRepository,
-        protected readonly ContactRepository     $contactRepository,
-        protected readonly ContactService        $contactService,
-        protected readonly DocumentRepository    $documentRepository,
-        protected readonly EMailRepository       $eMailRepository,
-        protected readonly EventRepository       $eventRepository,
-        protected readonly JobRepository         $jobRepository,
-        protected readonly PersistenceManager    $persistenceManager,
-        protected readonly PhoneNumberRepository $phoneNumberRepository,
-        protected readonly WebsiteRepository     $websiteRepository,
+        protected readonly AddressRepository      $addressRepository,
+        protected readonly ContactBookService     $contactBookService,
+        protected readonly ContactGroupRepository $contactGroupRepository,
+        protected readonly ContactRepository      $contactRepository,
+        protected readonly ContactService         $contactService,
+        protected readonly DocumentRepository     $documentRepository,
+        protected readonly EMailRepository        $eMailRepository,
+        protected readonly EventRepository        $eventRepository,
+        protected readonly JobRepository          $jobRepository,
+        protected readonly PersistenceManager     $persistenceManager,
+        protected readonly PhoneNumberRepository  $phoneNumberRepository,
+        protected readonly WebsiteRepository      $websiteRepository,
     ) {
     }
 
@@ -61,6 +66,7 @@ class CleanupService implements LoggerAwareInterface
      * @throws ContainerExceptionInterface
      * @throws Exception
      * @throws IllegalObjectTypeException
+     * @throws JsonException
      * @throws NotFoundExceptionInterface
      * @throws ReflectionException
      * @throws SiteNotFoundException
@@ -75,9 +81,44 @@ class CleanupService implements LoggerAwareInterface
         $this->deleteOrphanedJobs();
         $this->deleteOrphanedPhoneNumbers();
         $this->deleteOrphanedWebsites();
+        $this->addMissingContactBookRelation();
         $this->addMissingSlugs();
         $this->addMissingUuids();
         $this->trimNotes();
+    }
+
+    /**
+     * @throws IllegalObjectTypeException
+     * @throws JsonException
+     * @throws UnknownObjectException
+     */
+    private function addMissingContactBookRelation(): void
+    {
+        $addedRelations = 0;
+        $contactBook = $this->contactBookService->getActiveContactBookForCurrentUser();
+
+        /** @var Contact $contact */
+        foreach ($this->contactRepository->findAll() as $contact) {
+            if (null === $contact->getContactBook()) {
+                $contact->setContactBook($contactBook);
+                $this->contactRepository->update($contact);
+                $addedRelations++;
+            }
+        }
+
+        /** @var ContactGroup $contactGroup */
+        foreach ($this->contactGroupRepository->findAll() as $contactGroup) {
+            if (null === $contactGroup->getContactBook()) {
+                $contactGroup->setContactBook($contactBook);
+                $this->contactGroupRepository->update($contactGroup);
+                $addedRelations++;
+            }
+        }
+
+        if (0 < $addedRelations) {
+            $this->persistenceManager->persistAll();
+            $this->logger->info('Added ' . $addedRelations . ' missing contact book relations.');
+        }
     }
 
     /**

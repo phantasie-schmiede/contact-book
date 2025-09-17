@@ -6,11 +6,20 @@
         product-name="contact_book"
         source-language="en">
         <body>
+            <trans-unit id="contactGroups">
+                <source>Contact groups</source>
+            </trans-unit>
+            <trans-unit id="contacts">
+                <source>Contact</source>
+            </trans-unit>
             <trans-unit id="ctrl.title">
                 <source>Contact book</source>
             </trans-unit>
             <trans-unit id="name">
                 <source>Name</source>
+            </trans-unit>
+            <trans-unit id="notes">
+                <source>Notes</source>
             </trans-unit>
             <trans-unit id="owners">
                 <source>Owners</source>

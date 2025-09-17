@@ -19,6 +19,10 @@
                 <source>Company name</source>
                 <target>Unternehmensname</target>
             </trans-unit>
+            <trans-unit id="contactBook">
+                <source>Contact book</source>
+                <target>Kontaktbuch</target>
+            </trans-unit>
             <trans-unit id="contactGroups">
                 <source>Contact groups</source>
                 <target>Kontaktgruppen</target>

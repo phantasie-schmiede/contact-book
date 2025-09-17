@@ -11,7 +11,9 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Domain\Model;
 
+use Exception;
 use JsonException;
+use PSBits\ContactBook\Utility\ContactBookUtility;
 use PSBits\ContactBook\Utility\JsonUtility;
 use PSBits\Foundation\Attribute\TCA\Column;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Inline;
@@ -21,7 +23,10 @@ use PSBits\Foundation\Attribute\TCA\ColumnType\Slug;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Text;
 use PSBits\Foundation\Attribute\TCA\Ctrl;
 use PSBits\Foundation\Enum\SelectRenderType;
+use PSBits\Foundation\Service\GlobalVariableService;
 use PSBits\FrontendUsers\Domain\Model\Typo3\FrontendUser;
+use PSBits\FrontendUsers\Service\GlobalVariableProviders\FrontendUserProvider;
+use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
 use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -49,7 +54,13 @@ class ContactBook extends AbstractEntity
         ],
     ];
 
+    /** @var ObjectStorage<ContactGroup> */
+    #[Cascade(['value' => 'remove'])]
+    #[Inline(foreignField: 'contactBook', linkedModel: ContactGroup::class)]
+    protected ObjectStorage $contactGroups;
+
     /** @var ObjectStorage<Contact> */
+    #[Cascade(['value' => 'remove'])]
     #[Inline(foreignField: 'contactBook', linkedModel: Contact::class)]
     protected ObjectStorage $contacts;
 
@@ -62,7 +73,7 @@ class ContactBook extends AbstractEntity
     protected string $notes = '';
 
     /** @var ObjectStorage<FrontendUser> */
-    #[Select(linkedModel: FrontendUser::class, renderType: SelectRenderType::selectMultipleSideBySide)]
+    #[Select(linkedModel: FrontendUser::class, mm: 'tx_contactbook_contactbooks_feusers', renderType: SelectRenderType::selectMultipleSideBySide)]
     protected ObjectStorage $owners;
 
     #[Slug(generatorOptions: self::SLUG_GENERATOR_OPTIONS)]
@@ -80,6 +91,14 @@ class ContactBook extends AbstractEntity
         return $this;
     }
 
+    /**
+     * @return ObjectStorage<ContactGroup>
+     */
+    public function getContactGroups(): ObjectStorage
+    {
+        return $this->contactGroups;
+    }
+
     public function getContacts(): ObjectStorage
     {
         return $this->contacts;
@@ -93,6 +112,27 @@ class ContactBook extends AbstractEntity
     public function getNotes(): string
     {
         return $this->notes;
+    }
+
+    /**
+     * @return ObjectStorage<FrontendUser>
+     * @throws Exception
+     */
+    public function getOtherOwners(): ObjectStorage
+    {
+        $currentUserUid = GlobalVariableService::get(FrontendUserProvider::class . '.user')
+            ->getUid();
+        $owners = clone $this->getOwners();
+
+        foreach ($owners as $owner) {
+            if ($owner->getUid() === $currentUserUid) {
+                $owners->detach($owner);
+
+                break;
+            }
+        }
+
+        return $owners;
     }
 
     /**
@@ -116,7 +156,30 @@ class ContactBook extends AbstractEntity
     public function initializeObject(): void
     {
         $this->contacts = new ObjectStorage();
+        $this->contactGroups = new ObjectStorage();
         $this->owners = new ObjectStorage();
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function isActive(): bool
+    {
+        return ContactBookUtility::getActiveContactBookUid() === $this->getUid();
+    }
+
+    public function removeAllOwners(): self
+    {
+        $this->owners = new ObjectStorage();
+
+        return $this;
+    }
+
+    public function setContactGroups(ObjectStorage $contactGroups): self
+    {
+        $this->contactGroups = $contactGroups;
+
+        return $this;
     }
 
     public function setContacts(ObjectStorage $contacts): self

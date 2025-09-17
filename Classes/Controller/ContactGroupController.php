@@ -18,6 +18,7 @@ use PSBits\ContactBook\Domain\Model\ContactGroup;
 use PSBits\ContactBook\Domain\Repository\ContactBookRepository;
 use PSBits\ContactBook\Domain\Repository\ContactGroupRepository;
 use PSBits\ContactBook\Domain\Repository\ContactRepository;
+use PSBits\ContactBook\Service\ContactBookService;
 use PSBits\ContactBook\Service\ContactGroupService;
 use PSBits\ContactBook\Service\ContactService;
 use PSBits\ContactBook\Service\Enum\VCardVersion;
@@ -49,6 +50,7 @@ class ContactGroupController extends ActionController
 
     public function __construct(
         protected readonly ContactBookRepository  $contactBookRepository,
+        protected readonly ContactBookService     $contactBookService,
         protected readonly ContactGroupRepository $contactGroupRepository,
         protected readonly ContactGroupService    $contactGroupService,
         protected readonly ContactRepository      $contactRepository,
@@ -73,6 +75,7 @@ class ContactGroupController extends ActionController
     #[PluginAction(uncached: true)]
     public function createAction(ContactGroup $contactGroup): ResponseInterface
     {
+        $contactGroup->setContactBook($this->contactBookService->getActiveContactBookForCurrentUser());
         $this->contactService->setContactsOfRelatedEntity(
             entity            : $contactGroup,
             additionalContacts: $this->request->getArgument('contacts')
@@ -98,9 +101,6 @@ class ContactGroupController extends ActionController
         return $this->redirect('list');
     }
 
-    /**
-     * @throws JsonException
-     */
     #[PluginAction(uncached: true)]
     public function editAction(ContactGroup $contactGroup): ResponseInterface
     {
@@ -128,11 +128,14 @@ class ContactGroupController extends ActionController
         exit;
     }
 
+    /**
+     * @throws JsonException
+     */
     #[PluginAction(default: true)]
     public function listAction(): ResponseInterface
     {
         $this->setCacheTags(self::CACHE_TAG);
-        $this->view->assign('contactGroups', $this->contactGroupRepository->findAll());
+        $this->view->assign('contactGroups', $this->contactGroupRepository->findAllOfActiveContactBook());
 
         return $this->htmlResponse();
     }

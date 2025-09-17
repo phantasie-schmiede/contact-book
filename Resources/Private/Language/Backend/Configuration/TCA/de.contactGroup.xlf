@@ -7,6 +7,9 @@
         source-language="en"
         target-language="de">
         <body>
+            <trans-unit id="contactBook">
+                <source>Contact book</source>
+            </trans-unit>
             <trans-unit id="contacts">
                 <source>Contacts</source>
                 <target>Kontakte</target>

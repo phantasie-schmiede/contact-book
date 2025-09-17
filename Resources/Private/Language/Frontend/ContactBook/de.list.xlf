@@ -7,6 +7,32 @@
         source-language="en"
         target-language="de">
         <body>
+            <trans-unit id="active">
+                <source>active</source>
+                <target>aktiv</target>
+            </trans-unit>
+            <group id="contacts"
+                restype="x-gettext-plurals">
+                <trans-unit id="contacts[0]">
+                    <source>{quantity} contact</source>
+                    <target>ein Kontakt</target>
+                </trans-unit>
+                <trans-unit id="contacts[1]">
+                    <source>{quantity} contacts</source>
+                    <target>{quantity} Kontakte</target>
+                </trans-unit>
+            </group>
+            <group id="contactGroups"
+                restype="x-gettext-plurals">
+                <trans-unit id="contactGroups[0]">
+                    <source>{quantity} contact group</source>
+                    <target>eine Kontaktgruppe</target>
+                </trans-unit>
+                <trans-unit id="contactGroups[1]">
+                    <source>{quantity} contact groups</source>
+                    <target>{quantity} Kontaktgruppen</target>
+                </trans-unit>
+            </group>
             <trans-unit id="createContactBook.additional">
                 <source>Create another contact book</source>
                 <target>Weiteres Kontaktbuch anlegen</target>
@@ -15,9 +41,21 @@
                 <source>Create contact book</source>
                 <target>Kontaktbuch anlegen</target>
             </trans-unit>
+            <trans-unit id="edit">
+                <source>Edit</source>
+                <target>Anpassen</target>
+            </trans-unit>
             <trans-unit id="noContactBooks">
                 <source>You don't have created a contact book yet.</source>
                 <target>Du hast noch kein Kontaktbuch angelegt.</target>
+            </trans-unit>
+            <trans-unit id="select">
+                <source>Select</source>
+                <target>Auswählen</target>
+            </trans-unit>
+            <trans-unit id="sharedWith">
+                <source>Shared with</source>
+                <target>Geteilt mit</target>
             </trans-unit>
         </body>
     </file>

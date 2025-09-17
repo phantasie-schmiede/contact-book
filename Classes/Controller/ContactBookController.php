@@ -11,12 +11,14 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Controller;
 
 use Doctrine\DBAL\Exception;
+use JsonException;
 use PSBits\ContactBook\Domain\Model\ContactBook;
 use PSBits\ContactBook\Domain\Repository\ContactBookRepository;
 use PSBits\ContactBook\Service\ContactBookService;
 use PSBits\Foundation\Attribute\PluginAction;
 use PSBits\Foundation\Service\GlobalVariableService;
 use PSBits\Foundation\Traits\ControllerCacheTrait;
+use PSBits\FrontendUsers\Domain\Model\Typo3\FrontendUser;
 use PSBits\FrontendUsers\Domain\Repository\Typo3\FrontendUserRepository;
 use PSBits\FrontendUsers\Service\GlobalVariableProviders\FrontendUserProvider;
 use Psr\Container\ContainerExceptionInterface;
@@ -50,28 +52,46 @@ class ContactBookController extends ActionController
      * @throws ContainerExceptionInterface
      * @throws Exception
      * @throws IllegalObjectTypeException
+     * @throws JsonException
      * @throws NotFoundExceptionInterface
      * @throws ReflectionException
      * @throws SiteNotFoundException
      * @throws UnknownObjectException
+     * @throws \Exception
      */
     #[PluginAction(uncached: true)]
     public function createAction(ContactBook $contactBook): ResponseInterface
     {
+        $this->setOwners($contactBook);
         $this->contactBookRepository->add($contactBook);
         $this->persistenceManager->persistAll();
         $this->contactBookService->updateSlug($contactBook);
+
+        if (1 === $this->contactBookRepository->findByOwner()
+                ->count()) {
+            $this->contactBookService->setActiveContactBookForCurrentUser($contactBook);
+        }
 
         return $this->redirect('list');
     }
 
     /**
      * @throws IllegalObjectTypeException
+     * @throws JsonException
+     * @throws UnknownObjectException
+     * @throws \Exception
      */
     #[PluginAction(uncached: true)]
     public function deleteAction(ContactBook $contactBook): ResponseInterface
     {
         $this->contactBookRepository->remove($contactBook);
+        $this->persistenceManager->persistAll();
+
+        if (0 < $this->contactBookRepository->findByOwner()
+                ->count()) {
+            // Ensure there is still an active contact book if the active one was deleted.
+            $this->contactBookService->getActiveContactBookForCurrentUser();
+        }
 
         return $this->redirect('list');
     }
@@ -115,9 +135,23 @@ class ContactBookController extends ActionController
     }
 
     /**
+     * @throws IllegalObjectTypeException
+     * @throws JsonException
+     * @throws UnknownObjectException
+     */
+    #[PluginAction(uncached: true)]
+    public function selectAction(ContactBook $contactBook): ResponseInterface
+    {
+        $this->contactBookService->setActiveContactBookForCurrentUser($contactBook);
+
+        return $this->redirect('list');
+    }
+
+    /**
      * @throws ContainerExceptionInterface
      * @throws Exception
      * @throws IllegalObjectTypeException
+     * @throws JsonException
      * @throws NotFoundExceptionInterface
      * @throws ReflectionException
      * @throws SiteNotFoundException
@@ -126,10 +160,33 @@ class ContactBookController extends ActionController
     #[PluginAction(uncached: true)]
     public function updateAction(ContactBook $contactBook): ResponseInterface
     {
+        $this->setOwners($contactBook);
         $this->contactBookRepository->update($contactBook);
         $this->persistenceManager->persistAll();
         $this->contactBookService->updateSlug($contactBook);
 
         return $this->redirect('list');
+    }
+
+    /**
+     * @throws JsonException
+     */
+    private function setOwners(ContactBook $contactBook): void
+    {
+        $contactBook->removeAllOwners();
+        $ownerUids = json_decode(
+            $this->request->getArgument('owners') ?: '[]',
+            true,
+            2,
+            JSON_THROW_ON_ERROR
+        );
+
+        foreach ($ownerUids as $ownerUid) {
+            $owner = $this->frontendUserRepository->findByUid($ownerUid);
+
+            if ($owner instanceof FrontendUser) {
+                $contactBook->addOwner($owner);
+            }
+        }
     }
 }

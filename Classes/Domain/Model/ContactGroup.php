@@ -42,6 +42,9 @@ class ContactGroup extends AbstractContactRelatedEntity
         ],
     ];
 
+    #[Select(linkedModel: ContactBook::class, maxItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
+    protected ?ContactBook $contactBook = null;
+
     /** @var ObjectStorage<Contact> */
     #[Select(linkedModel: Contact::class, mm: 'tx_contactbook_contacts_contactgroups', mmOppositeField: 'contactGroups', renderType: SelectRenderType::selectMultipleSideBySide)]
     protected ObjectStorage $contacts;
@@ -54,6 +57,11 @@ class ContactGroup extends AbstractContactRelatedEntity
     #[Slug(generatorOptions: self::SLUG_GENERATOR_OPTIONS)]
     protected string $slug = '';
 
+    public function getContactBook(): ?ContactBook
+    {
+        return $this->contactBook;
+    }
+
     public function getName(): string
     {
         return $this->name;
@@ -62,6 +70,13 @@ class ContactGroup extends AbstractContactRelatedEntity
     public function getSlug(): string
     {
         return $this->slug;
+    }
+
+    public function setContactBook(?ContactBook $contactBook): self
+    {
+        $this->contactBook = $contactBook;
+
+        return $this;
     }
 
     public function setName(string $name): self

@@ -6,6 +6,9 @@
         product-name="contact_book"
         source-language="en">
         <body>
+            <trans-unit id="contactBook">
+                <source>Contact book</source>
+            </trans-unit>
             <trans-unit id="contacts">
                 <source>Contacts</source>
             </trans-unit>

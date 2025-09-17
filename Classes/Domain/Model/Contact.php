@@ -78,7 +78,7 @@ class Contact extends AbstractEntity
     #[Input]
     protected string $companyName = '';
 
-    #[Select(linkedModel: ContactBook::class, maxItems: 1)]
+    #[Select(linkedModel: ContactBook::class, maxItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
     protected ?ContactBook $contactBook = null;
 
     /** @var ObjectStorage<ContactGroup> */

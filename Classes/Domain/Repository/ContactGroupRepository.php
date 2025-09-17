@@ -10,7 +10,10 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Domain\Repository;
 
+use JsonException;
 use PSBits\ContactBook\Domain\Model\ContactGroup;
+use PSBits\ContactBook\Utility\ContactBookUtility;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
@@ -21,4 +24,17 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class ContactGroupRepository extends Repository
 {
+    /**
+     * @throws JsonException
+     */
+    public function findAllOfActiveContactBook(): QueryResultInterface
+    {
+        $query = $this->createQuery();
+        $query->getQuerySettings()
+            ->setRespectStoragePage(false);
+
+        $query->matching($query->equals('contactBook', ContactBookUtility::getActiveContactBookUid()));
+
+        return $query->execute();
+    }
 }

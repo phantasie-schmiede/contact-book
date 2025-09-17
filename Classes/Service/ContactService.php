@@ -100,7 +100,7 @@ readonly class ContactService
         }
 
         if (is_string($additionalContacts)) {
-            $contactIds = json_decode($additionalContacts, true, 512, JSON_THROW_ON_ERROR);
+            $contactIds = json_decode($additionalContacts, true, 2, JSON_THROW_ON_ERROR);
         }
 
         $contactIds = array_map('\intval', $contactIds ?? $additionalContacts);

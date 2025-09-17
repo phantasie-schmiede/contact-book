@@ -41,6 +41,7 @@ use PSBits\ContactBook\Domain\Repository\JobRepository;
 use PSBits\ContactBook\Domain\Repository\PhoneNumberRepository;
 use PSBits\ContactBook\Domain\Repository\WebsiteRepository;
 use PSBits\ContactBook\Service\CleanupService;
+use PSBits\ContactBook\Service\ContactBookService;
 use PSBits\ContactBook\Service\ContactGroupService;
 use PSBits\ContactBook\Service\ContactService;
 use PSBits\ContactBook\Service\Enum\VCardVersion;
@@ -85,6 +86,7 @@ class ContactController extends ActionController
         protected readonly AddressRepository      $addressRepository,
         protected readonly CleanupService         $cleanupService,
         protected readonly ContactBookRepository  $contactBookRepository,
+        protected readonly ContactBookService     $contactBookService,
         protected readonly ContactGroupRepository $contactGroupRepository,
         protected readonly ContactGroupService    $contactGroupService,
         protected readonly ContactRepository      $contactRepository,
@@ -120,6 +122,7 @@ class ContactController extends ActionController
     #[PluginAction(uncached: true)]
     public function createAction(Contact $contact): ResponseInterface
     {
+        $contact->setContactBook($this->contactBookService->getActiveContactBookForCurrentUser());
         $this->processRelations($contact);
         $this->contactRepository->add($contact);
         $this->persistenceManager->persistAll();
@@ -221,11 +224,21 @@ class ContactController extends ActionController
     }
 
     /**
+     * @throws ContainerExceptionInterface
+     * @throws DbalException
      * @throws Exception
+     * @throws IllegalObjectTypeException
+     * @throws JsonException
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     * @throws SiteNotFoundException
+     * @throws UnknownObjectException
      */
     #[PluginAction(default: true, uncached: true)]
     public function listAction(): ResponseInterface
     {
+        $this->cleanupService->cleanAll();
+
         if (0 === $this->contactBookRepository->findByOwner()
                 ->count()) {
             return $this->redirect('list', 'ContactBook');
@@ -297,7 +310,6 @@ class ContactController extends ActionController
         $this->contactRepository->update($contact);
         $this->persistenceManager->persistAll();
         $this->contactService->updateSlug($contact);
-        $this->cleanupService->cleanAll();
         $this->deletePagesCache(self::CACHE_TAG, self::CACHE_TAG . '_' . $contact->getUid());
 
         return $this->redirect(
@@ -349,7 +361,7 @@ class ContactController extends ActionController
         $contactGroupUids = json_decode(
             $this->request->getArgument('contactGroups') ?: '[]',
             true,
-            512,
+            2,
             JSON_THROW_ON_ERROR
         );
 

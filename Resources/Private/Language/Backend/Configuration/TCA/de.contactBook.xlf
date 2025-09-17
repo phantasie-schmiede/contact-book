@@ -7,6 +7,14 @@
         source-language="en"
         target-language="de">
         <body>
+            <trans-unit id="contactGroups">
+                <source>Contact groups</source>
+                <target>Kontaktgruppen</target>
+            </trans-unit>
+            <trans-unit id="contacts">
+                <source>Contact</source>
+                <target>Kontakte</target>
+            </trans-unit>
             <trans-unit id="ctrl.title">
                 <source>Contact book</source>
                 <target>Kontaktbuch</target>
@@ -14,6 +22,10 @@
             <trans-unit id="name">
                 <source>Name</source>
                 <target>Name</target>
+            </trans-unit>
+            <trans-unit id="notes">
+                <source>Notes</source>
+                <target>Notizen</target>
             </trans-unit>
             <trans-unit id="owners">
                 <source>Owners</source>
