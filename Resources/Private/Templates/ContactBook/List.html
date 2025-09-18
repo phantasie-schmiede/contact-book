@@ -30,6 +30,12 @@
                                     id="contactGroups" />
                             </p>
 
+                            <f:if condition="{contactBook.notes}">
+                                <p class="card-text">
+                                    {contactBook.notes -> f:format.nl2br()}
+                                </p>
+                            </f:if>
+
                             <f:if condition="{contactBook.otherOwners}">
                                 <strong>
                                     <foundation:translate id="sharedWith" />

@@ -6,8 +6,8 @@
 <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contactBook.xlf" />
 
 <f:asset.script
-    identifier="clearInput"
-    src="EXT:templates/Resources/Public/JavaScript/clearInput.js"
+    identifier="autoSizeTextArea"
+    src="EXT:templates/Resources/Public/JavaScript/autoSizeTextArea.js"
     type="module" />
 
 <div class="form-floating mb-3">
@@ -21,6 +21,18 @@
         class="form-label"
         for="name">
         <foundation:translate id="contactBook:name" />
+    </label>
+</div>
+
+<div class="form-floating mb-3">
+    <f:form.textarea
+        class="form-control psbits-auto-size"
+        id="notes"
+        placeholder="{foundation:translate(id: 'contactBook:notes')}"
+        property="notes" />
+    <label
+        class="form-label">
+        <foundation:translate id="contactBook:notes" />
     </label>
 </div>
 

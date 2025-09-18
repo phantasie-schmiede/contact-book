@@ -249,7 +249,7 @@ class Event extends AbstractContactRelatedEntity
 
     public function isAnniversary(): bool
     {
-        return $this->isDateComplete() && date('Y') > $this->year;
+        return null === $this->year || ($this->year && date('Y') > $this->year);
     }
 
     public function isDateComplete(): bool

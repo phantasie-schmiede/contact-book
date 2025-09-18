@@ -63,14 +63,7 @@ class CleanupService implements LoggerAwareInterface
     }
 
     /**
-     * @throws ContainerExceptionInterface
-     * @throws Exception
      * @throws IllegalObjectTypeException
-     * @throws JsonException
-     * @throws NotFoundExceptionInterface
-     * @throws ReflectionException
-     * @throws SiteNotFoundException
-     * @throws UnknownObjectException
      */
     public function cleanAll(): void
     {
@@ -81,93 +74,6 @@ class CleanupService implements LoggerAwareInterface
         $this->deleteOrphanedJobs();
         $this->deleteOrphanedPhoneNumbers();
         $this->deleteOrphanedWebsites();
-        $this->addMissingContactBookRelation();
-        $this->addMissingSlugs();
-        $this->addMissingUuids();
-        $this->trimNotes();
-    }
-
-    /**
-     * @throws IllegalObjectTypeException
-     * @throws JsonException
-     * @throws UnknownObjectException
-     */
-    private function addMissingContactBookRelation(): void
-    {
-        $addedRelations = 0;
-        $contactBook = $this->contactBookService->getActiveContactBookForCurrentUser();
-
-        /** @var Contact $contact */
-        foreach ($this->contactRepository->findAll() as $contact) {
-            if (null === $contact->getContactBook()) {
-                $contact->setContactBook($contactBook);
-                $this->contactRepository->update($contact);
-                $addedRelations++;
-            }
-        }
-
-        /** @var ContactGroup $contactGroup */
-        foreach ($this->contactGroupRepository->findAll() as $contactGroup) {
-            if (null === $contactGroup->getContactBook()) {
-                $contactGroup->setContactBook($contactBook);
-                $this->contactGroupRepository->update($contactGroup);
-                $addedRelations++;
-            }
-        }
-
-        if (0 < $addedRelations) {
-            $this->persistenceManager->persistAll();
-            $this->logger->info('Added ' . $addedRelations . ' missing contact book relations.');
-        }
-    }
-
-    /**
-     * @throws ContainerExceptionInterface
-     * @throws Exception
-     * @throws IllegalObjectTypeException
-     * @throws NotFoundExceptionInterface
-     * @throws ReflectionException
-     * @throws SiteNotFoundException
-     * @throws UnknownObjectException
-     */
-    private function addMissingSlugs(): void
-    {
-        $addedSlugs = 0;
-
-        /** @var Contact $contact */
-        foreach ($this->contactRepository->findAll() as $contact) {
-            if ('' === $contact->getSlug()) {
-                $this->contactService->updateSlug($contact);
-                $addedSlugs++;
-            }
-        }
-
-        if (0 < $addedSlugs) {
-            $this->logger->info('Added ' . $addedSlugs . ' missing slugs.');
-        }
-    }
-
-    /**
-     * @throws IllegalObjectTypeException
-     * @throws UnknownObjectException
-     */
-    private function addMissingUuids(): void
-    {
-        $addedUuids = 0;
-
-        /** @var Contact $contact */
-        foreach ($this->contactRepository->findAll() as $contact) {
-            if ('' === $contact->getUuid()) {
-                $contact->setUuid();
-                $this->contactRepository->update($contact);
-                $this->persistenceManager->persistAll();
-                $addedUuids++;
-            }
-        }
-
-        if (0 < $addedUuids) {
-            $this->logger->info('Added ' . $addedUuids . ' missing UUIDs.');
-        }
     }
 
     /**
@@ -280,46 +186,6 @@ class CleanupService implements LoggerAwareInterface
     {
         if (0 < $deletedRecords) {
             $this->logger->info('Deleted ' . $deletedRecords . ' orphaned ' . $entityName . '.', $data);
-        }
-    }
-
-    /**
-     * @throws IllegalObjectTypeException
-     * @throws UnknownObjectException
-     */
-    private function trimNotes(): void
-    {
-        $trimmedNotes = 0;
-        $this->trimNotesForRepository($this->addressRepository, $trimmedNotes);
-        $this->trimNotesForRepository($this->contactRepository, $trimmedNotes);
-        $this->trimNotesForRepository($this->eMailRepository, $trimmedNotes);
-        $this->trimNotesForRepository($this->eventRepository, $trimmedNotes);
-        $this->trimNotesForRepository($this->jobRepository, $trimmedNotes);
-        $this->trimNotesForRepository($this->phoneNumberRepository, $trimmedNotes);
-        $this->trimNotesForRepository($this->websiteRepository, $trimmedNotes);
-        $this->persistenceManager->persistAll();
-
-        if (0 < $trimmedNotes) {
-            $this->logger->info('Trimmed ' . $trimmedNotes . ' notes.');
-        }
-    }
-
-    /**
-     * @throws IllegalObjectTypeException
-     * @throws UnknownObjectException
-     */
-    private function trimNotesForRepository(Repository $repository, int &$trimmedNotes): void
-    {
-        /** @var AbstractContactRelatedEntity|Contact $record */
-        foreach ($repository->findAll() as $record) {
-            $originalValue = $record->getNotes();
-            $trimmedValue = trim($originalValue);
-            $record->setNotes($trimmedValue);
-            $repository->update($record);
-
-            if ($originalValue !== $trimmedValue) {
-                $trimmedNotes++;
-            }
         }
     }
 }

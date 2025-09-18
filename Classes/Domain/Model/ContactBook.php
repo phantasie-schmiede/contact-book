@@ -198,7 +198,7 @@ class ContactBook extends AbstractEntity
 
     public function setNotes(string $notes): self
     {
-        $this->notes = $notes;
+        $this->notes = htmlspecialchars(trim($notes));
 
         return $this;
     }
