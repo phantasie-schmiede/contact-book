@@ -156,9 +156,6 @@ class ContactController extends ActionController
         return $this->redirect('list');
     }
 
-    /**
-     * @throws JsonException
-     */
     #[PluginAction(uncached: true)]
     public function editAction(Contact $contact): ResponseInterface
     {
@@ -258,9 +255,6 @@ class ContactController extends ActionController
         return $this->htmlResponse();
     }
 
-    /**
-     * @throws JsonException
-     */
     #[PluginAction(uncached: true)]
     public function newAction(Contact $contact = null): ResponseInterface
     {
