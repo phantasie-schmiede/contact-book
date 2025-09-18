@@ -136,13 +136,21 @@ class ContactController extends ActionController
     }
 
     /**
+     * @throws ContainerExceptionInterface
+     * @throws DbalException
      * @throws IllegalObjectTypeException
+     * @throws JsonException
      * @throws NoSuchCacheGroupException
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     * @throws SiteNotFoundException
+     * @throws UnknownObjectException
      */
     #[PluginAction(uncached: true)]
     public function deleteAction(Contact $contact): ResponseInterface
     {
         $this->contactRepository->remove($contact);
+        $this->cleanupService->cleanAll();
         $this->deletePagesCache(self::CACHE_TAG, self::CACHE_TAG . '_' . $contact->getUid());
 
         return $this->redirect('list');
@@ -224,21 +232,11 @@ class ContactController extends ActionController
     }
 
     /**
-     * @throws ContainerExceptionInterface
-     * @throws DbalException
-     * @throws Exception
-     * @throws IllegalObjectTypeException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
-     * @throws ReflectionException
-     * @throws SiteNotFoundException
-     * @throws UnknownObjectException
      */
     #[PluginAction(default: true, uncached: true)]
     public function listAction(): ResponseInterface
     {
-        $this->cleanupService->cleanAll();
-
         if (0 === $this->contactBookRepository->findByOwner()
                 ->count()) {
             return $this->redirect('list', 'ContactBook');
@@ -310,6 +308,7 @@ class ContactController extends ActionController
         $this->contactRepository->update($contact);
         $this->persistenceManager->persistAll();
         $this->contactService->updateSlug($contact);
+        $this->cleanupService->cleanAll();
         $this->deletePagesCache(self::CACHE_TAG, self::CACHE_TAG . '_' . $contact->getUid());
 
         return $this->redirect(
@@ -318,6 +317,9 @@ class ContactController extends ActionController
         );
     }
 
+    /**
+     * @throws JsonException
+     */
     private function getList(): string
     {
         // Find all contacts.
@@ -329,9 +331,6 @@ class ContactController extends ActionController
         return $this->contactService->renderListAndUpdateCache('list', $contacts, $this->request);
     }
 
-    /**
-     * @throws JsonException
-     */
     private function prepareFormView(?Contact $contact = null): void
     {
         $this->view->assignMultiple([
