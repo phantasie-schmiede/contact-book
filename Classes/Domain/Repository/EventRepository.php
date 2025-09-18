@@ -10,8 +10,10 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Domain\Repository;
 
+use Exception;
 use PSBits\ContactBook\Domain\Demand\EventDemand;
 use PSBits\ContactBook\Domain\Model\Event;
+use PSBits\ContactBook\Service\EventService;
 use PSBits\Foundation\Utility\QueryUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -25,16 +27,25 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class EventRepository extends Repository
 {
+    public function __construct(
+        protected readonly EventService $eventService,
+    ) {
+        parent::__construct();
+    }
+
     /**
      * @param EventDemand $demand
      *
      * @return QueryResultInterface<Event>
+     * @throws Exception
      * @throws InvalidQueryException
      */
     public function findByDemand(EventDemand $demand): QueryResultInterface
     {
-        $constraints = [];
         $query = $this->createQuery();
+
+        // Only show events related to contacts of contact books the current frontend user has access to!
+        $constraints[] = $query->in('uid', $this->eventService->getAllEventUidsForCurrentFrontendUser());
 
         if (null !== $demand->getMinDate()) {
             $constraints[] = $query->logicalOr(
