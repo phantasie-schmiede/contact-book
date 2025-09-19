@@ -38,6 +38,8 @@ class ContactBookRepository extends Repository
 
         /** @var Query $query */
         $query = $this->createQuery();
+        $query->getQuerySettings()
+            ->setRespectStoragePage(false);
         $query->matching($query->contains('owners', $frontendUser));
 
         return $query->execute();

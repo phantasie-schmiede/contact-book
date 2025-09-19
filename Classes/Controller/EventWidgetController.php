@@ -33,7 +33,7 @@ use function count;
  *
  * @package PSBits\ContactBook\Controller
  */
-class EventWidgetController extends AbstractCheckAccessController
+class EventWidgetController extends AbstractAccessController
 {
     public function __construct(
         ContactBookRepository              $contactBookRepository,

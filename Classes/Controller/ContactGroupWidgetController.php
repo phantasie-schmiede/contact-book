@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
  *
  * @package PSBits\ContactBook\Controller
  */
-class ContactGroupWidgetController extends AbstractCheckAccessController
+class ContactGroupWidgetController extends AbstractAccessController
 {
     public function __construct(
         ContactBookRepository                     $contactBookRepository,

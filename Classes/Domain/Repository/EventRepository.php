@@ -45,7 +45,7 @@ class EventRepository extends Repository
         $query = $this->createQuery();
 
         // Only show events related to contacts of contact books the current frontend user has access to!
-        $constraints[] = $query->in('uid', $this->eventService->getAllEventUidsForCurrentFrontendUser());
+        $constraints[] = $query->in('uid', $this->eventService->getAllEventUidsForCurrentFrontendUser() ?: [0]);
 
         if (null !== $demand->getMinDate()) {
             $constraints[] = $query->logicalOr(

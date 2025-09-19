@@ -41,7 +41,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
  *
  * @package PSBits\ContactBook\Controller
  */
-class ContactGroupController extends AbstractCheckAccessController
+class ContactGroupController extends AbstractAccessController
 {
     use ControllerCacheTrait;
 

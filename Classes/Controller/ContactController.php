@@ -55,6 +55,7 @@ use PSBits\Foundation\Service\UploadService;
 use PSBits\Foundation\Traits\ControllerCacheTrait;
 use PSBits\Foundation\Utility\FileUtility;
 use PSBits\Foundation\Utility\LocalizationUtility;
+use PSBits\FrontendUsers\Service\GlobalVariableProviders\FrontendUserProvider;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -62,12 +63,14 @@ use ReflectionException;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
+use function in_array;
 use function is_array;
 
 /**
@@ -75,7 +78,7 @@ use function is_array;
  *
  * @package PSBits\ContactBook\Controller
  */
-class ContactController extends AbstractCheckAccessController
+class ContactController extends AbstractAccessController
 {
     use ControllerCacheTrait;
 
@@ -303,6 +306,41 @@ class ContactController extends AbstractCheckAccessController
             actionName: 'show',
             arguments: ['contact' => $contact]
         );
+    }
+
+    /**
+     * Check, if user is allowed to view or perform operations on requested contact.
+     *
+     * @throws PropagateResponseException
+     */
+    protected function initializeAction(): void
+    {
+        parent::initializeAction();
+
+        if (in_array(
+            $this->request->getControllerActionName(),
+            [
+                'new',
+                'create',
+            ],
+            true
+        )) {
+            return;
+        }
+
+        if ($this->request->hasArgument('contact')) {
+            $contactUid = $this->request->getArgument('contact');
+
+            /** @var Contact $contact */
+            $contact = $this->contactRepository->findByUid((int)$contactUid);
+            $owners = ($contact->getContactBook()
+                ?->getOwners()
+                ->toArray()) ?? [];
+
+            if (!in_array(GlobalVariableService::get(FrontendUserProvider::class . '.user'), $owners, true)) {
+                throw new \RuntimeException('Access denied.', 1758284184);
+            }
+        }
     }
 
     /**

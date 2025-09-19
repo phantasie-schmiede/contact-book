@@ -17,11 +17,11 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
- * Class AbstractCheckAccessController
+ * Class AbstractAccessController
  *
  * @package PSBits\ContactBook\Controller
  */
-abstract class AbstractCheckAccessController extends ActionController
+abstract class AbstractAccessController extends ActionController
 {
     public function __construct(
         protected readonly ContactBookRepository $contactBookRepository,
