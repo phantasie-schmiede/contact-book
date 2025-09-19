@@ -64,7 +64,6 @@ use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -76,7 +75,7 @@ use function is_array;
  *
  * @package PSBits\ContactBook\Controller
  */
-class ContactController extends ActionController
+class ContactController extends AbstractCheckAccessController
 {
     use ControllerCacheTrait;
 
@@ -85,7 +84,7 @@ class ContactController extends ActionController
     public function __construct(
         protected readonly AddressRepository      $addressRepository,
         protected readonly CleanupService         $cleanupService,
-        protected readonly ContactBookRepository  $contactBookRepository,
+        ContactBookRepository                     $contactBookRepository,
         protected readonly ContactBookService     $contactBookService,
         protected readonly ContactGroupRepository $contactGroupRepository,
         protected readonly ContactGroupService    $contactGroupService,
@@ -103,6 +102,7 @@ class ContactController extends ActionController
         protected readonly ViewFactoryInterface   $viewFactory,
         protected readonly WebsiteRepository      $websiteRepository,
     ) {
+        parent::__construct($contactBookRepository);
     }
 
     /**

@@ -12,6 +12,7 @@ namespace PSBits\ContactBook\Controller;
 
 use JsonException;
 use PSBits\ContactBook\Data\ExtensionInformation;
+use PSBits\ContactBook\Domain\Repository\ContactBookRepository;
 use PSBits\ContactBook\Domain\Repository\ContactGroupRepository;
 use PSBits\ContactBook\Service\ContactGroupService;
 use PSBits\ContactBook\Service\ContactService;
@@ -23,21 +24,22 @@ use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
  * Class ContactGroupWidgetController
  *
  * @package PSBits\ContactBook\Controller
  */
-class ContactGroupWidgetController extends ActionController
+class ContactGroupWidgetController extends AbstractCheckAccessController
 {
     public function __construct(
+        ContactBookRepository                     $contactBookRepository,
         protected readonly ContactGroupService    $contactGroupService,
         protected readonly ContactGroupRepository $contactGroupRepository,
         protected readonly ContactService         $contactService,
         protected readonly ExtensionInformation   $extensionInformation,
     ) {
+        parent::__construct($contactBookRepository);
     }
 
     /**

@@ -16,6 +16,7 @@ use JsonException;
 use PSBits\ContactBook\Domain\Demand\EventDemand;
 use PSBits\ContactBook\Domain\Enum\EventType;
 use PSBits\ContactBook\Domain\Model\Event;
+use PSBits\ContactBook\Domain\Repository\ContactBookRepository;
 use PSBits\ContactBook\Domain\Repository\EventRepository;
 use PSBits\Foundation\Attribute\PluginAction;
 use PSBits\Templates\Utility\StringUtility;
@@ -24,7 +25,6 @@ use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use function count;
 
@@ -33,11 +33,13 @@ use function count;
  *
  * @package PSBits\ContactBook\Controller
  */
-class EventWidgetController extends ActionController
+class EventWidgetController extends AbstractCheckAccessController
 {
     public function __construct(
+        ContactBookRepository              $contactBookRepository,
         protected readonly EventRepository $eventRepository,
     ) {
+        parent::__construct($contactBookRepository);
     }
 
     /**

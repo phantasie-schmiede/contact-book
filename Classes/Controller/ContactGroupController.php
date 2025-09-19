@@ -32,7 +32,6 @@ use Psr\Http\Message\ResponseInterface;
 use ReflectionException;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -42,14 +41,14 @@ use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
  *
  * @package PSBits\ContactBook\Controller
  */
-class ContactGroupController extends ActionController
+class ContactGroupController extends AbstractCheckAccessController
 {
     use ControllerCacheTrait;
 
     public const string CACHE_TAG = 'tx_contactbook_groups';
 
     public function __construct(
-        protected readonly ContactBookRepository  $contactBookRepository,
+        ContactBookRepository                     $contactBookRepository,
         protected readonly ContactBookService     $contactBookService,
         protected readonly ContactGroupRepository $contactGroupRepository,
         protected readonly ContactGroupService    $contactGroupService,
@@ -59,6 +58,7 @@ class ContactGroupController extends ActionController
         protected readonly PersistenceManager     $persistenceManager,
         protected readonly VCardService           $vCardService,
     ) {
+        parent::__construct($contactBookRepository);
     }
 
     /**
