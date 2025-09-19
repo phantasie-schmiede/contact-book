@@ -136,15 +136,8 @@ class ContactController extends ActionController
     }
 
     /**
-     * @throws ContainerExceptionInterface
-     * @throws DbalException
      * @throws IllegalObjectTypeException
-     * @throws JsonException
      * @throws NoSuchCacheGroupException
-     * @throws NotFoundExceptionInterface
-     * @throws ReflectionException
-     * @throws SiteNotFoundException
-     * @throws UnknownObjectException
      */
     #[PluginAction(uncached: true)]
     public function deleteAction(Contact $contact): ResponseInterface
@@ -229,6 +222,7 @@ class ContactController extends ActionController
     }
 
     /**
+     * @throws Exception
      * @throws JsonException
      */
     #[PluginAction(default: true, uncached: true)]
@@ -239,7 +233,7 @@ class ContactController extends ActionController
             return $this->redirect('list', 'ContactBook');
         }
 
-        $list = $this->contactService->getCachedList('list');
+        $list = $this->contactService->getCachedList($this->contactBookService->getCacheEntryIdentifier());
 
         if (false === $list) {
             $list = $this->getList();
@@ -322,7 +316,11 @@ class ContactController extends ActionController
                 ->toArray()
         );
 
-        return $this->contactService->renderListAndUpdateCache('list', $contacts, $this->request);
+        return $this->contactService->renderListAndUpdateCache(
+            $this->contactBookService->getCacheEntryIdentifier(),
+            $contacts,
+            $this->request
+        );
     }
 
     private function prepareFormView(?Contact $contact = null): void

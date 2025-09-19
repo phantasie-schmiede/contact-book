@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Service;
 
 use Doctrine\DBAL\Exception;
+use PSBits\ContactBook\Controller\ContactGroupController;
 use PSBits\ContactBook\Domain\Model\ContactGroup;
 use PSBits\ContactBook\Domain\Repository\ContactGroupRepository;
 use PSBits\Foundation\Service\Configuration\TcaService;
@@ -42,7 +43,7 @@ readonly class ContactGroupService
 
     public function getCacheEntryIdentifier(ContactGroup $contactGroup): string
     {
-        return 'list_group_' . $contactGroup->getUid();
+        return ContactGroupController::CACHE_TAG . '_' . $contactGroup->getUid();
     }
 
     public function prepareView(ContactGroup $contactGroup, RequestInterface $request, ViewInterface $view): void

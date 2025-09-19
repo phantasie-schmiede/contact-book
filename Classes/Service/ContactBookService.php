@@ -12,6 +12,7 @@ namespace PSBits\ContactBook\Service;
 
 use Doctrine\DBAL\Exception;
 use JsonException;
+use PSBits\ContactBook\Controller\ContactController;
 use PSBits\ContactBook\Domain\Model\ContactBook;
 use PSBits\ContactBook\Domain\Repository\ContactBookRepository;
 use PSBits\ContactBook\Utility\ContactBookUtility;
@@ -72,6 +73,14 @@ readonly class ContactBookService
         $this->setActiveContactBookForCurrentUser($defaultContactBook);
 
         return $defaultContactBook;
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function getCacheEntryIdentifier(): string
+    {
+        return ContactController::CACHE_TAG . '_list_' . ContactBookUtility::getActiveContactBookUid();
     }
 
     /**
