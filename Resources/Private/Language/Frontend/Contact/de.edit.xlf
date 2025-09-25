@@ -11,6 +11,10 @@
                 <source>other residents</source>
                 <target>weitere Bewohner</target>
             </trans-unit>
+            <trans-unit id="additionalContacts.bankAccount">
+                <source>other account holders</source>
+                <target>weitere Kontoinhaber</target>
+            </trans-unit>
             <trans-unit id="additionalContacts.document">
                 <source>other linked contacts</source>
                 <target>weitere verlinkte Kontakte</target>
@@ -34,6 +38,10 @@
             <trans-unit id="dyn.addNewAddress">
                 <source>Add new address</source>
                 <target>Neue Adresse hinzufügen</target>
+            </trans-unit>
+            <trans-unit id="dyn.addNewBankAccount">
+                <source>Add new bank account</source>
+                <target>Neue Kontoverbindung hinzufügen</target>
             </trans-unit>
             <trans-unit id="dyn.addNewDocument">
                 <source>Add new document</source>
@@ -62,6 +70,10 @@
             <trans-unit id="dyn.newAddress">
                 <source>&#60;new address&#62;</source>
                 <target>&#60;neue Adresse&#62;</target>
+            </trans-unit>
+            <trans-unit id="dyn.newBankAccount">
+                <source>&#60;new bank account&#62;</source>
+                <target>&#60;neue Kontoverbindung&#62;</target>
             </trans-unit>
             <trans-unit id="dyn.newDocument">
                 <source>&#60;new document&#62;</source>

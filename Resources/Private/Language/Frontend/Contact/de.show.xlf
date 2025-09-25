@@ -11,6 +11,14 @@
                 <source>Back to list</source>
                 <target>Zur Liste</target>
             </trans-unit>
+            <trans-unit id="bankAccount.bic">
+                <source>BIC</source>
+                <target>BIC</target>
+            </trans-unit>
+            <trans-unit id="bankAccount.iban">
+                <source>IBAN</source>
+                <target>IBAN</target>
+            </trans-unit>
             <group id="colleagues"
                 restype="x-gettext-plurals">
                 <trans-unit id="colleagues[0]">

@@ -71,6 +71,11 @@ class Contact extends AbstractEntity
     #[Lazy]
     protected ObjectStorage $addresses;
 
+    /** @var ObjectStorage<BankAccount> */
+    #[Inline(linkedModel: BankAccount::class, mm: 'tx_contactbook_contacts_bankaccounts')]
+    #[Lazy]
+    protected ObjectStorage $bankAccounts;
+
     #[Column(position: 'after:nickname')]
     #[Input]
     protected string $birthName = '';
@@ -185,6 +190,17 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    public function addBankAccounts(BankAccount ...$bankAccounts): self
+    {
+        foreach ($bankAccounts as $bankAccount) {
+            if (!$this->bankAccounts->contains($bankAccount)) {
+                $this->bankAccounts->attach($bankAccount);
+            }
+        }
+
+        return $this;
+    }
+
     public function addContactGroup(ContactGroup $contactGroup): self
     {
         $this->contactGroups->attach($contactGroup);
@@ -286,6 +302,25 @@ class Contact extends AbstractEntity
     public function getAddresses(): ObjectStorage
     {
         return $this->addresses;
+    }
+
+    public function getBankAccountByUid(int $uid): BankAccount
+    {
+        foreach ($this->bankAccounts as $bankAccount) {
+            if ($uid === $bankAccount->getUid()) {
+                return $bankAccount;
+            }
+        }
+
+        throw new InvalidArgumentException(
+            __CLASS__ . ': Bank account with UID ' . $uid . ' was not found!', 1758549763
+        );
+    }
+
+    /** @return ObjectStorage<BankAccount> */
+    public function getBankAccounts(): ObjectStorage
+    {
+        return $this->bankAccounts;
     }
 
     public function getBirthName(): string
@@ -659,6 +694,12 @@ class Contact extends AbstractEntity
             $searchTerms[] = str_replace(',', '', $address->getCompactValue());
         }
 
+        foreach ($this->bankAccounts as $bankAccount) {
+            $searchTerms[] = $bankAccount->getBankName();
+            $searchTerms[] = $bankAccount->getBic();
+            $searchTerms[] = $bankAccount->getIban();
+        }
+
         foreach ($this->eMails as $eMail) {
             $searchTerms[] = $eMail->getEMailAddress();
         }
@@ -780,6 +821,7 @@ class Contact extends AbstractEntity
     public function initializeObject(): void
     {
         $this->addresses = new ObjectStorage();
+        $this->bankAccounts = new ObjectStorage();
         $this->contactGroups = new ObjectStorage();
         $this->documents = new ObjectStorage();
         $this->eMails = new ObjectStorage();
@@ -821,6 +863,13 @@ class Contact extends AbstractEntity
     public function removeAllContactGroups(): self
     {
         $this->contactGroups = new ObjectStorage();
+
+        return $this;
+    }
+
+    public function removeBankAccount(BankAccount $bankAccount): self
+    {
+        $this->bankAccounts->detach($bankAccount);
 
         return $this;
     }
@@ -870,6 +919,13 @@ class Contact extends AbstractEntity
     public function setAddresses(ObjectStorage $addresses): self
     {
         $this->addresses = $addresses;
+
+        return $this;
+    }
+
+    public function setBankAccounts(ObjectStorage $bankAccounts): self
+    {
+        $this->bankAccounts = $bankAccounts;
 
         return $this;
     }

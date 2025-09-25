@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2025-09-22T15:52:00+01:00"
+        original="messages"
+        product-name="contact_book"
+        source-language="en">
+        <body>
+            <trans-unit id="bankName">
+                <source>Name</source>
+            </trans-unit>
+            <trans-unit id="bic">
+                <source>BIC</source>
+            </trans-unit>
+            <trans-unit id="contacts">
+                <source>Account holders</source>
+            </trans-unit>
+            <trans-unit id="ctrl.title">
+                <source>Bank account</source>
+            </trans-unit>
+            <trans-unit id="iban">
+                <source>IBAN</source>
+            </trans-unit>
+            <trans-unit id="notes">
+                <source>Notes</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

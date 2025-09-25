@@ -22,6 +22,12 @@
     name="tabAddressesLabel"
     value="{f:render(arguments: {identifier: 'geo-alt'}, section: 'Icon')}" />
 <f:variable
+    name="tabBankAccountsContent"
+    value="{f:render(arguments: {records: contact.bankAccounts}, section: 'TabBankAccountsContent')}" />
+<f:variable
+    name="tabBankAccountsLabel"
+    value="{f:render(arguments: {identifier: 'bank'}, section: 'Icon')}" />
+<f:variable
     name="tabDocumentsContent"
     value="{f:render(arguments: {linkTarget: '_blank', records: contact.documents}, section: 'TabLinkedRelationsContent')}" />
 <f:variable
@@ -141,11 +147,16 @@
                     label: tabEventsLabel
                 },
                 7: {
+                    content: tabBankAccountsContent,
+                    id: 'bank-accounts',
+                    label: tabBankAccountsLabel
+                },
+                8: {
                     content: tabDocumentsContent,
                     id: 'documents',
                     label: tabDocumentsLabel
                 },
-                8: {
+                9: {
                     content: tabOtherContent,
                     id: 'other',
                     label: tabOtherLabel
@@ -179,7 +190,7 @@
     <f:link.action
         action="edit"
         arguments="{contact: contact}"
-        class="bg-primary-subtle btn"
+        class="bg-primary-subtle btn me-2"
         data-psbits-spinner-text-hidden="{foundation:translate(id: 'loadingSpinner:pageLoading')}">
         <span data-psbits-spinner-phase-out>
             <core:icon
@@ -253,6 +264,51 @@
     </f:link.action>
 </f:section>
 
+<f:section name="TabBankAccountsContent">
+    <f:if condition="{records}">
+        <f:for
+            as="bankAccount"
+            each="{records}"
+            iteration="bankAccountIterator">
+            <div class="card{f:if(condition: bankAccountIterator.isLast, else: ' mb-3')}">
+                <div class="card-body">
+                    <f:if condition="{bankAccount.bankName}">
+                        <h4 class="card-title h5">
+                            {bankAccount.bankName}
+                        </h4>
+                    </f:if>
+
+                    <f:render
+                        contentAs="content"
+                        partial="Component/LabelledList">
+                        <f:render
+                            arguments="{label: '{foundation:translate(id: \'bankAccount.iban\')}'}"
+                            contentAs="value"
+                            partial="Component/LabelledListItem">
+                            {bankAccount.ibanFormatted}
+                        </f:render>
+
+                        <f:if condition="{bankAccount.bic}">
+                            <f:render
+                                arguments="{label: '{foundation:translate(id: \'bankAccount.bic\')}'}"
+                                contentAs="value"
+                                partial="Component/LabelledListItem">
+                                {bankAccount.bic}
+                            </f:render>
+                        </f:if>
+                    </f:render>
+
+                    <f:if condition="{bankAccount.notes}">
+                        <p class="card-text mt-3 text-muted">
+                            {bankAccount.notes -> f:format.nl2br()}
+                        </p>
+                    </f:if>
+                </div>
+            </div>
+        </f:for>
+    </f:if>
+</f:section>
+
 <f:section name="TabLinkedRelationsContent">
     <f:if condition="{records}">
         <f:render
@@ -309,7 +365,8 @@
                                 </f:else>
                             </f:if>
 
-                            {name -> f:link.action(action: 'show', arguments: {contact: spouse}, class: 'text-decoration-none')}
+                            {name -> f:link.action(action: 'show', arguments: {contact: spouse}, class:
+                            'text-decoration-none')}
                         </f:if>
 
                         <f:if condition="{event.location}">
@@ -490,7 +547,7 @@
         value="{job.colleagues -> f:count()}" />
     <f:variable
         name="iconIdentifier"
-        value="{f:if(condition: '1 == {numberOfColleagues}', then: 'templates-person-fill', else: 'templates-people-fill')}"/>
+        value="{f:if(condition: '1 == {numberOfColleagues}', then: 'templates-person-fill', else: 'templates-people-fill')}" />
 
     <f:render
         arguments="{

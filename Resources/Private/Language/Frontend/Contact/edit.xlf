@@ -9,6 +9,9 @@
             <trans-unit id="additionalContacts.address">
                 <source>other residents</source>
             </trans-unit>
+            <trans-unit id="additionalContacts.bankAccount">
+                <source>other account holders</source>
+            </trans-unit>
             <trans-unit id="additionalContacts.document">
                 <source>other linked contacts</source>
             </trans-unit>

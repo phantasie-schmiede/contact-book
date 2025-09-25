@@ -37,6 +37,12 @@
     name="tabAddressesLabel"
     value="{f:render(arguments: {identifier: 'geo-alt'}, section: 'Icon')}" />
 <f:variable
+    name="tabBankAccountsContent"
+    value="{f:render(arguments: {contact: contact, recordType: 'BankAccount', records: contact.bankAccounts}, section: 'Accordion')}" />
+<f:variable
+    name="tabBankAccountsLabel"
+    value="{f:render(arguments: {identifier: 'bank'}, section: 'Icon')}" />
+<f:variable
     name="tabDocumentsContent"
     value="{f:render(arguments: {contact: contact, recordType: 'Document', records: contact.documents}, section: 'Accordion')}" />
 <f:variable
@@ -125,11 +131,16 @@
                 label: tabEventsLabel
             },
             7: {
+                content: tabBankAccountsContent,
+                id: \'bankAccounts\',
+                label: tabBankAccountsLabel
+            },
+            8: {
                 content: tabDocumentsContent,
                 id: \'documents\',
                 label: tabDocumentsLabel
             },
-            8: {
+            9: {
                 content: tabOtherContent,
                 id: \'other\',
                 label: tabOtherLabel

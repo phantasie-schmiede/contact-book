@@ -21,6 +21,7 @@ use PSBits\ContactBook\Domain\Enum\EventType;
 use PSBits\ContactBook\Domain\Enum\GeneralType;
 use PSBits\ContactBook\Domain\Enum\PhoneNumberType;
 use PSBits\ContactBook\Domain\Model\Address;
+use PSBits\ContactBook\Domain\Model\BankAccount;
 use PSBits\ContactBook\Domain\Model\Contact;
 use PSBits\ContactBook\Domain\Model\ContactGroup;
 use PSBits\ContactBook\Domain\Model\ContactRelationInterface;
@@ -31,6 +32,7 @@ use PSBits\ContactBook\Domain\Model\Job;
 use PSBits\ContactBook\Domain\Model\PhoneNumber;
 use PSBits\ContactBook\Domain\Model\Website;
 use PSBits\ContactBook\Domain\Repository\AddressRepository;
+use PSBits\ContactBook\Domain\Repository\BankAccountRepository;
 use PSBits\ContactBook\Domain\Repository\ContactBookRepository;
 use PSBits\ContactBook\Domain\Repository\ContactGroupRepository;
 use PSBits\ContactBook\Domain\Repository\ContactRepository;
@@ -86,6 +88,7 @@ class ContactController extends AbstractAccessController
 
     public function __construct(
         protected readonly AddressRepository      $addressRepository,
+        protected readonly BankAccountRepository  $bankAccountRepository,
         protected readonly CleanupService         $cleanupService,
         ContactBookRepository                     $contactBookRepository,
         protected readonly ContactBookService     $contactBookService,
@@ -404,6 +407,7 @@ class ContactController extends AbstractAccessController
 
         foreach ([
                      'address',
+                     'bankAccount',
                      'document',
                      'eMail',
                      'event',
@@ -413,6 +417,7 @@ class ContactController extends AbstractAccessController
                  ] as $relationType) {
             $existingEntities = match ($relationType) {
                 'address'     => clone $contact->getAddresses(),
+                'bankAccount' => clone $contact->getBankAccounts(),
                 'document'    => clone $contact->getDocuments(),
                 'eMail'       => clone $contact->getEMails(),
                 'event'       => clone $contact->getEvents(),
@@ -430,6 +435,7 @@ class ContactController extends AbstractAccessController
                 foreach ($updatedEntities as $uid => $entityData) {
                     $entity = match ($relationType) {
                         'address'     => $contact->getAddressByUid($uid),
+                        'bankAccount' => $contact->getBankAccountByUid($uid),
                         'document'    => $contact->getDocumentByUid($uid),
                         'eMail'       => $contact->getEMailByUid($uid),
                         'event'       => $contact->getEventByUid($uid),
@@ -448,6 +454,9 @@ class ContactController extends AbstractAccessController
                     switch ($relationType) {
                         case 'address':
                             $contact->removeAddress($entity);
+                            break;
+                        case 'bankAccount':
+                            $contact->removeBankAccount($entity);
                             break;
                         case 'document':
                             $contact->removeDocument($entity);
@@ -478,6 +487,11 @@ class ContactController extends AbstractAccessController
                             $address = new Address();
                             $this->updateEntityProperties($contact, $address, $entityData);
                             $this->addressRepository->add($address);
+                            break;
+                        case 'bankAccount':
+                            $bankAccount = new BankAccount();
+                            $this->updateEntityProperties($contact, $bankAccount, $entityData);
+                            $this->bankAccountRepository->add($bankAccount);
                             break;
                         case 'document':
                             $document = new Document();
@@ -530,6 +544,15 @@ class ContactController extends AbstractAccessController
     }
 
     /**
+     * @throws DbalException
+     */
+    private function updateBankAccountProperties(BankAccount $bankAccount, array $entityData): void
+    {
+        $bankAccount->setNotes($entityData['notes'])
+            ->setIban($entityData['iban']);
+    }
+
+    /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
      * @throws MisconfiguredTcaException
@@ -567,7 +590,7 @@ class ContactController extends AbstractAccessController
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
-     * @throws Exception
+     * @throws DbalException
      * @throws JsonException
      * @throws MisconfiguredTcaException
      * @throws NotFoundExceptionInterface
@@ -585,6 +608,9 @@ class ContactController extends AbstractAccessController
         switch (true) {
             case $entity instanceof Address:
                 $this->updateAddressProperties($entity, $entityData);
+                break;
+            case $entity instanceof BankAccount:
+                $this->updateBankAccountProperties($entity, $entityData);
                 break;
             case $entity instanceof Document:
                 $this->updateDocumentProperties($entity, $entityData, $tempUid);
