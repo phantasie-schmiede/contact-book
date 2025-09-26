@@ -111,9 +111,15 @@ class Contact extends AbstractEntity
     #[Lazy]
     protected ObjectStorage $events;
 
+    #[Input]
+    protected string $facebookId = '';
+
     #[Column(position: 'after:title')]
     #[Input]
     protected string $firstName = '';
+
+    #[Input]
+    protected string $instagramId = '';
 
     /** @var ObjectStorage<Job> */
     #[Inline(foreignField: 'contact', linkedModel: Job::class)]
@@ -141,6 +147,9 @@ class Contact extends AbstractEntity
      */
     #[Text]
     protected string $notes = '';
+
+    #[Input]
+    protected string $payPalId = '';
 
     /** @var ObjectStorage<PhoneNumber> */
     #[Inline(linkedModel: PhoneNumber::class, mm: 'tx_contactbook_contacts_phonenumbers')]
@@ -479,6 +488,11 @@ class Contact extends AbstractEntity
         return $events;
     }
 
+    public function getFacebookId(): string
+    {
+        return $this->facebookId;
+    }
+
     public function getFirstName(): string
     {
         return $this->firstName;
@@ -545,6 +559,11 @@ class Contact extends AbstractEntity
         }
 
         return $images;
+    }
+
+    public function getInstagramId(): string
+    {
+        return $this->instagramId;
     }
 
     public function getJobByUid(int $uid): Job
@@ -618,6 +637,11 @@ class Contact extends AbstractEntity
     public function getNotes(): string
     {
         return StringUtility::isEmpty($this->notes) ? '' : $this->notes;
+    }
+
+    public function getPayPalId(): string
+    {
+        return $this->payPalId;
     }
 
     public function getPhoneNumberByUid(int $uid): PhoneNumber
@@ -979,9 +1003,23 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    public function setFacebookId(string $facebookId): self
+    {
+        $this->facebookId = $facebookId;
+
+        return $this;
+    }
+
     public function setFirstName(string $firstName): self
     {
         $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function setInstagramId(string $instagramId): self
+    {
+        $this->instagramId = $instagramId;
 
         return $this;
     }
@@ -1017,6 +1055,13 @@ class Contact extends AbstractEntity
     public function setNotes(string $notes): self
     {
         $this->notes = htmlspecialchars(trim($notes));
+
+        return $this;
+    }
+
+    public function setPayPalId(string $payPalId): self
+    {
+        $this->payPalId = $payPalId;
 
         return $this;
     }

@@ -2,7 +2,8 @@
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:contactBook="http://typo3.org/ns/PSBits/ContactBook/ViewHelpers"
-    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
+    xmlns:viewHelpers="http://typo3.org/ns/PSBits/ViewHelpers/ViewHelpers">
 <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/phoneNumber.xlf" />
 <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/Contact/edit.xlf" />
 
@@ -31,6 +32,7 @@
 <div class="form-floating mb-3">
     <f:form.select
         class="form-select"
+        id="phone-number-{uid}-generalType"
         name="phoneNumber[{uid}][generalType]"
         value="{record.generalType.value -> f:or(alternative: defaultGeneralType)}">
         <f:for
@@ -43,13 +45,15 @@
         </f:for>
     </f:form.select>
     <label
-        class="form-label">
+        class="form-label"
+        for="phone-number-{uid}-generalType">
         <foundation:translate id="phoneNumber:generalType" />
     </label>
 </div>
 <div class="form-floating mb-3">
     <f:form.select
         class="form-select"
+        id="phone-number-{uid}-phoneNumberType"
         name="phoneNumber[{uid}][phoneNumberType]"
         value="{record.phoneNumberType.value}">
         <f:for
@@ -62,7 +66,8 @@
         </f:for>
     </f:form.select>
     <label
-        class="form-label">
+        class="form-label"
+        for="phone-number-{uid}-phoneNumberType">
         <foundation:translate id="phoneNumber:phoneNumberType" />
     </label>
 </div>
@@ -73,12 +78,13 @@
     </label>
     <div class="row">
         <div class="col-12 col-md-6">
-            <div class="input-group mb-3">
+            <div class="input-group mb-3 mb-md-0">
                 <span class="input-group-text">+</span>
                 <f:form.textfield
                     class="form-control"
                     name="phoneNumber[{uid}][internationalDiallingCode]"
                     placeholder="{foundation:translate(id: 'phoneNumber:internationalDiallingCode')}"
+                    required="true"
                     type="tel"
                     value="{record.internationalDiallingCode -> f:or(alternative: '49')}" />
                 <span class="input-group-text">0</span>
@@ -86,16 +92,18 @@
                     class="form-control"
                     name="phoneNumber[{uid}][areaCode]"
                     placeholder="Vorwahl ohne 0"
+                    required="true"
                     type="tel"
                     value="{record.areaCode}" />
             </div>
         </div>
         <div class="col-12 col-md-6">
-            <div class="input-group mb-3">
+            <div class="input-group">
                 <f:form.textfield
                     class="form-control"
                     name="phoneNumber[{uid}][connectionIdentifier]"
                     placeholder="{foundation:translate(id: 'phoneNumber:connectionIdentifier')}"
+                    required="true"
                     type="tel"
                     value="{record.connectionIdentifier}" />
                 <span class="input-group-text">-</span>
@@ -109,6 +117,82 @@
         </div>
     </div>
 </div>
+
+<f:if condition="{record}}">
+    <f:then>
+        <f:variable
+            name="additionalAttributes"
+            value="{
+                data-psbits-form-condition-field: '#phone-number-{uid}-phoneNumberType',
+                data-psbits-form-condition-value: 'mobile'
+            }" />
+    </f:then>
+    <f:else>
+        <f:variable
+            name="additionalAttributes"
+            value="{
+                _data-psbits-form-condition-field: '#phone-number-{uid}-phoneNumberType',
+                _data-psbits-form-condition-value: 'mobile'
+            }" />
+    </f:else>
+</f:if>
+
+<viewHelpers:tag
+    additionalAttributes="{additionalAttributes}"
+    class="mb-3{f:if(condition: '{record} && mobile != {record.phoneNumberType.value}', then: ' visually-hidden')}"
+    tag="div">
+    <div class="form-check form-switch">
+        <f:form.checkbox
+            additionalAttributes="{switch: ''}"
+            checked="{f:if(condition: record.signal, then: '1', else: '0')}"
+            class="form-check-input"
+            id="phone-number-{uid}-signal"
+            name="phoneNumber[{uid}][signal]"
+            value="1" />
+        <label
+            class="form-check-label"
+            for="phone-number-{uid}-signal">
+            <core:icon
+                identifier="templates-signal"
+                size="small" />
+            <foundation:translate id="phoneNumber:signal" />
+        </label>
+    </div>
+    <div class="form-check form-switch">
+        <f:form.checkbox
+            additionalAttributes="{switch: ''}"
+            checked="{f:if(condition: record.telegram, then: '1', else: '0')}"
+            class="form-check-input"
+            id="phone-number-{uid}-telegram"
+            name="phoneNumber[{uid}][telegram]"
+            value="1" />
+        <label
+            class="form-check-label"
+            for="phone-number-{uid}-telegram">
+            <core:icon
+                identifier="templates-telegram"
+                size="small" />
+            <foundation:translate id="phoneNumber:telegram" />
+        </label>
+    </div>
+    <div class="form-check form-switch">
+        <f:form.checkbox
+            additionalAttributes="{switch: ''}"
+            checked="{f:if(condition: record.whatsApp, then: '1', else: '0')}"
+            class="form-check-input"
+            id="phone-number-{uid}-whatsApp"
+            name="phoneNumber[{uid}][whatsApp]"
+            value="1" />
+        <label
+            class="form-check-label"
+            for="phone-number-{uid}-whatsApp">
+            <core:icon
+                identifier="templates-whatsapp"
+                size="small" />
+            <foundation:translate id="phoneNumber:whatsApp" />
+        </label>
+    </div>
+</viewHelpers:tag>
 <div class="form-floating mb-3">
     <f:render
         arguments="{

@@ -17,17 +17,13 @@ use PSBits\ContactBook\Domain\Model\Contact;
 use PSBits\ContactBook\Domain\Model\ContactRelationInterface;
 use PSBits\ContactBook\Domain\Repository\ContactRepository;
 use PSBits\Foundation\Service\Configuration\TcaService;
-use PSBits\Foundation\Utility\Configuration\FilePathUtility;
-use PSBits\Templates\Data\ExtensionInformation as TemplatesExtensionInformation;
+use PSBits\Templates\Service\ViewService;
 use PSBits\Templates\Utility\SlugUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use ReflectionException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\View\ViewFactoryData;
-use TYPO3\CMS\Core\View\ViewFactoryInterface;
-use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
@@ -42,13 +38,12 @@ use function is_string;
 readonly class ContactService
 {
     public function __construct(
-        protected ContactRepository             $contactRepository,
-        protected ExtensionInformation          $extensionInformation,
-        protected FrontendInterface             $frontendCache,
-        protected PersistenceManager            $persistenceManager,
-        protected TcaService                    $tcaService,
-        protected TemplatesExtensionInformation $templatesExtensionInformation,
-        protected ViewFactoryInterface          $viewFactory,
+        protected ContactRepository    $contactRepository,
+        protected ExtensionInformation $extensionInformation,
+        protected FrontendInterface    $frontendCache,
+        protected PersistenceManager   $persistenceManager,
+        protected TcaService           $tcaService,
+        protected ViewService          $viewService,
     ) {
     }
 
@@ -57,25 +52,39 @@ readonly class ContactService
         return $this->frontendCache->get($cacheEntryIdentifier);
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws JsonException
+     * @throws NotFoundExceptionInterface
+     */
     public function renderAutocompleteList(
         array            $contacts,
         RequestInterface $request,
     ): string {
-        $view = $this->buildView($request, 'Ajax');
+        $view = $this->viewService->createStandaloneView(
+            $this->extensionInformation,
+            $request,
+            'Ajax/AutocompleteList'
+        );
         $view->assign('contacts', $contacts);
 
-        return $view->render('AutocompleteList');
+        return $view->render();
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws JsonException
+     * @throws NotFoundExceptionInterface
+     */
     public function renderListAndUpdateCache(
         string           $cacheEntryIdentifier,
         array            $contacts,
         RequestInterface $request,
     ): string {
-        $view = $this->buildView($request, 'Cache');
+        $view = $this->viewService->createStandaloneView($this->extensionInformation, $request, 'Cache/ContactList');
         $view->assign('contacts', $contacts);
 
-        $list = $view->render('ContactList');
+        $list = $view->render();
         $this->frontendCache->set($cacheEntryIdentifier, $list, [], 0);
 
         return $list;
@@ -138,24 +147,5 @@ readonly class ContactService
 
         $this->contactRepository->update($contact);
         $this->persistenceManager->persistAll();
-    }
-
-    private function buildView(RequestInterface $request, string $templateSubdirectory = ''): ViewInterface
-    {
-        $privateResourcePath = FilePathUtility::getPrivateResourcePath($this->extensionInformation);
-
-        // @formatter:off
-        $viewFactoryData = new ViewFactoryData(
-            templateRootPaths: [$privateResourcePath . 'Templates' . ($templateSubdirectory ? ('/' . $templateSubdirectory) : '')],
-            partialRootPaths : [
-                FilePathUtility::getPrivateResourcePath($this->templatesExtensionInformation) . 'Partials',
-                $privateResourcePath . 'Partials',
-            ],
-            layoutRootPaths  : [$privateResourcePath . 'Layouts'],
-            request          : $request,
-        );
-        // @formatter:on
-
-        return $this->viewFactory->create($viewFactoryData);
     }
 }

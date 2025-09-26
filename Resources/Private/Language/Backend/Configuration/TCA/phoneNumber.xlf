@@ -54,6 +54,15 @@
             <trans-unit id="phoneNumbertype.other">
                 <source>Other</source>
             </trans-unit>
+            <trans-unit id="signal">
+                <source>Signal</source>
+            </trans-unit>
+            <trans-unit id="telegram">
+                <source>Telegram</source>
+            </trans-unit>
+            <trans-unit id="whatsApp">
+                <source>WhatsApp</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

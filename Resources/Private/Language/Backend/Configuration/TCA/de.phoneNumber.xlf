@@ -71,6 +71,18 @@
                 <source>Other</source>
                 <target>Anderer</target>
             </trans-unit>
+            <trans-unit id="signal">
+                <source>Signal</source>
+                <target>Signal</target>
+            </trans-unit>
+            <trans-unit id="telegram">
+                <source>Telegram</source>
+                <target>Telegram</target>
+            </trans-unit>
+            <trans-unit id="whatsApp">
+                <source>WhatsApp</source>
+                <target>WhatsApp</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

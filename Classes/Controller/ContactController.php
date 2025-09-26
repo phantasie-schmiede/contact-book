@@ -661,7 +661,10 @@ class ContactController extends AbstractAccessController
             ->setGeneralType(GeneralType::from($entityData['generalType']))
             ->setInternationalDiallingCode((string)$entityData['internationalDiallingCode'])
             ->setNotes($entityData['notes'])
-            ->setPhoneNumberType(PhoneNumberType::from($entityData['phoneNumberType']));
+            ->setPhoneNumberType(PhoneNumberType::from($entityData['phoneNumberType']))
+            ->setSignal((bool)$entityData['signal'])
+            ->setTelegram((bool)$entityData['telegram'])
+            ->setWhatsApp((bool)$entityData['whatsApp']);
     }
 
     private function updateWebsiteProperties(Website $website, array $entityData): void

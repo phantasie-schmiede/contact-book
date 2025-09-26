@@ -12,11 +12,13 @@ namespace PSBits\ContactBook\Domain\Model;
 
 use PSBits\ContactBook\Domain\Enum\GeneralType;
 use PSBits\ContactBook\Domain\Enum\PhoneNumberType;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Check;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Input;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Select;
 use PSBits\Foundation\Attribute\TCA\Ctrl;
 use PSBits\Foundation\Enum\SelectRenderType;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use function sprintf;
 
 /**
  * Class PhoneNumber
@@ -43,6 +45,12 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 class PhoneNumber extends AbstractContactRelatedEntity
 {
     public const string ACTION_ICON_IDENTIFIER = 'telephone';
+
+    public const array SHORT_URLS = [
+        'SIGNAL'   => 'https://signal.me/#p=%s',
+        'TELEGRAM' => 'https://t.me/%s',
+        'WHATSAPP' => 'https://wa.me/%s',
+    ];
 
     #[Input]
     protected string $areaCode = '';
@@ -74,6 +82,15 @@ class PhoneNumber extends AbstractContactRelatedEntity
         'Other'    => 'other',
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
     protected PhoneNumberType $phoneNumberType = PhoneNumberType::Mobile;
+
+    #[Check]
+    protected bool $signal = false;
+
+    #[Check]
+    protected bool $telegram = false;
+
+    #[Check]
+    protected bool $whatsApp = false;
 
     public function getAdditionalLinks(): array
     {
@@ -137,6 +154,48 @@ class PhoneNumber extends AbstractContactRelatedEntity
         return $this->phoneNumberType;
     }
 
+    public function getSignalLink(): ?string
+    {
+        if ($this->isSignal()) {
+            return sprintf(self::SHORT_URLS['SIGNAL'], $this->getCompleteNumber());
+        }
+
+        return null;
+    }
+
+    public function getTelegramLink(): ?string
+    {
+        if ($this->isTelegram()) {
+            return sprintf(self::SHORT_URLS['TELEGRAM'], $this->getCompleteNumber());
+        }
+
+        return null;
+    }
+
+    public function getWhatsAppLink(): ?string
+    {
+        if ($this->isWhatsApp()) {
+            return sprintf(self::SHORT_URLS['WHATSAPP'], $this->getCompleteNumber());
+        }
+
+        return null;
+    }
+
+    public function isSignal(): bool
+    {
+        return $this->signal;
+    }
+
+    public function isTelegram(): bool
+    {
+        return $this->telegram;
+    }
+
+    public function isWhatsApp(): bool
+    {
+        return $this->whatsApp;
+    }
+
     public function setAreaCode(string $areaCode): self
     {
         $this->areaCode = $areaCode;
@@ -175,6 +234,27 @@ class PhoneNumber extends AbstractContactRelatedEntity
     public function setPhoneNumberType(PhoneNumberType $phoneNumberType): self
     {
         $this->phoneNumberType = $phoneNumberType;
+
+        return $this;
+    }
+
+    public function setSignal(bool $signal): self
+    {
+        $this->signal = $signal;
+
+        return $this;
+    }
+
+    public function setTelegram(bool $telegram): self
+    {
+        $this->telegram = $telegram;
+
+        return $this;
+    }
+
+    public function setWhatsApp(bool $whatsApp): self
+    {
+        $this->whatsApp = $whatsApp;
 
         return $this;
     }
