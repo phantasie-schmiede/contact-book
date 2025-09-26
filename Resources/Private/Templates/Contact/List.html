@@ -1,30 +1,22 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
+    xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
 <foundation:translation.registerLanguageFile file="EXT:templates/Resources/Private/Language/Frontend/Component/loadingSpinner.xlf" />
-
-<f:asset.script
-    identifier="loadingSpinner"
-    src="EXT:templates/Resources/Public/JavaScript/loadingSpinner.js"
-    type="module" />
 
 <div class="mb-2 row">
     <div class="col-12 d-flex justify-content-end">
         <f:render partial="ExportModal/Toggle" />
 
-        <f:link.action
-            action="new"
-            class="bg-primary-subtle btn ms-2"
-            data="{
-                psbits-spinner-text-hidden: '{foundation:translate(id: \'loadingSpinner:pageLoading\')}',
-                psbits-spinner-phase-out: ''
-            }"
-            title="{foundation:translate(id: 'addNewContact')}">
-            <core:icon
-                identifier="templates-person-add"
-                size="small" />
-        </f:link.action>
+        <templates:component.button
+            additionalAttributes="{title: '{foundation:translate(id: \'addNewContact\')}'}"
+            additionalClasses="bg-primary-subtle ms-2"
+            href="{f:uri.action(action: 'new')}"
+            iconIdentifier="templates-person-add"
+            label="{foundation:translate(id: 'showAll')}"
+            spinnerTextHidden="{foundation:translate(id: 'loadingSpinner:pageLoading')}"
+            tag="a" />
     </div>
 </div>
 

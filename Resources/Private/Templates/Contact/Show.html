@@ -8,12 +8,6 @@
 <foundation:translation.registerLanguageFile
     file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
     name="modal" />
-<foundation:translation.registerLanguageFile file="EXT:templates/Resources/Private/Language/Frontend/Component/loadingSpinner.xlf" />
-
-<f:asset.script
-    identifier="loadingSpinner"
-    src="EXT:templates/Resources/Public/JavaScript/loadingSpinner.js"
-    type="module" />
 
 <f:variable
     name="tabAddressesContent"
@@ -178,27 +172,20 @@
 </div>
 
 <div class="d-flex mt-3">
-    <f:link.action
-        action="list"
-        class="bg-secondary-subtle btn me-2">
-        <core:icon
-            identifier="templates-arrow-left"
-            size="small" />
-        <foundation:translate id="backToList" />
-    </f:link.action>
-
-    <f:link.action
-        action="edit"
-        arguments="{contact: contact}"
-        class="bg-primary-subtle btn me-2"
-        data-psbits-spinner-text-hidden="{foundation:translate(id: 'loadingSpinner:pageLoading')}">
-        <span data-psbits-spinner-phase-out>
-            <core:icon
-                identifier="templates-pencil"
-                size="small" />
-        </span>
-        <foundation:translate id="edit" />
-    </f:link.action>
+    <templates:component.button
+        additionalClasses="bg-secondary-subtle"
+        href="{f:uri.action(action: 'list')}"
+        iconIdentifier="templates-arrow-left"
+        label="{foundation:translate(id: 'backToList')}"
+        spinnerText="{foundation:translate(id: 'backToList')}"
+        tag="a" />
+    <templates:component.button
+        additionalClasses="bg-primary-subtle ms-2"
+        href="{f:uri.action(action: 'edit', arguments: '{contact: contact}')}"
+        iconIdentifier="templates-pencil"
+        label="{foundation:translate(id: 'edit')}"
+        spinnerText="{foundation:translate(id: 'edit')}"
+        tag="a" />
 
     <f:render
         arguments="{

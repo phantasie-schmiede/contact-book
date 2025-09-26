@@ -234,11 +234,6 @@ class ContactController extends AbstractAccessController
     #[PluginAction(default: true, uncached: true)]
     public function listAction(): ResponseInterface
     {
-        if (0 === $this->contactBookRepository->findByOwner()
-                ->count()) {
-            return $this->redirect('list', 'ContactBook');
-        }
-
         $list = $this->contactService->getCachedList($this->contactBookService->getCacheEntryIdentifier());
 
         if (false === $list) {

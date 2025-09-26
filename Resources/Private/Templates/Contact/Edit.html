@@ -5,11 +5,6 @@
     xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
 <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/form.xlf" />
 
-<f:asset.script
-    identifier="loadingSpinner"
-    src="EXT:templates/Resources/Public/JavaScript/loadingSpinner.js"
-    type="module" />
-
 <f:render
     arguments="{contact: contact, loadCompanies: true, loadContacts: true}"
     partial="AjaxRequests" />
@@ -27,20 +22,17 @@
     <div class="col-12 d-flex mt-3">
         <f:variable
             name="buttonLabel"
-            value="{templates:svgIcon(identifier: 'templates-x-lg')}&nbsp;{foundation:translate(id: 'form:cancel')}" />
+            value="{templates:svgIcon(additionalClasses: 'me-2', identifier: 'templates-x-lg')}{foundation:translate(id: 'form:cancel')}" />
 
         <f:render
             arguments="{class: 'align-items-center bg-secondary-subtle btn d-flex', contact: contact, label: buttonLabel}"
             partial="Link/Contact" />
-        <button
-            class="align-items-center bg-primary-subtle btn d-flex ms-2"
-            data-psbits-spinner-text="{foundation:translate(id: 'form:submit.loadingSpinner')}"
-            data-psbits-spinner-phase-out
-            type="submit">
-            <templates:svgIcon identifier="templates-floppy" />
-            &nbsp;
-            <foundation:translate id="form:save" />
-        </button>
+        <templates:component.button
+            additionalClasses="bg-primary-subtle ms-2"
+            iconIdentifier="templates-floppy"
+            label="{foundation:translate(id: 'form:save')}"
+            spinnerText="{foundation:translate(id: 'form:submit.loadingSpinner')}"
+            type="submit" />
     </div>
 </f:form>
 

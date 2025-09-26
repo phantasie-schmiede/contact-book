@@ -1,13 +1,9 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
+    xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
 <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/form.xlf" />
-
-<f:asset.script
-    identifier="loadingSpinner"
-    src="EXT:templates/Resources/Public/JavaScript/loadingSpinner.js"
-    type="module" />
 
 <f:form
     action="create"
@@ -21,19 +17,20 @@
         }"
         partial="FormFields/ContactBook" />
 
-    <div class="col-12 mt-3">
-        <f:link.action
-            action="list"
-            class="bg-secondary-subtle btn">
-            <foundation:translate id="form:cancel" />
-        </f:link.action>
-        <button
-            class="bg-primary-subtle btn"
-            data-psbits-spinner-text="{foundation:translate(id: 'form:submit.loadingSpinner')}"
-            data-psbits-spinner-phase-out
-            type="submit">
-            <foundation:translate id="form:save" />
-        </button>
+    <div class="col-12 d-flex mt-3">
+        <templates:component.button
+            additionalClasses="bg-secondary-subtle"
+            href="{f:uri.action(action: 'list')}"
+            iconIdentifier="templates-arrow-left"
+            label="{foundation:translate(id: 'form:cancel')}"
+            spinnerText="{foundation:translate(id: 'form:cancel')}"
+            tag="a" />
+        <templates:component.button
+            additionalClasses="bg-primary-subtle ms-2"
+            iconIdentifier="templates-floppy"
+            label="{foundation:translate(id: 'form:save')}"
+            spinnerText="{foundation:translate(id: 'form:submit.loadingSpinner')}"
+            type="submit" />
     </div>
 </f:form>
 </html>

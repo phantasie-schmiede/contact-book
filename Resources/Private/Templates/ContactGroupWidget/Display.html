@@ -1,14 +1,10 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
+    xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
 <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/ContactGroup/show.xlf" />
 <foundation:translation.registerLanguageFile file="EXT:templates/Resources/Private/Language/Frontend/Component/loadingSpinner.xlf" />
-
-<f:asset.script
-    identifier="loadingSpinner"
-    src="EXT:templates/Resources/Public/JavaScript/loadingSpinner.js"
-    type="module" />
 
 <div class="h-100 position-relative">
     <div class="d-flex flex-column h-100 pb-5">
@@ -33,27 +29,21 @@
     </div>
 
     <div class="bg-white bottom-0 d-flex end-0 position-absolute pt-3 start-0 z-1">
-        <f:link.action
-            action="list"
-            class="bg-secondary-subtle btn flex-grow-1"
-            controller="Contact"
-            data-psbits-spinner-text-hidden="{foundation:translate(id: 'loadingSpinner:pageLoading')}"
-            pluginName="ContactList">
-            <foundation:translate id="showAll" />
-        </f:link.action>
+        <templates:component.button
+            additionalClasses="bg-primary-subtle flex-grow-1"
+            href="{f:uri.action(action: 'list', controller: 'Contact', pluginName: 'ContactList')}"
+            label="{foundation:translate(id: 'showAll')}"
+            spinnerText="{foundation:translate(id: 'loadingSpinner:pageLoading')}"
+            tag="a" />
 
         <f:if condition="{contactGroup}">
-            <f:link.action
-                action="edit"
-                arguments="{contactGroup: contactGroup}"
-                class="bg-primary-subtle btn ms-2"
-                controller="ContactGroup"
-                pluginName="ContactGroups">
-                <core:icon
-                    identifier="templates-pencil"
-                    size="small" />
-                <foundation:translate id="show:edit" />
-            </f:link.action>
+            <templates:component.button
+                additionalClasses="bg-secondary-subtle ms-2"
+                href="{f:uri.action(action: 'edit', arguments: '{contactGroup: contactGroup}', controller: 'ContactGroup', pluginName: 'ContactGroups')}"
+                iconIdentifier="templates-pencil"
+                label="{foundation:translate(id: 'show:edit')}"
+                spinnerText="{foundation:translate(id: 'show:edit')}"
+                tag="a" />
         </f:if>
     </div>
 </div>
