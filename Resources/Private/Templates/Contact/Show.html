@@ -53,7 +53,7 @@
     value="{f:render(arguments: {identifier: 'three-dots'}, section: 'Icon')}" />
 <f:variable
     name="tabPhoneNumbersContent"
-    value="{f:render(arguments: {records: contact.phoneNumbers}, section: 'TabLinkedRelationsContent')}" />
+    value="{f:render(arguments: {records: contact.phoneNumbers}, section: 'TabPhoneNumbersContent')}" />
 <f:variable
     name="tabPhoneNumbersLabel"
     value="{f:render(arguments: {identifier: 'telephone'}, section: 'Icon')}" />
@@ -433,6 +433,31 @@
             </f:for>
         </ul>
     </f:if>
+</f:section>
+
+<f:section name="TabPhoneNumbersContent">
+    <f:for
+        as="phoneNumber"
+        each="{records}"
+        iteration="phoneNumberIterator">
+        <div class="card{f:if(condition: phoneNumberIterator.isLast, else: ' mb-3')}">
+            <div class="card-body">
+                <h4 class="card-title h5">
+                    <templates:svgIcon
+                        additionalClasses="me-1"
+                        identifier="templates-{phoneNumber.generalType.iconIdentifier}" />
+                    <templates:svgIcon identifier="templates-{phoneNumber.phoneNumberType.iconIdentifier}" />
+                    {phoneNumber.compactValue}
+                </h4>
+
+                <f:if condition="{phoneNumber.notes}">
+                    <p class="card-text mt-3 text-muted">
+                        {phoneNumber.notes -> f:format.nl2br()}
+                    </p>
+                </f:if>
+            </div>
+        </div>
+    </f:for>
 </f:section>
 
 <f:section name="TabWorkContent">
