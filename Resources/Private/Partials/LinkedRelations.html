@@ -51,21 +51,6 @@
             </a>
 
             <f:if condition="{showActionIcon}">
-                <f:if condition="{record.additionalLinks}">
-                    <f:for
-                        as="href"
-                        each="{record.additionalLinks}"
-                        key="actionIconIdentifier">
-                        <a
-                            class="p-2"
-                            href="{href}">
-                            <core:icon
-                                identifier="templates-{actionIconIdentifier}"
-                                size="small" />
-                        </a>
-                    </f:for>
-                </f:if>
-
                 <a
                     class="p-2"
                     href="{record.link}"

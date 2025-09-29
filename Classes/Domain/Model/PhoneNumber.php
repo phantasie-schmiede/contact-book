@@ -92,15 +92,30 @@ class PhoneNumber extends AbstractContactRelatedEntity
     #[Check]
     protected bool $whatsApp = false;
 
-    public function getAdditionalLinks(): array
+    /**
+     * The array keys are the icon identifiers.
+     */
+    public function getActionLinks(): array
     {
         if (PhoneNumberType::Mobile === $this->getPhoneNumberType()) {
-            return [
-                'chat-left-dots' => 'sms:' . $this->getCompleteNumber(),
-            ];
+            if ($this->isSignal()) {
+                $links['signal'] = $this->getSignalLink();
+            }
+
+            if ($this->isTelegram()) {
+                $links['telegram'] = $this->getTelegramLink();
+            }
+
+            if ($this->isWhatsApp()) {
+                $links['whatsapp'] = $this->getWhatsAppLink();
+            }
+
+            $links['chat-left-dots'] = 'sms:' . $this->getCompleteNumber();
         }
 
-        return [];
+        $links['telephone'] = $this->getLink();
+
+        return $links;
     }
 
     public function getAreaCode(): string
@@ -110,12 +125,14 @@ class PhoneNumber extends AbstractContactRelatedEntity
 
     public function getCompactValue(): string
     {
-        return sprintf(
-            '+%s %s %s %s',
-            $this->internationalDiallingCode,
-            $this->areaCode,
-            $this->connectionIdentifier,
-            $this->extension,
+        return trim(
+            sprintf(
+                '+%s %s %s %s',
+                $this->internationalDiallingCode,
+                $this->areaCode,
+                $this->connectionIdentifier,
+                $this->extension,
+            )
         );
     }
 

@@ -441,8 +441,8 @@
         each="{records}"
         iteration="phoneNumberIterator">
         <div class="card{f:if(condition: phoneNumberIterator.isLast, else: ' mb-3')}">
-            <div class="card-body">
-                <h4 class="card-title h5">
+            <div class="card-body{f:if(condition: phoneNumber.notes, else: ' pb-2')}">
+                <h4 class="card-title h5 mb-0">
                     <templates:svgIcon
                         additionalClasses="me-1"
                         identifier="templates-{phoneNumber.generalType.iconIdentifier}" />
@@ -450,8 +450,21 @@
                     {phoneNumber.compactValue}
                 </h4>
 
+                <div class="d-flex justify-content-end">
+                    <f:for
+                        as="href"
+                        each="{phoneNumber.actionLinks}"
+                        key="actionIconIdentifier">
+                        <a
+                            class="link-underline link-underline-opacity-0 p-2"
+                            href="{href}">
+                            <templates:svgIcon identifier="templates-{actionIconIdentifier}" />
+                        </a>
+                    </f:for>
+                </div>
+
                 <f:if condition="{phoneNumber.notes}">
-                    <p class="card-text mt-3 text-muted">
+                    <p class="card-text text-muted">
                         {phoneNumber.notes -> f:format.nl2br()}
                     </p>
                 </f:if>
