@@ -66,6 +66,13 @@ class Contact extends AbstractEntity
         ],
     ];
 
+    public const string URL_PREFIX_FACEBOOK  = 'https://www.facebook.com/';
+    public const string URL_PREFIX_INSTAGRAM = 'https://www.instagram.com/';
+    public const string URL_PREFIX_LINKEDIN  = 'https://www.linkedin.com/in/';
+    public const string URL_PREFIX_PAYPAL    = 'https://www.paypal.me/';
+    public const string URL_PREFIX_XING      = 'https://www.xing.com/profile/';
+    public const string URL_PREFIX_YOUTUBE   = 'https://www.youtube.com/c/';
+
     /** @var ObjectStorage<Address> */
     #[Inline(linkedModel: Address::class, mm: 'tx_contactbook_contacts_addresses')]
     #[Lazy]
@@ -130,6 +137,9 @@ class Contact extends AbstractEntity
     #[Input]
     protected string $lastName = '';
 
+    #[Input]
+    protected string $linkedInId = '';
+
     #[Column(position: 'after:firstName')]
     #[Input]
     protected string $middleNames = '';
@@ -178,6 +188,12 @@ class Contact extends AbstractEntity
     #[Inline(linkedModel: Website::class, mm: 'tx_contactbook_contacts_websites')]
     #[Lazy]
     protected ObjectStorage $websites;
+
+    #[Input]
+    protected string $xingId = '';
+
+    #[Input]
+    protected string $youTubeId = '';
 
     public function __construct()
     {
@@ -493,6 +509,15 @@ class Contact extends AbstractEntity
         return $this->facebookId;
     }
 
+    public function getFacebookUrl(): string
+    {
+        if ('' === $this->facebookId) {
+            return '';
+        }
+
+        return self::URL_PREFIX_FACEBOOK . $this->facebookId;
+    }
+
     public function getFirstName(): string
     {
         return $this->firstName;
@@ -566,6 +591,15 @@ class Contact extends AbstractEntity
         return $this->instagramId;
     }
 
+    public function getInstagramUrl(): string
+    {
+        if ('' === $this->instagramId) {
+            return '';
+        }
+
+        return self::URL_PREFIX_INSTAGRAM . $this->instagramId;
+    }
+
     public function getJobByUid(int $uid): Job
     {
         foreach ($this->jobs as $job) {
@@ -586,6 +620,20 @@ class Contact extends AbstractEntity
     public function getLastName(): string
     {
         return $this->lastName;
+    }
+
+    public function getLinkedInId(): string
+    {
+        return $this->linkedInId;
+    }
+
+    public function getLinkedInUrl(): string
+    {
+        if ('' === $this->linkedInId) {
+            return '';
+        }
+
+        return self::URL_PREFIX_LINKEDIN . $this->linkedInId;
     }
 
     public function getListName(): string
@@ -642,6 +690,15 @@ class Contact extends AbstractEntity
     public function getPayPalId(): string
     {
         return $this->payPalId;
+    }
+
+    public function getPayPalUrl(): string
+    {
+        if ('' === $this->payPalId) {
+            return '';
+        }
+
+        return self::URL_PREFIX_PAYPAL . $this->payPalId;
     }
 
     public function getPhoneNumberByUid(int $uid): PhoneNumber
@@ -821,6 +878,34 @@ class Contact extends AbstractEntity
     public function getWebsites(): ObjectStorage
     {
         return $this->websites;
+    }
+
+    public function getXingId(): string
+    {
+        return $this->xingId;
+    }
+
+    public function getXingUrl(): string
+    {
+        if ('' === $this->xingId) {
+            return '';
+        }
+
+        return self::URL_PREFIX_XING . $this->xingId;
+    }
+
+    public function getYouTubeId(): string
+    {
+        return $this->youTubeId;
+    }
+
+    public function getYouTubeUrl(): string
+    {
+        if ('' === $this->youTubeId) {
+            return '';
+        }
+
+        return self::URL_PREFIX_YOUTUBE . $this->youTubeId;
     }
 
     /**
@@ -1038,6 +1123,13 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    public function setLinkedInId(string $linkedInId): self
+    {
+        $this->linkedInId = $linkedInId;
+
+        return $this;
+    }
+
     public function setMiddleNames(string $middleNames): self
     {
         $this->middleNames = $middleNames;
@@ -1109,6 +1201,20 @@ class Contact extends AbstractEntity
     public function setWebsites(ObjectStorage $websites): self
     {
         $this->websites = $websites;
+
+        return $this;
+    }
+
+    public function setXingId(string $xingId): self
+    {
+        $this->xingId = $xingId;
+
+        return $this;
+    }
+
+    public function setYouTubeId(string $youTubeId): self
+    {
+        $this->youTubeId = $youTubeId;
 
         return $this;
     }

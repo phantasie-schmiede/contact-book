@@ -38,7 +38,7 @@
     value="{f:render(arguments: {identifier: 'geo-alt'}, section: 'Icon')}" />
 <f:variable
     name="tabBankAccountsContent"
-    value="{f:render(arguments: {contact: contact, recordType: 'BankAccount', records: contact.bankAccounts}, section: 'Accordion')}" />
+    value="{f:render(arguments: {contact: contact}, section: 'TabBankAccountsContent')}" />
 <f:variable
     name="tabBankAccountsLabel"
     value="{f:render(arguments: {identifier: 'bank'}, section: 'Icon')}" />
@@ -80,7 +80,7 @@
     value="{f:render(arguments: {identifier: 'telephone'}, section: 'Icon')}" />
 <f:variable
     name="tabWebsitesContent"
-    value="{f:render(arguments: {contact: contact, generalTypes: generalTypes, recordType: 'Website', records: contact.websites}, section: 'Accordion')}" />
+    value="{f:render(arguments: {contact: contact, generalTypes: generalTypes}, section: 'TabWebsitesContent')}" />
 <f:variable
     name="tabWebsitesLabel"
     value="{f:render(arguments: {identifier: 'globe'}, section: 'Icon')}" />
@@ -199,6 +199,27 @@
     <core:icon
         identifier="templates-{identifier}"
         size="medium" />
+</f:section>
+
+<f:section name="TabBankAccountsContent">
+    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+
+    <f:render
+        arguments="{contact: contact, recordType: 'BankAccount', records: contact.bankAccounts}"
+        section="Accordion" />
+
+    <div class="form-floating mt-3">
+        <f:form.textfield
+            class="form-control"
+            id="payPalId"
+            placeholder="{foundation:translate(id: 'contact:payPalId')}"
+            property="payPalId" />
+        <label
+            class="form-label"
+            for="payPalId">
+            <foundation:translate id="contact:payPalId" />
+        </label>
+    </div>
 </f:section>
 
 <f:section name="TabNameContent">
@@ -336,6 +357,75 @@
                 preselection: contact.contactGroupUidsAsJson,
             }"
             partial="Component/InputAutocomplete" />
+    </div>
+</f:section>
+
+<f:section name="TabWebsitesContent">
+    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+
+    <f:render
+        arguments="{contact: contact, generalTypes: generalTypes, recordType: 'Website', records: contact.websites}"
+        section="Accordion" />
+
+    <div class="form-floating mt-3">
+        <f:form.textfield
+            class="form-control"
+            id="facebookId"
+            placeholder="{foundation:translate(id: 'contact:facebookId')}"
+            property="facebookId" />
+        <label
+            class="form-label"
+            for="facebookId">
+            <foundation:translate id="contact:facebookId" />
+        </label>
+    </div>
+    <div class="form-floating mt-3">
+        <f:form.textfield
+            class="form-control"
+            id="instagramId"
+            placeholder="{foundation:translate(id: 'contact:instagramId')}"
+            property="instagramId" />
+        <label
+            class="form-label"
+            for="instagramId">
+            <foundation:translate id="contact:instagramId" />
+        </label>
+    </div>
+    <div class="form-floating mt-3">
+        <f:form.textfield
+            class="form-control"
+            id="linkedInId"
+            placeholder="{foundation:translate(id: 'contact:linkedInId')}"
+            property="linkedInId" />
+        <label
+            class="form-label"
+            for="linkedInId">
+            <foundation:translate id="contact:linkedInId" />
+        </label>
+    </div>
+    <div class="form-floating mt-3">
+        <f:form.textfield
+            class="form-control"
+            id="xingId"
+            placeholder="{foundation:translate(id: 'contact:xingId')}"
+            property="xingId" />
+        <label
+            class="form-label"
+            for="xingId">
+            <foundation:translate id="contact:xingId" />
+        </label>
+    </div>
+    <div class="form-floating mt-3">
+        <f:form.textfield
+            class="form-control"
+            id="youTubeId"
+            placeholder="{foundation:translate(id: 'contact:youTubeId')}"
+            property="youTubeId" />
+        <label
+            class="form-label"
+            for="youTubeId">
+            <foundation:translate id="contact:youTubeId" />
+        </label>
     </div>
 </f:section>
 </html>

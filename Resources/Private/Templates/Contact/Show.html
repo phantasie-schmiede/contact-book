@@ -17,7 +17,7 @@
     value="{f:render(arguments: {identifier: 'geo-alt'}, section: 'Icon')}" />
 <f:variable
     name="tabBankAccountsContent"
-    value="{f:render(arguments: {records: contact.bankAccounts}, section: 'TabBankAccountsContent')}" />
+    value="{f:render(arguments: {contact: contact}, section: 'TabBankAccountsContent')}" />
 <f:variable
     name="tabBankAccountsLabel"
     value="{f:render(arguments: {identifier: 'bank'}, section: 'Icon')}" />
@@ -59,7 +59,7 @@
     value="{f:render(arguments: {identifier: 'telephone'}, section: 'Icon')}" />
 <f:variable
     name="tabWebsitesContent"
-    value="{f:render(arguments: {linkTarget: '_blank', records: contact.websites}, section: 'TabLinkedRelationsContent')}" />
+    value="{f:render(arguments: {contact: contact}, section: 'TabWebsitesContent')}" />
 <f:variable
     name="tabWebsitesLabel"
     value="{f:render(arguments: {identifier: 'globe'}, section: 'Icon')}" />
@@ -252,10 +252,10 @@
 </f:section>
 
 <f:section name="TabBankAccountsContent">
-    <f:if condition="{records}">
+    <f:if condition="{contact.bankAccounts}">
         <f:for
             as="bankAccount"
-            each="{records}"
+            each="{contact.bankAccounts}"
             iteration="bankAccountIterator">
             <div class="card{f:if(condition: bankAccountIterator.isLast, else: ' mb-3')}">
                 <div class="card-body">
@@ -293,6 +293,17 @@
                 </div>
             </div>
         </f:for>
+    </f:if>
+
+    <f:if condition="{contact.payPalUrl}">
+        <div class="d-flex justify-content-end">
+            <templates:component.button
+                additionalClasses="btn-outline-primary justify-self-start"
+                externalLink="1"
+                href="{contact.payPalUrl}"
+                iconIdentifier="templates-paypal"
+                label="PayPal" />
+        </div>
     </f:if>
 </f:section>
 
@@ -471,6 +482,57 @@
             </div>
         </div>
     </f:for>
+</f:section>
+
+<f:section name="TabWebsitesContent">
+    <f:render
+        arguments="{linkTarget: '_blank', records: contact.websites}"
+        section="TabLinkedRelationsContent" />
+
+    <f:if condition="{contact.linkedinUrl} || {contact.xingUrl} || {contact.twitterUrl} || {contact.facebookUrl} || {contact.instagramUrl}">
+        <div class="d-flex flex-wrap gap-2 justify-content-end">
+            <f:if condition="{contact.linkedInUrl}">
+                <templates:component.button
+                    additionalClasses="btn-outline-primary"
+                    externalLink="1"
+                    href="{contact.linkedInUrl}"
+                    iconIdentifier="templates-linkedin"
+                    label="LinkedIn" />
+            </f:if>
+            <f:if condition="{contact.facebookUrl}">
+                <templates:component.button
+                    additionalClasses="btn-outline-primary"
+                    externalLink="1"
+                    href="{contact.facebookUrl}"
+                    iconIdentifier="templates-facebook"
+                    label="Facebook" />
+            </f:if>
+            <f:if condition="{contact.instagramUrl}">
+                <templates:component.button
+                    additionalClasses="btn-outline-primary"
+                    externalLink="1"
+                    href="{contact.instagramUrl}"
+                    iconIdentifier="templates-instagram"
+                    label="Instagram" />
+            </f:if>
+            <f:if condition="{contact.xingUrl}">
+                <templates:component.button
+                    additionalClasses="btn-outline-primary"
+                    externalLink="1"
+                    href="{contact.xingUrl}"
+                    iconIdentifier="templates-xing"
+                    label="Xing" />
+            </f:if>
+            <f:if condition="{contact.youTubeUrl}">
+                <templates:component.button
+                    additionalClasses="btn-outline-primary"
+                    externalLink="1"
+                    href="{contact.youTubeUrl}"
+                    iconIdentifier="templates-youtube"
+                    label="YouTube" />
+            </f:if>
+        </div>
+    </f:if>
 </f:section>
 
 <f:section name="TabWorkContent">

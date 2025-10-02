@@ -43,9 +43,17 @@
                 <source>Events</source>
                 <target>Ereignisse</target>
             </trans-unit>
+            <trans-unit id="facebookId">
+                <source>Facebook ID</source>
+                <target>Facebook-ID</target>
+            </trans-unit>
             <trans-unit id="firstName">
                 <source>First name</source>
                 <target>Vorname</target>
+            </trans-unit>
+            <trans-unit id="instagramId">
+                <source>Instagram ID</source>
+                <target>Instagram-ID</target>
             </trans-unit>
             <trans-unit id="jobs">
                 <source>Jobs</source>
@@ -54,6 +62,10 @@
             <trans-unit id="lastName">
                 <source>Last name</source>
                 <target>Nachname</target>
+            </trans-unit>
+            <trans-unit id="linkedInId">
+                <source>LinkedIn ID</source>
+                <target>LinkedIn-ID</target>
             </trans-unit>
             <trans-unit id="middleNames">
                 <source>Middle Names</source>
@@ -66,6 +78,10 @@
             <trans-unit id="notes">
                 <source>Notes</source>
                 <target>Notizen</target>
+            </trans-unit>
+            <trans-unit id="payPalId">
+                <source>PayPal ID</source>
+                <target>PayPal-ID</target>
             </trans-unit>
             <trans-unit id="phoneNumbers">
                 <source>Phone numbers</source>
@@ -98,6 +114,14 @@
             <trans-unit id="websites">
                 <source>Websites</source>
                 <target>Webseiten</target>
+            </trans-unit>
+            <trans-unit id="xingId">
+                <source>Xing ID</source>
+                <target>Xing-ID</target>
+            </trans-unit>
+            <trans-unit id="youTubeId">
+                <source>YouTube ID</source>
+                <target>YouTube-ID</target>
             </trans-unit>
         </body>
     </file>
