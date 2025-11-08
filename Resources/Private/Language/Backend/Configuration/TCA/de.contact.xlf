@@ -11,9 +11,17 @@
                 <source>Addresses</source>
                 <target>Adressen</target>
             </trans-unit>
+            <trans-unit id="bankAccounts">
+                <source>Bank accounts</source>
+                <target>Bankverbindungen</target>
+            </trans-unit>
             <trans-unit id="birthName">
                 <source>Birth name</source>
                 <target>Geburtsname</target>
+            </trans-unit>
+            <trans-unit id="categories">
+                <source>Categories</source>
+                <target>Kategorien</target>
             </trans-unit>
             <trans-unit id="companyName">
                 <source>Company name</source>
@@ -38,6 +46,10 @@
             <trans-unit id="eMails">
                 <source>E-mail addresses</source>
                 <target>E-Mail-Adressen</target>
+            </trans-unit>
+            <trans-unit id="employments">
+                <source>Employments</source>
+                <target>Beschäftigte</target>
             </trans-unit>
             <trans-unit id="events">
                 <source>Events</source>

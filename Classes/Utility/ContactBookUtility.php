@@ -33,6 +33,6 @@ class ContactBookUtility
         /** @var FrontendUser $user */
         $user = GlobalVariableService::get(FrontendUserProvider::class . '.user');
 
-        return $user->getSetting('activeContactBook');
+        return $user?->getSetting('activeContactBook');
     }
 }

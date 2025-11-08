@@ -10,12 +10,10 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Domain\Repository;
 
-use JsonException;
 use PSBits\ContactBook\Domain\Demand\ContactDemand;
-use PSBits\ContactBook\Domain\Enum\ContactType;
-use PSBits\ContactBook\Utility\ContactBookUtility;
+use PSBits\ContactBook\Domain\Model\Contact;
 use PSBits\Foundation\Utility\QueryUtility;
-use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
@@ -28,18 +26,33 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 class ContactRepository extends Repository
 {
     /**
-     * @throws JsonException
+     * @throws InvalidQueryException
      */
     public function findByDemand(ContactDemand $demand): array|QueryResultInterface
     {
+        $constraints = [];
         $query = $this->createQuery();
         $query->getQuerySettings()
-            ->setRespectStoragePage(false);
+            ->setRespectStoragePage($demand->getRespectStoragePage());
 
-        $constraints[] = $query->equals('contactBook', ContactBookUtility::getActiveContactBookUid());
+        if ([] !== $demand->getCategoryUids()) {
+            $constraints[] = $query->in('categories.uid', $demand->getCategoryUids());
+        }
 
         if ('' !== $demand->getCompanyName()) {
             $constraints[] = $query->equals('companyName', $demand->getCompanyName());
+        }
+
+        if (0 < $demand->getContactBookUid()) {
+            $constraints[] = $query->equals('contactBook', $demand->getContactBookUid());
+        }
+
+        if (0 < $demand->getContactGroupUid()) {
+            $constraints[] = $query->contains('contactGroups', $demand->getContactGroupUid());
+        }
+
+        if ([] !== $demand->getContactUids()) {
+            $constraints[] = $query->in('uid', $demand->getContactUids());
         }
 
         if ([] !== $demand->getExcludedContacts()) {

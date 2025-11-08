@@ -6,6 +6,12 @@
         product-name="psb-contacts"
         source-language="en">
         <body>
+            <trans-unit id="plugin.contactBooks.title">
+                <source>Contact books</source>
+            </trans-unit>
+            <trans-unit id="plugin.contactCards.title">
+                <source>Contact cards</source>
+            </trans-unit>
             <trans-unit id="plugin.contactList.title">
                 <source>Contact list</source>
             </trans-unit>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2025-11-08T22:28:00+01:00"
+        original="messages"
+        product-name="contact_book"
+        source-language="en">
+        <body>
+			<trans-unit id="contactBook.header">
+				<source>Contact book</source>
+			</trans-unit>
+		</body>
+    </file>
+</xliff>

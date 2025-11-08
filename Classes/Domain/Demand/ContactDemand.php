@@ -10,8 +10,10 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Domain\Demand;
 
+use JsonException;
 use PSBits\ContactBook\Domain\Enum\ContactType;
 use PSBits\ContactBook\Domain\Model\Contact;
+use PSBits\ContactBook\Utility\ContactBookUtility;
 
 /**
  * Class ContactDemand
@@ -20,14 +22,45 @@ use PSBits\ContactBook\Domain\Model\Contact;
  */
 class ContactDemand
 {
+    protected array  $categoryUids                  = [];
     protected string $companyName                   = '';
+    protected int    $contactBookUid                = 0;
+    protected int    $contactGroupUid               = 0;
+    protected array  $contactUids                   = [];
     protected array  $excludedContacts              = [];
     protected string $firstName                     = '';
     protected string $lastName                      = '';
     protected bool   $onlyExportRelevantInformation = false;
+    protected bool   $respectStoragePage            = false;
     protected array  $types                         = [];
 
-    public function addExcludedContact(Contact|int $contact): self
+    /**
+     * @throws JsonException
+     */
+    public function __construct()
+    {
+        $this->contactBookUid = ContactBookUtility::getActiveContactBookUid() ?? 0;
+    }
+
+    public function addCategoryUids(int ...$categoryUids): static
+    {
+        foreach ($categoryUids as $categoryUid) {
+            $this->categoryUids[] = $categoryUid;
+        }
+
+        return $this;
+    }
+
+    public function addContactUids(int ...$contactUids): static
+    {
+        foreach ($contactUids as $contactUid) {
+            $this->contactUids[] = $contactUid;
+        }
+
+        return $this;
+    }
+
+    public function addExcludedContact(Contact|int $contact): static
     {
         if ($contact instanceof Contact) {
             $this->excludedContacts[] = $contact->getUid();
@@ -38,16 +71,36 @@ class ContactDemand
         return $this;
     }
 
-    public function addType(ContactType $type): self
+    public function addType(ContactType $type): static
     {
         $this->types[] = $type;
 
         return $this;
     }
 
+    public function getCategoryUids(): array
+    {
+        return $this->categoryUids;
+    }
+
     public function getCompanyName(): string
     {
         return $this->companyName;
+    }
+
+    public function getContactBookUid(): int
+    {
+        return $this->contactBookUid;
+    }
+
+    public function getContactGroupUid(): int
+    {
+        return $this->contactGroupUid;
+    }
+
+    public function getContactUids(): array
+    {
+        return $this->contactUids;
     }
 
     public function getExcludedContacts(): array
@@ -70,35 +123,75 @@ class ContactDemand
         return $this->onlyExportRelevantInformation;
     }
 
+    public function getRespectStoragePage(): bool
+    {
+        return $this->respectStoragePage;
+    }
+
     public function getTypes(): array
     {
         return $this->types;
     }
 
-    public function setCompanyName(string $companyName): self
+    public function setCategoryUids(int ...$categoryUids): static
+    {
+        $this->categoryUids = $categoryUids;
+
+        return $this;
+    }
+
+    public function setCompanyName(string $companyName): static
     {
         $this->companyName = $companyName;
 
         return $this;
     }
 
-    public function setFirstName(string $firstName): self
+    public function setContactGroupUid(int $contactGroupUid): static
+    {
+        $this->contactGroupUid = $contactGroupUid;
+
+        return $this;
+    }
+
+    public function setContactUids(int ...$contactUids): static
+    {
+        $this->contactUids = $contactUids;
+
+        return $this;
+    }
+
+    public function setFirstName(string $firstName): static
     {
         $this->firstName = $firstName;
 
         return $this;
     }
 
-    public function setLastName(string $lastName): self
+    public function setLastName(string $lastName): static
     {
         $this->lastName = $lastName;
 
         return $this;
     }
 
-    public function setOnlyExportRelevantInformation(bool $onlyExportRelevantInformation): self
+    public function setOnlyExportRelevantInformation(bool $onlyExportRelevantInformation): static
     {
         $this->onlyExportRelevantInformation = $onlyExportRelevantInformation;
+
+        return $this;
+    }
+
+    public function setRespectStoragePage(bool $respectStoragePage): static
+    {
+        $this->respectStoragePage = $respectStoragePage;
+
+        return $this;
+    }
+
+    public function unsetContactBookUid(): static
+    {
+        $this->contactBookUid = 0;
 
         return $this;
     }

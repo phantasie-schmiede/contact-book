@@ -18,16 +18,19 @@ use PSBits\ContactBook\Utility\ContactUtility;
 use PSBits\ContactBook\Utility\JsonUtility;
 use PSBits\ContactBook\Utility\NameUtility;
 use PSBits\Foundation\Attribute\TCA\Column;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Category;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Inline;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Input;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Select;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Slug;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Text;
 use PSBits\Foundation\Attribute\TCA\Ctrl;
+use PSBits\Foundation\Attribute\TCA\Tab;
 use PSBits\Foundation\Utility\StringUtility;
 use Ramsey\Uuid\Uuid;
 use RuntimeException;
 use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
+use TYPO3\CMS\Extbase\Domain\Model\Category as SysCategory;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -46,6 +49,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
     'middleNames',
     'notes',
 ])]
+#[Tab(identifier: 'name', label: '')]
 class Contact extends AbstractEntity
 {
     public const array SLUG_GENERATOR_OPTIONS = [
@@ -86,6 +90,10 @@ class Contact extends AbstractEntity
     #[Column(position: 'after:nickname')]
     #[Input]
     protected string $birthName = '';
+
+    /** @var ObjectStorage<SysCategory> $categories */
+    #[Category]
+    protected ObjectStorage $categories;
 
     #[Input]
     protected string $companyName = '';
@@ -174,6 +182,7 @@ class Contact extends AbstractEntity
     #[Input]
     protected string $title = '';
 
+    #[Column(position: 'tab:name', required: true)]
     #[Select(items   : [
         'Company' => 'company',
         'Person'  => 'person',
@@ -351,6 +360,11 @@ class Contact extends AbstractEntity
     public function getBirthName(): string
     {
         return $this->birthName;
+    }
+
+    public function getCategories(): ObjectStorage
+    {
+        return $this->categories;
     }
 
     public function getCompanyName(): string
@@ -1042,6 +1056,13 @@ class Contact extends AbstractEntity
     public function setBirthName(string $birthName): self
     {
         $this->birthName = $birthName;
+
+        return $this;
+    }
+
+    public function setCategories(ObjectStorage $categories): self
+    {
+        $this->categories = $categories;
 
         return $this;
     }

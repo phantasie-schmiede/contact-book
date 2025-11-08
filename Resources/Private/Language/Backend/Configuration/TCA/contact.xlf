@@ -9,8 +9,14 @@
             <trans-unit id="addresses">
                 <source>Addresses</source>
             </trans-unit>
+            <trans-unit id="bankAccounts">
+                <source>Bank accounts</source>
+            </trans-unit>
             <trans-unit id="birthName">
                 <source>Birth name</source>
+            </trans-unit>
+            <trans-unit id="categories">
+                <source>Categories</source>
             </trans-unit>
             <trans-unit id="companyName">
                 <source>Company name</source>
@@ -29,6 +35,9 @@
             </trans-unit>
             <trans-unit id="eMails">
                 <source>E-mail addresses</source>
+            </trans-unit>
+            <trans-unit id="employments">
+                <source>Employments</source>
             </trans-unit>
             <trans-unit id="events">
                 <source>Events</source>

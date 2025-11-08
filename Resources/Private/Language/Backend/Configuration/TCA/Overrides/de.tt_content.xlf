@@ -7,6 +7,14 @@
         source-language="en"
         target-language="de">
         <body>
+            <trans-unit id="plugin.contactBooks.title">
+                <source>Contact books</source>
+                <target>Kontaktbücher</target>
+            </trans-unit>
+            <trans-unit id="plugin.contactCards.title">
+                <source>Contact cards</source>
+                <target>Visitenkarten</target>
+            </trans-unit>
             <trans-unit id="plugin.contactList.title">
                 <source>Contact list</source>
                 <target>Kontaktliste</target>

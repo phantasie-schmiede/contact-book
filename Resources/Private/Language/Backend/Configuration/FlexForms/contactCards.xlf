@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2025-11-08T22:34:00+01:00"
+        original="messages"
+        product-name="contact_book"
+        source-language="en">
+        <body>
+            <trans-unit id="settings.categories">
+                <source>Categories</source>
+            </trans-unit>
+            <trans-unit id="settings.contactGroup">
+                <source>Contact group</source>
+            </trans-unit>
+            <trans-unit id="settings.contacts">
+                <source>Contact</source>
+            </trans-unit>
+            <trans-unit id="settings.filterMode">
+                <source>Filter mode</source>
+            </trans-unit>
+            <trans-unit id="settings.filterMode.categories">
+                <source>by categories</source>
+            </trans-unit>
+            <trans-unit id="settings.filterMode.contactGroup">
+                <source>by contact group</source>
+            </trans-unit>
+            <trans-unit id="settings.filterMode.contacts">
+                <source>manual selection</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -12,6 +12,7 @@ namespace PSBits\ContactBook\Data;
 
 use PSBits\ContactBook\Controller\Backend\ImportController;
 use PSBits\ContactBook\Controller\ContactBookController;
+use PSBits\ContactBook\Controller\ContactCardsController;
 use PSBits\ContactBook\Controller\ContactController;
 use PSBits\ContactBook\Controller\ContactGroupController;
 use PSBits\ContactBook\Controller\ContactGroupWidgetController;
@@ -66,13 +67,23 @@ class ExtensionInformation extends AbstractExtensionInformation
             GeneralUtility::makeInstance(
                 PluginConfiguration::class,
                 controllers: [ContactBookController::class],
+                group      : 'contactBook',
                 name       : 'ContactBooks'
             )
         );
         $this->addPlugin(
             GeneralUtility::makeInstance(
                 PluginConfiguration::class,
+                controllers: [ContactCardsController::class],
+                group      : 'contactBook',
+                name       : 'ContactCards'
+            )
+        );
+        $this->addPlugin(
+            GeneralUtility::makeInstance(
+                PluginConfiguration::class,
                 controllers: [ContactGroupController::class],
+                group      : 'contactBook',
                 name       : 'ContactGroups'
             )
         );
@@ -80,6 +91,7 @@ class ExtensionInformation extends AbstractExtensionInformation
             GeneralUtility::makeInstance(
                 PluginConfiguration::class,
                 controllers: [ContactGroupWidgetController::class],
+                group      : 'contactBook',
                 name       : 'ContactGroupWidget'
             )
         );
@@ -87,6 +99,7 @@ class ExtensionInformation extends AbstractExtensionInformation
             GeneralUtility::makeInstance(
                 PluginConfiguration::class,
                 controllers: [ContactController::class],
+                group      : 'contactBook',
                 name       : 'ContactList'
             )
         );
@@ -106,6 +119,7 @@ class ExtensionInformation extends AbstractExtensionInformation
             GeneralUtility::makeInstance(
                 PluginConfiguration::class,
                 controllers: [EventWidgetController::class],
+                group      : 'contactBook',
                 name       : 'EventWidget'
             )
         );
