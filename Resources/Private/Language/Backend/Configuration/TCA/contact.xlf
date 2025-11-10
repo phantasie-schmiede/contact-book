@@ -78,6 +78,39 @@
             <trans-unit id="slug">
                 <source>Slug</source>
             </trans-unit>
+            <trans-unit id="tab.addresses.label">
+                <source>Addresses</source>
+            </trans-unit>
+            <trans-unit id="tab.documents.label">
+                <source>Documents</source>
+            </trans-unit>
+            <trans-unit id="tab.e_mail_addresses.label">
+                <source>E-mail addresses</source>
+            </trans-unit>
+            <trans-unit id="tab.events.label">
+                <source>Events</source>
+            </trans-unit>
+            <trans-unit id="tab.finance.label">
+                <source>Finance</source>
+            </trans-unit>
+            <trans-unit id="tab.general.label">
+                <source>General</source>
+            </trans-unit>
+            <trans-unit id="tab.jobs.label">
+                <source>Jobs</source>
+            </trans-unit>
+            <trans-unit id="tab.name.label">
+                <source>Name</source>
+            </trans-unit>
+            <trans-unit id="tab.phone_numbers.label">
+                <source>Phone numbers</source>
+            </trans-unit>
+            <trans-unit id="tab.social_media.label">
+                <source>Social media</source>
+            </trans-unit>
+            <trans-unit id="tab.websites.label">
+                <source>Websites</source>
+            </trans-unit>
             <trans-unit id="title">
                 <source>Title</source>
             </trans-unit>

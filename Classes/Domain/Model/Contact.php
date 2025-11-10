@@ -49,7 +49,17 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
     'middleNames',
     'notes',
 ])]
-#[Tab(identifier: 'name', label: '')]
+#[Tab(identifier: 'addresses', position: 'after:birthName')]
+#[Tab(identifier: 'documents', position: 'after:events')]
+#[Tab(identifier: 'e_mail_addresses', position: 'after:phone_numbers')]
+#[Tab(identifier: 'events', position: 'after:eMails')]
+#[Tab(identifier: 'finance', position: 'after:documents')]
+#[Tab(identifier: 'general')]
+#[Tab(identifier: 'jobs', position: 'after:bankAccounts')]
+#[Tab(identifier: 'name', position: 'after:uuid')]
+#[Tab(identifier: 'phone_numbers', position: 'after:addresses')]
+#[Tab(identifier: 'social_media', position: 'after:employments')]
+#[Tab(identifier: 'websites', position: 'after:youTubeId')]
 class Contact extends AbstractEntity
 {
     public const array SLUG_GENERATOR_OPTIONS = [
@@ -78,11 +88,13 @@ class Contact extends AbstractEntity
     public const string URL_PREFIX_YOUTUBE   = 'https://www.youtube.com/c/';
 
     /** @var ObjectStorage<Address> */
+    #[Column(position: 'tab:addresses')]
     #[Inline(linkedModel: Address::class, mm: 'tx_contactbook_contacts_addresses')]
     #[Lazy]
     protected ObjectStorage $addresses;
 
     /** @var ObjectStorage<BankAccount> */
+    #[Column(position: 'after:payPalId')]
     #[Inline(linkedModel: BankAccount::class, mm: 'tx_contactbook_contacts_bankaccounts')]
     #[Lazy]
     protected ObjectStorage $bankAccounts;
@@ -93,39 +105,48 @@ class Contact extends AbstractEntity
 
     /** @var ObjectStorage<SysCategory> $categories */
     #[Category]
+    #[Column(position: 'after:contactGroups')]
     protected ObjectStorage $categories;
 
+    #[Column(position: 'tab:name')]
     #[Input]
     protected string $companyName = '';
 
+    #[Column(position: 'after:type')]
     #[Select(linkedModel: ContactBook::class, maxItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
     protected ?ContactBook $contactBook = null;
 
     /** @var ObjectStorage<ContactGroup> */
+    #[Column(position: 'after:contactBook')]
     #[Inline(linkedModel: ContactGroup::class, mm: 'tx_contactbook_contacts_contactgroups')]
     #[Lazy]
     protected ObjectStorage $contactGroups;
 
     /** @var ObjectStorage<Document> */
+    #[Column(position: 'tab:documents')]
     #[Inline(linkedModel: Document::class, mm: 'tx_contactbook_contacts_documents')]
     #[Lazy]
     protected ObjectStorage $documents;
 
     /** @var ObjectStorage<EMail> */
+    #[Column(position: 'tab:eMailAddresses')]
     #[Inline(linkedModel: EMail::class, mm: 'tx_contactbook_contacts_emails')]
     #[Lazy]
     protected ObjectStorage $eMails;
 
     /** @var ObjectStorage<Job> */
+    #[Column(position: 'after:jobs')]
     #[Inline(foreignField: 'company', linkedModel: Job::class)]
     #[Lazy]
     protected ObjectStorage $employments;
 
     /** @var ObjectStorage<Event> */
+    #[Column(position: 'tab:events')]
     #[Inline(linkedModel: Event::class, mm: 'tx_contactbook_contacts_events')]
     #[Lazy]
     protected ObjectStorage $events;
 
+    #[Column(position: 'tab:socialMedia')]
     #[Input]
     protected string $facebookId = '';
 
@@ -133,10 +154,12 @@ class Contact extends AbstractEntity
     #[Input]
     protected string $firstName = '';
 
+    #[Column(position: 'after:facebookId')]
     #[Input]
     protected string $instagramId = '';
 
     /** @var ObjectStorage<Job> */
+    #[Column(position: 'tab:jobs')]
     #[Inline(foreignField: 'contact', linkedModel: Job::class)]
     #[Lazy]
     protected ObjectStorage $jobs;
@@ -145,6 +168,7 @@ class Contact extends AbstractEntity
     #[Input]
     protected string $lastName = '';
 
+    #[Column(position: 'after:instagramId')]
     #[Input]
     protected string $linkedInId = '';
 
@@ -163,13 +187,16 @@ class Contact extends AbstractEntity
      *
      * @var string $notes
      */
+    #[Column(position: 'after:categories')]
     #[Text]
     protected string $notes = '';
 
+    #[Column(position: 'tab:finance')]
     #[Input]
     protected string $payPalId = '';
 
     /** @var ObjectStorage<PhoneNumber> */
+    #[Column(position: 'tab:phoneNumbers')]
     #[Inline(linkedModel: PhoneNumber::class, mm: 'tx_contactbook_contacts_phonenumbers')]
     #[Lazy]
     protected ObjectStorage $phoneNumbers;
@@ -178,11 +205,11 @@ class Contact extends AbstractEntity
     #[Slug(generatorOptions: self::SLUG_GENERATOR_OPTIONS)]
     protected string $slug = '';
 
-    #[Column(position: 'after:type')]
+    #[Column(position: 'after:companyName')]
     #[Input]
     protected string $title = '';
 
-    #[Column(position: 'tab:name', required: true)]
+    #[Column(position: 'tab:general', required: true)]
     #[Select(items   : [
         'Company' => 'company',
         'Person'  => 'person',
@@ -194,13 +221,16 @@ class Contact extends AbstractEntity
     protected string $uuid = '';
 
     /** @var ObjectStorage<Website> */
+    #[Column(position: 'tab:websites')]
     #[Inline(linkedModel: Website::class, mm: 'tx_contactbook_contacts_websites')]
     #[Lazy]
     protected ObjectStorage $websites;
 
+    #[Column(position: 'after:linkedInId')]
     #[Input]
     protected string $xingId = '';
 
+    #[Column(position: 'after:xingId')]
     #[Input]
     protected string $youTubeId = '';
 
