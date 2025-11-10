@@ -129,7 +129,7 @@ class Contact extends AbstractEntity
     protected ObjectStorage $documents;
 
     /** @var ObjectStorage<EMail> */
-    #[Column(position: 'tab:eMailAddresses')]
+    #[Column(position: 'tab:e_mail_addresses')]
     #[Inline(linkedModel: EMail::class, mm: 'tx_contactbook_contacts_emails')]
     #[Lazy]
     protected ObjectStorage $eMails;
@@ -146,7 +146,7 @@ class Contact extends AbstractEntity
     #[Lazy]
     protected ObjectStorage $events;
 
-    #[Column(position: 'tab:socialMedia')]
+    #[Column(position: 'tab:social_media')]
     #[Input]
     protected string $facebookId = '';
 
@@ -196,7 +196,7 @@ class Contact extends AbstractEntity
     protected string $payPalId = '';
 
     /** @var ObjectStorage<PhoneNumber> */
-    #[Column(position: 'tab:phoneNumbers')]
+    #[Column(position: 'tab:phone_numbers')]
     #[Inline(linkedModel: PhoneNumber::class, mm: 'tx_contactbook_contacts_phonenumbers')]
     #[Lazy]
     protected ObjectStorage $phoneNumbers;
