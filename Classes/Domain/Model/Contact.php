@@ -31,6 +31,7 @@ use Ramsey\Uuid\Uuid;
 use RuntimeException;
 use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
 use TYPO3\CMS\Extbase\Domain\Model\Category as SysCategory;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -243,7 +244,7 @@ class Contact extends AbstractEntity
         $this->initializeObject();
     }
 
-    public function addAddresses(Address ...$addresses): self
+    public function addAddresses(Address ...$addresses): static
     {
         foreach ($addresses as $address) {
             if (!$this->addresses->contains($address)) {
@@ -254,7 +255,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
-    public function addBankAccounts(BankAccount ...$bankAccounts): self
+    public function addBankAccounts(BankAccount ...$bankAccounts): static
     {
         foreach ($bankAccounts as $bankAccount) {
             if (!$this->bankAccounts->contains($bankAccount)) {
@@ -265,14 +266,14 @@ class Contact extends AbstractEntity
         return $this;
     }
 
-    public function addContactGroup(ContactGroup $contactGroup): self
+    public function addContactGroup(ContactGroup $contactGroup): static
     {
         $this->contactGroups->attach($contactGroup);
 
         return $this;
     }
 
-    public function addEMails(EMail ...$eMails): self
+    public function addEMails(EMail ...$eMails): static
     {
         foreach ($eMails as $eMail) {
             if (!$this->eMails->contains($eMail)) {
@@ -283,7 +284,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
-    public function addEvents(Event ...$events): self
+    public function addEvents(Event ...$events): static
     {
         foreach ($events as $event) {
             foreach ($this->events as $existingEvent) {
@@ -300,14 +301,14 @@ class Contact extends AbstractEntity
         return $this;
     }
 
-    public function addJob(Job $job): self
+    public function addJob(Job $job): static
     {
         $this->jobs->attach($job);
 
         return $this;
     }
 
-    public function addJobs(Contact ...$jobs): self
+    public function addJobs(Contact ...$jobs): static
     {
         foreach ($jobs as $job) {
             if (!$this->jobs->contains($job)) {
@@ -318,7 +319,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
-    public function addNote(string $note): self
+    public function addNote(string $note): static
     {
         $note = trim($note, StringUtility::EMPTY_CHARACTERS);
 
@@ -329,7 +330,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
-    public function addPhoneNumbers(PhoneNumber ...$phoneNumbers): self
+    public function addPhoneNumbers(PhoneNumber ...$phoneNumbers): static
     {
         foreach ($phoneNumbers as $phoneNumber) {
             if (!$this->phoneNumbers->contains($phoneNumber)) {
@@ -340,7 +341,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
-    public function addWebsites(Website ...$websites): self
+    public function addWebsites(Website ...$websites): static
     {
         foreach ($websites as $website) {
             if (!$this->websites->contains($website)) {
@@ -764,6 +765,17 @@ class Contact extends AbstractEntity
         return $this->phoneNumbers;
     }
 
+    public function getProfileImage(): ?FileReference
+    {
+        foreach ($this->documents as $document) {
+            if ($document->isUseAsProfileImage()) {
+                return $document->getFile();
+            }
+        }
+
+        return null;
+    }
+
     public function getSearchTerms(): string
     {
         $searchTerms = [
@@ -1006,238 +1018,251 @@ class Contact extends AbstractEntity
         return ContactType::Person === $this->type;
     }
 
-    public function removeAddress(Address $address): self
+    public function removeAddress(Address $address): static
     {
         $this->addresses->detach($address);
 
         return $this;
     }
 
-    public function removeAllContactGroups(): self
+    public function removeAllContactGroups(): static
     {
         $this->contactGroups = new ObjectStorage();
 
         return $this;
     }
 
-    public function removeBankAccount(BankAccount $bankAccount): self
+    public function removeBankAccount(BankAccount $bankAccount): static
     {
         $this->bankAccounts->detach($bankAccount);
 
         return $this;
     }
 
-    public function removeDocument(Document $document): self
+    public function removeDocument(Document $document): static
     {
         $this->documents->detach($document);
 
         return $this;
     }
 
-    public function removeEMail(EMail $eMail): self
+    public function removeEMail(EMail $eMail): static
     {
         $this->eMails->detach($eMail);
 
         return $this;
     }
 
-    public function removeEvent(Event $event): self
+    public function removeEvent(Event $event): static
     {
         $this->events->detach($event);
 
         return $this;
     }
 
-    public function removeJob(Job $job): self
+    public function removeJob(Job $job): static
     {
         $this->jobs->detach($job);
 
         return $this;
     }
 
-    public function removePhoneNumber(PhoneNumber $phoneNumber): self
+    public function removePhoneNumber(PhoneNumber $phoneNumber): static
     {
         $this->phoneNumbers->detach($phoneNumber);
 
         return $this;
     }
 
-    public function removeWebsite(Website $website): self
+    public function removeWebsite(Website $website): static
     {
         $this->websites->detach($website);
 
         return $this;
     }
 
-    public function setAddresses(ObjectStorage $addresses): self
+    public function setAddresses(ObjectStorage $addresses): static
     {
         $this->addresses = $addresses;
 
         return $this;
     }
 
-    public function setBankAccounts(ObjectStorage $bankAccounts): self
+    public function setBankAccounts(ObjectStorage $bankAccounts): static
     {
         $this->bankAccounts = $bankAccounts;
 
         return $this;
     }
 
-    public function setBirthName(string $birthName): self
+    public function setBirthName(string $birthName): static
     {
         $this->birthName = $birthName;
 
         return $this;
     }
 
-    public function setCategories(ObjectStorage $categories): self
+    public function setCategories(ObjectStorage $categories): static
     {
         $this->categories = $categories;
 
         return $this;
     }
 
-    public function setCompanyName(string $companyName): self
+    public function setCompanyName(string $companyName): static
     {
         $this->companyName = $companyName;
 
         return $this;
     }
 
-    public function setContactBook(?ContactBook $contactBook): self
+    public function setContactBook(?ContactBook $contactBook): static
     {
         $this->contactBook = $contactBook;
 
         return $this;
     }
 
-    public function setContactGroups(ObjectStorage $contactGroups): self
+    public function setContactGroups(ObjectStorage $contactGroups): static
     {
         $this->contactGroups = $contactGroups;
 
         return $this;
     }
 
-    public function setEMails(ObjectStorage $eMails): self
+    public function setEMails(ObjectStorage $eMails): static
     {
         $this->eMails = $eMails;
 
         return $this;
     }
 
-    public function setEmployments(ObjectStorage $employments): self
+    public function setEmployments(ObjectStorage $employments): static
     {
         $this->employments = $employments;
 
         return $this;
     }
 
-    public function setEvents(ObjectStorage $events): self
+    public function setEvents(ObjectStorage $events): static
     {
         $this->events = $events;
 
         return $this;
     }
 
-    public function setFacebookId(string $facebookId): self
+    public function setFacebookId(string $facebookId): static
     {
         $this->facebookId = $facebookId;
 
         return $this;
     }
 
-    public function setFirstName(string $firstName): self
+    public function setFirstName(string $firstName): static
     {
         $this->firstName = $firstName;
 
         return $this;
     }
 
-    public function setInstagramId(string $instagramId): self
+    public function setInstagramId(string $instagramId): static
     {
         $this->instagramId = $instagramId;
 
         return $this;
     }
 
-    public function setJobs(ObjectStorage $jobs): self
+    public function setJobs(ObjectStorage $jobs): static
     {
         $this->jobs = $jobs;
 
         return $this;
     }
 
-    public function setLastName(string $lastName): self
+    public function setLastName(string $lastName): static
     {
         $this->lastName = $lastName;
 
         return $this;
     }
 
-    public function setLinkedInId(string $linkedInId): self
+    public function setLinkedInId(string $linkedInId): static
     {
         $this->linkedInId = $linkedInId;
 
         return $this;
     }
 
-    public function setMiddleNames(string $middleNames): self
+    public function setMiddleNames(string $middleNames): static
     {
         $this->middleNames = $middleNames;
 
         return $this;
     }
 
-    public function setNickname(string $nickname): self
+    public function setNickname(string $nickname): static
     {
         $this->nickname = $nickname;
 
         return $this;
     }
 
-    public function setNotes(string $notes): self
+    public function setNotes(string $notes): static
     {
         $this->notes = htmlspecialchars(trim($notes));
 
         return $this;
     }
 
-    public function setPayPalId(string $payPalId): self
+    public function setPayPalId(string $payPalId): static
     {
         $this->payPalId = $payPalId;
 
         return $this;
     }
 
-    public function setPhoneNumbers(ObjectStorage $phoneNumbers): self
+    public function setPhoneNumbers(ObjectStorage $phoneNumbers): static
     {
         $this->phoneNumbers = $phoneNumbers;
 
         return $this;
     }
 
-    public function setSlug(string $slug): self
+    public function setProfileImage(FileReference $image): static
+    {
+        foreach ($this->documents as $document) {
+            if ($document->getFile() === $image) {
+                $document->setUseAsProfileImage(true);
+            } else {
+                $document->setUseAsProfileImage(false);
+            }
+        }
+
+        return $this;
+    }
+
+    public function setSlug(string $slug): static
     {
         $this->slug = $slug;
 
         return $this;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(string $title): static
     {
         $this->title = $title;
 
         return $this;
     }
 
-    public function setType(ContactType $type): self
+    public function setType(ContactType $type): static
     {
         $this->type = $type;
 
         return $this;
     }
 
-    public function setUuid(): self
+    public function setUuid(): static
     {
         if ('' !== $this->uuid) {
             throw new RuntimeException(__CLASS__ . ': UUID is already set!', 1739963501);
@@ -1249,21 +1274,21 @@ class Contact extends AbstractEntity
         return $this;
     }
 
-    public function setWebsites(ObjectStorage $websites): self
+    public function setWebsites(ObjectStorage $websites): static
     {
         $this->websites = $websites;
 
         return $this;
     }
 
-    public function setXingId(string $xingId): self
+    public function setXingId(string $xingId): static
     {
         $this->xingId = $xingId;
 
         return $this;
     }
 
-    public function setYouTubeId(string $youTubeId): self
+    public function setYouTubeId(string $youTubeId): static
     {
         $this->youTubeId = $youTubeId;
 

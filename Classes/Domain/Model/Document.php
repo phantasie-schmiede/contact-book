@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Domain\Model;
 
+use PSBits\Foundation\Attribute\TCA\ColumnType\Check;
 use PSBits\Foundation\Attribute\TCA\ColumnType\File;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Input;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Select;
@@ -51,6 +52,9 @@ class Document extends AbstractContactRelatedEntity
     #[Input]
     protected string $title = '';
 
+    #[Check]
+    protected bool $useAsProfileImage = false;
+
     public function getCompactValue(): string
     {
         return $this->getTitle() ?: $this->notes ?: $this->file?->getOriginalResource()
@@ -78,9 +82,21 @@ class Document extends AbstractContactRelatedEntity
         return self::TYPE_ICON_IDENTIFIER;
     }
 
+    public function isUseAsProfileImage(): bool
+    {
+        return $this->useAsProfileImage;
+    }
+
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function setUseAsProfileImage(bool $useAsProfileImage): self
+    {
+        $this->useAsProfileImage = $useAsProfileImage;
 
         return $this;
     }
