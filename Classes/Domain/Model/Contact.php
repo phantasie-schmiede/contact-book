@@ -987,6 +987,7 @@ class Contact extends AbstractEntity
     {
         $this->addresses = new ObjectStorage();
         $this->bankAccounts = new ObjectStorage();
+        $this->categories = new ObjectStorage();
         $this->contactGroups = new ObjectStorage();
         $this->documents = new ObjectStorage();
         $this->eMails = new ObjectStorage();
