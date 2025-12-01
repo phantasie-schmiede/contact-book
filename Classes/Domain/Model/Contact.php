@@ -114,7 +114,7 @@ class Contact extends AbstractEntity
     protected string $companyName = '';
 
     #[Column(position: 'after:type')]
-    #[Select(linkedModel: ContactBook::class, maxItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
+    #[Select(linkedModel: ContactBook::class, maxItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM_MANDATORY_INT)]
     protected ?ContactBook $contactBook = null;
 
     /** @var ObjectStorage<ContactGroup> */
@@ -214,7 +214,7 @@ class Contact extends AbstractEntity
     #[Select(items   : [
         'Company' => 'company',
         'Person'  => 'person',
-    ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
+    ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM_MANDATORY_STRING)]
     protected ContactType $type = ContactType::Person;
 
     #[Column(position: 'after:slug', readOnly: true)]

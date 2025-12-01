@@ -72,7 +72,7 @@ class Event extends AbstractContactRelatedEntity
         'FirstDayAtSchool' => 'firstDayAtSchool',
         'Wedding'          => 'wedding',
         'Other'            => 'other',
-    ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
+    ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM_MANDATORY_STRING)]
     protected EventType $type = EventType::Birthday;
 
     #[Column(databaseDefinition: 'INT DEFAULT NULL', nullable: true)]

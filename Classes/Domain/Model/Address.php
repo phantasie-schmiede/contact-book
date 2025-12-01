@@ -61,7 +61,7 @@ class Address extends AbstractContactRelatedEntity
         'Private'  => 'private',
         'Business' => 'business',
         'Other'    => 'other',
-    ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
+    ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM_MANDATORY_STRING)]
     protected GeneralType $type = GeneralType::Private;
 
     #[Input]

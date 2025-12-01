@@ -42,7 +42,7 @@ class ContactGroup extends AbstractContactRelatedEntity
         ],
     ];
 
-    #[Select(linkedModel: ContactBook::class, maxItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
+    #[Select(linkedModel: ContactBook::class, maxItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM_MANDATORY_INT)]
     protected ?ContactBook $contactBook = null;
 
     /** @var ObjectStorage<Contact> */

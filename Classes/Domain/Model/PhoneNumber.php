@@ -69,7 +69,7 @@ class PhoneNumber extends AbstractContactRelatedEntity
         'Private'  => 'private',
         'Business' => 'business',
         'Other'    => 'other',
-    ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
+    ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM_MANDATORY_STRING)]
     protected GeneralType $generalType = GeneralType::Private;
 
     #[Input]
@@ -80,7 +80,7 @@ class PhoneNumber extends AbstractContactRelatedEntity
         'Mobile'   => 'mobile',
         'Fax'      => 'fax',
         'Other'    => 'other',
-    ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM)]
+    ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM_MANDATORY_STRING)]
     protected PhoneNumberType $phoneNumberType = PhoneNumberType::Mobile;
 
     #[Check]
