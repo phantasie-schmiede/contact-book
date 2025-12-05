@@ -1229,10 +1229,10 @@ class Contact extends AbstractEntity
         return $this;
     }
 
-    public function setProfileImage(FileReference $image): static
+    public function setProfileImage(Document $profileImage): static
     {
         foreach ($this->documents as $document) {
-            if ($document->getFile() === $image) {
+            if ($document === $profileImage) {
                 $document->setUseAsProfileImage(true);
             } else {
                 $document->setUseAsProfileImage(false);

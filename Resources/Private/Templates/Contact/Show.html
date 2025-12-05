@@ -23,7 +23,7 @@
     value="{f:render(arguments: {identifier: 'bank'}, section: 'Icon')}" />
 <f:variable
     name="tabDocumentsContent"
-    value="{f:render(arguments: {linkTarget: '_blank', records: contact.documents}, section: 'TabLinkedRelationsContent')}" />
+    value="{f:render(arguments: {contact: contact}, section: 'TabDocumentsContent')}" />
 <f:variable
     name="tabDocumentsLabel"
     value="{f:render(arguments: {identifier: 'files'}, section: 'Icon')}" />
@@ -72,29 +72,6 @@
 
 <div class="contact-show row">
     <div class="col-12">
-        <f:if condition="{contact.images}">
-            <div class="mb-3">
-                <f:render
-                    arguments="{
-                        configuration: {
-                            autoHeight: true,
-                            navigation: true
-                        },
-                        id: 'contact-images'
-                    }"
-                    contentAs="slides"
-                    partial="Component/Swiper">
-                    <f:for
-                        as="document"
-                        each="{contact.images}">
-                        <f:image
-                            class="swiper-slide"
-                            image="{document.file}" />
-                    </f:for>
-                </f:render>
-            </div>
-        </f:if>
-
         <h1 class="d-flex justify-content-between">
             {contact.shortName}
             <f:render partial="ExportModal/Toggle" />
@@ -305,6 +282,70 @@
                 label="PayPal" />
         </div>
     </f:if>
+</f:section>
+
+<f:section name="TabDocumentsContent">
+    <f:if condition="{contact.images}">
+        <h2>
+            <foundation:translate id="images" />
+        </h2>
+        <f:render
+            arguments="{contact:contact, documents: contact.images, isImage: true}"
+            section="DocumentList" />
+    </f:if>
+
+    <f:if condition="{contact.documentsWithoutImages}">
+        <h2 class="{f:if(condition: contact.images, then: 'mt-3')}">
+            <foundation:translate id="{f:if(condition: contact.images, then: 'otherDocuments', else: 'documents')}" />
+        </h2>
+        <f:render
+            arguments="{documents: contact.documentsWithoutImages}"
+            section="DocumentList" />
+    </f:if>
+</f:section>
+
+<f:section name="DocumentList">
+    <f:for
+        as="document"
+        each="{documents}"
+        iteration="documentIterator">
+        <div class="card{f:if(condition: documentIterator.isFirst, else: ' mt-3')}">
+            <div class="d-flex">
+                <f:image
+                    class="img-fluid object-fit-cover rounded-start"
+                    image="{document.file}"
+                    height="120c"
+                    width="120c" />
+
+                <div class="card-body">
+                    <h4 class="card-title h5 mb-1">
+                        {psbvh:fallback(values: {0: document.title, 1: document.file.originalResource.originalFile.name})}
+                    </h4>
+                    <p class="card-text text-muted mb-2">
+                        {foundation:translate(arguments: {size: document.file.size}, id: 'fileSize')}
+                    </p>
+                </div>
+
+                <div class="d-flex flex-column gap-2 p-2">
+                    <a
+                        class="btn btn-primary"
+                        href="{document.file.originalResource.publicUrl}"
+                        target="_blank">
+                        <foundation:translate id="showFile" />
+                    </a>
+
+                    <f:if condition="{isImage} && !{document.useAsProfileImage}}">
+                        <templates:component.button
+                            additionalClasses="bg-primary-subtle"
+                            href="{f:uri.action(action: 'setProfileImage', arguments: {contact: contact, document: document})}"
+                            label="{foundation:translate(id: 'setAsProfileImage')}"
+                            spinnerText="{foundation:translate(id: 'setAsProfileImage.spinnerText')}"
+                            tag="a" />
+                    </f:if>
+                </div>
+            </div>
+        </div>
+    </f:for>
 </f:section>
 
 <f:section name="TabLinkedRelationsContent">

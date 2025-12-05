@@ -68,6 +68,7 @@ use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -265,6 +266,19 @@ class ContactController extends AbstractAccessController
     public function refreshListAction(): ResponseInterface
     {
         return $this->jsonResponse(json_encode(['html' => $this->getList()], JSON_THROW_ON_ERROR));
+    }
+
+    /**
+     * @throws IllegalObjectTypeException
+     * @throws UnknownObjectException
+     */
+    #[PluginAction(uncached: true)]
+    public function setProfileImageAction(Contact $contact, Document $document): ResponseInterface
+    {
+        $contact->setProfileImage($document);
+        $this->contactRepository->update($contact);
+
+        return (new ForwardResponse('show'))->withArguments(['contact' => $contact]);
     }
 
     #[PluginAction]

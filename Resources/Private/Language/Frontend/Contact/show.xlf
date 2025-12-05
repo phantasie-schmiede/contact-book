@@ -33,6 +33,9 @@
             <trans-unit id="delete">
                 <source>Delete</source>
             </trans-unit>
+            <trans-unit id="documents">
+                <source>Documents</source>
+            </trans-unit>
             <trans-unit id="dyn.event.otherContactPreposition.divorce">
                 <source>from</source>
             </trans-unit>
@@ -42,8 +45,23 @@
             <trans-unit id="edit">
                 <source>Edit</source>
             </trans-unit>
+            <trans-unit id="images">
+                <source>Images</source>
+            </trans-unit>
             <trans-unit id="nameWithBirthName">
                 <source>{name} née {birthName}</source>
+            </trans-unit>
+            <trans-unit id="otherDocuments">
+                <source>Other documents</source>
+            </trans-unit>
+            <trans-unit id="setAsProfileImage">
+                <source>Set as profile image</source>
+            </trans-unit>
+            <trans-unit id="setAsProfileImage.spinnerText">
+                <source>Setting as profile image...</source>
+            </trans-unit>
+            <trans-unit id="showFile">
+                <source>Show</source>
             </trans-unit>
         </body>
     </file>
