@@ -1,0 +1,80 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
+<div class="row">
+    <f:for
+        as="contact"
+        each="{contacts}"
+        iteration="iterator">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3{f:if(condition: '!{iterator.isLast}', then: ' mb-3')}">
+            <f:render
+                arguments="{
+            additionalContent: '{f:render(arguments: {contact: contact}, section: \'AdditionalContent\')}',
+            image: contact.profileImage,
+            title: contact.fullName
+        }"
+                partial="Component/Card" />
+        </div>
+    </f:for>
+</div>
+
+<f:section name="AdditionalContent">
+    <f:for
+        as="eMail"
+        each="{contact.eMails}">
+        <a
+            class="d-block mb-2"
+            href="{eMail.link}">
+            <core:icon
+                identifier="templates-{eMail.actionIconIdentifier}"
+                size="small" />
+            <span class="ms-1">
+                {eMail.emailAddress}
+            </span>
+        </a>
+    </f:for>
+
+    <f:for
+        as="phoneNumber"
+        each="{contact.phoneNumbers}">
+        <a
+            class="d-block mb-2"
+            href="{phoneNumber.link}">
+            <core:icon
+                identifier="templates-{phoneNumber.actionIconIdentifier}"
+                size="small" />
+            <span class="ms-1">
+                <f:render
+                    arguments="{phoneNumber: phoneNumber}"
+                    partial="PhoneNumber" />
+            </span>
+        </a>
+    </f:for>
+
+    <f:if condition="{contact.birthEvent.monthAndDayGiven}">
+        <f:then>
+            <f:variable
+                name="birthdateLabel"
+                value="birthday" />
+        </f:then>
+        <f:else if="{contact.birthEvent.year}">
+            <f:variable
+                name="birthdateLabel"
+                value="yearOfBirth" />
+        </f:else>
+    </f:if>
+
+    <f:if condition="{birthdateLabel}">
+        <f:render
+            contentAs="content"
+            partial="Component/LabelledList">
+            <f:if condition="{birthdateLabel}">
+                <f:render
+                    arguments="{label: '{foundation:translate(id: birthdateLabel)}', value: contact.birthEvent.dateFormatted}"
+                    partial="Component/LabelledListItem" />
+            </f:if>
+        </f:render>
+    </f:if>
+</f:section>
+</html>

@@ -20,11 +20,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
- * Class ContactCardsController
+ * Class ContactCardController
  *
  * @package PSBits\ContactBook\Controller
  */
-class ContactCardsController extends ActionController
+class ContactCardController extends ActionController
 {
     public function __construct(
         protected readonly ContactRepository $contactRepository,

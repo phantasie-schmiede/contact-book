@@ -388,6 +388,11 @@ class Contact extends AbstractEntity
         return $this->bankAccounts;
     }
 
+    public function getBirthEvent(): ?Event
+    {
+        return ContactUtility::getBirthEvent($this);
+    }
+
     public function getBirthName(): string
     {
         return $this->birthName;

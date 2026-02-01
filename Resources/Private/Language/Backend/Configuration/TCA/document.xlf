@@ -18,6 +18,9 @@
             <trans-unit id="title">
                 <source>Title</source>
             </trans-unit>
+            <trans-unit id="useAsProfileImage">
+                <source>Use as profile image</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

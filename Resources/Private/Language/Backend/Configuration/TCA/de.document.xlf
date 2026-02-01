@@ -23,6 +23,10 @@
                 <source>Title</source>
                 <target>Titel</target>
             </trans-unit>
+            <trans-unit id="useAsProfileImage">
+                <source>Use as profile image</source>
+                <target>Als Profilbild verwenden</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
