@@ -8,12 +8,14 @@
         each="{contacts}"
         iteration="iterator">
         <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-            <f:variable
-                name="desktopImageUrl"
-                value="{f:uri.image(cropVariant: 'cardLandscape', image: contact.profileImage, width: '320m', height: '180m')}" />
-            <f:variable
-                name="imageUrl"
-                value="{f:uri.image(cropVariant: 'cardPortrait', image: contact.profileImage, width: '240m', height: '320m')}" />
+            <f:if condition="{contact.profileImage}">
+                <f:variable
+                    name="desktopImageUrl"
+                    value="{f:uri.image(cropVariant: 'cardLandscape', image: contact.profileImage, width: '320m', height: '180m')}" />
+                <f:variable
+                    name="imageUrl"
+                    value="{f:uri.image(cropVariant: 'cardPortrait', image: contact.profileImage, width: '240m', height: '320m')}" />
+            </f:if>
 
             <f:render
                 arguments="{
