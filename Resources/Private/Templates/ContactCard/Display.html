@@ -31,6 +31,15 @@
 
 <f:section name="AdditionalContent">
     <f:for
+        as="address"
+        each="{contact.addresses}">
+        <div class="mb-2">
+            {address.streetAndHouseNumber}<br>
+            {address.zipCode} {address.city}
+        </div>
+    </f:for>
+
+    <f:for
         as="eMail"
         each="{contact.eMails}">
         <a
@@ -85,6 +94,12 @@
                     partial="Component/LabelledListItem" />
             </f:if>
         </f:render>
+    </f:if>
+
+    <f:if condition="{contact.notes}">
+        <p class="card-text">
+            {contact.notes -> f:format.nl2br()}
+        </p>
     </f:if>
 </f:section>
 </html>
