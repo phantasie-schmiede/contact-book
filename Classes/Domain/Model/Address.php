@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Domain\Model;
 
 use PSBits\ContactBook\Domain\Enum\GeneralType;
+use PSBits\Foundation\Attribute\TCA\Column;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Input;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Select;
 use PSBits\Foundation\Attribute\TCA\Ctrl;
@@ -38,25 +39,31 @@ class Address extends AbstractContactRelatedEntity
 {
     public const string ACTION_ICON_IDENTIFIER = 'sign-turn-right';
 
+    #[Column(position: 'after:zipCode')]
     #[Input]
     protected string $city = '';
 
     /** @var ObjectStorage<Contact> */
+    #[Column(position: 'after:country')]
     #[Select(linkedModel: Contact::class, mm: 'tx_contactbook_contacts_addresses', mmOppositeField: 'addresses', renderType: SelectRenderType::selectMultipleSideBySide)]
     protected ObjectStorage $contacts;
 
+    #[Column(position: 'after:county')]
     #[Input]
     protected string $country = '';
 
+    #[Column(position: 'after:city')]
     #[Input]
     protected string $county = '';
 
+    #[Column(position: 'after:street')]
     #[Input]
     protected string $houseNumber = '';
 
     #[Input]
     protected string $street = '';
 
+    #[Column(required: true)]
     #[Select(items   : [
         'Private'  => 'private',
         'Business' => 'business',
@@ -64,6 +71,7 @@ class Address extends AbstractContactRelatedEntity
     ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM_MANDATORY_STRING)]
     protected GeneralType $type = GeneralType::Private;
 
+    #[Column(position: 'after:houseNumber')]
     #[Input]
     protected string $zipCode = '';
 
