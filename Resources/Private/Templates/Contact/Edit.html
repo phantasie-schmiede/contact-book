@@ -3,40 +3,46 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
-<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/form.xlf" />
+<f:layout name="Default" />
 
-<f:render
-    arguments="{contact: contact, loadCompanies: true, loadContacts: true}"
-    partial="AjaxRequests" />
+<f:section name="Main">
+    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/form.xlf" />
 
-<f:form
-    action="update"
-    enctype="multipart/form-data"
-    method="post"
-    name="contact"
-    object="{contact}">
     <f:render
-        arguments="{_all}"
-        partial="FormFields/Contact" />
+        arguments="{contact: contact, loadCompanies: true, loadContacts: true}"
+        partial="AjaxRequests" />
 
-    <div class="col-12 d-flex mt-3">
+    <f:form
+        action="update"
+        enctype="multipart/form-data"
+        method="post"
+        name="contact"
+        object="{contact}">
+        <f:render
+            arguments="{_all}"
+            partial="FormFields/Contact" />
+
         <f:variable
             name="buttonLabel"
             value="{templates:svgIcon(additionalClasses: 'me-2', identifier: 'templates-x-lg')}{foundation:translate(id: 'form:cancel')}" />
 
         <f:render
-            arguments="{class: 'align-items-center bg-secondary-subtle btn d-flex', contact: contact, label: buttonLabel}"
-            partial="Link/Contact" />
-        <templates:component.button
-            additionalClasses="bg-primary-subtle ms-2"
-            iconIdentifier="templates-floppy"
-            label="{foundation:translate(id: 'form:save')}"
-            spinnerText="{foundation:translate(id: 'form:submit.loadingSpinner')}"
-            type="submit" />
-    </div>
-</f:form>
+            contentAs="buttons"
+            partial="Component/ButtonRow">
+            <f:render
+                arguments="{class: 'align-items-center bg-secondary-subtle btn d-flex', contact: contact, label: buttonLabel}"
+                partial="Link/Contact" />
+            <templates:component.button
+                additionalClasses="bg-primary-subtle ms-2"
+                iconIdentifier="templates-floppy"
+                label="{foundation:translate(id: 'form:save')}"
+                spinnerText="{foundation:translate(id: 'form:submit.loadingSpinner')}"
+                type="submit" />
+        </f:render>
+    </f:form>
 
-<f:render
-    arguments="{_all}"
-    partial="ContactRelationTemplates" />
+    <f:render
+        arguments="{_all}"
+        partial="ContactRelationTemplates" />
+</f:section>
 </html>

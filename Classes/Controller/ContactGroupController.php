@@ -147,7 +147,9 @@ class ContactGroupController extends AbstractAccessController
     }
 
     /**
+     * @throws ContainerExceptionInterface
      * @throws JsonException
+     * @throws NotFoundExceptionInterface
      */
     #[PluginAction(uncached: true)]
     public function refreshListAction(ContactGroup $contactGroup): ResponseInterface

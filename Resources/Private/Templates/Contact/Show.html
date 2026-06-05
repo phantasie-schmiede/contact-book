@@ -5,191 +5,195 @@
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:psbvh="http://typo3.org/ns/PSBits/ViewHelpers/ViewHelpers"
     xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
-<foundation:translation.registerLanguageFile
-    file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
-    name="modal" />
+<f:layout name="Default" />
 
-<f:variable
-    name="tabAddressesContent"
-    value="{f:render(arguments: {linkTarget: '_blank', records: contact.addresses}, section: 'TabLinkedRelationsContent')}" />
-<f:variable
-    name="tabAddressesLabel"
-    value="{f:render(arguments: {identifier: 'geo-alt'}, section: 'Icon')}" />
-<f:variable
-    name="tabBankAccountsContent"
-    value="{f:render(arguments: {contact: contact}, section: 'TabBankAccountsContent')}" />
-<f:variable
-    name="tabBankAccountsLabel"
-    value="{f:render(arguments: {identifier: 'bank'}, section: 'Icon')}" />
-<f:variable
-    name="tabDocumentsContent"
-    value="{f:render(arguments: {contact: contact}, section: 'TabDocumentsContent')}" />
-<f:variable
-    name="tabDocumentsLabel"
-    value="{f:render(arguments: {identifier: 'files'}, section: 'Icon')}" />
-<f:variable
-    name="tabEMailsContent"
-    value="{f:render(arguments: {records: contact.eMails}, section: 'TabLinkedRelationsContent')}" />
-<f:variable
-    name="tabEMailsLabel"
-    value="{f:render(arguments: {identifier: 'envelope-at'}, section: 'Icon')}" />
-<f:variable
-    name="tabEventsContent"
-    value="{f:render(arguments: {contact: contact}, section: 'TabEventsContent')}" />
-<f:variable
-    name="tabEventsLabel"
-    value="{f:render(arguments: {identifier: 'calendar-event'}, section: 'Icon')}" />
-<f:variable
-    name="tabNameContent"
-    value="{f:render(arguments: {contact: contact}, section: 'TabNameContent')}" />
-<f:variable
-    name="tabNameLabel"
-    value="{f:render(arguments: {identifier: 'tag'}, section: 'Icon')}" />
-<f:variable
-    name="tabOtherContent"
-    value="{f:render(arguments: {allContactGroups: allContactGroups, contact: contact}, section: 'TabOtherContent')}" />
-<f:variable
-    name="tabOtherLabel"
-    value="{f:render(arguments: {identifier: 'three-dots'}, section: 'Icon')}" />
-<f:variable
-    name="tabPhoneNumbersContent"
-    value="{f:render(arguments: {records: contact.phoneNumbers}, section: 'TabPhoneNumbersContent')}" />
-<f:variable
-    name="tabPhoneNumbersLabel"
-    value="{f:render(arguments: {identifier: 'telephone'}, section: 'Icon')}" />
-<f:variable
-    name="tabWebsitesContent"
-    value="{f:render(arguments: {contact: contact}, section: 'TabWebsitesContent')}" />
-<f:variable
-    name="tabWebsitesLabel"
-    value="{f:render(arguments: {identifier: 'globe'}, section: 'Icon')}" />
-<f:variable
-    name="tabWorkContent"
-    value="{f:render(arguments: {contact: contact}, section: 'TabWorkContent')}" />
-<f:variable
-    name="tabWorkLabel"
-    value="{f:render(arguments: {identifier: 'briefcase'}, section: 'Icon')}" />
+<f:section name="Main">
+    <foundation:translation.registerLanguageFile
+        file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
+        name="modal" />
 
-<div class="contact-show row">
-    <div class="col-12">
-        <h1 class="d-flex justify-content-between">
-            {contact.shortName}
-            <f:render partial="ExportModal/Toggle" />
-        </h1>
+    <f:variable
+        name="tabAddressesContent"
+        value="{f:render(arguments: {linkTarget: '_blank', records: contact.addresses}, section: 'TabLinkedRelationsContent')}" />
+    <f:variable
+        name="tabAddressesLabel"
+        value="{f:render(arguments: {identifier: 'geo-alt'}, section: 'Icon')}" />
+    <f:variable
+        name="tabBankAccountsContent"
+        value="{f:render(arguments: {contact: contact}, section: 'TabBankAccountsContent')}" />
+    <f:variable
+        name="tabBankAccountsLabel"
+        value="{f:render(arguments: {identifier: 'bank'}, section: 'Icon')}" />
+    <f:variable
+        name="tabDocumentsContent"
+        value="{f:render(arguments: {contact: contact}, section: 'TabDocumentsContent')}" />
+    <f:variable
+        name="tabDocumentsLabel"
+        value="{f:render(arguments: {identifier: 'file-earmark-text'}, section: 'Icon')}" />
+    <f:variable
+        name="tabEMailsContent"
+        value="{f:render(arguments: {records: contact.eMails}, section: 'TabLinkedRelationsContent')}" />
+    <f:variable
+        name="tabEMailsLabel"
+        value="{f:render(arguments: {identifier: 'envelope-at'}, section: 'Icon')}" />
+    <f:variable
+        name="tabEventsContent"
+        value="{f:render(arguments: {contact: contact}, section: 'TabEventsContent')}" />
+    <f:variable
+        name="tabEventsLabel"
+        value="{f:render(arguments: {identifier: 'calendar-event'}, section: 'Icon')}" />
+    <f:variable
+        name="tabNameContent"
+        value="{f:render(arguments: {contact: contact}, section: 'TabNameContent')}" />
+    <f:variable
+        name="tabNameLabel"
+        value="{f:render(arguments: {identifier: 'tag'}, section: 'Icon')}" />
+    <f:variable
+        name="tabOtherContent"
+        value="{f:render(arguments: {allContactGroups: allContactGroups, contact: contact}, section: 'TabOtherContent')}" />
+    <f:variable
+        name="tabOtherLabel"
+        value="{f:render(arguments: {identifier: 'three-dots'}, section: 'Icon')}" />
+    <f:variable
+        name="tabPhoneNumbersContent"
+        value="{f:render(arguments: {records: contact.phoneNumbers}, section: 'TabPhoneNumbersContent')}" />
+    <f:variable
+        name="tabPhoneNumbersLabel"
+        value="{f:render(arguments: {identifier: 'telephone'}, section: 'Icon')}" />
+    <f:variable
+        name="tabWebsitesContent"
+        value="{f:render(arguments: {contact: contact}, section: 'TabWebsitesContent')}" />
+    <f:variable
+        name="tabWebsitesLabel"
+        value="{f:render(arguments: {identifier: 'globe'}, section: 'Icon')}" />
+    <f:variable
+        name="tabWorkContent"
+        value="{f:render(arguments: {contact: contact}, section: 'TabWorkContent')}" />
+    <f:variable
+        name="tabWorkLabel"
+        value="{f:render(arguments: {identifier: 'briefcase'}, section: 'Icon')}" />
 
-        <hr>
+    <div class="contact-show row">
+        <div class="col-12">
+            <h1 class="d-flex justify-content-between">
+                {contact.shortName}
+                <f:render partial="ExportModal/Toggle" />
+            </h1>
 
-        <f:variable
-            name="tabs"
-            value="{contactBook:psrEvent.modifyTabs(contact: contact, tabs: {
-                0: {
-                    content: tabNameContent,
-                    id: 'name',
-                    label: tabNameLabel
-                },
-                1: {
-                    content: tabWorkContent,
-                    id: 'work',
-                    label: tabWorkLabel
-                },
-                2: {
-                    content: tabAddressesContent,
-                    id: 'addresses',
-                    label: tabAddressesLabel
-                },
-                3: {
-                    content: tabPhoneNumbersContent,
-                    id: 'phone-numbers',
-                    label: tabPhoneNumbersLabel
-                },
-                4: {
-                    content: tabEMailsContent,
-                    id: 'e-mails',
-                    label: tabEMailsLabel
-                },
-                5: {
-                    content: tabWebsitesContent,
-                    id: 'websites',
-                    label: tabWebsitesLabel
-                },
-                6: {
-                    content: tabEventsContent,
-                    id: 'events',
-                    label: tabEventsLabel
-                },
-                7: {
-                    content: tabBankAccountsContent,
-                    id: 'bank-accounts',
-                    label: tabBankAccountsLabel
-                },
-                8: {
-                    content: tabDocumentsContent,
-                    id: 'documents',
-                    label: tabDocumentsLabel
-                },
-                9: {
-                    content: tabOtherContent,
-                    id: 'other',
-                    label: tabOtherLabel
-                }
-            })}" />
+            <hr>
+
+            <f:variable
+                name="tabs"
+                value="{contactBook:psrEvent.modifyTabs(contact: contact, tabs: {
+                    0: {
+                        content: tabNameContent,
+                        id: 'name',
+                        label: tabNameLabel
+                    },
+                    1: {
+                        content: tabWorkContent,
+                        id: 'work',
+                        label: tabWorkLabel
+                    },
+                    2: {
+                        content: tabAddressesContent,
+                        id: 'addresses',
+                        label: tabAddressesLabel
+                    },
+                    3: {
+                        content: tabPhoneNumbersContent,
+                        id: 'phone-numbers',
+                        label: tabPhoneNumbersLabel
+                    },
+                    4: {
+                        content: tabEMailsContent,
+                        id: 'e-mails',
+                        label: tabEMailsLabel
+                    },
+                    5: {
+                        content: tabWebsitesContent,
+                        id: 'websites',
+                        label: tabWebsitesLabel
+                    },
+                    6: {
+                        content: tabEventsContent,
+                        id: 'events',
+                        label: tabEventsLabel
+                    },
+                    7: {
+                        content: tabBankAccountsContent,
+                        id: 'bank-accounts',
+                        label: tabBankAccountsLabel
+                    },
+                    8: {
+                        content: tabDocumentsContent,
+                        id: 'documents',
+                        label: tabDocumentsLabel
+                    },
+                    9: {
+                        content: tabOtherContent,
+                        id: 'other',
+                        label: tabOtherLabel
+                    }
+                })}" />
+
+            <f:render
+                arguments="{
+                    tabClass: 'px-1',
+                    tabs: tabs,
+                    vertical: true,
+                }"
+                partial="Component/Tabs" />
+
+            <templates:event.additionalContent
+                eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalContactContentEvent::class')}"
+                parameters="{contact: contact}" />
+        </div>
+    </div>
+
+    <div class="d-flex mt-3">
+        <templates:component.button
+            additionalClasses="bg-secondary-subtle"
+            href="{f:uri.action(action: 'list')}"
+            iconIdentifier="templates-arrow-left"
+            label="{foundation:translate(id: 'backToList')}"
+            spinnerText="{foundation:translate(id: 'backToList')}"
+            tag="a" />
+        <templates:component.button
+            additionalClasses="bg-primary-subtle ms-2"
+            href="{f:uri.action(action: 'edit', arguments: '{contact: contact}')}"
+            iconIdentifier="templates-pencil"
+            label="{foundation:translate(id: 'edit')}"
+            spinnerText="{foundation:translate(id: 'edit')}"
+            tag="a" />
 
         <f:render
             arguments="{
-                tabClass: 'px-1',
-                tabs: tabs,
-                vertical: true,
+                classes: 'bg-danger btn ms-auto',
+                modalId: 'delete-contact-{contact.uid}-modal',
+                text: '{templates:svgIcon(identifier: \'templates-trash\')}',
+                title: '{foundation:translate(id: \'delete\')}'
             }"
-            partial="Component/Tabs" />
-
-        <templates:event.additionalContent
-            eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalContactContentEvent::class')}"
-            parameters="{contact: contact}" />
+            partial="Component/Modal/Toggle" />
     </div>
-</div>
-
-<div class="d-flex mt-3">
-    <templates:component.button
-        additionalClasses="bg-secondary-subtle"
-        href="{f:uri.action(action: 'list')}"
-        iconIdentifier="templates-arrow-left"
-        label="{foundation:translate(id: 'backToList')}"
-        spinnerText="{foundation:translate(id: 'backToList')}"
-        tag="a" />
-    <templates:component.button
-        additionalClasses="bg-primary-subtle ms-2"
-        href="{f:uri.action(action: 'edit', arguments: '{contact: contact}')}"
-        iconIdentifier="templates-pencil"
-        label="{foundation:translate(id: 'edit')}"
-        spinnerText="{foundation:translate(id: 'edit')}"
-        tag="a" />
 
     <f:render
         arguments="{
-            classes: 'bg-danger btn ms-auto',
-            modalId: 'delete-contact-{contact.uid}-modal',
-            text: '{templates:svgIcon(identifier: \'templates-trash\')}',
-            title: '{foundation:translate(id: \'delete\')}'
+            body: '{foundation:translate(arguments: {name: contact.fullName}, id: \'modal:body\')}',
+            id: 'delete-contact-{contact.uid}-modal',
+            title: '{foundation:translate(id: \'modal:title\')}'
         }"
-        partial="Component/Modal/Toggle" />
-</div>
+        contentAs="footer"
+        partial="Component/Modal/Dialog">
+        <f:render
+            arguments="{contact: contact}"
+            section="ModalFooter" />
+    </f:render>
 
-<f:render
-    arguments="{
-        body: '{foundation:translate(arguments: {name: contact.fullName}, id: \'modal:body\')}',
-        id: 'delete-contact-{contact.uid}-modal',
-        title: '{foundation:translate(id: \'modal:title\')}'
-    }"
-    contentAs="footer"
-    partial="Component/Modal/Dialog">
     <f:render
         arguments="{contact: contact}"
-        section="ModalFooter" />
-</f:render>
-
-<f:render
-    arguments="{contact: contact}"
-    partial="ExportModal/Dialog" />
+        partial="ExportModal/Dialog" />
+</f:section>
 
 <f:section name="Colleagues">
     <ul class="list-group list-group-flush">

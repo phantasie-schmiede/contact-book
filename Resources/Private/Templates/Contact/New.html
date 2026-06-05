@@ -3,40 +3,46 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
-<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/form.xlf" />
+<f:layout name="Default" />
 
-<f:render
-    arguments="{contact: contact, loadCompanies: true, loadContacts: true}"
-    partial="AjaxRequests" />
+<f:section name="Main">
+    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/form.xlf" />
 
-<f:form
-    action="create"
-    enctype="multipart/form-data"
-    method="post"
-    name="contact"
-    object="{contact}">
+    <f:render
+        arguments="{contact: contact, loadCompanies: true, loadContacts: true}"
+        partial="AjaxRequests" />
+
+    <f:form
+        action="create"
+        enctype="multipart/form-data"
+        method="post"
+        name="contact"
+        object="{contact}">
+        <f:render
+            arguments="{_all}"
+            partial="FormFields/Contact" />
+
+        <f:render
+            contentAs="buttons"
+            partial="Component/ButtonRow">
+            <templates:component.button
+                additionalClasses="bg-secondary-subtle"
+                href="{f:uri.action(action: 'list')}"
+                iconIdentifier="templates-x-lg"
+                label="{foundation:translate(id: 'form:cancel')}"
+                spinnerText="{foundation:translate(id: 'form:cancel')}"
+                tag="a" />
+            <templates:component.button
+                additionalClasses="bg-primary-subtle ms-2"
+                iconIdentifier="templates-floppy"
+                label="{foundation:translate(id: 'form:save')}"
+                spinnerText="{foundation:translate(id: 'form:submit.loadingSpinner')}"
+                type="submit" />
+        </f:render>
+    </f:form>
+
     <f:render
         arguments="{_all}"
-        partial="FormFields/Contact" />
-
-    <div class="col-12 d-flex mt-3">
-        <templates:component.button
-            additionalClasses="bg-secondary-subtle"
-            href="{f:uri.action(action: 'list')}"
-            iconIdentifier="templates-x-lg"
-            label="{foundation:translate(id: 'form:cancel')}"
-            spinnerText="{foundation:translate(id: 'form:cancel')}"
-            tag="a" />
-        <templates:component.button
-            additionalClasses="bg-primary-subtle ms-2"
-            iconIdentifier="templates-floppy"
-            label="{foundation:translate(id: 'form:save')}"
-            spinnerText="{foundation:translate(id: 'form:submit.loadingSpinner')}"
-            type="submit" />
-    </div>
-</f:form>
-
-<f:render
-    arguments="{_all}"
-    partial="ContactRelationTemplates" />
+        partial="ContactRelationTemplates" />
+</f:section>
 </html>
