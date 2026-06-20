@@ -23,11 +23,11 @@
 
             <f:render
                 arguments="{
-            additionalContentAppend: '{f:render(arguments: {contact: contact}, section: \'AdditionalContent\')}',
-            desktopImageUrl: desktopImageUrl,
-            imageUrl: imageUrl,
-            title: contact.fullName
-        }"
+                    additionalContentAppend: '{f:render(arguments: {contact: contact}, section: \'AdditionalContent\')}',
+                    desktopImageUrl: desktopImageUrl,
+                    imageUrl: imageUrl,
+                    title: contact.fullName
+                }"
                 partial="Component/Card" />
         </div>
     </f:for>
