@@ -2,12 +2,16 @@
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
-<div class="row">
+<f:asset.css
+    href="EXT:contact_book/Resources/Public/Css/contact-card-grid.css"
+    identifier="contactBookContactCardGrid" />
+
+<div class="contact-card-grid">
     <f:for
         as="contact"
         each="{contacts}"
         iteration="iterator">
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+        <div class="contact-card-grid__item">
             <f:if condition="{contact.profileImage}">
                 <f:variable
                     name="desktopImageUrl"
