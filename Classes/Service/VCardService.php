@@ -31,6 +31,8 @@ use RuntimeException;
  */
 class VCardService
 {
+    private const VCARD_EOL = "\r\n";
+
     protected VCardVersion $version = VCardVersion::V2_1;
 
     public function __construct(
@@ -72,14 +74,17 @@ class VCardService
 
         /** @var Address $address */
         foreach ($contact->getAddresses() as $address) {
-            $this->addLine(
-                'ADR;' . $this->getGeneralType($address->getType()) . ':;;' . implode(';', [
+            $this->addStructuredTextLine(
+                'ADR;' . $this->getGeneralType($address->getType()),
+                [
+                    '',
+                    '',
                     $address->getStreetAndHouseNumber(),
                     $address->getCity(),
                     $address->getCounty(),
                     $address->getZipCode(),
                     $this->countryNamesService->getFromCode($address->getCountry()),
-                ]),
+                ],
                 $vCard
             );
         }
@@ -122,7 +127,7 @@ class VCardService
 
     private function addCompanyInformation(Contact $contact, string &$vCard): void
     {
-        $this->addLine('FN:' . $contact->getCompanyName(), $vCard);
+        $this->addTextLine('FN', $contact->getCompanyName(), $vCard);
 
         if (VCardVersion::V4_0 === $this->version) {
             $this->addLine('KIND:organization', $vCard);
@@ -138,8 +143,9 @@ class VCardService
 
         /** @var EMail $eMail */
         foreach ($contact->getEMails() as $eMail) {
-            $this->addLine(
-                'EMAIL;' . $this->getGeneralType($eMail->getType()) . ':' . $eMail->getEMailAddress(),
+            $this->addTextLine(
+                'EMAIL;' . $this->getGeneralType($eMail->getType()),
+                $eMail->getEMailAddress(),
                 $vCard
             );
         }
@@ -148,16 +154,21 @@ class VCardService
     private function addIndividualInformation(Contact $contact, string &$vCard): void
     {
         $this->addBirthday($contact, $vCard);
-        $this->addLine('FN:' . $contact->getShortName(), $vCard);
-        $this->addLine(
-            'N:' . $contact->getLastName() . ';' . $contact->getFirstName(
-            ) . ';' . (VCardVersion::Apple !== $this->version ? $contact->getMiddleNames(
-            ) : '') . ';' . $contact->getTitle() . ';',
+        $this->addTextLine('FN', $contact->getShortName(), $vCard);
+        $this->addStructuredTextLine(
+            'N',
+            [
+                $contact->getLastName(),
+                $contact->getFirstName(),
+                VCardVersion::Apple !== $this->version ? $contact->getMiddleNames() : '',
+                $contact->getTitle(),
+                '',
+            ],
             $vCard
         );
 
         if (VCardVersion::V2_1 !== $this->version && '' !== $contact->getNickname()) {
-            $this->addLine('NICKNAME:' . $contact->getNickname(), $vCard);
+            $this->addTextLine('NICKNAME', $contact->getNickname(), $vCard);
         }
 
         if (VCardVersion::V4_0 === $this->version) {
@@ -167,7 +178,7 @@ class VCardService
 
     private function addLine(string $line, string &$vCard): void
     {
-        $vCard .= $line . PHP_EOL;
+        $vCard .= $this->foldLine($line) . self::VCARD_EOL;
     }
 
     private function addPhoneNumbers(Contact $contact, string &$vCard): void
@@ -238,8 +249,86 @@ class VCardService
 
         /** @var Website $website */
         foreach ($contact->getWebsites() as $website) {
-            $this->addLine('URL;' . $this->getGeneralType($website->getType()) . ':' . $website->getUrl(), $vCard);
+            $this->addTextLine(
+                'URL;' . $this->getGeneralType($website->getType()),
+                $website->getUrl(),
+                $vCard,
+                false,
+                false
+            );
         }
+    }
+
+    private function addStructuredTextLine(string $property, array $values, string &$vCard): void
+    {
+        $line = $property . ':' . implode(
+            ';',
+            array_map(
+                fn(string $value) => $this->escapeTextValue($value),
+                $values
+            )
+        );
+        $this->addLine($line, $vCard);
+    }
+
+    private function addTextLine(
+        string $property,
+        string $value,
+        string &$vCard,
+        bool $escapeSemicolon = true,
+        bool $escapeComma = true
+    ): void {
+        $this->addLine(
+            $property . ':' . $this->escapeTextValue($value, $escapeSemicolon, $escapeComma),
+            $vCard
+        );
+    }
+
+    private function escapeTextValue(string $value, bool $escapeSemicolon = true, bool $escapeComma = true): string
+    {
+        $escapedValue = str_replace(
+            ['\\', "\r\n", "\r", "\n"],
+            ['\\\\', '\n', '\n', '\n'],
+            $value
+        );
+
+        if ($escapeSemicolon) {
+            $escapedValue = str_replace(';', '\;', $escapedValue);
+        }
+
+        if ($escapeComma) {
+            $escapedValue = str_replace(',', '\,', $escapedValue);
+        }
+
+        return $escapedValue;
+    }
+
+    private function foldLine(string $line): string
+    {
+        if (strlen($line) <= 75) {
+            return $line;
+        }
+
+        $foldedLine = '';
+        $remainingLine = $line;
+        $isFirstLine = true;
+
+        while ('' !== $remainingLine) {
+            $prefix = $isFirstLine ? '' : ' ';
+            $chunkLength = 75 - strlen($prefix);
+            $chunk = mb_strcut($remainingLine, 0, $chunkLength, 'UTF-8');
+            $remainingLine = substr($remainingLine, strlen($chunk));
+
+            $foldedLine .= $prefix . $chunk;
+
+            if ('' !== $remainingLine) {
+                $foldedLine .= self::VCARD_EOL;
+            }
+
+            $isFirstLine = false;
+        }
+
+        return $foldedLine;
     }
 
     private function getGeneralType(GeneralType $type): string
