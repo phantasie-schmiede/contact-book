@@ -275,16 +275,16 @@ class VCardService
         string $property,
         string $value,
         string &$vCard,
-        bool $escapeSemicolon = true,
-        bool $escapeComma = true
+        bool $escapeComma = true,
+        bool $escapeSemicolon = true
     ): void {
         $this->addLine(
-            $property . ':' . $this->escapeTextValue($value, $escapeSemicolon, $escapeComma),
+            $property . ':' . $this->escapeTextValue($value, $escapeComma, $escapeSemicolon),
             $vCard
         );
     }
 
-    private function escapeTextValue(string $value, bool $escapeSemicolon = true, bool $escapeComma = true): string
+    private function escapeTextValue(string $value, bool $escapeComma = true, bool $escapeSemicolon = true): string
     {
         $escapedValue = str_replace(
             ['\\', "\r\n", "\r", "\n"],
