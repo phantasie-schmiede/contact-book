@@ -34,6 +34,16 @@
 	],
 	"license": "GPL-3.0-or-later",
 	"name": "psbits/contact-book",
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "git@github.com:phantasie-schmiede/frontend-users.git"
+		},
+		{
+			"type": "vcs",
+			"url": "git@github.com:phantasie-schmiede/templates.git"
+		}
+	],
 	"require": {
 		"php": "^8.3",
 		"psbits/foundation": "@dev",
@@ -43,17 +53,40 @@
 		"typo3/cms-core": "^13.4"
 	},
 	"require-dev": {
-		"roave/security-advisories": "dev-latest"
+		"friendsofphp/php-cs-fixer": "^3.95",
+		"helmich/typo3-typoscript-lint": "^3.3",
+		"phpstan/phpstan": "^2.2",
+		"roave/security-advisories": "dev-latest",
+		"saschaegerer/phpstan-typo3": "^2.1"
 	},
 	"scripts": {
-		"prepare-release": [
-			"rm -rf .Build",
-			"rm -rf .github",
-			"rm -rf Tests",
-			"rm .editorconfig",
-			"rm .gitattributes",
-			"rm .gitignore"
-		]
+		"analyze:php": "phpstan analyse --configuration=Build/Quality/phpstan.neon.dist --no-progress",
+		"audit:composer": "composer audit --abandoned=report",
+		"fix:classes": "npm run fix:classes",
+		"fix:htmlxml": "npm run fix:htmlxml",
+		"fix:php": "php-cs-fixer fix --config=Build/Quality/.php-cs-fixer.dist.php --verbose",
+		"lint:classes": "npm run lint:classes",
+		"lint:htmlxml": "npm run lint:htmlxml",
+		"lint:php": "php-cs-fixer fix --config=Build/Quality/.php-cs-fixer.dist.php --dry-run --diff --verbose",
+		"lint:scss": "npm run lint:scss",
+		"lint:typoscript": "typoscript-lint --config=Build/Quality/typoscript-lint.yml --ansi Configuration/TypoScript",
+		"lint:yaml": "bash -lc 'command -v yamllint >/dev/null 2>&1 || sudo apt install -y yamllint; yamllint -c Build/Quality/.yamllint.yml Build/Quality Configuration'",
+		"post-install-cmd": [
+			"npm install",
+			"cp Build/GitHooks/pre-commit .git/hooks/pre-commit"
+		],
+		"qa": [
+			"@analyze:php",
+			"@audit:composer",
+			"@lint:classes",
+			"@lint:htmlxml",
+			"@lint:php",
+			"@lint:scss",
+			"@lint:typoscript",
+			"@lint:yaml",
+			"@validate:composer"
+		],
+		"validate:composer": "composer validate --no-check-publish"
 	},
 	"type": "typo3-cms-extension"
 }
