@@ -24,6 +24,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class EMailRepository extends Repository
 {
+    /** @return QueryResultInterface<int, EMail> */
     public function findByDemand(EMailDemand $demand): QueryResultInterface
     {
         $constraints = [];

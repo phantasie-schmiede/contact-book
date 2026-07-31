@@ -10,11 +10,7 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Service;
 
-use Doctrine\DBAL\Exception;
-use JsonException;
 use PSBits\ContactBook\Domain\Model\AbstractContactRelatedEntity;
-use PSBits\ContactBook\Domain\Model\Contact;
-use PSBits\ContactBook\Domain\Model\ContactGroup;
 use PSBits\ContactBook\Domain\Model\Job;
 use PSBits\ContactBook\Domain\Repository\AddressRepository;
 use PSBits\ContactBook\Domain\Repository\ContactGroupRepository;
@@ -25,17 +21,13 @@ use PSBits\ContactBook\Domain\Repository\EventRepository;
 use PSBits\ContactBook\Domain\Repository\JobRepository;
 use PSBits\ContactBook\Domain\Repository\PhoneNumberRepository;
 use PSBits\ContactBook\Domain\Repository\WebsiteRepository;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use ReflectionException;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
-use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 use function count;
+use function is_string;
 
 /**
  * Class CleanupService
@@ -81,6 +73,7 @@ class CleanupService implements LoggerAwareInterface
      */
     private function deleteOrphanedAddresses(): void
     {
+        /** @var array<int, string> $deletedValues */
         $deletedValues = [];
         $numberOfDeletedRecords = $this->deleteOrphanedRecords($this->addressRepository, $deletedValues);
         $this->logDeletion($deletedValues, $numberOfDeletedRecords, 'addresses');
@@ -91,6 +84,7 @@ class CleanupService implements LoggerAwareInterface
      */
     private function deleteOrphanedDocuments(): void
     {
+        /** @var array<int, string> $deletedValues */
         $deletedValues = [];
         $numberOfDeletedRecords = $this->deleteOrphanedRecords($this->documentRepository, $deletedValues);
         $this->logDeletion($deletedValues, $numberOfDeletedRecords, 'documents');
@@ -101,6 +95,7 @@ class CleanupService implements LoggerAwareInterface
      */
     private function deleteOrphanedEmails(): void
     {
+        /** @var array<int, string> $deletedValues */
         $deletedValues = [];
         $numberOfDeletedRecords = $this->deleteOrphanedRecords($this->eMailRepository, $deletedValues);
         $this->logDeletion($deletedValues, $numberOfDeletedRecords, 'e-mails');
@@ -111,6 +106,7 @@ class CleanupService implements LoggerAwareInterface
      */
     private function deleteOrphanedEvents(): void
     {
+        /** @var array<int, string> $deletedValues */
         $deletedValues = [];
         $numberOfDeletedRecords = $this->deleteOrphanedRecords($this->eventRepository, $deletedValues);
         $this->logDeletion($deletedValues, $numberOfDeletedRecords, 'events');
@@ -121,9 +117,10 @@ class CleanupService implements LoggerAwareInterface
      */
     private function deleteOrphanedJobs(): void
     {
+        /** @var array<int, string> $deletedValues */
         $deletedValues = [];
 
-        /** @var Job $record */
+        /** @var Job $job */
         foreach ($this->jobRepository->findAll() as $job) {
             if (null === $job->getContact()) {
                 $this->jobRepository->remove($job);
@@ -141,12 +138,18 @@ class CleanupService implements LoggerAwareInterface
      */
     private function deleteOrphanedPhoneNumbers(): void
     {
+        /** @var array<int, string> $deletedValues */
         $deletedValues = [];
         $numberOfDeletedRecords = $this->deleteOrphanedRecords($this->phoneNumberRepository, $deletedValues);
         $this->logDeletion($deletedValues, $numberOfDeletedRecords, 'phone numbers');
     }
 
     /**
+     * @template T of AbstractContactRelatedEntity
+     * @param Repository<T>          $repository
+     * @param array<int, string>     $data
+     * @param-out array<int, string> $data
+     *
      * @throws IllegalObjectTypeException
      */
     private function deleteOrphanedRecords(Repository $repository, array &$data): int
@@ -162,7 +165,11 @@ class CleanupService implements LoggerAwareInterface
                 $deletedRecords++;
 
                 if (method_exists($record, 'getCompactValue')) {
-                    $data[] = $record->getCompactValue();
+                    $compactValue = $record->getCompactValue();
+
+                    if (is_string($compactValue)) {
+                        $data[] = $compactValue;
+                    }
                 }
             }
         }
@@ -177,11 +184,13 @@ class CleanupService implements LoggerAwareInterface
      */
     private function deleteOrphanedWebsites(): void
     {
+        /** @var array<int, string> $deletedValues */
         $deletedValues = [];
         $numberOfDeletedRecords = $this->deleteOrphanedRecords($this->websiteRepository, $deletedValues);
         $this->logDeletion($deletedValues, $numberOfDeletedRecords, 'websites');
     }
 
+    /** @param array<int, string> $data */
     private function logDeletion(array $data, int $deletedRecords, string $entityName): void
     {
         if (0 < $deletedRecords) {

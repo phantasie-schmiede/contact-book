@@ -53,6 +53,10 @@ readonly class ContactService
     }
 
     /**
+     * @param Contact[]        $contacts
+     * @param RequestInterface $request
+     *
+     * @return string
      * @throws ContainerExceptionInterface
      * @throws JsonException
      * @throws NotFoundExceptionInterface
@@ -72,6 +76,11 @@ readonly class ContactService
     }
 
     /**
+     * @param string           $cacheEntryIdentifier
+     * @param Contact[]        $contacts
+     * @param RequestInterface $request
+     *
+     * @return string
      * @throws ContainerExceptionInterface
      * @throws JsonException
      * @throws NotFoundExceptionInterface
@@ -91,6 +100,10 @@ readonly class ContactService
     }
 
     /**
+     * @param ContactRelationInterface $entity
+     * @param Contact|null             $contact
+     * @param int[]|string             $additionalContacts
+     *
      * @throws JsonException
      */
     public function setContactsOfRelatedEntity(
@@ -115,10 +128,9 @@ readonly class ContactService
         $contactIds = array_map('\intval', $contactIds ?? $additionalContacts);
 
         foreach ($contactIds as $contactId) {
-            /** @var Contact $additionalContact */
             $additionalContact = $this->contactRepository->findByUid($contactId);
 
-            if (null !== $additionalContact && !$entity->getContacts()
+            if ($additionalContact instanceof Contact && !$entity->getContacts()
                     ->contains($additionalContact)) {
                 $entity->addContact($additionalContact);
             }

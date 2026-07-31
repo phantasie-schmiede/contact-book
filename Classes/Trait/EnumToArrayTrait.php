@@ -17,6 +17,7 @@ namespace PSBits\ContactBook\Trait;
  */
 trait EnumToArrayTrait
 {
+    /** @return array<int|string, string> */
     public static function toArray(object $defaultValue = null): array
     {
         $result = [];

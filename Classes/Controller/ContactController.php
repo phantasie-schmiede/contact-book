@@ -12,7 +12,6 @@ namespace PSBits\ContactBook\Controller;
 
 use Doctrine\DBAL\Exception as DbalException;
 use Exception;
-use JetBrains\PhpStorm\NoReturn;
 use JsonException;
 use PSBits\ContactBook\Data\ExtensionInformation;
 use PSBits\ContactBook\Domain\Demand\ContactDemand;
@@ -170,7 +169,6 @@ class ContactController extends AbstractAccessController
      * @throws JsonException
      * @throws NotFoundExceptionInterface
      */
-    #[NoReturn]
     #[PluginAction(uncached: true)]
     public function exportAction(?Contact $contact = null, ?VCardVersion $version = null): void
     {
@@ -540,6 +538,10 @@ class ContactController extends AbstractAccessController
         }
     }
 
+    /**
+     * @param Address              $address
+     * @param array<string, mixed> $entityData
+     */
     private function updateAddressProperties(Address $address, array $entityData): void
     {
         $address->setCity($entityData['city'])
@@ -553,6 +555,9 @@ class ContactController extends AbstractAccessController
     }
 
     /**
+     * @param BankAccount          $bankAccount
+     * @param array<string, mixed> $entityData
+     *
      * @throws DbalException
      */
     private function updateBankAccountProperties(BankAccount $bankAccount, array $entityData): void
@@ -562,6 +567,10 @@ class ContactController extends AbstractAccessController
     }
 
     /**
+     * @param Document             $document
+     * @param array<string, mixed> $entityData
+     * @param int|null             $tempUid
+     *
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
      * @throws MisconfiguredTcaException
@@ -589,6 +598,10 @@ class ContactController extends AbstractAccessController
             ->setTitle($entityData['title']);
     }
 
+    /**
+     * @param EMail                $eMail
+     * @param array<string, mixed> $entityData
+     */
     private function updateEMailProperties(EMail $eMail, array $entityData): void
     {
         $eMail->setEMailAddress($entityData['eMailAddress'])
@@ -597,6 +610,11 @@ class ContactController extends AbstractAccessController
     }
 
     /**
+     * @param Contact                  $contact
+     * @param ContactRelationInterface $entity
+     * @param array<string, mixed>     $entityData
+     * @param int|null                 $tempUid
+     *
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
      * @throws DbalException
@@ -642,6 +660,10 @@ class ContactController extends AbstractAccessController
         }
     }
 
+    /**
+     * @param Event                $event
+     * @param array<string, mixed> $entityData
+     */
     private function updateEventProperties(Event $event, array $entityData): void
     {
         $event->setDay($entityData['day'] ? (int)$entityData['day'] : null)
@@ -654,6 +676,10 @@ class ContactController extends AbstractAccessController
             ->setYear($entityData['year'] ? (int)$entityData['year'] : null);
     }
 
+    /**
+     * @param Job                  $job
+     * @param array<string, mixed> $entityData
+     */
     private function updateJobProperties(Job $job, array $entityData): void
     {
         $job->setCompany($entityData['company'] ? $this->contactRepository->findByUid($entityData['company']) : null)
@@ -662,6 +688,9 @@ class ContactController extends AbstractAccessController
             ->setRole($entityData['role']);
     }
 
+    /**
+     * @param array<string, mixed> $entityData
+     */
     private function updatePhoneNumberProperties(PhoneNumber $phoneNumber, array $entityData): void
     {
         $phoneNumber->setAreaCode((string)$entityData['areaCode'])
@@ -676,6 +705,10 @@ class ContactController extends AbstractAccessController
             ->setWhatsApp((bool)$entityData['whatsApp']);
     }
 
+    /**
+     * @param Website              $website
+     * @param array<string, mixed> $entityData
+     */
     private function updateWebsiteProperties(Website $website, array $entityData): void
     {
         $website->setNotes($entityData['notes'])

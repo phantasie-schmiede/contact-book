@@ -23,8 +23,15 @@ class ModifyTabsEvent
 {
     protected Contact                $contact;
     protected ServerRequestInterface $request;
-    protected array                  $tabs = [];
 
+    /** @var array<int, array<string, mixed>> */
+    protected array $tabs = [];
+
+    /**
+     * @param Contact                          $contact
+     * @param ServerRequestInterface           $request
+     * @param array<int, array<string, mixed>> $tabs
+     */
     public function __construct(Contact $contact, ServerRequestInterface $request, array $tabs = [])
     {
         $this->contact = $contact;
@@ -65,11 +72,13 @@ class ModifyTabsEvent
         return $this->request;
     }
 
+    /** @return array<int, array<string, mixed>> */
     public function getTabs(): array
     {
         return $this->tabs;
     }
 
+    /** @param array<int, array<string, mixed>> $tabs */
     public function setTabs(array $tabs): static
     {
         $this->tabs = $tabs;

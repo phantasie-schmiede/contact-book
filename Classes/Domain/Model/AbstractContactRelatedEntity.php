@@ -29,6 +29,7 @@ abstract class AbstractContactRelatedEntity extends AbstractEntity implements Co
     /* Override this constant in your concrete class. */
     public const string ACTION_ICON_IDENTIFIER = '';
 
+    /** @var ObjectStorage<Contact> */
     protected ObjectStorage $contacts;
 
     #[Text]
@@ -59,11 +60,13 @@ abstract class AbstractContactRelatedEntity extends AbstractEntity implements Co
         return JsonUtility::getUidsAsJsonArray(...$this->getContactsSorted());
     }
 
+    /** @return ObjectStorage<Contact> */
     public function getContacts(): ObjectStorage
     {
         return $this->contacts;
     }
 
+    /** @return Contact[] */
     public function getContactsSorted(): array
     {
         return ContactUtility::sortByListName($this->contacts->toArray());
@@ -98,6 +101,7 @@ abstract class AbstractContactRelatedEntity extends AbstractEntity implements Co
         return $this;
     }
 
+    /** @param ObjectStorage<Contact> $contacts */
     public function setContacts(ObjectStorage $contacts): self
     {
         $this->contacts = $contacts;
@@ -105,7 +109,7 @@ abstract class AbstractContactRelatedEntity extends AbstractEntity implements Co
         return $this;
     }
 
-    public function setNotes(string $notes): self
+    public function setNotes(string $notes): static
     {
         $this->notes = htmlspecialchars(trim($notes));
 

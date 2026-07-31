@@ -22,17 +22,24 @@ use PSBits\ContactBook\Utility\ContactBookUtility;
  */
 class ContactDemand
 {
-    protected array  $categoryUids                  = [];
-    protected string $companyName                   = '';
-    protected int    $contactBookUid                = 0;
-    protected int    $contactGroupUid               = 0;
-    protected array  $contactUids                   = [];
+    /** @var int[] */
+    protected array  $categoryUids    = [];
+    protected string $companyName     = '';
+    protected int    $contactBookUid  = 0;
+    protected int    $contactGroupUid = 0;
+
+    /** @var int[] */
+    protected array $contactUids = [];
+
+    /** @var int[] */
     protected array  $excludedContacts              = [];
     protected string $firstName                     = '';
     protected string $lastName                      = '';
     protected bool   $onlyExportRelevantInformation = false;
     protected bool   $respectStoragePage            = false;
-    protected array  $types                         = [];
+
+    /** @var ContactType[] */
+    protected array $types = [];
 
     /**
      * @throws JsonException
@@ -78,6 +85,7 @@ class ContactDemand
         return $this;
     }
 
+    /** @return int[] */
     public function getCategoryUids(): array
     {
         return $this->categoryUids;
@@ -98,11 +106,13 @@ class ContactDemand
         return $this->contactGroupUid;
     }
 
+    /** @return int[] */
     public function getContactUids(): array
     {
         return $this->contactUids;
     }
 
+    /** @return int[] */
     public function getExcludedContacts(): array
     {
         return $this->excludedContacts;
@@ -128,6 +138,7 @@ class ContactDemand
         return $this->respectStoragePage;
     }
 
+    /** @return ContactType[] */
     public function getTypes(): array
     {
         return $this->types;

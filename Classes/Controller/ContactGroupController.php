@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Controller;
 
 use Doctrine\DBAL\Exception;
-use JetBrains\PhpStorm\NoReturn;
 use JsonException;
 use PSBits\ContactBook\Data\ExtensionInformation;
 use PSBits\ContactBook\Domain\Model\ContactGroup;
@@ -109,7 +108,6 @@ class ContactGroupController extends AbstractAccessController
         return $this->htmlResponse();
     }
 
-    #[NoReturn]
     #[PluginAction(uncached: true)]
     public function exportAction(ContactGroup $contactGroup, ?VCardVersion $version = null): void
     {

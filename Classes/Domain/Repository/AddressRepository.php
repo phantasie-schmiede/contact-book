@@ -24,6 +24,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class AddressRepository extends Repository
 {
+    /** @return QueryResultInterface<int, Address> */
     public function findByDemand(AddressDemand $demand): QueryResultInterface
     {
         $constraints = [];

@@ -308,7 +308,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
-    public function addJobs(Contact ...$jobs): static
+    public function addJobs(Job ...$jobs): static
     {
         foreach ($jobs as $job) {
             if (!$this->jobs->contains($job)) {
@@ -398,6 +398,7 @@ class Contact extends AbstractEntity
         return $this->birthName;
     }
 
+    /** @return ObjectStorage<SysCategory> */
     public function getCategories(): ObjectStorage
     {
         return $this->categories;
@@ -413,7 +414,7 @@ class Contact extends AbstractEntity
         return $this->contactBook;
     }
 
-    public function getContactGroupByUid(int $uid): EMail
+    public function getContactGroupByUid(int $uid): ContactGroup
     {
         foreach ($this->contactGroups as $contactGroup) {
             if ($uid === $contactGroup->getUid()) {
@@ -457,6 +458,7 @@ class Contact extends AbstractEntity
         return $this->documents;
     }
 
+    /** @return Document[] */
     public function getDocumentsWithoutImages(): array
     {
         $documents = [];
@@ -618,6 +620,7 @@ class Contact extends AbstractEntity
         return NameUtility::getGenitiveForm($name);
     }
 
+    /** @return Document[] */
     public function getImages(): array
     {
         $images = [];
@@ -936,6 +939,7 @@ class Contact extends AbstractEntity
         throw new InvalidArgumentException(__CLASS__ . ': Website with UID ' . $uid . ' was not found!', 1724164873);
     }
 
+    /** @return ObjectStorage<Website> */
     public function getWebsites(): ObjectStorage
     {
         return $this->websites;
@@ -1087,6 +1091,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<Address> $addresses */
     public function setAddresses(ObjectStorage $addresses): static
     {
         $this->addresses = $addresses;
@@ -1094,6 +1099,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<BankAccount> $bankAccounts */
     public function setBankAccounts(ObjectStorage $bankAccounts): static
     {
         $this->bankAccounts = $bankAccounts;
@@ -1108,6 +1114,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<SysCategory> $categories */
     public function setCategories(ObjectStorage $categories): static
     {
         $this->categories = $categories;
@@ -1129,6 +1136,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<ContactGroup> $contactGroups */
     public function setContactGroups(ObjectStorage $contactGroups): static
     {
         $this->contactGroups = $contactGroups;
@@ -1136,6 +1144,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<EMail> $eMails */
     public function setEMails(ObjectStorage $eMails): static
     {
         $this->eMails = $eMails;
@@ -1143,6 +1152,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<Job> $employments */
     public function setEmployments(ObjectStorage $employments): static
     {
         $this->employments = $employments;
@@ -1150,6 +1160,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<Event> $events */
     public function setEvents(ObjectStorage $events): static
     {
         $this->events = $events;
@@ -1178,6 +1189,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<Job> $jobs */
     public function setJobs(ObjectStorage $jobs): static
     {
         $this->jobs = $jobs;
@@ -1227,6 +1239,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<PhoneNumber> $phoneNumbers */
     public function setPhoneNumbers(ObjectStorage $phoneNumbers): static
     {
         $this->phoneNumbers = $phoneNumbers;
@@ -1280,6 +1293,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<Website> $websites */
     public function setWebsites(ObjectStorage $websites): static
     {
         $this->websites = $websites;

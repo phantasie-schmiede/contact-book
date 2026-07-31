@@ -45,6 +45,7 @@ class OtherContactsViewHelper extends AbstractViewHelper
         );
     }
 
+    /** @return Contact[]|Contact */
     public function render(): array|Contact
     {
         /** @var Contact $contact */

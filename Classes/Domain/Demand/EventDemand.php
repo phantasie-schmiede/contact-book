@@ -23,7 +23,9 @@ class EventDemand
     protected ?DateTime $minDate           = null;
     protected ?bool     $showAnniversaries = null;
     protected ?bool     $showInCalendar    = null;
-    protected array     $types             = [];
+
+    /** @var EventType[] */
+    protected array $types = [];
 
     public function addType(EventType $eventType): self
     {
@@ -47,6 +49,7 @@ class EventDemand
         return $this->showInCalendar;
     }
 
+    /** @return EventType[] */
     public function getTypes(): array
     {
         return $this->types;

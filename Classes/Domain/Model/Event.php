@@ -105,6 +105,7 @@ class Event extends AbstractContactRelatedEntity
         return $this->getLabel() . ': ' . $this->getDateFormatted();
     }
 
+    /** @return Contact[] */
     public function getContactsAsArray(): array
     {
         return $this->contacts->toArray();
@@ -217,9 +218,10 @@ class Event extends AbstractContactRelatedEntity
             return 0;
         }
 
-        if ($now->format('m') > $this->month || ($now->format('m') === $this->month && $now->format(
-                    'd'
-                ) > $this->day)) {
+        $currentMonth = (int)$now->format('m');
+        $currentDay = (int)$now->format('d');
+
+        if ($currentMonth > $this->month || ($currentMonth === $this->month && $currentDay > $this->day)) {
             $anniversary++;
         }
 

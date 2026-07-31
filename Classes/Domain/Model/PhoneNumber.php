@@ -94,6 +94,8 @@ class PhoneNumber extends AbstractContactRelatedEntity
 
     /**
      * The array keys are the icon identifiers.
+     *
+     * @return array<string, string>
      */
     public function getActionLinks(): array
     {

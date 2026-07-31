@@ -36,7 +36,7 @@ class EventRepository extends Repository
     /**
      * @param EventDemand $demand
      *
-     * @return QueryResultInterface<Event>
+     * @return QueryResultInterface<int, Event>
      * @throws Exception
      * @throws InvalidQueryException
      */

@@ -106,7 +106,7 @@ readonly class ImportService
         $existingContact->addAddresses(...$contact->getAddresses());
         $existingContact->addEMails(...$contact->getEMails());
         $existingContact->addEvents(...$contact->getEvents());
-        $existingContact->addJobs(...$contact->getJobs());
+        $existingContact->addJobs(...$contact->getJobs()->toArray());
 
         if ('' === $existingContact->getMiddleNames()) {
             $existingContact->setMiddleNames($contact->getMiddleNames());

@@ -90,6 +90,7 @@ class NumberBlockUtility
         ],
     ];
 
+    /** @return string[] */
     public static function getGermanMobileServicesWithoutLeadingZero(): array
     {
         return array_map(

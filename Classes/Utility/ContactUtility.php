@@ -29,6 +29,10 @@ use function sprintf;
 class ContactUtility
 {
     /**
+     * @param Contact[] $contacts
+     * @param UriBuilder|null $uriBuilder
+     *
+     * @return string
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
      * @throws JsonException
@@ -86,6 +90,11 @@ class ContactUtility
         return null;
     }
 
+    /**
+     * @param Contact[] $contacts
+     *
+     * @return Contact[]
+     */
     public static function sortByListName(array $contacts): array
     {
         usort(

@@ -38,6 +38,7 @@ class CountyUtility
         ],
     ];
 
+    /** @return string[] */
     public static function getGermanCounties(): array
     {
         return self::COUNTIES['GERMANY'];

@@ -25,6 +25,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 class ContactGroupRepository extends Repository
 {
     /**
+     * @return QueryResultInterface<int, ContactGroup>
      * @throws JsonException
      */
     public function findAllOfActiveContactBook(): QueryResultInterface

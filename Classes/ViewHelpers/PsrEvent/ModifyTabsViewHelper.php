@@ -46,6 +46,7 @@ class ModifyTabsViewHelper extends AbstractViewHelper
         );
     }
 
+    /** @return array<int, array<string, mixed>> */
     public function render(): array
     {
         $event = new ModifyTabsEvent($this->arguments['contact'], $this->getRequest(), $this->arguments['tabs']);

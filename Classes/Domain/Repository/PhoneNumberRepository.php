@@ -24,6 +24,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class PhoneNumberRepository extends Repository
 {
+    /** @return QueryResultInterface<int, PhoneNumber> */
     public function findByDemand(PhoneNumberDemand $demand): QueryResultInterface
     {
         $constraints = [];

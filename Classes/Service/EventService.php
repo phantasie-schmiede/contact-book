@@ -26,6 +26,7 @@ readonly class EventService
     }
 
     /**
+     * @return int[]
      * @throws Exception
      */
     public function getAllEventUidsForCurrentFrontendUser(): array

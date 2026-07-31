@@ -31,6 +31,7 @@ readonly class BankingAccountUtility
 
     /**
      * @throws Exception
+     * @return array{bic?: string, city?: string, short_name?: string}
      */
     public static function getBankInformationFromIban(string $iban): array
     {

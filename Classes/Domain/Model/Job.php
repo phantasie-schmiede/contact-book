@@ -57,6 +57,7 @@ class Job extends AbstractContactRelatedEntity
         return $this;
     }
 
+    /** @return Contact[] */
     public function getColleagues(): array
     {
         $colleagues = [];

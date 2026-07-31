@@ -28,7 +28,10 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 class ContactBookRepository extends Repository
 {
     /**
-     * @throws Exception
+     * @param FrontendUser|null $frontendUser
+     *
+     * @return QueryResultInterface<int, ContactBook>
+     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
      */
     public function findByOwner(?FrontendUser $frontendUser = null): QueryResultInterface
     {
@@ -36,7 +39,7 @@ class ContactBookRepository extends Repository
             $frontendUser = GlobalVariableService::get(FrontendUserProvider::class . '.user');
         }
 
-        /** @var Query $query */
+        /** @var Query<ContactBook> $query */
         $query = $this->createQuery();
         $query->getQuerySettings()
             ->setRespectStoragePage(false);

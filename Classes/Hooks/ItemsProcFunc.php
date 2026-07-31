@@ -19,6 +19,7 @@ use PSBits\ContactBook\Domain\Enum\EventType;
  */
 class ItemsProcFunc
 {
+    /** @param array<string, mixed> $params */
     public static function getEventTypes(array &$params): void
     {
         $params['items'] = [];
