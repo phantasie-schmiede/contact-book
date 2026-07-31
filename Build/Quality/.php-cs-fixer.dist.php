@@ -13,7 +13,7 @@ $finder = PhpCsFixer\Finder::create()
 
 return (new PhpCsFixer\Config())->setRiskyAllowed(true)
     ->registerCustomFixers([
-        new PSBits\Templates\PhpCsFixer\Fixer\ClassBlockSeparationFixer(),
+        new PSBits\ContactBook\PhpCsFixer\Fixer\ClassBlockSeparationFixer(),
     ])
     ->setRules([
         '@PSR12'                          => true,
