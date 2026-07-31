@@ -85,6 +85,7 @@ use function is_array;
 class ContactController extends AbstractAccessController
 {
     use ControllerCacheTrait;
+
     public const string CACHE_TAG = 'tx_contactbook_contacts';
 
     public function __construct(
