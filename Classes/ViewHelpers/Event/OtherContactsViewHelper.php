@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -50,12 +51,9 @@ class OtherContactsViewHelper extends AbstractViewHelper
     {
         /** @var Contact $contact */
         $contact = $this->arguments['contact'];
+
         /** @var Event $event */
         $event = $this->arguments['event'];
-
-        if (!$contact instanceof Contact || !$event instanceof Event) {
-            return [];
-        }
 
         $otherContacts = [];
 

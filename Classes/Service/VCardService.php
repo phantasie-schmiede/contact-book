@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -40,7 +41,7 @@ class VCardService
 
     public function getVCard(Contact $contact, VCardVersion $version): string
     {
-        $vCard = '';
+        $vCard         = '';
         $this->version = $version;
         $this->addLine('BEGIN:VCARD', $vCard);
         $this->addLine('VERSION:' . $version->getVersionNumber(), $vCard);
@@ -189,7 +190,7 @@ class VCardService
              */
             if (VCardVersion::Apple === $this->version) {
                 if (GeneralType::Private === $phoneNumber->getGeneralType(
-                    ) && PhoneNumberType::Mobile === $phoneNumber->getPhoneNumberType()) {
+                ) && PhoneNumberType::Mobile === $phoneNumber->getPhoneNumberType()) {
                     $line .= 'TYPE=cell';
                 } else {
                     $line .= $this->getGeneralType($phoneNumber->getGeneralType());
@@ -197,10 +198,10 @@ class VCardService
                 }
             } else {
                 $line .= $this->getGeneralType(
-                        $phoneNumber->getGeneralType()
-                    ) . (VCardVersion::V2_1 === $this->version ? ';' : ',') . $this->getPhoneNumberType(
-                        $phoneNumber->getPhoneNumberType()
-                    );
+                    $phoneNumber->getGeneralType()
+                ) . (VCardVersion::V2_1 === $this->version ? ';' : ',') . $this->getPhoneNumberType(
+                    $phoneNumber->getPhoneNumberType()
+                );
             }
 
             $line .= ':' . (VCardVersion::V4_0 === $this->version ? 'tel:' : '') . $phoneNumber->getCompleteNumber();
@@ -215,7 +216,8 @@ class VCardService
     {
         if ('' === $contact->getUuid()) {
             throw new RuntimeException(
-                __CLASS__ . ': Contact [uid:' . $contact->getUid() . '] has no UUID!', 1740157024
+                __CLASS__ . ': Contact [uid:' . $contact->getUid() . '] has no UUID!',
+                1740157024
             );
         }
 
@@ -251,10 +253,10 @@ class VCardService
         }
 
         return $typeString . match ($type) {
-                GeneralType::Private  => 'home',
-                GeneralType::Business => 'work',
-                GeneralType::Other    => 'other',
-            };
+            GeneralType::Private  => 'home',
+            GeneralType::Business => 'work',
+            GeneralType::Other    => 'other',
+        };
     }
 
     private function getPhoneNumberType(PhoneNumberType $getPhoneNumberType): string

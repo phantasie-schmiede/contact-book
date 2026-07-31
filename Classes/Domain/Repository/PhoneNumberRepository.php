@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -28,7 +29,7 @@ class PhoneNumberRepository extends Repository
     public function findByDemand(PhoneNumberDemand $demand): QueryResultInterface
     {
         $constraints = [];
-        $query = $this->createQuery();
+        $query       = $this->createQuery();
 
         if ('' !== $demand->getAreaCode()) {
             $constraints[] = $query->equals('areaCode', $demand->getAreaCode());

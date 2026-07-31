@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -19,6 +20,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+
 use function sprintf;
 
 /**
@@ -58,7 +60,7 @@ class ContactUtility
                 $contact = array_shift($family);
 
                 $contactString = $contact->getNameDecorations() . (empty($family) ? $contact->getShortName(
-                    ) : $contact->getFirstName());
+                ) : $contact->getFirstName());
 
                 if ($uriBuilder instanceof UriBuilder) {
                     $url = $uriBuilder->reset()
@@ -100,9 +102,9 @@ class ContactUtility
         usort(
             $contacts,
             static fn(Contact $a, Contact $b) => strnatcasecmp(
-            NameUtility::getCompareString($a->getListName()),
-            NameUtility::getCompareString($b->getListName())
-        )
+                NameUtility::getCompareString($a->getListName()),
+                NameUtility::getCompareString($b->getListName())
+            )
         );
 
         return $contacts;

@@ -157,9 +157,9 @@ class ContactBook extends AbstractEntity
 
     public function initializeObject(): void
     {
-        $this->contacts = new ObjectStorage();
+        $this->contacts      = new ObjectStorage();
         $this->contactGroups = new ObjectStorage();
-        $this->owners = new ObjectStorage();
+        $this->owners        = new ObjectStorage();
     }
 
     /**

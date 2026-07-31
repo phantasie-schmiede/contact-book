@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -51,10 +52,10 @@ class ContactGroupWidgetController extends AbstractAccessController
     #[PluginAction]
     public function displayAction(): ResponseInterface
     {
-        $contactGroup = $this->contactGroupRepository->findByUid($this->settings['contactGroup']);
+        $contactGroup     = $this->contactGroupRepository->findByUid($this->settings['contactGroup']);
         $languageFilePath = FilePathUtility::getLanguageFilePath(
-                $this->extensionInformation
-            ) . 'Frontend/ContactGroupWidget/display.xlf:error.';
+            $this->extensionInformation
+        ) . 'Frontend/ContactGroupWidget/display.xlf:error.';
 
         if (null === $contactGroup) {
             $this->addFlashMessage(

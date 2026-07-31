@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -28,7 +29,7 @@ class EMailRepository extends Repository
     public function findByDemand(EMailDemand $demand): QueryResultInterface
     {
         $constraints = [];
-        $query = $this->createQuery();
+        $query       = $this->createQuery();
 
         if ('' !== $demand->getEMailAddress()) {
             $constraints[] = $query->equals('eMailAddress', $demand->getEMailAddress());

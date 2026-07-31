@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 // Set cropvariants for property 'file' in 'tx_contactbook_domain_model_document'

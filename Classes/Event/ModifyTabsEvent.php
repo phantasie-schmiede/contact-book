@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -12,6 +13,7 @@ namespace PSBits\ContactBook\Event;
 
 use PSBits\ContactBook\Domain\Model\Contact;
 use Psr\Http\Message\ServerRequestInterface;
+
 use function count;
 
 /**
@@ -36,7 +38,7 @@ class ModifyTabsEvent
     {
         $this->contact = $contact;
         $this->request = $request;
-        $this->tabs = $tabs;
+        $this->tabs    = $tabs;
     }
 
     public function addTab(

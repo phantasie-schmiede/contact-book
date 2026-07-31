@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -34,7 +35,7 @@ class ContactRepository extends Repository
     public function findByDemand(ContactDemand $demand): array|QueryResultInterface
     {
         $constraints = [];
-        $query = $this->createQuery();
+        $query       = $this->createQuery();
         $query->getQuerySettings()
             ->setRespectStoragePage($demand->getRespectStoragePage());
 

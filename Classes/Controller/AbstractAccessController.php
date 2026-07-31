@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -37,7 +38,8 @@ abstract class AbstractAccessController extends ActionController
         if (0 === $this->contactBookRepository->findByOwner()
                 ->count()) {
             throw new PropagateResponseException(
-                new RedirectResponse($this->getRedirectUri(), 401), 1758282051
+                new RedirectResponse($this->getRedirectUri(), 401),
+                1758282051
             );
         }
     }

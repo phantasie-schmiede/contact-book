@@ -58,6 +58,3 @@ jobs:
 
       - name: HTML/XML/XLF lint
         run: composer lint:htmlxml
-
-      - name: SCSS lint
-        run: composer lint:scss

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -10,7 +11,6 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Domain\Repository;
 
-use Exception;
 use PSBits\ContactBook\Domain\Model\ContactBook;
 use PSBits\Foundation\Service\GlobalVariableService;
 use PSBits\FrontendUsers\Domain\Model\Typo3\FrontendUser;

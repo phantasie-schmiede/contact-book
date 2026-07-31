@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -72,6 +73,7 @@ use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
+
 use function in_array;
 use function is_array;
 
@@ -83,7 +85,6 @@ use function is_array;
 class ContactController extends AbstractAccessController
 {
     use ControllerCacheTrait;
-
     public const string CACHE_TAG = 'tx_contactbook_contacts';
 
     public function __construct(
@@ -181,7 +182,7 @@ class ContactController extends AbstractAccessController
             $contactDemand = new ContactDemand();
             $contactDemand->setOnlyExportRelevantInformation(true);
             $allContacts = $this->contactRepository->findByDemand($contactDemand);
-            $fileName = LocalizationUtility::translate(
+            $fileName    = LocalizationUtility::translate(
                 'LLL:EXT:contact_book/Resources/Private/Language/Frontend/exportModal.xlf:allContacts'
             );
 
@@ -221,8 +222,10 @@ class ContactController extends AbstractAccessController
         );
 
         return $this->jsonResponse(
-            json_encode(['html' => $this->contactService->renderAutocompleteList($contacts, $this->request)],
-                JSON_THROW_ON_ERROR)
+            json_encode(
+                ['html' => $this->contactService->renderAutocompleteList($contacts, $this->request)],
+                JSON_THROW_ON_ERROR
+            )
         );
     }
 
@@ -343,7 +346,7 @@ class ContactController extends AbstractAccessController
 
             /** @var Contact $contact */
             $contact = $this->contactRepository->findByUid((int)$contactUid);
-            $owners = ($contact->getContactBook()
+            $owners  = ($contact->getContactBook()
                 ?->getOwners()
                 ->toArray()) ?? [];
 
@@ -461,27 +464,35 @@ class ContactController extends AbstractAccessController
                     switch ($relationType) {
                         case 'address':
                             $contact->removeAddress($entity);
+
                             break;
                         case 'bankAccount':
                             $contact->removeBankAccount($entity);
+
                             break;
                         case 'document':
                             $contact->removeDocument($entity);
+
                             break;
                         case 'eMail':
                             $contact->removeEMail($entity);
+
                             break;
                         case 'event':
                             $contact->removeEvent($entity);
+
                             break;
                         case 'job':
                             $contact->removeJob($entity);
+
                             break;
                         case 'phoneNumber':
                             $contact->removePhoneNumber($entity);
+
                             break;
                         case 'website':
                             $contact->removeWebsite($entity);
+
                             break;
                     }
                 }
@@ -494,11 +505,13 @@ class ContactController extends AbstractAccessController
                             $address = new Address();
                             $this->updateEntityProperties($contact, $address, $entityData);
                             $this->addressRepository->add($address);
+
                             break;
                         case 'bankAccount':
                             $bankAccount = new BankAccount();
                             $this->updateEntityProperties($contact, $bankAccount, $entityData);
                             $this->bankAccountRepository->add($bankAccount);
+
                             break;
                         case 'document':
                             $document = new Document();
@@ -506,31 +519,37 @@ class ContactController extends AbstractAccessController
                             $this->persistenceManager->persistAll();
                             $this->updateEntityProperties($contact, $document, $entityData, $tempUid);
                             $this->documentRepository->update($document);
+
                             break;
                         case 'eMail':
                             $eMail = new EMail();
                             $this->updateEntityProperties($contact, $eMail, $entityData);
                             $this->eMailRepository->add($eMail);
+
                             break;
                         case 'event':
                             $event = new Event();
                             $this->updateEntityProperties($contact, $event, $entityData);
                             $this->eventRepository->add($event);
+
                             break;
                         case 'job':
                             $job = new Job();
                             $this->updateEntityProperties($contact, $job, $entityData);
                             $this->jobRepository->add($job);
+
                             break;
                         case 'phoneNumber':
                             $phoneNumber = new PhoneNumber();
                             $this->updateEntityProperties($contact, $phoneNumber, $entityData);
                             $this->phoneNumberRepository->add($phoneNumber);
+
                             break;
                         case 'website':
                             $website = new Website();
                             $this->updateEntityProperties($contact, $website, $entityData);
                             $this->websiteRepository->add($website);
+
                             break;
                     }
                 }
@@ -635,27 +654,35 @@ class ContactController extends AbstractAccessController
         switch (true) {
             case $entity instanceof Address:
                 $this->updateAddressProperties($entity, $entityData);
+
                 break;
             case $entity instanceof BankAccount:
                 $this->updateBankAccountProperties($entity, $entityData);
+
                 break;
             case $entity instanceof Document:
                 $this->updateDocumentProperties($entity, $entityData, $tempUid);
+
                 break;
             case $entity instanceof EMail:
                 $this->updateEMailProperties($entity, $entityData);
+
                 break;
             case $entity instanceof Event:
                 $this->updateEventProperties($entity, $entityData);
+
                 break;
             case $entity instanceof Job:
                 $this->updateJobProperties($entity, $entityData);
+
                 break;
             case $entity instanceof PhoneNumber:
                 $this->updatePhoneNumberProperties($entity, $entityData);
+
                 break;
             case $entity instanceof Website:
                 $this->updateWebsiteProperties($entity, $entityData);
+
                 break;
         }
     }

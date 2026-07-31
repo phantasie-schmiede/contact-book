@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -11,6 +12,7 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Utility;
 
 use PSBits\Foundation\Utility\StringUtility;
+
 use function in_array;
 
 /**

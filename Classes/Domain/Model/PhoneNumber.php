@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -18,6 +19,7 @@ use PSBits\Foundation\Attribute\TCA\ColumnType\Select;
 use PSBits\Foundation\Attribute\TCA\Ctrl;
 use PSBits\Foundation\Enum\SelectRenderType;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+
 use function sprintf;
 
 /**
@@ -35,7 +37,7 @@ use function sprintf;
     'areaCode',
     'connectionIdentifier',
     'extension',
-],     labelAltForce: true, searchFields: [
+], labelAltForce: true, searchFields: [
     'areaCode',
     'connectionIdentifier',
     'extension',
@@ -45,8 +47,7 @@ use function sprintf;
 class PhoneNumber extends AbstractContactRelatedEntity
 {
     public const string ACTION_ICON_IDENTIFIER = 'telephone';
-
-    public const array SHORT_URLS = [
+    public const array SHORT_URLS              = [
         'SIGNAL'   => 'https://signal.me/#p=%s',
         'TELEGRAM' => 'https://t.me/%s',
         'WHATSAPP' => 'https://wa.me/%s',
@@ -69,7 +70,7 @@ class PhoneNumber extends AbstractContactRelatedEntity
         'Private'  => 'private',
         'Business' => 'business',
         'Other'    => 'other',
-    ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM_MANDATORY_STRING)]
+    ], minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM_MANDATORY_STRING)]
     protected GeneralType $generalType = GeneralType::Private;
 
     #[Input]
@@ -80,7 +81,7 @@ class PhoneNumber extends AbstractContactRelatedEntity
         'Mobile'   => 'mobile',
         'Fax'      => 'fax',
         'Other'    => 'other',
-    ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM_MANDATORY_STRING)]
+    ], minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM_MANDATORY_STRING)]
     protected PhoneNumberType $phoneNumberType = PhoneNumberType::Mobile;
 
     #[Check]

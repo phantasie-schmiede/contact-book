@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -37,6 +38,7 @@ use PSBits\Foundation\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+
 use function count;
 use function in_array;
 
@@ -63,9 +65,9 @@ readonly class ImportService
      */
     public function parseVCardFile(string $file): void
     {
-        $contact = null;
+        $contact     = null;
         $fileContent = file_get_contents($file);
-        $lines = StringUtility::explodeByLineBreaks($fileContent);
+        $lines       = StringUtility::explodeByLineBreaks($fileContent);
 
         foreach ($lines as $line) {
             $line = trim($line);
@@ -132,13 +134,13 @@ readonly class ImportService
         [
             $key,
             $value,
-        ] = $parts;
+        ]      = $parts;
         $types = [];
         $value = trim($value);
 
         if (str_contains($key, ';')) {
             $keyParts = explode(';', $key);
-            $key = array_shift($keyParts);
+            $key      = array_shift($keyParts);
 
             foreach ($keyParts as $keyPart) {
                 if (str_starts_with($keyPart, 'TYPE=')) {
@@ -164,9 +166,9 @@ readonly class ImportService
                 [
                     'street'      => $street,
                     'houseNumber' => $houseNumber,
-                ] = AddressUtility::splitStreetAndHouseNumber($addressParts[2] ?? '');
-                $city = $addressParts[3] ?? '';
-                $county = $addressParts[4] ?? '';
+                ]        = AddressUtility::splitStreetAndHouseNumber($addressParts[2] ?? '');
+                $city    = $addressParts[3] ?? '';
+                $county  = $addressParts[4] ?? '';
                 $zipCode = $addressParts[5] ?? '';
                 $country = $addressParts[6] ?? '';
 
@@ -192,9 +194,10 @@ readonly class ImportService
                 }
 
                 $contact->addAddresses($address);
+
                 break;
             case 'BDAY':
-                $event = new Event();
+                $event     = new Event();
                 $eventDate = DateTime::createFromFormat('Ymd', $value) ?: DateTime::createFromFormat('Y-m-d', $value);
                 $event->setDay((int)$eventDate->format('d'))
                     ->setMonth((int)$eventDate->format('m'))
@@ -203,10 +206,11 @@ readonly class ImportService
                     ->setShowInCalendar(true)
                     ->setType(EventType::Birthday);
                 $contact->addEvents($event);
+
                 break;
             case 'EMAIL':
                 $eMailDemand = (new EMailDemand())->setEMailAddress($value);
-                $eMail = $this->eMailRepository->findByDemand($eMailDemand)
+                $eMail       = $this->eMailRepository->findByDemand($eMailDemand)
                     ->getFirst() ?? (new EMail())->setEMailAddress($value);
 
                 if (in_array('WORK', $types, true)) {
@@ -216,12 +220,14 @@ readonly class ImportService
                 }
 
                 $contact->addEMails($eMail);
+
                 break;
             case 'FN':
                 $nameParts = explode(' ', $value);
                 $contact->setFirstName(array_shift($nameParts));
                 $contact->setLastName(array_pop($nameParts) ?? '');
                 $contact->setMiddleNames(implode(' ', $nameParts));
+
                 break;
             case 'item1.URL':
                 $websiteDemand = new WebsiteDemand();
@@ -229,16 +235,19 @@ readonly class ImportService
                 $website = $this->websiteRepository->findByDemand($websiteDemand)
                     ->getFirst() ?? (new Website())->setUrl($value);
                 $contact->addWebsites($website);
+
                 break;
             case 'NICKNAME':
                 $contact->setNickname($value);
+
                 break;
             case 'NOTE':
             case 'TITLE':
                 $contact->addNote($value);
+
                 break;
             case 'ORG':
-                $value = str_replace(' - ', ' ', trim($value, ';'));
+                $value         = str_replace(' - ', ' ', trim($value, ';'));
                 $contactDemand = new ContactDemand();
                 $contactDemand->addType(ContactType::Company)
                     ->setCompanyName($value);
@@ -248,6 +257,7 @@ readonly class ImportService
                 $job = new Job();
                 $job->setCompany($company);
                 $contact->addJob($job);
+
                 break;
             case 'TEL':
                 if (!str_starts_with($value, '+49')) {
@@ -255,7 +265,7 @@ readonly class ImportService
                     return;
                 }
 
-                $phoneNumber = PhoneNumberUtility::getPhoneNumberFromString($value);
+                $phoneNumber       = PhoneNumberUtility::getPhoneNumberFromString($value);
                 $phoneNumberDemand = (new PhoneNumberDemand())->setAreaCode($phoneNumber->getAreaCode())
                     ->setConnectionIdentifier($phoneNumber->getConnectionIdentifier())
                     ->setInternationalDiallingCode($phoneNumber->getInternationalDiallingCode());
@@ -278,6 +288,7 @@ readonly class ImportService
                 }
 
                 $contact->addPhoneNumbers($phoneNumber);
+
                 break;
             case 'X-ANDROID-CUSTOM':
                 if (str_starts_with($value, 'vnd.android.cursor.item/nickname;')) {

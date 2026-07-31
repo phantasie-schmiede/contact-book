@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -26,6 +27,7 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
+
 use function count;
 
 /**
@@ -65,9 +67,9 @@ class EventWidgetController extends AbstractAccessController
 
         $allEvents = $this->eventRepository->findByDemand($eventDemand)
             ->toArray();
-        $today = (new DateTime())->format('m-d');
-        $currentYear = (int)date('Y');
-        $nextYear = $currentYear + 1;
+        $today           = (new DateTime())->format('m-d');
+        $currentYear     = (int)date('Y');
+        $nextYear        = $currentYear + 1;
         $allEventsSorted = [];
 
         /** @var Event $event */
@@ -101,8 +103,8 @@ class EventWidgetController extends AbstractAccessController
              * if set.
              */
             if ((isset($minDate) || isset($maxEvents)) && (!isset($minDate) || $date >= $minDate) && (!isset($maxEvents) || count(
-                        $events
-                    ) >= $maxEvents)) {
+                $events
+            ) >= $maxEvents)) {
                 break;
             }
 

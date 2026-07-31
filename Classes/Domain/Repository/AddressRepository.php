@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -28,7 +29,7 @@ class AddressRepository extends Repository
     public function findByDemand(AddressDemand $demand): QueryResultInterface
     {
         $constraints = [];
-        $query = $this->createQuery();
+        $query       = $this->createQuery();
 
         if ('' !== $demand->getCity()) {
             $constraints[] = $query->equals('city', $demand->getCity());

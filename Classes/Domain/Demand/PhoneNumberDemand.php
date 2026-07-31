@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -17,9 +18,9 @@ namespace PSBits\ContactBook\Domain\Demand;
  */
 class PhoneNumberDemand
 {
-    protected string $areaCode                 = '';
-    protected string $connectionIdentifier     = '';
-    protected string $extension                = '';
+    protected string $areaCode                  = '';
+    protected string $connectionIdentifier      = '';
+    protected string $extension                 = '';
     protected string $internationalDiallingCode = '';
 
     public function getAreaCode(): string

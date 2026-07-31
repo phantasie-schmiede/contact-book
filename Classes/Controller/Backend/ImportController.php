@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -58,7 +59,7 @@ class ImportController extends AbstractModuleController
 
         /** @var UploadedFile $uploadedFile */
         $uploadedFile = $this->request->getUploadedFiles()['contactsFile'];
-        $file = $uploadedFile->getTemporaryFileName();
+        $file         = $uploadedFile->getTemporaryFileName();
         $this->importService->parseVCardFile($file);
         $this->addFlashMessage(LocalizationUtility::translate($ll . 'flashMessage.success.body'));
 

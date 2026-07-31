@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -17,6 +18,7 @@ use PSBits\Foundation\Attribute\TCA\ColumnType\Select;
 use PSBits\Foundation\Attribute\TCA\Ctrl;
 use PSBits\Foundation\Enum\SelectRenderType;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+
 use function sprintf;
 
 /**
@@ -27,7 +29,7 @@ use function sprintf;
 #[Ctrl(label        : 'city', labelAlt: [
     'street',
     'houseNumber',
-],     labelAltForce: true, searchFields: [
+], labelAltForce: true, searchFields: [
     'city',
     'country',
     'county',
@@ -68,7 +70,7 @@ class Address extends AbstractContactRelatedEntity
         'Private'  => 'private',
         'Business' => 'business',
         'Other'    => 'other',
-    ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM_MANDATORY_STRING)]
+    ], minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM_MANDATORY_STRING)]
     protected GeneralType $type = GeneralType::Private;
 
     #[Column(position: 'after:houseNumber')]

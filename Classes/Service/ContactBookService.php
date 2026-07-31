@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -66,7 +67,8 @@ readonly class ContactBookService
 
         if (null === $defaultContactBook) {
             throw new UnexpectedValueException(
-                __CLASS__ . ': No contact book found for the current user.', 1758002632
+                __CLASS__ . ': No contact book found for the current user.',
+                1758002632
             );
         }
 

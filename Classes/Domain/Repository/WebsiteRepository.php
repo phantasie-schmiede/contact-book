@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -28,7 +29,7 @@ class WebsiteRepository extends Repository
     public function findByDemand(WebsiteDemand $demand): QueryResultInterface
     {
         $constraints = [];
-        $query = $this->createQuery();
+        $query       = $this->createQuery();
 
         if ('' !== $demand->getUrl()) {
             $constraints[] = $query->equals('url', $demand->getUrl());
