@@ -3,35 +3,35 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
-<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/form.xlf" />
+    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/form.xlf" />
 
-<f:render
-    arguments="{contact: contact, loadContacts: true}"
-    partial="AjaxRequests" />
-
-<f:form
-    action="update"
-    method="post"
-    name="contactGroup"
-    object="{contactGroup}">
     <f:render
-        arguments="{contactGroup: contactGroup}"
-        partial="FormFields/ContactGroup" />
+        arguments="{contact: contact, loadContacts: true}"
+        partial="AjaxRequests" />
 
-    <div class="col-12 d-flex mt-3">
-        <templates:component.button
-            additionalClasses="bg-secondary-subtle"
-            href="{f:uri.action(action: 'show', arguments: '{contactGroup: contactGroup}')}"
-            iconIdentifier="templates-arrow-left"
-            label="{foundation:translate(id: 'form:cancel')}"
-            spinnerText="{foundation:translate(id: 'form:cancel')}"
-            tag="a" />
-        <templates:component.button
-            additionalClasses="bg-primary-subtle ms-2"
-            iconIdentifier="templates-floppy"
-            label="{foundation:translate(id: 'form:save')}"
-            spinnerText="{foundation:translate(id: 'form:submit.loadingSpinner')}"
-            type="submit" />
-    </div>
-</f:form>
+    <f:form
+        action="update"
+        method="post"
+        name="contactGroup"
+        object="{contactGroup}">
+        <f:render
+            arguments="{contactGroup: contactGroup}"
+            partial="FormFields/ContactGroup" />
+
+        <div class="col-12 d-flex mt-3">
+            <templates:component.button
+                additionalClasses="bg-secondary-subtle"
+                href="{f:uri.action(action: 'show', arguments: '{contactGroup: contactGroup}')}"
+                iconIdentifier="templates-arrow-left"
+                label="{foundation:translate(id: 'form:cancel')}"
+                spinnerText="{foundation:translate(id: 'form:cancel')}"
+                tag="a" />
+            <templates:component.button
+                additionalClasses="bg-primary-subtle ms-2"
+                iconIdentifier="templates-floppy"
+                label="{foundation:translate(id: 'form:save')}"
+                spinnerText="{foundation:translate(id: 'form:submit.loadingSpinner')}"
+                type="submit" />
+        </div>
+    </f:form>
 </html>

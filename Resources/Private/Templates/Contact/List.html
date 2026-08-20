@@ -3,39 +3,39 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
-<f:layout name="Default" />
+    <f:layout name="Default" />
 
-<f:section name="Main">
-    <foundation:translation.registerLanguageFile file="EXT:templates/Resources/Private/Language/Frontend/Component/loadingSpinner.xlf" />
+    <f:section name="Main">
+        <foundation:translation.registerLanguageFile file="EXT:templates/Resources/Private/Language/Frontend/Component/loadingSpinner.xlf" />
 
-    <div class="mb-3 row">
-        <div class="col-12 d-flex justify-content-end">
-            <f:render partial="ExportModal/Toggle" />
+        <div class="mb-3 row">
+            <div class="col-12 d-flex justify-content-end">
+                <f:render partial="ExportModal/Toggle" />
 
-            <templates:component.button
-                additionalAttributes="{title: '{foundation:translate(id: \'addNewContact\')}'}"
-                additionalClasses="bg-primary-subtle ms-2"
-                href="{f:uri.action(action: 'new')}"
-                iconIdentifier="templates-person-add"
-                label="{foundation:translate(id: 'showAll')}"
-                spinnerTextHidden="{foundation:translate(id: 'loadingSpinner:pageLoading')}"
-                tag="a" />
+                <templates:component.button
+                    additionalAttributes="{title: '{foundation:translate(id: \'addNewContact\')}'}"
+                    additionalClasses="bg-primary-subtle ms-2"
+                    href="{f:uri.action(action: 'new')}"
+                    iconIdentifier="templates-person-add"
+                    label="{foundation:translate(id: 'showAll')}"
+                    spinnerTextHidden="{foundation:translate(id: 'loadingSpinner:pageLoading')}"
+                    tag="a" />
+            </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-12">
-            <f:render
-                arguments="{
-                    list: list,
-                    pluginUid: pluginUid,
-                    refreshUrl: '{f:uri.action(action: \'refreshList\', controller: \'Contact\', pageType: 1749246027, pluginName: \'ContactListAjaxRefresh\')}',
-                    totalCount: totalCount
-                }"
-                partial="SearchableContactList" />
+        <div class="row">
+            <div class="col-12">
+                <f:render
+                    arguments="{
+                        list: list,
+                        pluginUid: pluginUid,
+                        refreshUrl: '{f:uri.action(action: \'refreshList\', controller: \'Contact\', pageType: 1749246027, pluginName: \'ContactListAjaxRefresh\')}',
+                        totalCount: totalCount
+                    }"
+                    partial="SearchableContactList" />
+            </div>
         </div>
-    </div>
 
-    <f:render partial="ExportModal/Dialog" />
-</f:section>
+        <f:render partial="ExportModal/Dialog" />
+    </f:section>
 </html>

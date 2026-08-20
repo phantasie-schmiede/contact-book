@@ -3,48 +3,46 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
-<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/ContactGroup/show.xlf" />
-<foundation:translation.registerLanguageFile file="EXT:templates/Resources/Private/Language/Frontend/Component/loadingSpinner.xlf" />
+    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/ContactGroup/show.xlf" />
+    <foundation:translation.registerLanguageFile file="EXT:templates/Resources/Private/Language/Frontend/Component/loadingSpinner.xlf" />
 
-<div class="h-100 position-relative">
-    <div class="d-flex flex-column h-100 pb-5">
-        <f:render
-            arguments="{dismissable: 1}"
-            partial="FlashMessages" />
-
-        <f:if condition="{contactGroup}">
-            <h1 class="h5">
-                {contactGroup.name}
-            </h1>
-
+    <div class="h-100 position-relative">
+        <div class="d-flex flex-column h-100 pb-5">
             <f:render
-                arguments="{
-                list: list,
-                pluginUid: pluginUid,
-                refreshUrl: '{f:uri.action(action: \'refreshList\', arguments: {contactGroup: contactGroup}, controller: \'ContactGroup\', pageType: 1749246027, pluginName: \'ContactListAjaxRefresh\')}',
-                totalCount: totalCount
-            }"
-                partial="SearchableContactList" />
-        </f:if>
-    </div>
+                arguments="{dismissable: 1}"
+                partial="FlashMessages" />
 
-    <div class="bg-white bottom-0 d-flex end-0 position-absolute pt-3 start-0 z-1">
-        <templates:component.button
-            additionalClasses="bg-primary-subtle flex-grow-1"
-            href="{f:uri.action(action: 'list', controller: 'Contact', pluginName: 'ContactList')}"
-            label="{foundation:translate(id: 'showAll')}"
-            spinnerText="{foundation:translate(id: 'loadingSpinner:pageLoading')}"
-            tag="a" />
+            <f:if condition="{contactGroup}">
+                <h1 class="h5">{contactGroup.name}</h1>
 
-        <f:if condition="{contactGroup}">
+                <f:render
+                    arguments="{
+                        list: list,
+                        pluginUid: pluginUid,
+                        refreshUrl: '{f:uri.action(action: \'refreshList\', arguments: {contactGroup: contactGroup}, controller: \'ContactGroup\', pageType: 1749246027, pluginName: \'ContactListAjaxRefresh\')}',
+                        totalCount: totalCount
+                    }"
+                    partial="SearchableContactList" />
+            </f:if>
+        </div>
+
+        <div class="bg-white bottom-0 d-flex end-0 position-absolute pt-3 start-0 z-1">
             <templates:component.button
-                additionalClasses="bg-secondary-subtle ms-2"
-                href="{f:uri.action(action: 'edit', arguments: '{contactGroup: contactGroup}', controller: 'ContactGroup', pluginName: 'ContactGroups')}"
-                iconIdentifier="templates-pencil"
-                label="{foundation:translate(id: 'show:edit')}"
-                spinnerText="{foundation:translate(id: 'show:edit')}"
+                additionalClasses="bg-primary-subtle flex-grow-1"
+                href="{f:uri.action(action: 'list', controller: 'Contact', pluginName: 'ContactList')}"
+                label="{foundation:translate(id: 'showAll')}"
+                spinnerText="{foundation:translate(id: 'loadingSpinner:pageLoading')}"
                 tag="a" />
-        </f:if>
+
+            <f:if condition="{contactGroup}">
+                <templates:component.button
+                    additionalClasses="bg-secondary-subtle ms-2"
+                    href="{f:uri.action(action: 'edit', arguments: '{contactGroup: contactGroup}', controller: 'ContactGroup', pluginName: 'ContactGroups')}"
+                    iconIdentifier="templates-pencil"
+                    label="{foundation:translate(id: 'show:edit')}"
+                    spinnerText="{foundation:translate(id: 'show:edit')}"
+                    tag="a" />
+            </f:if>
+        </div>
     </div>
-</div>
 </html>

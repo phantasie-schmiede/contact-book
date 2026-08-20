@@ -26,6 +26,7 @@ use PSBits\ContactBook\Service\VCardService;
 use PSBits\Foundation\Attribute\PluginAction;
 use PSBits\Foundation\Traits\ControllerCacheTrait;
 use PSBits\Foundation\Utility\FileUtility;
+use PSBits\FrontendUsers\Service\ValidationService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -56,9 +57,10 @@ class ContactGroupController extends AbstractAccessController
         protected readonly ContactService         $contactService,
         protected readonly ExtensionInformation   $extensionInformation,
         protected readonly PersistenceManager     $persistenceManager,
+        ValidationService                         $validationService,
         protected readonly VCardService           $vCardService,
     ) {
-        parent::__construct($contactBookRepository);
+        parent::__construct($contactBookRepository, $validationService);
     }
 
     /**

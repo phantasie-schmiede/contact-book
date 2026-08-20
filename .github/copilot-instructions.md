@@ -49,11 +49,9 @@ unless asked.
 - Repository quality checks are defined in `composer.json`, `package.json`, and `.github/workflows/quality.yml`.
 - Quality configuration files are centralized in `Build/Quality/` and referenced by Composer/NPM scripts and CI.
 - Primary local QA command:
-    - `composer qa`
+    - `composer lint:all`
     - Runs: `audit:composer`, `validate:composer`, `lint:php`, `analyze:php`, `lint:typoscript`, `lint:classes`,
-      `lint:htmlxml`, `lint:js`, `lint:scss`
-- Additional lint command used in CI:
-    - `composer lint:yaml`
+      `lint:htmlxml`, `lint:js`, `lint:scss`, `lint:yaml`
 
 ## Onboarding run notes (errors/workarounds)
 

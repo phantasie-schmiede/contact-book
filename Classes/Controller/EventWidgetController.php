@@ -20,6 +20,7 @@ use PSBits\ContactBook\Domain\Model\Event;
 use PSBits\ContactBook\Domain\Repository\ContactBookRepository;
 use PSBits\ContactBook\Domain\Repository\EventRepository;
 use PSBits\Foundation\Attribute\PluginAction;
+use PSBits\FrontendUsers\Service\ValidationService;
 use PSBits\Templates\Utility\StringUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -40,8 +41,9 @@ class EventWidgetController extends AbstractAccessController
     public function __construct(
         ContactBookRepository              $contactBookRepository,
         protected readonly EventRepository $eventRepository,
+        ValidationService                  $validationService,
     ) {
-        parent::__construct($contactBookRepository);
+        parent::__construct($contactBookRepository, $validationService);
     }
 
     /**

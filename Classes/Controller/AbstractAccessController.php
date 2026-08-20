@@ -11,11 +11,16 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Controller;
 
-use Exception;
+use JsonException;
 use PSBits\ContactBook\Domain\Repository\ContactBookRepository;
+use PSBits\FrontendUsers\Service\ValidationService;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception as ExtbaseException;
 
 /**
  * Class AbstractAccessController
@@ -26,15 +31,22 @@ abstract class AbstractAccessController extends ActionController
 {
     public function __construct(
         protected readonly ContactBookRepository $contactBookRepository,
+        protected readonly ValidationService     $validationService,
     ) {
     }
 
     /**
-     * @throws Exception
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws ExtbaseException
+     * @throws JsonException
+     * @throws NotFoundExceptionInterface
      * @throws PropagateResponseException
      */
     protected function initializeAction(): void
     {
+        $this->validationService->requiresFrontendUser();
+
         if (0 === $this->contactBookRepository->findByOwner()
                 ->count()) {
             throw new PropagateResponseException(

@@ -1,90 +1,88 @@
 <html
     data-namespace-typo3-fluid="true"
-    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:contactBook="http://typo3.org/ns/PSBits/ContactBook/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
-    xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers"
-    xmlns:psbvh="http://typo3.org/ns/PSBits/ViewHelpers/ViewHelpers">
-<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/eventType.xlf" />
+    xmlns:psbvh="http://typo3.org/ns/PSBits/ViewHelpers/ViewHelpers"
+    xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
+    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/eventType.xlf" />
 
-<f:if condition="{events}">
-    <f:then>
-        <ul class="list-group list-group-flush overflow-auto">
-            <f:for
-                as="eventsByDate"
-                each="{events}"
-                key="date">
-                <li class="list-group-item">
-                    <div class="fw-bold">
-                        {date -> f:format.date(format: 'd.m.Y')}
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <f:for
-                            as="event"
-                            each="{eventsByDate}">
-                            <f:if condition="{event.anniversary}">
-                                <f:then>
-                                    <f:variable
-                                        name="eventType"
-                                        value="{foundation:translate(id: 'eventType:{event.type.value}.anniversary')}" />
-                                </f:then>
-                                <f:else>
-                                    <f:variable
-                                        name="eventType"
-                                        value="{foundation:translate(id: 'eventType:{event.type.value}')}" />
-                                </f:else>
-                            </f:if>
+    <f:if condition="{events}">
+        <f:then>
+            <ul class="list-group list-group-flush overflow-auto">
+                <f:for
+                    as="eventsByDate"
+                    each="{events}"
+                    key="date">
+                    <li class="list-group-item">
+                        <div class="fw-bold">{date -> f:format.date(format: 'd.m.Y')}</div>
+                        <ul class="list-group list-group-flush">
+                            <f:for
+                                as="event"
+                                each="{eventsByDate}">
+                                <f:if condition="{event.anniversary}">
+                                    <f:then>
+                                        <f:variable
+                                            name="eventType"
+                                            value="{foundation:translate(id: 'eventType:{event.type.value}.anniversary')}" />
+                                    </f:then>
+                                    <f:else>
+                                        <f:variable
+                                            name="eventType"
+                                            value="{foundation:translate(id: 'eventType:{event.type.value}')}" />
+                                    </f:else>
+                                </f:if>
 
-                            <li class="d-flex list-group-item">
-                                <f:comment>
-                                    <!-- The wrapping element is needed for correct formatting of the text inside the d-flex container. -->
-                                </f:comment>
-                                <div>
-                                    <f:variable
-                                        name="labelId"
-                                        value="eventTitle" />
-                                    <f:variable
-                                        name="persons"
-                                        value="{contactBook:contact.linkedEnumeration(contacts: event.contactsAsArray)}" />
+                                <li class="d-flex list-group-item">
+                                    <f:comment>
+                                        <!-- The wrapping element is needed for correct formatting of the text inside the d-flex container. -->
+                                    </f:comment>
+                                    <div>
+                                        <f:variable
+                                            name="labelId"
+                                            value="eventTitle" />
+                                        <f:variable
+                                            name="persons"
+                                            value="{contactBook:contact.linkedEnumeration(contacts: event.contactsAsArray)}" />
 
-                                    <f:if condition="{event.nextAnniversary}">
-                                        <f:if condition="{event.deceasedContact}">
-                                            <f:then>
-                                                <f:variable
-                                                    name="labelId"
-                                                    value="{labelId}.deceased" />
-                                            </f:then>
-                                            <f:else>
-                                                <f:variable
-                                                    name="labelId"
-                                                    value="{labelId}.anniversary" />
-                                            </f:else>
+                                        <f:if condition="{event.nextAnniversary}">
+                                            <f:if condition="{event.deceasedContact}">
+                                                <f:then>
+                                                    <f:variable
+                                                        name="labelId"
+                                                        value="{labelId}.deceased" />
+                                                </f:then>
+                                                <f:else>
+                                                    <f:variable
+                                                        name="labelId"
+                                                        value="{labelId}.anniversary" />
+                                                </f:else>
+                                            </f:if>
                                         </f:if>
-                                    </f:if>
 
-                                    <f:format.raw>
-                                        <foundation:translate
-                                            arguments="{anniversary: event.nextAnniversary, persons: persons, type: eventType}"
-                                            id="{labelId}" />
-                                    </f:format.raw>
-                                </div>
+                                        <f:format.raw>
+                                            <foundation:translate
+                                                arguments="{anniversary: event.nextAnniversary, persons: persons, type: eventType}"
+                                                id="{labelId}" />
+                                        </f:format.raw>
+                                    </div>
 
-                                <templates:event.additionalContent
-                                    eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalEventListContentEvent::class')}"
-                                    parameters="{event: event}" />
-                            </li>
-                        </f:for>
-                    </ul>
-                </li>
-            </f:for>
-        </ul>
-    </f:then>
-    <f:else>
-        <div class="alert alert-info">
-            <foundation:translate
-                arguments="{quantity: typeCount, typeList: typeList}"
-                id="noUpcomingEvents" />
-        </div>
-    </f:else>
-</f:if>
+                                    <templates:event.additionalContent
+                                        eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalEventListContentEvent::class')}"
+                                        parameters="{event: event}" />
+                                </li>
+                            </f:for>
+                        </ul>
+                    </li>
+                </f:for>
+            </ul>
+        </f:then>
+        <f:else>
+            <div class="alert alert-info">
+                <foundation:translate
+                    arguments="{quantity: typeCount, typeList: typeList}"
+                    id="noUpcomingEvents" />
+            </div>
+        </f:else>
+    </f:if>
 </html>

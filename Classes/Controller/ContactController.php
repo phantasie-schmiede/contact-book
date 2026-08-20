@@ -58,6 +58,7 @@ use PSBits\Foundation\Traits\ControllerCacheTrait;
 use PSBits\Foundation\Utility\FileUtility;
 use PSBits\Foundation\Utility\LocalizationUtility;
 use PSBits\FrontendUsers\Service\GlobalVariableProviders\FrontendUserProvider;
+use PSBits\FrontendUsers\Service\ValidationService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -106,11 +107,12 @@ class ContactController extends AbstractAccessController
         protected readonly PersistenceManager     $persistenceManager,
         protected readonly PhoneNumberRepository  $phoneNumberRepository,
         protected readonly UploadService          $uploadService,
+        ValidationService                         $validationService,
         protected readonly VCardService           $vCardService,
         protected readonly ViewFactoryInterface   $viewFactory,
         protected readonly WebsiteRepository      $websiteRepository,
     ) {
-        parent::__construct($contactBookRepository);
+        parent::__construct($contactBookRepository, $validationService);
     }
 
     /**

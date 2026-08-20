@@ -2,29 +2,29 @@
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
-<f:layout name="Module" />
+    <f:layout name="Module" />
 
-<f:section name="Content">
-    <div class="row">
-        <div class="col">
-            <h1>
-                <foundation:translate id="header" />
-            </h1>
-            <f:form
-                action="import"
-                enctype="multipart/form-data"
-                method="post">
-                <f:form.upload
-                    class="form-control"
-                    name="contactsFile" />
-                <f:form.submit
-                    class="bg-primary-subtle btn mt-3 text-white"
-                    value="{foundation:translate(id: 'submit')}" />
-            </f:form>
-            <div class="mt-3">
-                <f:flashMessages />
+    <f:section name="Content">
+        <div class="row">
+            <div class="col">
+                <h1>
+                    <foundation:translate id="header" />
+                </h1>
+                <f:form
+                    action="import"
+                    enctype="multipart/form-data"
+                    method="post">
+                    <f:form.upload
+                        class="form-control"
+                        name="contactsFile" />
+                    <f:form.submit
+                        class="bg-primary-subtle btn mt-3 text-white"
+                        value="{foundation:translate(id: 'submit')}" />
+                </f:form>
+                <div class="mt-3">
+                    <f:flashMessages />
+                </div>
             </div>
         </div>
-    </div>
-</f:section>
+    </f:section>
 </html>

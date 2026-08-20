@@ -1,711 +1,687 @@
 <html
     data-namespace-typo3-fluid="true"
-    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:contactBook="http://typo3.org/ns/PSBits/ContactBook/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:psbvh="http://typo3.org/ns/PSBits/ViewHelpers/ViewHelpers"
     xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
-<f:layout name="Default" />
+    <f:layout name="Default" />
 
-<f:section name="Main">
-    <foundation:translation.registerLanguageFile
-        file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
-        name="modal" />
+    <f:section name="Main">
+        <foundation:translation.registerLanguageFile
+            file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
+            name="modal" />
 
-    <f:variable
-        name="tabAddressesContent"
-        value="{f:render(arguments: {linkTarget: '_blank', records: contact.addresses}, section: 'TabLinkedRelationsContent')}" />
-    <f:variable
-        name="tabAddressesLabel"
-        value="{f:render(arguments: {identifier: 'geo-alt'}, section: 'Icon')}" />
-    <f:variable
-        name="tabBankAccountsContent"
-        value="{f:render(arguments: {contact: contact}, section: 'TabBankAccountsContent')}" />
-    <f:variable
-        name="tabBankAccountsLabel"
-        value="{f:render(arguments: {identifier: 'bank'}, section: 'Icon')}" />
-    <f:variable
-        name="tabDocumentsContent"
-        value="{f:render(arguments: {contact: contact}, section: 'TabDocumentsContent')}" />
-    <f:variable
-        name="tabDocumentsLabel"
-        value="{f:render(arguments: {identifier: 'file-earmark-text'}, section: 'Icon')}" />
-    <f:variable
-        name="tabEMailsContent"
-        value="{f:render(arguments: {records: contact.eMails}, section: 'TabLinkedRelationsContent')}" />
-    <f:variable
-        name="tabEMailsLabel"
-        value="{f:render(arguments: {identifier: 'envelope-at'}, section: 'Icon')}" />
-    <f:variable
-        name="tabEventsContent"
-        value="{f:render(arguments: {contact: contact}, section: 'TabEventsContent')}" />
-    <f:variable
-        name="tabEventsLabel"
-        value="{f:render(arguments: {identifier: 'calendar-event'}, section: 'Icon')}" />
-    <f:variable
-        name="tabNameContent"
-        value="{f:render(arguments: {contact: contact}, section: 'TabNameContent')}" />
-    <f:variable
-        name="tabNameLabel"
-        value="{f:render(arguments: {identifier: 'tag'}, section: 'Icon')}" />
-    <f:variable
-        name="tabOtherContent"
-        value="{f:render(arguments: {allContactGroups: allContactGroups, contact: contact}, section: 'TabOtherContent')}" />
-    <f:variable
-        name="tabOtherLabel"
-        value="{f:render(arguments: {identifier: 'three-dots'}, section: 'Icon')}" />
-    <f:variable
-        name="tabPhoneNumbersContent"
-        value="{f:render(arguments: {records: contact.phoneNumbers}, section: 'TabPhoneNumbersContent')}" />
-    <f:variable
-        name="tabPhoneNumbersLabel"
-        value="{f:render(arguments: {identifier: 'telephone'}, section: 'Icon')}" />
-    <f:variable
-        name="tabWebsitesContent"
-        value="{f:render(arguments: {contact: contact}, section: 'TabWebsitesContent')}" />
-    <f:variable
-        name="tabWebsitesLabel"
-        value="{f:render(arguments: {identifier: 'globe'}, section: 'Icon')}" />
-    <f:variable
-        name="tabWorkContent"
-        value="{f:render(arguments: {contact: contact}, section: 'TabWorkContent')}" />
-    <f:variable
-        name="tabWorkLabel"
-        value="{f:render(arguments: {identifier: 'briefcase'}, section: 'Icon')}" />
+        <f:variable
+            name="tabAddressesContent"
+            value="{f:render(arguments: {linkTarget: '_blank', records: contact.addresses}, section: 'TabLinkedRelationsContent')}" />
+        <f:variable
+            name="tabAddressesLabel"
+            value="{f:render(arguments: {identifier: 'geo-alt'}, section: 'Icon')}" />
+        <f:variable
+            name="tabBankAccountsContent"
+            value="{f:render(arguments: {contact: contact}, section: 'TabBankAccountsContent')}" />
+        <f:variable
+            name="tabBankAccountsLabel"
+            value="{f:render(arguments: {identifier: 'bank'}, section: 'Icon')}" />
+        <f:variable
+            name="tabDocumentsContent"
+            value="{f:render(arguments: {contact: contact}, section: 'TabDocumentsContent')}" />
+        <f:variable
+            name="tabDocumentsLabel"
+            value="{f:render(arguments: {identifier: 'file-earmark-text'}, section: 'Icon')}" />
+        <f:variable
+            name="tabEMailsContent"
+            value="{f:render(arguments: {records: contact.eMails}, section: 'TabLinkedRelationsContent')}" />
+        <f:variable
+            name="tabEMailsLabel"
+            value="{f:render(arguments: {identifier: 'envelope-at'}, section: 'Icon')}" />
+        <f:variable
+            name="tabEventsContent"
+            value="{f:render(arguments: {contact: contact}, section: 'TabEventsContent')}" />
+        <f:variable
+            name="tabEventsLabel"
+            value="{f:render(arguments: {identifier: 'calendar-event'}, section: 'Icon')}" />
+        <f:variable
+            name="tabNameContent"
+            value="{f:render(arguments: {contact: contact}, section: 'TabNameContent')}" />
+        <f:variable
+            name="tabNameLabel"
+            value="{f:render(arguments: {identifier: 'tag'}, section: 'Icon')}" />
+        <f:variable
+            name="tabOtherContent"
+            value="{f:render(arguments: {allContactGroups: allContactGroups, contact: contact}, section: 'TabOtherContent')}" />
+        <f:variable
+            name="tabOtherLabel"
+            value="{f:render(arguments: {identifier: 'three-dots'}, section: 'Icon')}" />
+        <f:variable
+            name="tabPhoneNumbersContent"
+            value="{f:render(arguments: {records: contact.phoneNumbers}, section: 'TabPhoneNumbersContent')}" />
+        <f:variable
+            name="tabPhoneNumbersLabel"
+            value="{f:render(arguments: {identifier: 'telephone'}, section: 'Icon')}" />
+        <f:variable
+            name="tabWebsitesContent"
+            value="{f:render(arguments: {contact: contact}, section: 'TabWebsitesContent')}" />
+        <f:variable
+            name="tabWebsitesLabel"
+            value="{f:render(arguments: {identifier: 'globe'}, section: 'Icon')}" />
+        <f:variable
+            name="tabWorkContent"
+            value="{f:render(arguments: {contact: contact}, section: 'TabWorkContent')}" />
+        <f:variable
+            name="tabWorkLabel"
+            value="{f:render(arguments: {identifier: 'briefcase'}, section: 'Icon')}" />
 
-    <div class="contact-show row">
-        <div class="col-12">
-            <h1 class="d-flex justify-content-between">
-                {contact.shortName}
-                <f:render partial="ExportModal/Toggle" />
-            </h1>
+        <div class="contact-show row">
+            <div class="col-12">
+                <h1 class="d-flex justify-content-between">
+                    {contact.shortName}
+                    <f:render partial="ExportModal/Toggle" />
+                </h1>
 
-            <hr>
+                <hr />
 
-            <f:variable
-                name="tabs"
-                value="{contactBook:psrEvent.modifyTabs(contact: contact, tabs: {
-                    0: {
-                        content: tabNameContent,
-                        id: 'name',
-                        label: tabNameLabel
-                    },
-                    1: {
-                        content: tabWorkContent,
-                        id: 'work',
-                        label: tabWorkLabel
-                    },
-                    2: {
-                        content: tabAddressesContent,
-                        id: 'addresses',
-                        label: tabAddressesLabel
-                    },
-                    3: {
-                        content: tabPhoneNumbersContent,
-                        id: 'phone-numbers',
-                        label: tabPhoneNumbersLabel
-                    },
-                    4: {
-                        content: tabEMailsContent,
-                        id: 'e-mails',
-                        label: tabEMailsLabel
-                    },
-                    5: {
-                        content: tabWebsitesContent,
-                        id: 'websites',
-                        label: tabWebsitesLabel
-                    },
-                    6: {
-                        content: tabEventsContent,
-                        id: 'events',
-                        label: tabEventsLabel
-                    },
-                    7: {
-                        content: tabBankAccountsContent,
-                        id: 'bank-accounts',
-                        label: tabBankAccountsLabel
-                    },
-                    8: {
-                        content: tabDocumentsContent,
-                        id: 'documents',
-                        label: tabDocumentsLabel
-                    },
-                    9: {
-                        content: tabOtherContent,
-                        id: 'other',
-                        label: tabOtherLabel
+                <f:variable
+                    name="tabs"
+                    value="{contactBook:psrEvent.modifyTabs(contact: contact, tabs: {
+                        0: {
+                            content: tabNameContent,
+                            id: 'name',
+                            label: tabNameLabel
+                        },
+                        1: {
+                            content: tabWorkContent,
+                            id: 'work',
+                            label: tabWorkLabel
+                        },
+                        2: {
+                            content: tabAddressesContent,
+                            id: 'addresses',
+                            label: tabAddressesLabel
+                        },
+                        3: {
+                            content: tabPhoneNumbersContent,
+                            id: 'phone-numbers',
+                            label: tabPhoneNumbersLabel
+                        },
+                        4: {
+                            content: tabEMailsContent,
+                            id: 'e-mails',
+                            label: tabEMailsLabel
+                        },
+                        5: {
+                            content: tabWebsitesContent,
+                            id: 'websites',
+                            label: tabWebsitesLabel
+                        },
+                        6: {
+                            content: tabEventsContent,
+                            id: 'events',
+                            label: tabEventsLabel
+                        },
+                        7: {
+                            content: tabBankAccountsContent,
+                            id: 'bank-accounts',
+                            label: tabBankAccountsLabel
+                        },
+                        8: {
+                            content: tabDocumentsContent,
+                            id: 'documents',
+                            label: tabDocumentsLabel
+                        },
+                        9: {
+                            content: tabOtherContent,
+                            id: 'other',
+                            label: tabOtherLabel
+                        }
                     }
-                })}" />
+                )}" />
+
+                <f:render
+                    arguments="{
+                        tabClass: 'px-1',
+                        tabs: tabs,
+                        vertical: true,
+                    }"
+                    partial="Component/Tabs" />
+
+                <templates:event.additionalContent
+                    eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalContactContentEvent::class')}"
+                    parameters="{contact: contact}" />
+            </div>
+        </div>
+
+        <div class="d-flex mt-3">
+            <templates:component.button
+                additionalClasses="bg-secondary-subtle"
+                href="{f:uri.action(action: 'list')}"
+                iconIdentifier="templates-arrow-left"
+                label="{foundation:translate(id: 'backToList')}"
+                spinnerText="{foundation:translate(id: 'backToList')}"
+                tag="a" />
+            <templates:component.button
+                additionalClasses="bg-primary-subtle ms-2"
+                href="{f:uri.action(action: 'edit', arguments: '{contact: contact}')}"
+                iconIdentifier="templates-pencil"
+                label="{foundation:translate(id: 'edit')}"
+                spinnerText="{foundation:translate(id: 'edit')}"
+                tag="a" />
 
             <f:render
                 arguments="{
-                    tabClass: 'px-1',
-                    tabs: tabs,
-                    vertical: true,
+                    classes: 'bg-danger btn ms-auto',
+                    modalId: 'delete-contact-{contact.uid}-modal',
+                    text: '{templates:svgIcon(identifier: \'templates-trash\')}',
+                    title: '{foundation:translate(id: \'delete\')}'
                 }"
-                partial="Component/Tabs" />
-
-            <templates:event.additionalContent
-                eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalContactContentEvent::class')}"
-                parameters="{contact: contact}" />
+                partial="Component/Modal/Toggle" />
         </div>
-    </div>
-
-    <div class="d-flex mt-3">
-        <templates:component.button
-            additionalClasses="bg-secondary-subtle"
-            href="{f:uri.action(action: 'list')}"
-            iconIdentifier="templates-arrow-left"
-            label="{foundation:translate(id: 'backToList')}"
-            spinnerText="{foundation:translate(id: 'backToList')}"
-            tag="a" />
-        <templates:component.button
-            additionalClasses="bg-primary-subtle ms-2"
-            href="{f:uri.action(action: 'edit', arguments: '{contact: contact}')}"
-            iconIdentifier="templates-pencil"
-            label="{foundation:translate(id: 'edit')}"
-            spinnerText="{foundation:translate(id: 'edit')}"
-            tag="a" />
 
         <f:render
             arguments="{
-                classes: 'bg-danger btn ms-auto',
-                modalId: 'delete-contact-{contact.uid}-modal',
-                text: '{templates:svgIcon(identifier: \'templates-trash\')}',
-                title: '{foundation:translate(id: \'delete\')}'
+                body: '{foundation:translate(arguments: {name: contact.fullName}, id: \'modal:body\')}',
+                id: 'delete-contact-{contact.uid}-modal',
+                title: '{foundation:translate(id: \'modal:title\')}'
             }"
-            partial="Component/Modal/Toggle" />
-    </div>
+            contentAs="footer"
+            partial="Component/Modal/Dialog">
+            <f:render
+                arguments="{contact: contact}"
+                section="ModalFooter" />
+        </f:render>
 
-    <f:render
-        arguments="{
-            body: '{foundation:translate(arguments: {name: contact.fullName}, id: \'modal:body\')}',
-            id: 'delete-contact-{contact.uid}-modal',
-            title: '{foundation:translate(id: \'modal:title\')}'
-        }"
-        contentAs="footer"
-        partial="Component/Modal/Dialog">
         <f:render
             arguments="{contact: contact}"
-            section="ModalFooter" />
-    </f:render>
+            partial="ExportModal/Dialog" />
+    </f:section>
 
-    <f:render
-        arguments="{contact: contact}"
-        partial="ExportModal/Dialog" />
-</f:section>
-
-<f:section name="Colleagues">
-    <ul class="list-group list-group-flush">
-        <f:for
-            as="colleague"
-            each="{colleagues}">
-            <f:render
-                arguments="{class: 'list-group-item list-group-item-action', contact: colleague}"
-                partial="Link/Contact" />
-        </f:for>
-    </ul>
-</f:section>
-
-<f:section name="Icon">
-    <core:icon
-        identifier="templates-{identifier}"
-        size="medium" />
-</f:section>
-
-<f:section name="ModalFooter">
-    <foundation:translation.registerLanguageFile
-        file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
-        name="modal" />
-
-    <button
-        class="bg-secondary-subtle btn"
-        data-bs-dismiss="modal"
-        type="button">
-        <foundation:translate id="modal:cancel" />
-    </button>
-    <f:link.action
-        action="delete"
-        arguments="{contact: contact}"
-        class="btn btn-danger">
-        <foundation:translate id="modal:delete" />
-    </f:link.action>
-</f:section>
-
-<f:section name="TabBankAccountsContent">
-    <f:if condition="{contact.bankAccounts}">
-        <f:for
-            as="bankAccount"
-            each="{contact.bankAccounts}"
-            iteration="bankAccountIterator">
-            <div class="card{f:if(condition: bankAccountIterator.isLast, else: ' mb-3')}">
-                <div class="card-body">
-                    <f:if condition="{bankAccount.bankName}">
-                        <h4 class="card-title h5">
-                            {bankAccount.bankName}
-                        </h4>
-                    </f:if>
-
-                    <f:render
-                        contentAs="content"
-                        partial="Component/LabelledList">
-                        <f:render
-                            arguments="{label: '{foundation:translate(id: \'bankAccount.iban\')}'}"
-                            contentAs="value"
-                            partial="Component/LabelledListItem">
-                            {bankAccount.ibanFormatted}
-                        </f:render>
-
-                        <f:if condition="{bankAccount.bic}">
-                            <f:render
-                                arguments="{label: '{foundation:translate(id: \'bankAccount.bic\')}'}"
-                                contentAs="value"
-                                partial="Component/LabelledListItem">
-                                {bankAccount.bic}
-                            </f:render>
-                        </f:if>
-                    </f:render>
-
-                    <f:if condition="{bankAccount.notes}">
-                        <p class="card-text mt-3 text-muted">
-                            {bankAccount.notes -> f:format.nl2br()}
-                        </p>
-                    </f:if>
-                </div>
-            </div>
-        </f:for>
-    </f:if>
-
-    <f:if condition="{contact.payPalUrl}">
-        <div class="d-flex justify-content-end">
-            <templates:component.button
-                additionalClasses="btn-outline-primary justify-self-start"
-                externalLink="1"
-                href="{contact.payPalUrl}"
-                iconIdentifier="templates-paypal"
-                label="PayPal" />
-        </div>
-    </f:if>
-</f:section>
-
-<f:section name="TabDocumentsContent">
-    <f:if condition="{contact.images}">
-        <h2>
-            <foundation:translate id="images" />
-        </h2>
-        <f:render
-            arguments="{contact:contact, documents: contact.images, isImage: true}"
-            section="DocumentList" />
-    </f:if>
-
-    <f:if condition="{contact.documentsWithoutImages}">
-        <h2 class="{f:if(condition: contact.images, then: 'mt-3')}">
-            <foundation:translate id="{f:if(condition: contact.images, then: 'otherDocuments', else: 'documents')}" />
-        </h2>
-        <f:render
-            arguments="{documents: contact.documentsWithoutImages}"
-            section="DocumentList" />
-    </f:if>
-</f:section>
-
-<f:section name="DocumentList">
-    <f:for
-        as="document"
-        each="{documents}"
-        iteration="documentIterator">
-        <div class="card{f:if(condition: documentIterator.isFirst, else: ' mt-3')}">
-            <div class="d-flex">
-                <f:image
-                    class="img-fluid object-fit-cover rounded-start"
-                    image="{document.file}"
-                    height="120c"
-                    width="120c" />
-
-                <div class="card-body">
-                    <h4 class="card-title h5 mb-1">
-                        {psbvh:fallback(values: {0: document.title, 1: document.file.originalResource.originalFile.name})}
-                    </h4>
-                    <p class="card-text mb-2 text-muted">
-                        {foundation:translate(arguments: {size: document.file.size}, id: 'fileSize')}
-                    </p>
-                </div>
-
-                <div class="d-flex flex-column gap-2 p-2">
-                    <a
-                        class="btn btn-primary"
-                        href="{document.file.originalResource.publicUrl}"
-                        target="_blank">
-                        <foundation:translate id="showFile" />
-                    </a>
-
-                    <f:if condition="{isImage} && !{document.useAsProfileImage}}">
-                        <templates:component.button
-                            additionalClasses="bg-primary-subtle"
-                            href="{f:uri.action(action: 'setProfileImage', arguments: {contact: contact, document: document})}"
-                            label="{foundation:translate(id: 'setAsProfileImage')}"
-                            spinnerText="{foundation:translate(id: 'setAsProfileImage.spinnerText')}"
-                            tag="a" />
-                    </f:if>
-                </div>
-            </div>
-        </div>
-    </f:for>
-</f:section>
-
-<f:section name="TabLinkedRelationsContent">
-    <f:if condition="{records}">
-        <f:render
-            arguments="{linkTarget: linkTarget, records: records, showActionIcon: true}"
-            partial="LinkedRelations" />
-    </f:if>
-</f:section>
-
-<f:section name="TabEventsContent">
-    <f:if condition="{contact.eventsInDescendingOrder}">
-        <f:render
-            contentAs="content"
-            partial="Component/LabelledList">
-            <f:for
-                as="event"
-                each="{contact.eventsInDescendingOrder}">
-                <f:render
-                    arguments="{valueClass: 'd-flex', label: event.dateFormatted}"
-                    contentAs="value"
-                    partial="Component/LabelledListItem">
-                    <f:comment>
-                        <!-- The wrapping element is needed for correct formatting of the text inside the d-flex container. -->
-                    </f:comment>
-                    <div>
-                        <f:if condition="!{event.year} && {event.monthAndDayGiven}">
-                            <f:then>
-                                {event.label}
-                            </f:then>
-                            <f:else>
-                                {event.type.label}
-                            </f:else>
-                        </f:if>
-
-                        <f:if condition="('divorce' == {event.type.value} || 'wedding' == {event.type.value}) && {event.contacts}">
-                            <f:variable
-                                name="spouse"
-                                value="{contactBook:event.otherContacts(contact: contact, event: event, returnFirst: 'true')}" />
-
-                            <foundation:translate id="dyn.event.otherContactPreposition.{event.type.value}" />
-
-                            <f:if condition="{spouse.birthName}">
-                                <f:then>
-                                    <f:variable
-                                        name="name"
-                                        value="{foundation:translate(arguments: {
-                                            birthName: spouse.birthName,
-                                            name: '{spouse.nameDecorations}{spouse.shortName}'
-                                        }, id: 'nameWithBirthName')}" />
-                                </f:then>
-                                <f:else>
-                                    <f:variable
-                                        name="name"
-                                        value="{spouse.nameDecorations}{spouse.shortName}" />
-                                </f:else>
-                            </f:if>
-
-                            {name -> f:link.action(action: 'show', arguments: {contact: spouse}, class:
-                            'text-decoration-none')}
-                        </f:if>
-
-                        <f:if condition="{event.location}">
-                            in {event.location}
-                        </f:if>
-
-                        <f:if condition="{event.notes}">
-                            <div class="mt-1 small text-muted">
-                                {event.notes -> f:format.nl2br()}
-                            </div>
-                        </f:if>
-                    </div>
-
-                    <templates:event.additionalContent
-                        eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalEventListContentEvent::class')}"
-                        parameters="{event: event}" />
-                </f:render>
-            </f:for>
-        </f:render>
-    </f:if>
-</f:section>
-
-<f:section name="TabNameContent">
-    <f:render
-        contentAs="content"
-        partial="Component/LabelledList">
-        <f:render
-            arguments="{label: 'Vollständiger Name:'}"
-            contentAs="value"
-            partial="Component/LabelledListItem">
-            {contact.fullName}
-        </f:render>
-
-        <f:if condition="{contact.birthName}">
-            <f:render
-                arguments="{label: 'Geburtsname'}"
-                contentAs="value"
-                partial="Component/LabelledListItem">
-                {contact.birthName}
-            </f:render>
-        </f:if>
-
-        <f:if condition="{contact.nickname}">
-            <f:render
-                arguments="{label: 'Spitzname:'}"
-                contentAs="value"
-                partial="Component/LabelledListItem">
-                {contact.nickname}
-            </f:render>
-        </f:if>
-    </f:render>
-</f:section>
-
-<f:section name="TabOtherContent">
-    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
-
-    <f:if condition="{contact.notes}">
-        <h3>
-            <foundation:translate id="contact:notes" />
-        </h3>
-        <p>
-            <f:format.nl2br>{contact.notes}</f:format.nl2br>
-        </p>
-    </f:if>
-
-    <f:if condition="{contact.contactGroups}">
-        <h3>
-            <foundation:translate id="contact:contactGroups" />
-        </h3>
-        <ul class="list-group list-group-flush">
-            <f:for
-                as="contactGroup"
-                each="{contact.contactGroups}">
-                <f:render
-                    arguments="{class: 'list-group-item list-group-item-action', contactGroup: contactGroup}"
-                    partial="Link/ContactGroup" />
-            </f:for>
-        </ul>
-    </f:if>
-</f:section>
-
-<f:section name="TabPhoneNumbersContent">
-    <f:for
-        as="phoneNumber"
-        each="{records}"
-        iteration="phoneNumberIterator">
-        <div class="card{f:if(condition: phoneNumberIterator.isLast, else: ' mb-3')}">
-            <div class="card-body{f:if(condition: phoneNumber.notes, else: ' pb-2')}">
-                <h4 class="card-title h5 mb-0">
-                    <templates:svgIcon
-                        additionalClasses="me-1"
-                        identifier="templates-{phoneNumber.generalType.iconIdentifier}" />
-                    <templates:svgIcon identifier="templates-{phoneNumber.phoneNumberType.iconIdentifier}" />
-                    {phoneNumber.compactValue}
-                </h4>
-
-                <div class="d-flex justify-content-end">
-                    <f:for
-                        as="href"
-                        each="{phoneNumber.actionLinks}"
-                        key="actionIconIdentifier">
-                        <a
-                            class="link-underline link-underline-opacity-0 p-2"
-                            href="{href}">
-                            <templates:svgIcon identifier="templates-{actionIconIdentifier}" />
-                        </a>
-                    </f:for>
-                </div>
-
-                <f:if condition="{phoneNumber.notes}">
-                    <p class="card-text text-muted">
-                        {phoneNumber.notes -> f:format.nl2br()}
-                    </p>
-                </f:if>
-            </div>
-        </div>
-    </f:for>
-</f:section>
-
-<f:section name="TabWebsitesContent">
-    <f:render
-        arguments="{linkTarget: '_blank', records: contact.websites}"
-        section="TabLinkedRelationsContent" />
-
-    <f:if condition="{contact.linkedinUrl} || {contact.xingUrl} || {contact.twitterUrl} || {contact.facebookUrl} || {contact.instagramUrl}">
-        <div class="d-flex flex-wrap gap-2 justify-content-end">
-            <f:if condition="{contact.linkedInUrl}">
-                <templates:component.button
-                    additionalClasses="btn-outline-primary"
-                    externalLink="1"
-                    href="{contact.linkedInUrl}"
-                    iconIdentifier="templates-linkedin"
-                    label="LinkedIn" />
-            </f:if>
-            <f:if condition="{contact.facebookUrl}">
-                <templates:component.button
-                    additionalClasses="btn-outline-primary"
-                    externalLink="1"
-                    href="{contact.facebookUrl}"
-                    iconIdentifier="templates-facebook"
-                    label="Facebook" />
-            </f:if>
-            <f:if condition="{contact.instagramUrl}">
-                <templates:component.button
-                    additionalClasses="btn-outline-primary"
-                    externalLink="1"
-                    href="{contact.instagramUrl}"
-                    iconIdentifier="templates-instagram"
-                    label="Instagram" />
-            </f:if>
-            <f:if condition="{contact.xingUrl}">
-                <templates:component.button
-                    additionalClasses="btn-outline-primary"
-                    externalLink="1"
-                    href="{contact.xingUrl}"
-                    iconIdentifier="templates-xing"
-                    label="Xing" />
-            </f:if>
-            <f:if condition="{contact.youTubeUrl}">
-                <templates:component.button
-                    additionalClasses="btn-outline-primary"
-                    externalLink="1"
-                    href="{contact.youTubeUrl}"
-                    iconIdentifier="templates-youtube"
-                    label="YouTube" />
-            </f:if>
-        </div>
-    </f:if>
-</f:section>
-
-<f:section name="TabWorkContent">
-    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
-
-    <f:variable
-        name="records"
-        value="{f:if(condition: contact.ofTypePerson, then: contact.jobs, else: contact.sortedEmployments)}" />
-
-    <f:if condition="{records}">
-        <h3 class="mb-3">
-            <foundation:translate id="{f:if(condition: contact.ofTypePerson, then: 'contact:jobs', else: 'contact.employments')}" />
-        </h3>
-        <f:for
-            as="job"
-            each="{records}"
-            iteration="jobIterator">
-            <f:variable
-                name="cardTitle"
-                value="" />
-            <f:variable
-                name="cardSubtitle"
-                value="" />
-            <f:variable
-                name="jobContact"
-                value="{f:if(condition: contact.ofTypePerson, then: job.company, else: job.contact)}" />
-
-            <f:if condition="{jobContact.fullName}">
-                <f:then>
-                    <f:variable
-                        name="cardTitle"
-                        value="{f:render(arguments: {class: 'stretched-link text-decoration-none', contact: jobContact}, partial: 'Link/Contact')}" />
-
-                    <f:if condition="{job.position} || {job.role}">
-                        <f:variable
-                            name="cardSubtitle"
-                            value="{job.position -> f:or(alternative: job.role)}" />
-
-                        <f:if condition="{job.position} && {job.role}}">
-                            <f:variable
-                                name="cardSubtitle"
-                                value="{cardSubtitle} - {job.role}" />
-                        </f:if>
-                    </f:if>
-                </f:then>
-                <f:else if="{job.position}">
-                    <f:variable
-                        name="cardTitle"
-                        value="{job.position}" />
-
-                    <f:if condition="{job.role}">
-                        <f:variable
-                            name="cardSubtitle"
-                            value="{job.role}" />
-                    </f:if>
-                </f:else>
-                <f:else if="{job.role}">
-                    <f:variable
-                        name="cardTitle"
-                        value="{job.role}" />
-                </f:else>
-            </f:if>
-
-            <div class="card{f:if(condition: jobIterator.isLast, else: ' mb-3')}">
-                <div class="card-body">
-                    <f:if condition="{cardTitle}">
-                        <h4 class="card-title h5{f:if(condition: '!{cardSubtitle} && !{job.notes}', then: ' mb-0')}">
-                            {cardTitle -> f:format.raw()}
-                        </h4>
-                    </f:if>
-
-                    <f:if condition="{cardSubtitle}">
-                        <h5 class="card-subtitle h6 text-body-secondary{f:if(condition: job.notes, then: ' mb-2')}">
-                            {cardSubtitle}
-                        </h5>
-                    </f:if>
-
-                    <f:if condition="{job.notes}">
-                        {job.notes -> f:format.nl2br()}
-                    </f:if>
-
-                    <f:if condition="{contact.ofTypePerson} && {job.colleagues}">
-                        <f:render
-                            arguments="{job: job}"
-                            section="Colleagues" />
-                    </f:if>
-                </div>
-            </div>
-        </f:for>
-    </f:if>
-</f:section>
-
-<f:section name="Colleagues">
-    <f:variable
-        name="modalId"
-        value="colleagues-{job.uid}" />
-    <f:variable
-        name="numberOfColleagues"
-        value="{job.colleagues -> f:count()}" />
-    <f:variable
-        name="iconIdentifier"
-        value="{f:if(condition: '1 == {numberOfColleagues}', then: 'templates-person-fill', else: 'templates-people-fill')}" />
-
-    <f:render
-        arguments="{
-            classes: 'badge border-1 d-block mt-3 position-relative rounded-pill text-bg-light z-2',
-            modalId: modalId,
-            text: '{templates:svgIcon(identifier: iconIdentifier)} {foundation:translate(arguments: {quantity: numberOfColleagues}, id: \'colleagues\')}',
-            title: 'Kollegen anzeigen'
-        }"
-        partial="Component/Modal/Toggle" />
-
-    <f:render
-        arguments="{
-            classes: 'modal-dialog-centered',
-            id: modalId
-        }"
-        contentAs="body"
-        partial="Component/Modal/Dialog">
+    <f:section name="Colleagues">
         <ul class="list-group list-group-flush">
             <f:for
                 as="colleague"
-                each="{job.colleagues}">
+                each="{colleagues}">
                 <f:render
                     arguments="{class: 'list-group-item list-group-item-action', contact: colleague}"
                     partial="Link/Contact" />
             </f:for>
         </ul>
-    </f:render>
-</f:section>
+    </f:section>
+
+    <f:section name="Icon">
+        <core:icon
+            identifier="templates-{identifier}"
+            size="medium" />
+    </f:section>
+
+    <f:section name="ModalFooter">
+        <foundation:translation.registerLanguageFile
+            file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
+            name="modal" />
+
+        <button
+            class="bg-secondary-subtle btn"
+            data-bs-dismiss="modal"
+            type="button">
+            <foundation:translate id="modal:cancel" />
+        </button>
+        <f:link.action
+            action="delete"
+            arguments="{contact: contact}"
+            class="btn btn-danger">
+            <foundation:translate id="modal:delete" />
+        </f:link.action>
+    </f:section>
+
+    <f:section name="TabBankAccountsContent">
+        <f:if condition="{contact.bankAccounts}">
+            <f:for
+                as="bankAccount"
+                each="{contact.bankAccounts}"
+                iteration="bankAccountIterator">
+                <div class="card{f:if(condition: bankAccountIterator.isLast, else: ' mb-3')}">
+                    <div class="card-body">
+                        <f:if condition="{bankAccount.bankName}">
+                            <h4 class="card-title h5">{bankAccount.bankName}</h4>
+                        </f:if>
+
+                        <f:render
+                            contentAs="content"
+                            partial="Component/LabelledList">
+                            <f:render
+                                arguments="{label: '{foundation:translate(id: \'bankAccount.iban\')}'}"
+                                contentAs="value"
+                                partial="Component/LabelledListItem">
+                                {bankAccount.ibanFormatted}
+                            </f:render>
+
+                            <f:if condition="{bankAccount.bic}">
+                                <f:render
+                                    arguments="{label: '{foundation:translate(id: \'bankAccount.bic\')}'}"
+                                    contentAs="value"
+                                    partial="Component/LabelledListItem">
+                                    {bankAccount.bic}
+                                </f:render>
+                            </f:if>
+                        </f:render>
+
+                        <f:if condition="{bankAccount.notes}">
+                            <p class="card-text mt-3 text-muted">{bankAccount.notes -> f:format.nl2br()}</p>
+                        </f:if>
+                    </div>
+                </div>
+            </f:for>
+        </f:if>
+
+        <f:if condition="{contact.payPalUrl}">
+            <div class="d-flex justify-content-end">
+                <templates:component.button
+                    additionalClasses="btn-outline-primary justify-self-start"
+                    externalLink="1"
+                    href="{contact.payPalUrl}"
+                    iconIdentifier="templates-paypal"
+                    label="PayPal" />
+            </div>
+        </f:if>
+    </f:section>
+
+    <f:section name="TabDocumentsContent">
+        <f:if condition="{contact.images}">
+            <h2>
+                <foundation:translate id="images" />
+            </h2>
+            <f:render
+                arguments="{contact:contact, documents: contact.images, isImage: true}"
+                section="DocumentList" />
+        </f:if>
+
+        <f:if condition="{contact.documentsWithoutImages}">
+            <h2 class="{f:if(condition: contact.images, then: 'mt-3')}">
+                <foundation:translate id="{f:if(condition: contact.images, then: 'otherDocuments', else: 'documents')}" />
+            </h2>
+            <f:render
+                arguments="{documents: contact.documentsWithoutImages}"
+                section="DocumentList" />
+        </f:if>
+    </f:section>
+
+    <f:section name="DocumentList">
+        <f:for
+            as="document"
+            each="{documents}"
+            iteration="documentIterator">
+            <div class="card{f:if(condition: documentIterator.isFirst, else: ' mt-3')}">
+                <div class="d-flex">
+                    <f:image
+                        class="img-fluid object-fit-cover rounded-start"
+                        height="120c"
+                        image="{document.file}"
+                        width="120c" />
+
+                    <div class="card-body">
+                        <h4 class="card-title h5 mb-1">{psbvh:fallback(values: {0: document.title, 1: document.file.originalResource.originalFile.name})}</h4>
+                        <p class="card-text mb-2 text-muted">{foundation:translate(arguments: {size: document.file.size}, id: 'fileSize')}</p>
+                    </div>
+
+                    <div class="d-flex flex-column gap-2 p-2">
+                        <a
+                            class="btn btn-primary"
+                            href="{document.file.originalResource.publicUrl}"
+                            target="_blank">
+                            <foundation:translate id="showFile" />
+                        </a>
+
+                        <f:if condition="{isImage} && !{document.useAsProfileImage}}">
+                            <templates:component.button
+                                additionalClasses="bg-primary-subtle"
+                                href="{f:uri.action(action: 'setProfileImage', arguments: {contact: contact, document: document})}"
+                                label="{foundation:translate(id: 'setAsProfileImage')}"
+                                spinnerText="{foundation:translate(id: 'setAsProfileImage.spinnerText')}"
+                                tag="a" />
+                        </f:if>
+                    </div>
+                </div>
+            </div>
+        </f:for>
+    </f:section>
+
+    <f:section name="TabLinkedRelationsContent">
+        <f:if condition="{records}">
+            <f:render
+                arguments="{linkTarget: linkTarget, records: records, showActionIcon: true}"
+                partial="LinkedRelations" />
+        </f:if>
+    </f:section>
+
+    <f:section name="TabEventsContent">
+        <f:if condition="{contact.eventsInDescendingOrder}">
+            <f:render
+                contentAs="content"
+                partial="Component/LabelledList">
+                <f:for
+                    as="event"
+                    each="{contact.eventsInDescendingOrder}">
+                    <f:render
+                        arguments="{valueClass: 'd-flex', label: event.dateFormatted}"
+                        contentAs="value"
+                        partial="Component/LabelledListItem">
+                        <f:comment>
+                            <!-- The wrapping element is needed for correct formatting of the text inside the d-flex container. -->
+                        </f:comment>
+                        <div>
+                            <f:if condition="!{event.year} && {event.monthAndDayGiven}">
+                                <f:then>{event.label}</f:then>
+                                <f:else>{event.type.label}</f:else>
+                            </f:if>
+
+                            <f:if condition="('divorce' == {event.type.value} || 'wedding' == {event.type.value}) && {event.contacts}">
+                                <f:variable
+                                    name="spouse"
+                                    value="{contactBook:event.otherContacts(contact: contact, event: event, returnFirst: 'true')}" />
+
+                                <foundation:translate id="dyn.event.otherContactPreposition.{event.type.value}" />
+
+                                <f:if condition="{spouse.birthName}">
+                                    <f:then>
+                                        <f:variable
+                                            name="name"
+                                            value="{foundation:translate(arguments: {
+                                                birthName: spouse.birthName,
+                                                name: '{spouse.nameDecorations}{spouse.shortName}'
+                                            }, id: 'nameWithBirthName')}" />
+                                    </f:then>
+                                    <f:else>
+                                        <f:variable
+                                            name="name"
+                                            value="{spouse.nameDecorations}{spouse.shortName}" />
+                                    </f:else>
+                                </f:if>
+
+                                {name -> f:link.action(action: 'show', arguments: {contact: spouse}, class: 'text-decoration-none')}
+                            </f:if>
+
+                            <f:if condition="{event.location}">in {event.location}</f:if>
+
+                            <f:if condition="{event.notes}">
+                                <div class="mt-1 small text-muted">{event.notes -> f:format.nl2br()}</div>
+                            </f:if>
+                        </div>
+
+                        <templates:event.additionalContent
+                            eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalEventListContentEvent::class')}"
+                            parameters="{event: event}" />
+                    </f:render>
+                </f:for>
+            </f:render>
+        </f:if>
+    </f:section>
+
+    <f:section name="TabNameContent">
+        <f:render
+            contentAs="content"
+            partial="Component/LabelledList">
+            <f:render
+                arguments="{label: 'Vollständiger Name:'}"
+                contentAs="value"
+                partial="Component/LabelledListItem">
+                {contact.fullName}
+            </f:render>
+
+            <f:if condition="{contact.birthName}">
+                <f:render
+                    arguments="{label: 'Geburtsname'}"
+                    contentAs="value"
+                    partial="Component/LabelledListItem">
+                    {contact.birthName}
+                </f:render>
+            </f:if>
+
+            <f:if condition="{contact.nickname}">
+                <f:render
+                    arguments="{label: 'Spitzname:'}"
+                    contentAs="value"
+                    partial="Component/LabelledListItem">
+                    {contact.nickname}
+                </f:render>
+            </f:if>
+        </f:render>
+    </f:section>
+
+    <f:section name="TabOtherContent">
+        <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+
+        <f:if condition="{contact.notes}">
+            <h3>
+                <foundation:translate id="contact:notes" />
+            </h3>
+            <p>
+                <f:format.nl2br>{contact.notes}</f:format.nl2br>
+            </p>
+        </f:if>
+
+        <f:if condition="{contact.contactGroups}">
+            <h3>
+                <foundation:translate id="contact:contactGroups" />
+            </h3>
+            <ul class="list-group list-group-flush">
+                <f:for
+                    as="contactGroup"
+                    each="{contact.contactGroups}">
+                    <f:render
+                        arguments="{class: 'list-group-item list-group-item-action', contactGroup: contactGroup}"
+                        partial="Link/ContactGroup" />
+                </f:for>
+            </ul>
+        </f:if>
+    </f:section>
+
+    <f:section name="TabPhoneNumbersContent">
+        <f:for
+            as="phoneNumber"
+            each="{records}"
+            iteration="phoneNumberIterator">
+            <div class="card{f:if(condition: phoneNumberIterator.isLast, else: ' mb-3')}">
+                <div class="card-body{f:if(condition: phoneNumber.notes, else: ' pb-2')}">
+                    <h4 class="card-title h5 mb-0">
+                        <templates:svgIcon
+                            additionalClasses="me-1"
+                            identifier="templates-{phoneNumber.generalType.iconIdentifier}" />
+                        <templates:svgIcon identifier="templates-{phoneNumber.phoneNumberType.iconIdentifier}" />
+                        {phoneNumber.compactValue}
+                    </h4>
+
+                    <div class="d-flex justify-content-end">
+                        <f:for
+                            as="href"
+                            each="{phoneNumber.actionLinks}"
+                            key="actionIconIdentifier">
+                            <a
+                                class="link-underline link-underline-opacity-0 p-2"
+                                href="{href}">
+                                <templates:svgIcon identifier="templates-{actionIconIdentifier}" />
+                            </a>
+                        </f:for>
+                    </div>
+
+                    <f:if condition="{phoneNumber.notes}">
+                        <p class="card-text text-muted">{phoneNumber.notes -> f:format.nl2br()}</p>
+                    </f:if>
+                </div>
+            </div>
+        </f:for>
+    </f:section>
+
+    <f:section name="TabWebsitesContent">
+        <f:render
+            arguments="{linkTarget: '_blank', records: contact.websites}"
+            section="TabLinkedRelationsContent" />
+
+        <f:if condition="{contact.linkedinUrl} || {contact.xingUrl} || {contact.twitterUrl} || {contact.facebookUrl} || {contact.instagramUrl}">
+            <div class="d-flex flex-wrap gap-2 justify-content-end">
+                <f:if condition="{contact.linkedInUrl}">
+                    <templates:component.button
+                        additionalClasses="btn-outline-primary"
+                        externalLink="1"
+                        href="{contact.linkedInUrl}"
+                        iconIdentifier="templates-linkedin"
+                        label="LinkedIn" />
+                </f:if>
+                <f:if condition="{contact.facebookUrl}">
+                    <templates:component.button
+                        additionalClasses="btn-outline-primary"
+                        externalLink="1"
+                        href="{contact.facebookUrl}"
+                        iconIdentifier="templates-facebook"
+                        label="Facebook" />
+                </f:if>
+                <f:if condition="{contact.instagramUrl}">
+                    <templates:component.button
+                        additionalClasses="btn-outline-primary"
+                        externalLink="1"
+                        href="{contact.instagramUrl}"
+                        iconIdentifier="templates-instagram"
+                        label="Instagram" />
+                </f:if>
+                <f:if condition="{contact.xingUrl}">
+                    <templates:component.button
+                        additionalClasses="btn-outline-primary"
+                        externalLink="1"
+                        href="{contact.xingUrl}"
+                        iconIdentifier="templates-xing"
+                        label="Xing" />
+                </f:if>
+                <f:if condition="{contact.youTubeUrl}">
+                    <templates:component.button
+                        additionalClasses="btn-outline-primary"
+                        externalLink="1"
+                        href="{contact.youTubeUrl}"
+                        iconIdentifier="templates-youtube"
+                        label="YouTube" />
+                </f:if>
+            </div>
+        </f:if>
+    </f:section>
+
+    <f:section name="TabWorkContent">
+        <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+
+        <f:variable
+            name="records"
+            value="{f:if(condition: contact.ofTypePerson, then: contact.jobs, else: contact.sortedEmployments)}" />
+
+        <f:if condition="{records}">
+            <h3 class="mb-3">
+                <foundation:translate id="{f:if(condition: contact.ofTypePerson, then: 'contact:jobs', else: 'contact.employments')}" />
+            </h3>
+            <f:for
+                as="job"
+                each="{records}"
+                iteration="jobIterator">
+                <f:variable
+                    name="cardTitle"
+                    value="" />
+                <f:variable
+                    name="cardSubtitle"
+                    value="" />
+                <f:variable
+                    name="jobContact"
+                    value="{f:if(condition: contact.ofTypePerson, then: job.company, else: job.contact)}" />
+
+                <f:if condition="{jobContact.fullName}">
+                    <f:then>
+                        <f:variable
+                            name="cardTitle"
+                            value="{f:render(arguments: {class: 'stretched-link text-decoration-none', contact: jobContact}, partial: 'Link/Contact')}" />
+
+                        <f:if condition="{job.position} || {job.role}">
+                            <f:variable
+                                name="cardSubtitle"
+                                value="{job.position -> f:or(alternative: job.role)}" />
+
+                            <f:if condition="{job.position} && {job.role}}">
+                                <f:variable
+                                    name="cardSubtitle"
+                                    value="{cardSubtitle} - {job.role}" />
+                            </f:if>
+                        </f:if>
+                    </f:then>
+                    <f:else if="{job.position}">
+                        <f:variable
+                            name="cardTitle"
+                            value="{job.position}" />
+
+                        <f:if condition="{job.role}">
+                            <f:variable
+                                name="cardSubtitle"
+                                value="{job.role}" />
+                        </f:if>
+                    </f:else>
+                    <f:else if="{job.role}">
+                        <f:variable
+                            name="cardTitle"
+                            value="{job.role}" />
+                    </f:else>
+                </f:if>
+
+                <div class="card{f:if(condition: jobIterator.isLast, else: ' mb-3')}">
+                    <div class="card-body">
+                        <f:if condition="{cardTitle}">
+                            <h4 class="card-title h5{f:if(condition: '!{cardSubtitle} && !{job.notes}', then: ' mb-0')}">{cardTitle -> f:format.raw()}</h4>
+                        </f:if>
+
+                        <f:if condition="{cardSubtitle}">
+                            <h5 class="card-subtitle h6 text-body-secondary{f:if(condition: job.notes, then: ' mb-2')}">{cardSubtitle}</h5>
+                        </f:if>
+
+                        <f:if condition="{job.notes}">{job.notes -> f:format.nl2br()}</f:if>
+
+                        <f:if condition="{contact.ofTypePerson} && {job.colleagues}">
+                            <f:render
+                                arguments="{job: job}"
+                                section="Colleagues" />
+                        </f:if>
+                    </div>
+                </div>
+            </f:for>
+        </f:if>
+    </f:section>
+
+    <f:section name="Colleagues">
+        <f:variable
+            name="modalId"
+            value="colleagues-{job.uid}" />
+        <f:variable
+            name="numberOfColleagues"
+            value="{job.colleagues -> f:count()}" />
+        <f:variable
+            name="iconIdentifier"
+            value="{f:if(condition: '1 == {numberOfColleagues}', then: 'templates-person-fill', else: 'templates-people-fill')}" />
+
+        <f:render
+            arguments="{
+                classes: 'badge border-1 d-block mt-3 position-relative rounded-pill text-bg-light z-2',
+                modalId: modalId,
+                text: '{templates:svgIcon(identifier: iconIdentifier)} {foundation:translate(arguments: {quantity: numberOfColleagues}, id: \'colleagues\')}',
+                title: 'Kollegen anzeigen'
+            }"
+            partial="Component/Modal/Toggle" />
+
+        <f:render
+            arguments="{
+                classes: 'modal-dialog-centered',
+                id: modalId
+            }"
+            contentAs="body"
+            partial="Component/Modal/Dialog">
+            <ul class="list-group list-group-flush">
+                <f:for
+                    as="colleague"
+                    each="{job.colleagues}">
+                    <f:render
+                        arguments="{class: 'list-group-item list-group-item-action', contact: colleague}"
+                        partial="Link/Contact" />
+                </f:for>
+            </ul>
+        </f:render>
+    </f:section>
 </html>

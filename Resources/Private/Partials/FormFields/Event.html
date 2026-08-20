@@ -1,161 +1,155 @@
 <html
     data-namespace-typo3-fluid="true"
-    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:contactBook="http://typo3.org/ns/PSBits/ContactBook/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
-<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/event.xlf" />
-<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/Contact/edit.xlf" />
+    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/event.xlf" />
+    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/Contact/edit.xlf" />
 
-<f:if condition="{record}">
-    <f:then>
-        <f:variable
-            name="postponed"
-            value="" />
-        <f:variable
-            name="uid"
-            value="{record.uid}" />
-    </f:then>
-    <f:else>
-        <f:variable
-            name="postponed"
+    <f:if condition="{record}">
+        <f:then>
+            <f:variable
+                name="postponed"
+                value="" />
+            <f:variable
+                name="uid"
+                value="{record.uid}" />
+        </f:then>
+        <f:else>
+            <f:variable
+                name="postponed"
+                value="1" />
+            <f:variable
+                name="uid"
+                value="###uid###" />
+        </f:else>
+    </f:if>
+
+    <div class="form-floating mb-3">
+        <f:form.select
+            class="form-select"
+            name="event[{uid}][type]"
+            value="{record.type.value}">
+            <f:for
+                as="label"
+                each="{eventTypes}"
+                key="value">
+                <f:form.select.option value="{value}">
+                    <foundation:translate id="event:type.{value -> f:format.case(mode: 'lower')}" />
+                </f:form.select.option>
+            </f:for>
+        </f:form.select>
+        <label class="form-label">
+            <foundation:translate id="event:type" />
+        </label>
+    </div>
+    <div class="input-group mb-3">
+        <div class="form-floating">
+            <f:form.textfield
+                class="form-control"
+                max="31"
+                min="1"
+                name="event[{uid}][day]"
+                placeholder="{foundation:translate(id: 'event:day')}"
+                type="number"
+                value="{record.day}" />
+            <label class="form-label">
+                <foundation:translate id="event:day" />
+            </label>
+        </div>
+        <div class="form-floating">
+            <f:form.textfield
+                class="form-control"
+                max="12"
+                min="1"
+                name="event[{uid}][month]"
+                placeholder="{foundation:translate(id: 'event:month')}"
+                type="number"
+                value="{record.month}" />
+            <label class="form-label">
+                <foundation:translate id="event:month" />
+            </label>
+        </div>
+        <div class="form-floating">
+            <f:form.textfield
+                class="form-control"
+                name="event[{uid}][year]"
+                placeholder="{foundation:translate(id: 'event:year')}"
+                type="number"
+                value="{record.year}" />
+            <label class="form-label">
+                <foundation:translate id="event:year" />
+            </label>
+        </div>
+    </div>
+    <div class="form-check mb-3">
+        <f:form.checkbox
+            checked="{f:if(condition: record.showAnniversaries, then: '1', else: '0')}"
+            class="form-check-input"
+            id="event-{uid}-showAnniversaries"
+            name="event[{uid}][showAnniversaries]"
             value="1" />
-        <f:variable
-            name="uid"
-            value="###uid###" />
-    </f:else>
-</f:if>
-
-<div class="form-floating mb-3">
-    <f:form.select
-        class="form-select"
-        name="event[{uid}][type]"
-        value="{record.type.value}">
-        <f:for
-            as="label"
-            each="{eventTypes}"
-            key="value">
-            <f:form.select.option value="{value}">
-                <foundation:translate id="event:type.{value -> f:format.case(mode: 'lower')}" />
-            </f:form.select.option>
-        </f:for>
-    </f:form.select>
-    <label
-        class="form-label">
-        <foundation:translate id="event:type" />
-    </label>
-</div>
-<div class="input-group mb-3">
-    <div class="form-floating">
-        <f:form.textfield
-            class="form-control"
-            min="1"
-            max="31"
-            name="event[{uid}][day]"
-            placeholder="{foundation:translate(id: 'event:day')}"
-            type="number"
-            value="{record.day}" />
         <label
-            class="form-label">
-            <foundation:translate id="event:day" />
+            class="form-check-label"
+            for="event-{uid}-showAnniversaries">
+            <foundation:translate id="event:showAnniversaries" />
         </label>
     </div>
-    <div class="form-floating">
-        <f:form.textfield
-            class="form-control"
-            min="1"
-            max="12"
-            name="event[{uid}][month]"
-            placeholder="{foundation:translate(id: 'event:month')}"
-            type="number"
-            value="{record.month}" />
+    <div class="form-check mb-3">
+        <f:form.checkbox
+            checked="{f:if(condition: record.showInCalendar, then: '1', else: '0')}"
+            class="form-check-input"
+            id="event-{uid}-showInCalendar"
+            name="event[{uid}][showInCalendar]"
+            value="1" />
         <label
-            class="form-label">
-            <foundation:translate id="event:month" />
+            class="form-check-label"
+            for="event-{uid}-showInCalendar">
+            <foundation:translate id="event:showInCalendar" />
         </label>
     </div>
-    <div class="form-floating">
-        <f:form.textfield
-            class="form-control"
-            name="event[{uid}][year]"
-            placeholder="{foundation:translate(id: 'event:year')}"
-            type="number"
-            value="{record.year}" />
-        <label
-            class="form-label">
-            <foundation:translate id="event:year" />
+    <div class="form-floating mb-3">
+        <f:render
+            arguments="{
+                altValueField: 1,
+                filterOptions: {
+                    itemSearchField: 'searchTerms',
+                    preferText: 1,
+                },
+                id: 'event-contacts-{uid}',
+                label: '{foundation:translate(id: \'edit:additionalContacts.event\')}',
+                listClass: 'js-autocomplete-contacts',
+                multiple: 1,
+                name: 'event[{uid}][contacts]',
+                postponed: postponed,
+                preselection: record.contactUidsAsJson
+            }"
+            partial="Component/InputAutocomplete" />
+    </div>
+    <div class="form-floating mb-3">
+        <f:form.textarea
+            class="form-control psbits-auto-size"
+            name="event[{uid}][location]"
+            placeholder="{foundation:translate(id: 'event:location')}"
+            value="{record.location}" />
+        <label class="form-label">
+            <foundation:translate id="event:location" />
         </label>
     </div>
-</div>
-<div class="form-check mb-3">
-    <f:form.checkbox
-        checked="{f:if(condition: record.showAnniversaries, then: '1', else: '0')}"
-        class="form-check-input"
-        id="event-{uid}-showAnniversaries"
-        name="event[{uid}][showAnniversaries]"
-        value="1" />
-    <label
-        class="form-check-label"
-        for="event-{uid}-showAnniversaries">
-        <foundation:translate id="event:showAnniversaries" />
-    </label>
-</div>
-<div class="form-check mb-3">
-    <f:form.checkbox
-        checked="{f:if(condition: record.showInCalendar, then: '1', else: '0')}"
-        class="form-check-input"
-        id="event-{uid}-showInCalendar"
-        name="event[{uid}][showInCalendar]"
-        value="1" />
-    <label
-        class="form-check-label"
-        for="event-{uid}-showInCalendar">
-        <foundation:translate id="event:showInCalendar" />
-    </label>
-</div>
-<div class="form-floating mb-3">
-    <f:render
-        arguments="{
-            altValueField: 1,
-            filterOptions: {
-                itemSearchField: 'searchTerms',
-                preferText: 1,
-            },
-            id: 'event-contacts-{uid}',
-            label: '{foundation:translate(id: \'edit:additionalContacts.event\')}',
-            listClass: 'js-autocomplete-contacts',
-            multiple: 1,
-            name: 'event[{uid}][contacts]',
-            postponed: postponed,
-            preselection: record.contactUidsAsJson
-        }"
-        partial="Component/InputAutocomplete" />
-</div>
-<div class="form-floating mb-3">
-    <f:form.textarea
-        class="form-control psbits-auto-size"
-        name="event[{uid}][location]"
-        placeholder="{foundation:translate(id: 'event:location')}"
-        value="{record.location}" />
-    <label
-        class="form-label">
-        <foundation:translate id="event:location" />
-    </label>
-</div>
-<div class="form-floating mb-3">
-    <f:form.textarea
-        class="form-control psbits-auto-size"
-        name="event[{uid}][notes]"
-        placeholder="{foundation:translate(id: 'event:notes')}"
-        value="{record.notes}" />
-    <label
-        class="form-label">
-        <foundation:translate id="event:notes" />
-    </label>
-</div>
-<div
-    class="btn btn-danger"
-    data-psbits-delete-mode="closest"
-    data-psbits-delete-target=".accordion-item">
-    <foundation:translate id="edit:remove" />
-</div>
+    <div class="form-floating mb-3">
+        <f:form.textarea
+            class="form-control psbits-auto-size"
+            name="event[{uid}][notes]"
+            placeholder="{foundation:translate(id: 'event:notes')}"
+            value="{record.notes}" />
+        <label class="form-label">
+            <foundation:translate id="event:notes" />
+        </label>
+    </div>
+    <div
+        class="btn btn-danger"
+        data-psbits-delete-mode="closest"
+        data-psbits-delete-target=".accordion-item">
+        <foundation:translate id="edit:remove" />
+    </div>
 </html>
