@@ -96,6 +96,9 @@ readonly class CardDavHandler
     ) {
     }
 
+    /**
+     * Handles the complete CardDAV request lifecycle from routing to method-specific processing.
+     */
     public function handle(ServerRequestInterface $request): ?ResponseInterface
     {
         $path = $this->normalizePath($request->getUri()->getPath());
@@ -167,6 +170,9 @@ readonly class CardDavHandler
         return $this->handleDelete($request, $path, $username, $contactBookUid);
     }
 
+    /**
+     * Validates Basic auth credentials against frontend users and returns an authenticated user context.
+     */
     private function authenticate(ServerRequestInterface $request): AuthenticationResult
     {
         $authorizationHeader = $request->getHeaderLine('Authorization');
@@ -236,6 +242,7 @@ readonly class CardDavHandler
         $ifMatch = trim($request->getHeaderLine('If-Match'));
 
         if ('' !== $ifMatch && '*' !== $ifMatch) {
+            // Respect optimistic concurrency checks from clients and reject stale delete attempts.
             $currentEtag = $this->getContactEtag($contactBookUid, $contactUuid);
 
             if ($ifMatch !== $currentEtag) {
@@ -273,6 +280,7 @@ readonly class CardDavHandler
         if (CardDavResourceType::Collection === $resource->getType()) {
             $href = $this->collectionHref($username);
 
+            // Collection GET is treated as metadata response so clients can quickly refresh CTag state.
             return $this->multistatusResponse([
                 $this->buildPropResponse(
                     $href,
@@ -309,6 +317,7 @@ readonly class CardDavHandler
         $depth = (int)($request->getHeaderLine('Depth') ?: '0');
         $responses = [];
 
+        // Build hierarchical DAV discovery responses (root -> principal -> home -> collection -> card).
         if (CardDavResourceType::Root === $resource->getType()) {
             $responses[] = $this->buildPropResponse(
                 '/carddav/',
@@ -395,6 +404,7 @@ readonly class CardDavHandler
             );
 
             if (0 < $depth) {
+                // Depth > 0 returns all cards as leaf resources with their ETags.
                 foreach ($this->getContactRows($contactBookUid) as $contactRow) {
                     $uuid = (string)$contactRow['uuid'];
                     $responses[] = $this->buildPropResponse(
@@ -439,6 +449,7 @@ readonly class CardDavHandler
         }
 
         if ('' !== $ifMatch && '*' !== $ifMatch && $existingContact instanceof Contact) {
+            // Update requests must present the latest ETag to prevent overwriting concurrent changes.
             $currentEtag = $this->getContactEtag($contactBookUid, $contactUuid);
 
             if ($ifMatch !== $currentEtag) {
@@ -461,6 +472,7 @@ readonly class CardDavHandler
         $content = $this->forceUid($content, $contactUuid);
 
         try {
+            // Persist contact data via vCard import so CardDAV and regular import share one parsing pipeline.
             $this->importService->upsertSingleVCardContent($content, $contactBook);
         } catch (IllegalObjectTypeException|UnknownObjectException $exception) {
             $this->logger->error('CardDAV PUT failed.', ['exception' => $exception]);
@@ -487,9 +499,11 @@ readonly class CardDavHandler
         $payload = (string)$request->getBody();
 
         if (str_contains($payload, 'sync-collection')) {
+            // Sync report is incremental and includes both changed cards and tombstoned deletions.
             return $this->handleSyncCollectionReport($payload, $username, $contactBookUid, $request);
         }
 
+        // addressbook-multiget returns only explicitly requested card hrefs when present.
         $requestedUuids = $this->extractRequestedUuids($payload);
         $contactRows = $this->getContactRows($contactBookUid);
 
@@ -550,6 +564,7 @@ readonly class CardDavHandler
     private function getChangedContacts(int $contactBookUid, ?string $previousToken): array
     {
         if (null === $previousToken || '' === $previousToken) {
+            // First sync: return full dataset.
             return $this->getContactRows($contactBookUid);
         }
 
@@ -557,6 +572,7 @@ readonly class CardDavHandler
         $minTimestamp = max($syncTokenState->getMaxContactTimestamp(), $syncTokenState->getMaxTombstoneTimestamp());
 
         if (0 >= $minTimestamp) {
+            // Invalid or legacy tokens fall back to a full sync instead of failing hard.
             return $this->getContactRows($contactBookUid);
         }
 
@@ -578,6 +594,7 @@ readonly class CardDavHandler
     private function getDeletedUuids(int $contactBookUid, ?string $previousToken): array
     {
         if (null === $previousToken || '' === $previousToken) {
+            // First sync has no known prior state, therefore no deletion delta.
             return [];
         }
 
@@ -607,6 +624,7 @@ readonly class CardDavHandler
 
     private function decodeToken(string $token): SyncTokenState
     {
+        // Token format: maxContactTimestamp:maxTombstoneTimestamp:fingerprint
         if (!preg_match('/^(\d+):(\d+):/u', $token, $matches)) {
             return new SyncTokenState(0, 0);
         }
@@ -667,6 +685,7 @@ readonly class CardDavHandler
             $timestamp = (int)($row['tstamp'] ?? 0);
         }
 
+        // ETag is deterministic for UUID + timestamp and changes whenever contact data timestamp changes.
         return '"' . hash('sha256', $uuid . ':' . $timestamp) . '"';
     }
 
@@ -820,6 +839,7 @@ readonly class CardDavHandler
 
     private function parseResource(string $path, string $username): ?CardDavResource
     {
+        // Map URL paths to logical DAV resources used by all method handlers.
         $encodedUsername = urlencode($username);
 
         if ('/carddav' === $path) {
@@ -880,6 +900,7 @@ readonly class CardDavHandler
             $contact = $this->contactRepository->findByContactBookAndUuid($contactBookUid, $uuid);
 
             if (!$contact instanceof Contact) {
+                // Skip stale DB rows gracefully when relation data changed in parallel.
                 continue;
             }
 
@@ -913,6 +934,7 @@ readonly class CardDavHandler
         ];
 
         if (null !== $syncToken) {
+            // sync-token is attached only for sync responses where clients need a new cursor.
             $multistatusNode['d:sync-token'] = $this->xmlNode($this->xmlEscape($syncToken), count($responses));
         }
 
@@ -967,6 +989,7 @@ readonly class CardDavHandler
 
     private function resolveOwnedContactBookUid(int $frontendUserUid): ?int
     {
+        // CardDAV currently exposes the first contact book owned by the authenticated frontend user.
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_contactbook_contactbooks_feusers');
         $row = $queryBuilder->select('uid_local')
             ->from('tx_contactbook_contactbooks_feusers')
