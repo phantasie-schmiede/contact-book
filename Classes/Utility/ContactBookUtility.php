@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -30,7 +31,7 @@ class ContactBookUtility
      */
     public static function getActiveContactBookUid(): ?int
     {
-        /** @var FrontendUser $user */
+        /** @var ?FrontendUser $user */
         $user = GlobalVariableService::get(FrontendUserProvider::class . '.user');
 
         return $user?->getSetting('activeContactBook');

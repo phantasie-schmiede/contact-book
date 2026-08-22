@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -82,7 +83,7 @@ class NumberBlockUtility
             '0179',
         ],
     ];
-    public const SERVICES        = [
+    public const SERVICES = [
         'GERMANY' => [
             '0700',
             '0800',
@@ -90,6 +91,7 @@ class NumberBlockUtility
         ],
     ];
 
+    /** @return string[] */
     public static function getGermanMobileServicesWithoutLeadingZero(): array
     {
         return array_map(

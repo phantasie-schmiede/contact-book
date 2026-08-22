@@ -99,6 +99,7 @@ class ContactBook extends AbstractEntity
         return $this->contactGroups;
     }
 
+    /** @return ObjectStorage<Contact> */
     public function getContacts(): ObjectStorage
     {
         return $this->contacts;
@@ -143,6 +144,7 @@ class ContactBook extends AbstractEntity
         return JsonUtility::getUidsAsJsonArray(...$this->getOwners());
     }
 
+    /** @return ObjectStorage<FrontendUser> */
     public function getOwners(): ObjectStorage
     {
         return $this->owners;
@@ -155,9 +157,9 @@ class ContactBook extends AbstractEntity
 
     public function initializeObject(): void
     {
-        $this->contacts = new ObjectStorage();
+        $this->contacts      = new ObjectStorage();
         $this->contactGroups = new ObjectStorage();
-        $this->owners = new ObjectStorage();
+        $this->owners        = new ObjectStorage();
     }
 
     /**
@@ -175,6 +177,7 @@ class ContactBook extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<ContactGroup> $contactGroups */
     public function setContactGroups(ObjectStorage $contactGroups): self
     {
         $this->contactGroups = $contactGroups;
@@ -182,6 +185,7 @@ class ContactBook extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<Contact> $contacts */
     public function setContacts(ObjectStorage $contacts): self
     {
         $this->contacts = $contacts;
@@ -203,6 +207,7 @@ class ContactBook extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<FrontendUser> $owners */
     public function setOwners(ObjectStorage $owners): self
     {
         $this->owners = $owners;

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-    <file datatype="plaintext"
+    <file
+        datatype="plaintext"
         date="2025-09-15T17:56:00+01:00"
         original="messages"
         product-name="contact_book"
@@ -9,7 +10,8 @@
             <trans-unit id="active">
                 <source>active</source>
             </trans-unit>
-            <group id="contacts"
+            <group
+                id="contacts"
                 restype="x-gettext-plurals">
                 <trans-unit id="contacts[0]">
                     <source>{quantity} contact</source>
@@ -18,7 +20,8 @@
                     <source>{quantity} contacts</source>
                 </trans-unit>
             </group>
-            <group id="contactGroups"
+            <group
+                id="contactGroups"
                 restype="x-gettext-plurals">
                 <trans-unit id="contactGroups[0]">
                     <source>{quantity} contact group</source>

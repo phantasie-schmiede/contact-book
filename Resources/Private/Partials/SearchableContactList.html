@@ -2,48 +2,48 @@
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
-<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/contactList.xlf" />
+    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/contactList.xlf" />
 
-<f:asset.script
-    identifier="ajaxContent"
-    src="EXT:templates/Resources/Public/JavaScript/ajaxContent.js"
-    type="module" />
-<f:asset.script
-    identifier="clearInput"
-    src="EXT:templates/Resources/Public/JavaScript/clearInput.js"
-    type="module" />
-<f:asset.script
-    identifier="filter"
-    src="EXT:templates/Resources/Public/JavaScript/filter.js"
-    type="module" />
+    <f:asset.script
+        identifier="ajaxContent"
+        src="EXT:templates/Resources/Public/JavaScript/ajaxContent.js"
+        type="module" />
+    <f:asset.script
+        identifier="clearInput"
+        src="EXT:templates/Resources/Public/JavaScript/clearInput.js"
+        type="module" />
+    <f:asset.script
+        identifier="filter"
+        src="EXT:templates/Resources/Public/JavaScript/filter.js"
+        type="module" />
 
-<div class="mb-1 position-relative">
-    <input
-        autocomplete="on"
-        class="form-control psbits-clear-input"
-        data-psbits-filter-count="#filter-count-{pluginUid}"
-        data-psbits-filter-prefer-text
-        data-psbits-filter-target="#contact-list-{pluginUid} .js-contact-list-item"
-        data-psbits-filter-value="data-search-terms"
-        id="search-{pluginUid}"
-        placeholder="{foundation:translate(id: 'contactList:search')}"
-        type="text" />
-    <div
-        class="form-text"
-        id="filter-count-{pluginUid}">
-        <span data-psbits-filter-count-number>{totalCount}</span>
-        <span data-psbits-filter-count-text="{foundation:translate(arguments: '{number: totalCount}', id: 'contactList:totalNumberOfContacts')}">
-            <foundation:translate
-                arguments="{number: totalCount}"
-                id="contactList:contacts" />
-        </span>
+    <div class="mb-1 position-relative">
+        <input
+            autocomplete="on"
+            class="form-control psbits-clear-input"
+            data-psbits-filter-count="#filter-count-{pluginUid}"
+            data-psbits-filter-prefer-text
+            data-psbits-filter-target="#contact-list-{pluginUid} .js-contact-list-item"
+            data-psbits-filter-value="data-search-terms"
+            id="search-{pluginUid}"
+            placeholder="{foundation:translate(id: 'contactList:search')}"
+            type="text" />
+        <div
+            class="form-text"
+            id="filter-count-{pluginUid}">
+            <span data-psbits-filter-count-number>{totalCount}</span>
+            <span data-psbits-filter-count-text="{foundation:translate(arguments: '{number: totalCount}', id: 'contactList:totalNumberOfContacts')}">
+                <foundation:translate
+                    arguments="{number: totalCount}"
+                    id="contactList:contacts" />
+            </span>
+        </div>
     </div>
-</div>
 
-<div
-    class="overflow-auto"
-    data-psbits-ajax-url="{refreshUrl}"
-    id="contact-list-{pluginUid}">
-    <f:format.raw>{list}</f:format.raw>
-</div>
+    <div
+        class="overflow-auto"
+        data-psbits-ajax-url="{refreshUrl}"
+        id="contact-list-{pluginUid}">
+        <f:format.raw>{list}</f:format.raw>
+    </div>
 </html>

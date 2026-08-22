@@ -1,26 +1,26 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
-<f:asset.script
-    identifier="ajaxContent"
-    src="EXT:templates/Resources/Public/JavaScript/ajaxContent.js"
-    type="module" />
+    <f:asset.script
+        identifier="ajaxContent"
+        src="EXT:templates/Resources/Public/JavaScript/ajaxContent.js"
+        type="module" />
 
-<f:comment>
-    <!-- Empty divs that simply trigger the Ajax requests -->
-</f:comment>
+    <f:comment>
+        <!-- Empty divs that simply trigger the Ajax requests -->
+    </f:comment>
 
-<f:if condition="{loadCompanies}">
-    <div
-        data-psbits-ajax-target=".js-autocomplete-companies"
-        data-psbits-ajax-trigger="onload"
-        data-psbits-ajax-url="{f:uri.action(action: 'getAutoCompleteList', arguments: {companies: true, contact: contact}, controller: 'Contact', extensionName: 'ContactBook', pageType: 1754735201, pluginName: 'AutocompleteList')}"></div>
-</f:if>
+    <f:if condition="{loadCompanies}">
+        <div
+            data-psbits-ajax-target=".js-autocomplete-companies"
+            data-psbits-ajax-trigger="onload"
+            data-psbits-ajax-url="{f:uri.action(action: 'getAutoCompleteList', arguments: {companies: true, contact: contact}, controller: 'Contact', extensionName: 'ContactBook', pageType: 1754735201, pluginName: 'AutocompleteList')}"></div>
+    </f:if>
 
-<f:if condition="{loadContacts}">
-    <div
-        data-psbits-ajax-target=".js-autocomplete-contacts"
-        data-psbits-ajax-trigger="onload"
-        data-psbits-ajax-url="{f:uri.action(action: 'getAutoCompleteList', arguments: {contact: contact}, controller: 'Contact', extensionName: 'ContactBook', pageType: 1754735201, pluginName: 'AutocompleteList')}"></div>
-</f:if>
+    <f:if condition="{loadContacts}">
+        <div
+            data-psbits-ajax-target=".js-autocomplete-contacts"
+            data-psbits-ajax-trigger="onload"
+            data-psbits-ajax-url="{f:uri.action(action: 'getAutoCompleteList', arguments: {contact: contact}, controller: 'Contact', extensionName: 'ContactBook', pageType: 1754735201, pluginName: 'AutocompleteList')}"></div>
+    </f:if>
 </html>

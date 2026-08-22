@@ -2,25 +2,25 @@
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
-<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/phoneNumber.xlf" />
+    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/phoneNumber.xlf" />
 
-<f:if condition="{record}">
-    <f:variable
-        name="phoneNumber"
-        value="{record}" />
-</f:if>
+    <f:if condition="{record}">
+        <f:variable
+            name="phoneNumber"
+            value="{record}" />
+    </f:if>
 
-<f:variable
-    name="phoneNumberLabelId"
-    value="formatted.international" />
-
-<f:if condition="{phoneNumber.extension}">
     <f:variable
         name="phoneNumberLabelId"
-        value="{phoneNumberLabelId}.withExtension" />
-</f:if>
+        value="formatted.international" />
 
-<foundation:translate
-    arguments="{areaCode: phoneNumber.areaCode, connectionIdentifier: phoneNumber.connectionIdentifier, extension: phoneNumber.extension, internationalDiallingCode: phoneNumber.internationalDiallingCode}"
-    id="phoneNumber:{phoneNumberLabelId}" />
+    <f:if condition="{phoneNumber.extension}">
+        <f:variable
+            name="phoneNumberLabelId"
+            value="{phoneNumberLabelId}.withExtension" />
+    </f:if>
+
+    <foundation:translate
+        arguments="{areaCode: phoneNumber.areaCode, connectionIdentifier: phoneNumber.connectionIdentifier, extension: phoneNumber.extension, internationalDiallingCode: phoneNumber.internationalDiallingCode}"
+        id="phoneNumber:{phoneNumberLabelId}" />
 </html>

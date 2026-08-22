@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -24,10 +25,11 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class AddressRepository extends Repository
 {
+    /** @return QueryResultInterface<int, Address> */
     public function findByDemand(AddressDemand $demand): QueryResultInterface
     {
         $constraints = [];
-        $query = $this->createQuery();
+        $query       = $this->createQuery();
 
         if ('' !== $demand->getCity()) {
             $constraints[] = $query->equals('city', $demand->getCity());

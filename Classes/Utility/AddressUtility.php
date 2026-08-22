@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -25,12 +26,12 @@ class AddressUtility
     public static function splitStreetAndHouseNumber(string $streetAndHouseNumber): array
     {
         $streetAndHouseNumberParts = explode(' ', $streetAndHouseNumber);
-        $houseNumber = array_pop($streetAndHouseNumberParts);
+        $houseNumber               = array_pop($streetAndHouseNumberParts);
 
         // Check if the house number begins with a digit. If not, the house number is empty.
         if (!is_numeric($houseNumber[0])) {
             $streetAndHouseNumberParts[] = $houseNumber;
-            $houseNumber = '';
+            $houseNumber                 = '';
         }
 
         $street = implode(' ', $streetAndHouseNumberParts);

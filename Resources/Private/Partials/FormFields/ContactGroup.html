@@ -1,39 +1,39 @@
 <html
     data-namespace-typo3-fluid="true"
-    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:contactBook="http://typo3.org/ns/PSBits/ContactBook/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
-<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contactGroup.xlf" />
+    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contactGroup.xlf" />
 
-<div class="form-floating mb-3">
-    <f:form.textfield
-        class="form-control"
-        id="name"
-        placeholder="{foundation:translate(id: 'contactGroup:name')}"
-        property="name"
-        required="true" />
-    <label
-        class="form-label"
-        for="name">
-        <foundation:translate id="contactGroup:name" />
-    </label>
-</div>
+    <div class="form-floating mb-3">
+        <f:form.textfield
+            class="form-control"
+            id="name"
+            placeholder="{foundation:translate(id: 'contactGroup:name')}"
+            property="name"
+            required="true" />
+        <label
+            class="form-label"
+            for="name">
+            <foundation:translate id="contactGroup:name" />
+        </label>
+    </div>
 
-<div class="form-floating">
-    <f:render
-        arguments="{
-            altValueField: 1,
-            filterOptions: {
-                itemSearchField: 'searchTerms',
-                preferText: 1,
-            },
-            id: 'contact-group-contacts',
-            label: '{foundation:translate(id: \'contactGroup:contacts\')}',
-            listClass: 'js-autocomplete-contacts',
-            multiple: 1,
-            name: 'contacts',
-            preselection: contactGroup.contactUidsAsJson,
-        }"
-        partial="Component/InputAutocomplete" />
-</div>
+    <div class="form-floating">
+        <f:render
+            arguments="{
+                altValueField: 1,
+                filterOptions: {
+                    itemSearchField: 'searchTerms',
+                    preferText: 1,
+                },
+                id: 'contact-group-contacts',
+                label: '{foundation:translate(id: \'contactGroup:contacts\')}',
+                listClass: 'js-autocomplete-contacts',
+                multiple: 1,
+                name: 'contacts',
+                preselection: contactGroup.contactUidsAsJson,
+            }"
+            partial="Component/InputAutocomplete" />
+    </div>
 </html>

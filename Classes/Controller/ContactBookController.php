@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -126,8 +127,8 @@ class ContactBookController extends ActionController
     {
         $this->view->assignMultiple([
             'contactBook'   => $contactBook ?? (new ContactBook())->addOwner(
-                    GlobalVariableService::get(FrontendUserProvider::class . '.user')
-                ),
+                GlobalVariableService::get(FrontendUserProvider::class . '.user')
+            ),
             'frontendUsers' => $this->frontendUserRepository->findAll(),
         ]);
 

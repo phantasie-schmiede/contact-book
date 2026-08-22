@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -38,7 +39,7 @@ class Website extends AbstractContactRelatedEntity
         'Private'  => 'private',
         'Business' => 'business',
         'Other'    => 'other',
-    ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM_MANDATORY_STRING)]
+    ], minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM_MANDATORY_STRING)]
     protected GeneralType $type = GeneralType::Private;
 
     #[Input]

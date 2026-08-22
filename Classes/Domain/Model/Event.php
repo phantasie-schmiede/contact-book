@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -26,6 +27,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+
 use function sprintf;
 
 /**
@@ -36,7 +38,7 @@ use function sprintf;
 #[Ctrl(label        : 'year', labelAlt: [
     'type',
     'contacts',
-],     labelAltForce: true, searchFields: [
+], labelAltForce: true, searchFields: [
     'notes',
     'year',
 ])]
@@ -72,7 +74,7 @@ class Event extends AbstractContactRelatedEntity
         'FirstDayAtSchool' => 'firstDayAtSchool',
         'Wedding'          => 'wedding',
         'Other'            => 'other',
-    ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM_MANDATORY_STRING)]
+    ], minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM_MANDATORY_STRING)]
     protected EventType $type = EventType::Birthday;
 
     #[Column(databaseDefinition: 'INT DEFAULT NULL', nullable: true)]
@@ -105,6 +107,7 @@ class Event extends AbstractContactRelatedEntity
         return $this->getLabel() . ': ' . $this->getDateFormatted();
     }
 
+    /** @return Contact[] */
     public function getContactsAsArray(): array
     {
         return $this->contacts->toArray();
@@ -210,16 +213,17 @@ class Event extends AbstractContactRelatedEntity
             return 0;
         }
 
-        $now = new DateTime();
+        $now         = new DateTime();
         $anniversary = (int)$now->format('Y') - $this->year;
 
         if (1 > $anniversary) {
             return 0;
         }
 
-        if ($now->format('m') > $this->month || ($now->format('m') === $this->month && $now->format(
-                    'd'
-                ) > $this->day)) {
+        $currentMonth = (int)$now->format('m');
+        $currentDay   = (int)$now->format('d');
+
+        if ($currentMonth > $this->month || ($currentMonth === $this->month && $currentDay > $this->day)) {
             $anniversary++;
         }
 
