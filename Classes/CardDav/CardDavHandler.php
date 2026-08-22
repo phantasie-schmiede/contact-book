@@ -896,6 +896,13 @@ readonly class CardDavHandler
      */
     private function multistatusResponse(array $responses, ?string $syncToken = null): ResponseInterface
     {
+        foreach ($responses as $position => &$response) {
+            if (!isset($response[XmlUtility::SPECIAL_ARRAY_KEYS['POSITION']])) {
+                $response[XmlUtility::SPECIAL_ARRAY_KEYS['POSITION']] = $position;
+            }
+        }
+        unset($response);
+
         $multistatusNode = [
             'd:response' => $responses,
             XmlUtility::SPECIAL_ARRAY_KEYS['NAMESPACES'] => [
