@@ -25,6 +25,8 @@ use PSBits\ContactBook\Utility\ContactUtility;
 use PSBits\Templates\Service\CountryNamesService;
 use RuntimeException;
 
+use function strlen;
+
 /**
  * Class VCardService
  *
@@ -32,7 +34,7 @@ use RuntimeException;
  */
 class VCardService
 {
-    private const VCARD_EOL = "\r\n";
+    private const string VCARD_EOL = "\r\n";
 
     protected VCardVersion $version = VCardVersion::V2_1;
 
@@ -261,6 +263,9 @@ class VCardService
         }
     }
 
+    /**
+     * @param string[] $values
+     */
     private function addStructuredTextLine(string $property, array $values, string &$vCard): void
     {
         $line = $property . ':' . implode(
@@ -307,18 +312,18 @@ class VCardService
 
     private function foldLine(string $line): string
     {
-        if (strlen($line) <= 75) {
+        if (75 >= strlen($line)) {
             return $line;
         }
 
-        $foldedLine = '';
+        $foldedLine    = '';
         $remainingLine = $line;
-        $isFirstLine = true;
+        $isFirstLine   = true;
 
         while ('' !== $remainingLine) {
-            $prefix = $isFirstLine ? '' : ' ';
-            $chunkLength = 75 - strlen($prefix);
-            $chunk = mb_strcut($remainingLine, 0, $chunkLength, 'UTF-8');
+            $prefix        = $isFirstLine ? '' : ' ';
+            $chunkLength   = 75 - strlen($prefix);
+            $chunk         = mb_strcut($remainingLine, 0, $chunkLength, 'UTF-8');
             $remainingLine = substr($remainingLine, strlen($chunk));
 
             $foldedLine .= $prefix . $chunk;
