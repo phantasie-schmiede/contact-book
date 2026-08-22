@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-    <file datatype="plaintext"
+    <file
+        datatype="plaintext"
         date="2024-09-17T14:23:00+01:00"
         original="messages"
         product-name="contact_book"
@@ -18,7 +19,9 @@
             <trans-unit id="eventTitle.deceased">
                 <source>{type} of {persons} (would have been the {anniversary}.)</source>
             </trans-unit>
-            <group id="noUpcomingEvents" restype="x-gettext-plurals">
+            <group
+                id="noUpcomingEvents"
+                restype="x-gettext-plurals">
                 <trans-unit id="noUpcomingEvents[0]">
                     <source>no upcomming events in the {typeList} category</source>
                 </trans-unit>

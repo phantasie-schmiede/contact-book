@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -25,9 +26,9 @@ class PhoneNumberUtility
         $phoneNumber = preg_replace('/[\s| ]+/u', '', $phoneNumber);
 
         $pattern = '/\+(?<internationalDiallingCode>49)(?<areaCode>' . implode(
-                '|',
-                array_merge(NumberBlockUtility::getGermanMobileServicesWithoutLeadingZero(), ['\d{4}'])
-            ) . ')(?<connectionIdentifier>.*)/';
+            '|',
+            array_merge(NumberBlockUtility::getGermanMobileServicesWithoutLeadingZero(), ['\d{4}'])
+        ) . ')(?<connectionIdentifier>.*)/';
         preg_match($pattern, $phoneNumber, $matches);
 
         return (new PhoneNumber())->setAreaCode($matches['areaCode'])

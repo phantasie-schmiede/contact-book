@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -28,6 +29,7 @@ use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+
 use function is_string;
 
 /**
@@ -53,6 +55,10 @@ readonly class ContactService
     }
 
     /**
+     * @param Contact[]        $contacts
+     * @param RequestInterface $request
+     *
+     * @return string
      * @throws ContainerExceptionInterface
      * @throws JsonException
      * @throws NotFoundExceptionInterface
@@ -72,6 +78,11 @@ readonly class ContactService
     }
 
     /**
+     * @param string           $cacheEntryIdentifier
+     * @param Contact[]        $contacts
+     * @param RequestInterface $request
+     *
+     * @return string
      * @throws ContainerExceptionInterface
      * @throws JsonException
      * @throws NotFoundExceptionInterface
@@ -91,6 +102,10 @@ readonly class ContactService
     }
 
     /**
+     * @param ContactRelationInterface $entity
+     * @param Contact|null             $contact
+     * @param int[]|string             $additionalContacts
+     *
      * @throws JsonException
      */
     public function setContactsOfRelatedEntity(
@@ -115,10 +130,9 @@ readonly class ContactService
         $contactIds = array_map('\intval', $contactIds ?? $additionalContacts);
 
         foreach ($contactIds as $contactId) {
-            /** @var Contact $additionalContact */
             $additionalContact = $this->contactRepository->findByUid($contactId);
 
-            if (null !== $additionalContact && !$entity->getContacts()
+            if ($additionalContact instanceof Contact && !$entity->getContacts()
                     ->contains($additionalContact)) {
                 $entity->addContact($additionalContact);
             }

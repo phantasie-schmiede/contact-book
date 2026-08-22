@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -24,10 +25,11 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class EMailRepository extends Repository
 {
+    /** @return QueryResultInterface<int, EMail> */
     public function findByDemand(EMailDemand $demand): QueryResultInterface
     {
         $constraints = [];
-        $query = $this->createQuery();
+        $query       = $this->createQuery();
 
         if ('' !== $demand->getEMailAddress()) {
             $constraints[] = $query->equals('eMailAddress', $demand->getEMailAddress());

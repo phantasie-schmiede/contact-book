@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -10,6 +11,7 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Domain\Repository;
 
+use PSBits\ContactBook\Domain\Model\Document;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**

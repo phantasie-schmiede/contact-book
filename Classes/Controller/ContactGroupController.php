@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -11,7 +12,6 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Controller;
 
 use Doctrine\DBAL\Exception;
-use JetBrains\PhpStorm\NoReturn;
 use JsonException;
 use PSBits\ContactBook\Data\ExtensionInformation;
 use PSBits\ContactBook\Domain\Model\ContactGroup;
@@ -26,6 +26,7 @@ use PSBits\ContactBook\Service\VCardService;
 use PSBits\Foundation\Attribute\PluginAction;
 use PSBits\Foundation\Traits\ControllerCacheTrait;
 use PSBits\Foundation\Utility\FileUtility;
+use PSBits\FrontendUsers\Service\ValidationService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -56,9 +57,10 @@ class ContactGroupController extends AbstractAccessController
         protected readonly ContactService         $contactService,
         protected readonly ExtensionInformation   $extensionInformation,
         protected readonly PersistenceManager     $persistenceManager,
+        ValidationService                         $validationService,
         protected readonly VCardService           $vCardService,
     ) {
-        parent::__construct($contactBookRepository);
+        parent::__construct($contactBookRepository, $validationService);
     }
 
     /**
@@ -109,7 +111,6 @@ class ContactGroupController extends AbstractAccessController
         return $this->htmlResponse();
     }
 
-    #[NoReturn]
     #[PluginAction(uncached: true)]
     public function exportAction(ContactGroup $contactGroup, ?VCardVersion $version = null): void
     {

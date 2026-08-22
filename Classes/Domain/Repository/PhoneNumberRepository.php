@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -24,10 +25,11 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class PhoneNumberRepository extends Repository
 {
+    /** @return QueryResultInterface<int, PhoneNumber> */
     public function findByDemand(PhoneNumberDemand $demand): QueryResultInterface
     {
         $constraints = [];
-        $query = $this->createQuery();
+        $query       = $this->createQuery();
 
         if ('' !== $demand->getAreaCode()) {
             $constraints[] = $query->equals('areaCode', $demand->getAreaCode());

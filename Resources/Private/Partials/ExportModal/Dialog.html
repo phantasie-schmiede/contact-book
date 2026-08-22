@@ -2,44 +2,44 @@
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
-<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/exportModal.xlf" />
-
-<f:render
-    arguments="{
-        classes: 'modal-dialog-centered',
-        id: 'vcard-export-modal',
-        title: '{foundation:translate(id: \'exportModal:selectVCardVersion\')}'
-    }"
-    contentAs="body"
-    partial="Component/Modal/Dialog">
-    <f:render
-        arguments="{
-            contact: contact,
-            contactGroup: contactGroup
-        }"
-        section="ModalBody" />
-</f:render>
-
-<f:section name="ModalBody">
     <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/exportModal.xlf" />
 
-    <f:for
-        as="version"
-        each="{0: 'v2.1', 1: 'v3.0', 2: 'Apple', 3: 'v4.0'}"
-        iteration="iterator">
-        <f:link.action
-            action="export"
-            arguments="{contact: contact, contactGroup: contactGroup, version: version}"
-            class="btn btn-outline-secondary d-flex w-100{f:if(condition: '!{iterator.isLast}', then: ' mb-2')}"
-            controller="{f:if(condition: '{contactGroup}', then: 'ContactGroup', else: 'Contact')}"
-            title="{foundation:translate(id: 'exportModal:exportVCard')}">
-            {version}
-            <span class="ms-auto">
-                <core:icon
-                    identifier="templates-download"
-                    size="small" />
-            </span>
-        </f:link.action>
-    </f:for>
-</f:section>
+    <f:render
+        arguments="{
+            classes: 'modal-dialog-centered',
+            id: 'vcard-export-modal',
+            title: '{foundation:translate(id: \'exportModal:selectVCardVersion\')}'
+        }"
+        contentAs="body"
+        partial="Component/Modal/Dialog">
+        <f:render
+            arguments="{
+                contact: contact,
+                contactGroup: contactGroup
+            }"
+            section="ModalBody" />
+    </f:render>
+
+    <f:section name="ModalBody">
+        <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/exportModal.xlf" />
+
+        <f:for
+            as="version"
+            each="{0: 'v2.1', 1: 'v3.0', 2: 'Apple', 3: 'v4.0'}"
+            iteration="iterator">
+            <f:link.action
+                action="export"
+                arguments="{contact: contact, contactGroup: contactGroup, version: version}"
+                class="btn btn-outline-secondary d-flex w-100{f:if(condition: '!{iterator.isLast}', then: ' mb-2')}"
+                controller="{f:if(condition: '{contactGroup}', then: 'ContactGroup', else: 'Contact')}"
+                title="{foundation:translate(id: 'exportModal:exportVCard')}">
+                {version}
+                <span class="ms-auto">
+                    <core:icon
+                        identifier="templates-download"
+                        size="small" />
+                </span>
+            </f:link.action>
+        </f:for>
+    </f:section>
 </html>

@@ -1,431 +1,431 @@
 <html
     data-namespace-typo3-fluid="true"
-    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:contactBook="http://typo3.org/ns/PSBits/ContactBook/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
-<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
 
-<f:asset.script
-    identifier="copyContent"
-    src="EXT:templates/Resources/Public/JavaScript/copyContent.js"
-    type="module" />
+    <f:asset.script
+        identifier="copyContent"
+        src="EXT:templates/Resources/Public/JavaScript/copyContent.js"
+        type="module" />
 
-<div class="form-floating mb-3">
-    <f:form.select
-        class="form-select"
-        id="type"
-        name="contact[type]"
-        value="{contact.type.value}">
-        <f:for
-            as="label"
-            each="{contactTypes}"
-            key="value">
-            <f:form.select.option value="{value}">
-                <foundation:translate id="contact:type.{value}" />
-            </f:form.select.option>
-        </f:for>
-    </f:form.select>
-    <label for="type">
-        <foundation:translate id="contact:type" />
-    </label>
-</div>
+    <div class="form-floating mb-3">
+        <f:form.select
+            class="form-select"
+            id="type"
+            name="contact[type]"
+            value="{contact.type.value}">
+            <f:for
+                as="label"
+                each="{contactTypes}"
+                key="value">
+                <f:form.select.option value="{value}">
+                    <foundation:translate id="contact:type.{value}" />
+                </f:form.select.option>
+            </f:for>
+        </f:form.select>
+        <label for="type">
+            <foundation:translate id="contact:type" />
+        </label>
+    </div>
 
-<f:variable
-    name="tabAddressesContent"
-    value="{f:render(arguments: {contact: contact, generalTypes: generalTypes, recordType: 'Address', records: contact.addresses}, section: 'Accordion')}" />
-<f:variable
-    name="tabAddressesLabel"
-    value="{f:render(arguments: {identifier: 'geo-alt'}, section: 'Icon')}" />
-<f:variable
-    name="tabBankAccountsContent"
-    value="{f:render(arguments: {contact: contact}, section: 'TabBankAccountsContent')}" />
-<f:variable
-    name="tabBankAccountsLabel"
-    value="{f:render(arguments: {identifier: 'bank'}, section: 'Icon')}" />
-<f:variable
-    name="tabDocumentsContent"
-    value="{f:render(arguments: {contact: contact, recordType: 'Document', records: contact.documents}, section: 'Accordion')}" />
-<f:variable
-    name="tabDocumentsLabel"
-    value="{f:render(arguments: {identifier: 'file-earmark-text'}, section: 'Icon')}" />
-<f:variable
-    name="tabEMailsContent"
-    value="{f:render(arguments: {contact: contact, generalTypes: generalTypes, recordType: 'EMail', records: contact.eMails}, section: 'Accordion')}" />
-<f:variable
-    name="tabEMailsLabel"
-    value="{f:render(arguments: {identifier: 'envelope-at'}, section: 'Icon')}" />
-<f:variable
-    name="tabEventsContent"
-    value="{f:render(arguments: {contact: contact, eventTypes: eventTypes, recordType: 'Event', records: contact.events}, section: 'Accordion')}" />
-<f:variable
-    name="tabEventsLabel"
-    value="{f:render(arguments: {identifier: 'calendar-event'}, section: 'Icon')}" />
-<f:variable
-    name="tabNameContent"
-    value="{f:render(arguments: {contact: contact}, section: 'TabNameContent')}" />
-<f:variable
-    name="tabNameLabel"
-    value="{f:render(arguments: {identifier: 'tag'}, section: 'Icon')}" />
-<f:variable
-    name="tabOtherContent"
-    value="{f:render(arguments: {allContactGroups: allContactGroups, contact: contact}, section: 'TabOtherContent')}" />
-<f:variable
-    name="tabOtherLabel"
-    value="{f:render(arguments: {identifier: 'three-dots'}, section: 'Icon')}" />
-<f:variable
-    name="tabPhoneNumbersContent"
-    value="{f:render(arguments: {contact: contact, generalTypes: generalTypes, phoneNumberTypes: phoneNumberTypes, recordType: 'PhoneNumber', records: contact.phoneNumbers}, section: 'Accordion')}" />
-<f:variable
-    name="tabPhoneNumbersLabel"
-    value="{f:render(arguments: {identifier: 'telephone'}, section: 'Icon')}" />
-<f:variable
-    name="tabWebsitesContent"
-    value="{f:render(arguments: {contact: contact, generalTypes: generalTypes}, section: 'TabWebsitesContent')}" />
-<f:variable
-    name="tabWebsitesLabel"
-    value="{f:render(arguments: {identifier: 'globe'}, section: 'Icon')}" />
-<f:variable
-    name="tabWorkContent"
-    value="{f:render(arguments: {contact: contact, recordType: 'Job', records: contact.jobs}, section: 'Accordion')}" />
-<f:variable
-    name="tabWorkLabel"
-    value="{f:render(arguments: {identifier: 'briefcase'}, section: 'Icon')}" />
+    <f:variable
+        name="tabAddressesContent"
+        value="{f:render(arguments: {contact: contact, generalTypes: generalTypes, recordType: 'Address', records: contact.addresses}, section: 'Accordion')}" />
+    <f:variable
+        name="tabAddressesLabel"
+        value="{f:render(arguments: {identifier: 'geo-alt'}, section: 'Icon')}" />
+    <f:variable
+        name="tabBankAccountsContent"
+        value="{f:render(arguments: {contact: contact}, section: 'TabBankAccountsContent')}" />
+    <f:variable
+        name="tabBankAccountsLabel"
+        value="{f:render(arguments: {identifier: 'bank'}, section: 'Icon')}" />
+    <f:variable
+        name="tabDocumentsContent"
+        value="{f:render(arguments: {contact: contact, recordType: 'Document', records: contact.documents}, section: 'Accordion')}" />
+    <f:variable
+        name="tabDocumentsLabel"
+        value="{f:render(arguments: {identifier: 'file-earmark-text'}, section: 'Icon')}" />
+    <f:variable
+        name="tabEMailsContent"
+        value="{f:render(arguments: {contact: contact, generalTypes: generalTypes, recordType: 'EMail', records: contact.eMails}, section: 'Accordion')}" />
+    <f:variable
+        name="tabEMailsLabel"
+        value="{f:render(arguments: {identifier: 'envelope-at'}, section: 'Icon')}" />
+    <f:variable
+        name="tabEventsContent"
+        value="{f:render(arguments: {contact: contact, eventTypes: eventTypes, recordType: 'Event', records: contact.events}, section: 'Accordion')}" />
+    <f:variable
+        name="tabEventsLabel"
+        value="{f:render(arguments: {identifier: 'calendar-event'}, section: 'Icon')}" />
+    <f:variable
+        name="tabNameContent"
+        value="{f:render(arguments: {contact: contact}, section: 'TabNameContent')}" />
+    <f:variable
+        name="tabNameLabel"
+        value="{f:render(arguments: {identifier: 'tag'}, section: 'Icon')}" />
+    <f:variable
+        name="tabOtherContent"
+        value="{f:render(arguments: {allContactGroups: allContactGroups, contact: contact}, section: 'TabOtherContent')}" />
+    <f:variable
+        name="tabOtherLabel"
+        value="{f:render(arguments: {identifier: 'three-dots'}, section: 'Icon')}" />
+    <f:variable
+        name="tabPhoneNumbersContent"
+        value="{f:render(arguments: {contact: contact, generalTypes: generalTypes, phoneNumberTypes: phoneNumberTypes, recordType: 'PhoneNumber', records: contact.phoneNumbers}, section: 'Accordion')}" />
+    <f:variable
+        name="tabPhoneNumbersLabel"
+        value="{f:render(arguments: {identifier: 'telephone'}, section: 'Icon')}" />
+    <f:variable
+        name="tabWebsitesContent"
+        value="{f:render(arguments: {contact: contact, generalTypes: generalTypes}, section: 'TabWebsitesContent')}" />
+    <f:variable
+        name="tabWebsitesLabel"
+        value="{f:render(arguments: {identifier: 'globe'}, section: 'Icon')}" />
+    <f:variable
+        name="tabWorkContent"
+        value="{f:render(arguments: {contact: contact, recordType: 'Job', records: contact.jobs}, section: 'Accordion')}" />
+    <f:variable
+        name="tabWorkLabel"
+        value="{f:render(arguments: {identifier: 'briefcase'}, section: 'Icon')}" />
 
-<f:render
-    arguments="{
-        tabClass: 'px-1',
-        tabs: '{
-            0: {
-                content: tabNameContent,
-                id: \'name\',
-                label: tabNameLabel
-            },
-            1: {
-                content: tabWorkContent,
-                id: \'work\',
-                label: tabWorkLabel
-            },
-            2: {
-                content: tabAddressesContent,
-                id: \'addresses\',
-                label: tabAddressesLabel
-            },
-            3: {
-                content: tabPhoneNumbersContent,
-                id: \'phone-numbers\',
-                label: tabPhoneNumbersLabel
-            },
-            4: {
-                content: tabEMailsContent,
-                id: \'e-mails\',
-                label: tabEMailsLabel
-            },
-            5: {
-                content: tabWebsitesContent,
-                id: \'websites\',
-                label: tabWebsitesLabel
-            },
-            6: {
-                content: tabEventsContent,
-                id: \'events\',
-                label: tabEventsLabel
-            },
-            7: {
-                content: tabBankAccountsContent,
-                id: \'bankAccounts\',
-                label: tabBankAccountsLabel
-            },
-            8: {
-                content: tabDocumentsContent,
-                id: \'documents\',
-                label: tabDocumentsLabel
-            },
-            9: {
-                content: tabOtherContent,
-                id: \'other\',
-                label: tabOtherLabel
-            }
-        }',
-        vertical: true,
-    }"
-    partial="Component/Tabs" />
+    <f:render
+        arguments="{
+            tabClass: 'px-1',
+            tabs: '{
+                0: {
+                    content: tabNameContent,
+                    id: \'name\',
+                    label: tabNameLabel
+                },
+                1: {
+                    content: tabWorkContent,
+                    id: \'work\',
+                    label: tabWorkLabel
+                },
+                2: {
+                    content: tabAddressesContent,
+                    id: \'addresses\',
+                    label: tabAddressesLabel
+                },
+                3: {
+                    content: tabPhoneNumbersContent,
+                    id: \'phone-numbers\',
+                    label: tabPhoneNumbersLabel
+                },
+                4: {
+                    content: tabEMailsContent,
+                    id: \'e-mails\',
+                    label: tabEMailsLabel
+                },
+                5: {
+                    content: tabWebsitesContent,
+                    id: \'websites\',
+                    label: tabWebsitesLabel
+                },
+                6: {
+                    content: tabEventsContent,
+                    id: \'events\',
+                    label: tabEventsLabel
+                },
+                7: {
+                    content: tabBankAccountsContent,
+                    id: \'bankAccounts\',
+                    label: tabBankAccountsLabel
+                },
+                8: {
+                    content: tabDocumentsContent,
+                    id: \'documents\',
+                    label: tabDocumentsLabel
+                },
+                9: {
+                    content: tabOtherContent,
+                    id: \'other\',
+                    label: tabOtherLabel
+                }
+            }',
+            vertical: true,
+        }"
+        partial="Component/Tabs" />
 
-<f:section name="Accordion">
-    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/Contact/edit.xlf" />
+    <f:section name="Accordion">
+        <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/Contact/edit.xlf" />
 
-    <div
-        class="accordion accordion-flush mb-3"
-        id="accordion{recordType}">
-        <f:for
-            as="record"
-            each="{records}">
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button
-                        aria-controls="accordion{recordType}-{record.uid}"
-                        aria-expanded="false"
-                        class="accordion-button collapsed"
-                        data-bs-target="#accordion{recordType}-{record.uid}"
-                        data-bs-toggle="collapse"
-                        type="button">
-                        {record.compactValue}
-                    </button>
-                </h2>
-                <div
-                    class="accordion-collapse collapse"
-                    data-bs-parent="#accordion{recordType}"
-                    id="accordion{recordType}-{record.uid}">
-                    <div class="accordion-body">
-                        <f:render
-                            arguments="{_all}"
-                            partial="FormFields/{recordType}" />
+        <div
+            class="accordion accordion-flush mb-3"
+            id="accordion{recordType}">
+            <f:for
+                as="record"
+                each="{records}">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button
+                            aria-controls="accordion{recordType}-{record.uid}"
+                            aria-expanded="false"
+                            class="accordion-button collapsed"
+                            data-bs-target="#accordion{recordType}-{record.uid}"
+                            data-bs-toggle="collapse"
+                            type="button">
+                            {record.compactValue}
+                        </button>
+                    </h2>
+                    <div
+                        class="accordion-collapse collapse"
+                        data-bs-parent="#accordion{recordType}"
+                        id="accordion{recordType}-{record.uid}">
+                        <div class="accordion-body">
+                            <f:render
+                                arguments="{_all}"
+                                partial="FormFields/{recordType}" />
+                        </div>
                     </div>
                 </div>
-            </div>
-        </f:for>
-    </div>
-
-    <button
-        class="bg-secondary-subtle btn"
-        data-psbits-copy-mode="append"
-        data-psbits-copy-source="#template{recordType}"
-        data-psbits-copy-target="#accordion{recordType}"
-        type="button">
-        <foundation:translate id="edit:dyn.addNew{recordType}" />
-    </button>
-</f:section>
-
-<f:section name="Icon">
-    <core:icon
-        identifier="templates-{identifier}"
-        size="medium" />
-</f:section>
-
-<f:section name="TabBankAccountsContent">
-    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
-
-    <f:render
-        arguments="{contact: contact, recordType: 'BankAccount', records: contact.bankAccounts}"
-        section="Accordion" />
-
-    <div class="form-floating mt-3">
-        <f:form.textfield
-            class="form-control"
-            id="payPalId"
-            placeholder="{foundation:translate(id: 'contact:payPalId')}"
-            property="payPalId" />
-        <label
-            class="form-label"
-            for="payPalId">
-            <foundation:translate id="contact:payPalId" />
-        </label>
-    </div>
-</f:section>
-
-<f:section name="TabNameContent">
-    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
-
-    <div
-        class="form-floating mb-3{f:if(condition: 'company != {contact.type.value}', then: ' visually-hidden')}"
-        data-psbits-form-condition-field="#type"
-        data-psbits-form-condition-value="company">
-        <f:form.textfield
-            class="form-control"
-            id="companyName"
-            placeholder="{foundation:translate(id: 'contact:companyName')}"
-            property="companyName" />
-        <label
-            class="form-label"
-            for="companyName">
-            <foundation:translate id="contact:companyName" />
-        </label>
-    </div>
-
-    <fieldset
-        class="mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
-        data-psbits-form-condition-field="#type"
-        data-psbits-form-condition-mode="hide"
-        data-psbits-form-condition-value="company">
-        <div class="form-floating mb-3">
-            <f:form.textfield
-                class="form-control"
-                id="title"
-                placeholder="{foundation:translate(id: 'contact:title')}"
-                property="title" />
-            <label
-                class="form-label"
-                for="title">
-                <foundation:translate id="contact:title" />
-            </label>
+            </f:for>
         </div>
 
-        <div class="form-floating mb-3">
-            <f:form.textfield
-                class="form-control"
-                id="firstName"
-                placeholder="{foundation:translate(id: 'contact:firstName')}"
-                property="firstName" />
-            <label
-                class="form-label"
-                for="firstName">
-                <foundation:translate id="contact:firstName" />
-            </label>
-        </div>
+        <button
+            class="bg-secondary-subtle btn"
+            data-psbits-copy-mode="append"
+            data-psbits-copy-source="#template{recordType}"
+            data-psbits-copy-target="#accordion{recordType}"
+            type="button">
+            <foundation:translate id="edit:dyn.addNew{recordType}" />
+        </button>
+    </f:section>
 
-        <div class="form-floating mb-3">
-            <f:form.textfield
-                class="form-control"
-                id="middleNames"
-                placeholder="{foundation:translate(id: 'contact:middleNames')}"
-                property="middleNames" />
-            <label
-                class="form-label"
-                for="middleNames">
-                <foundation:translate id="contact:middleNames" />
-            </label>
-        </div>
+    <f:section name="Icon">
+        <core:icon
+            identifier="templates-{identifier}"
+            size="medium" />
+    </f:section>
 
-        <div class="form-floating mb-3">
-            <f:form.textfield
-                class="form-control"
-                id="lastName"
-                placeholder="{foundation:translate(id: 'contact:lastName')}"
-                property="lastName" />
-            <label
-                class="form-label"
-                for="lastName">
-                <foundation:translate id="contact:lastName" />
-            </label>
-        </div>
+    <f:section name="TabBankAccountsContent">
+        <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
 
-        <div class="form-floating mb-3">
-            <f:form.textfield
-                class="form-control"
-                id="birthName"
-                placeholder="{foundation:translate(id: 'contact:birthName')}"
-                property="birthName" />
-            <label
-                class="form-label"
-                for="birthName">
-                <foundation:translate id="contact:birthName" />
-            </label>
-        </div>
-
-        <div class="form-floating">
-            <f:form.textfield
-                class="form-control"
-                id="nickname"
-                placeholder="{foundation:translate(id: 'contact:nickname')}"
-                property="nickname" />
-            <label
-                class="form-label"
-                for="nickname">
-                <foundation:translate id="contact:nickname" />
-            </label>
-        </div>
-    </fieldset>
-</f:section>
-
-<f:section name="TabOtherContent">
-    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
-
-    <div class="form-floating mb-3">
-        <f:form.textarea
-            class="form-control psbits-auto-size"
-            id="notes"
-            placeholder="{foundation:translate(id: 'contact:notes')}"
-            property="notes"
-            value="{contact.notes}" />
-        <label
-            class="form-label"
-            for="notes">
-            <foundation:translate id="contact:notes" />
-        </label>
-    </div>
-
-    <div class="form-floating mb-3">
         <f:render
-            arguments="{
-                altValueField: 1,
-                id: 'contact-groups',
-                items: allContactGroups,
-                itemLabelField: 'name',
-                itemValueField: 'uid',
-                label: '{foundation:translate(id: \'contact:contactGroups\')}',
-                multiple: 1,
-                name: 'contactGroups',
-                preselection: contact.contactGroupUidsAsJson,
-            }"
-            partial="Component/InputAutocomplete" />
-    </div>
-</f:section>
+            arguments="{contact: contact, recordType: 'BankAccount', records: contact.bankAccounts}"
+            section="Accordion" />
 
-<f:section name="TabWebsitesContent">
-    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+        <div class="form-floating mt-3">
+            <f:form.textfield
+                class="form-control"
+                id="payPalId"
+                placeholder="{foundation:translate(id: 'contact:payPalId')}"
+                property="payPalId" />
+            <label
+                class="form-label"
+                for="payPalId">
+                <foundation:translate id="contact:payPalId" />
+            </label>
+        </div>
+    </f:section>
 
-    <f:render
-        arguments="{contact: contact, generalTypes: generalTypes, recordType: 'Website', records: contact.websites}"
-        section="Accordion" />
+    <f:section name="TabNameContent">
+        <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
 
-    <div class="form-floating mt-3">
-        <f:form.textfield
-            class="form-control"
-            id="facebookId"
-            placeholder="{foundation:translate(id: 'contact:facebookId')}"
-            property="facebookId" />
-        <label
-            class="form-label"
-            for="facebookId">
-            <foundation:translate id="contact:facebookId" />
-        </label>
-    </div>
-    <div class="form-floating mt-3">
-        <f:form.textfield
-            class="form-control"
-            id="instagramId"
-            placeholder="{foundation:translate(id: 'contact:instagramId')}"
-            property="instagramId" />
-        <label
-            class="form-label"
-            for="instagramId">
-            <foundation:translate id="contact:instagramId" />
-        </label>
-    </div>
-    <div class="form-floating mt-3">
-        <f:form.textfield
-            class="form-control"
-            id="linkedInId"
-            placeholder="{foundation:translate(id: 'contact:linkedInId')}"
-            property="linkedInId" />
-        <label
-            class="form-label"
-            for="linkedInId">
-            <foundation:translate id="contact:linkedInId" />
-        </label>
-    </div>
-    <div class="form-floating mt-3">
-        <f:form.textfield
-            class="form-control"
-            id="xingId"
-            placeholder="{foundation:translate(id: 'contact:xingId')}"
-            property="xingId" />
-        <label
-            class="form-label"
-            for="xingId">
-            <foundation:translate id="contact:xingId" />
-        </label>
-    </div>
-    <div class="form-floating mt-3">
-        <f:form.textfield
-            class="form-control"
-            id="youTubeId"
-            placeholder="{foundation:translate(id: 'contact:youTubeId')}"
-            property="youTubeId" />
-        <label
-            class="form-label"
-            for="youTubeId">
-            <foundation:translate id="contact:youTubeId" />
-        </label>
-    </div>
-</f:section>
+        <div
+            class="form-floating mb-3{f:if(condition: 'company != {contact.type.value}', then: ' visually-hidden')}"
+            data-psbits-form-condition-field="#type"
+            data-psbits-form-condition-value="company">
+            <f:form.textfield
+                class="form-control"
+                id="companyName"
+                placeholder="{foundation:translate(id: 'contact:companyName')}"
+                property="companyName" />
+            <label
+                class="form-label"
+                for="companyName">
+                <foundation:translate id="contact:companyName" />
+            </label>
+        </div>
+
+        <fieldset
+            class="mb-3{f:if(condition: 'company == {contact.type.value}', then: ' visually-hidden')}"
+            data-psbits-form-condition-field="#type"
+            data-psbits-form-condition-mode="hide"
+            data-psbits-form-condition-value="company">
+            <div class="form-floating mb-3">
+                <f:form.textfield
+                    class="form-control"
+                    id="title"
+                    placeholder="{foundation:translate(id: 'contact:title')}"
+                    property="title" />
+                <label
+                    class="form-label"
+                    for="title">
+                    <foundation:translate id="contact:title" />
+                </label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <f:form.textfield
+                    class="form-control"
+                    id="firstName"
+                    placeholder="{foundation:translate(id: 'contact:firstName')}"
+                    property="firstName" />
+                <label
+                    class="form-label"
+                    for="firstName">
+                    <foundation:translate id="contact:firstName" />
+                </label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <f:form.textfield
+                    class="form-control"
+                    id="middleNames"
+                    placeholder="{foundation:translate(id: 'contact:middleNames')}"
+                    property="middleNames" />
+                <label
+                    class="form-label"
+                    for="middleNames">
+                    <foundation:translate id="contact:middleNames" />
+                </label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <f:form.textfield
+                    class="form-control"
+                    id="lastName"
+                    placeholder="{foundation:translate(id: 'contact:lastName')}"
+                    property="lastName" />
+                <label
+                    class="form-label"
+                    for="lastName">
+                    <foundation:translate id="contact:lastName" />
+                </label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <f:form.textfield
+                    class="form-control"
+                    id="birthName"
+                    placeholder="{foundation:translate(id: 'contact:birthName')}"
+                    property="birthName" />
+                <label
+                    class="form-label"
+                    for="birthName">
+                    <foundation:translate id="contact:birthName" />
+                </label>
+            </div>
+
+            <div class="form-floating">
+                <f:form.textfield
+                    class="form-control"
+                    id="nickname"
+                    placeholder="{foundation:translate(id: 'contact:nickname')}"
+                    property="nickname" />
+                <label
+                    class="form-label"
+                    for="nickname">
+                    <foundation:translate id="contact:nickname" />
+                </label>
+            </div>
+        </fieldset>
+    </f:section>
+
+    <f:section name="TabOtherContent">
+        <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+
+        <div class="form-floating mb-3">
+            <f:form.textarea
+                class="form-control psbits-auto-size"
+                id="notes"
+                placeholder="{foundation:translate(id: 'contact:notes')}"
+                property="notes"
+                value="{contact.notes}" />
+            <label
+                class="form-label"
+                for="notes">
+                <foundation:translate id="contact:notes" />
+            </label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <f:render
+                arguments="{
+                    altValueField: 1,
+                    id: 'contact-groups',
+                    items: allContactGroups,
+                    itemLabelField: 'name',
+                    itemValueField: 'uid',
+                    label: '{foundation:translate(id: \'contact:contactGroups\')}',
+                    multiple: 1,
+                    name: 'contactGroups',
+                    preselection: contact.contactGroupUidsAsJson,
+                }"
+                partial="Component/InputAutocomplete" />
+        </div>
+    </f:section>
+
+    <f:section name="TabWebsitesContent">
+        <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+
+        <f:render
+            arguments="{contact: contact, generalTypes: generalTypes, recordType: 'Website', records: contact.websites}"
+            section="Accordion" />
+
+        <div class="form-floating mt-3">
+            <f:form.textfield
+                class="form-control"
+                id="facebookId"
+                placeholder="{foundation:translate(id: 'contact:facebookId')}"
+                property="facebookId" />
+            <label
+                class="form-label"
+                for="facebookId">
+                <foundation:translate id="contact:facebookId" />
+            </label>
+        </div>
+        <div class="form-floating mt-3">
+            <f:form.textfield
+                class="form-control"
+                id="instagramId"
+                placeholder="{foundation:translate(id: 'contact:instagramId')}"
+                property="instagramId" />
+            <label
+                class="form-label"
+                for="instagramId">
+                <foundation:translate id="contact:instagramId" />
+            </label>
+        </div>
+        <div class="form-floating mt-3">
+            <f:form.textfield
+                class="form-control"
+                id="linkedInId"
+                placeholder="{foundation:translate(id: 'contact:linkedInId')}"
+                property="linkedInId" />
+            <label
+                class="form-label"
+                for="linkedInId">
+                <foundation:translate id="contact:linkedInId" />
+            </label>
+        </div>
+        <div class="form-floating mt-3">
+            <f:form.textfield
+                class="form-control"
+                id="xingId"
+                placeholder="{foundation:translate(id: 'contact:xingId')}"
+                property="xingId" />
+            <label
+                class="form-label"
+                for="xingId">
+                <foundation:translate id="contact:xingId" />
+            </label>
+        </div>
+        <div class="form-floating mt-3">
+            <f:form.textfield
+                class="form-control"
+                id="youTubeId"
+                placeholder="{foundation:translate(id: 'contact:youTubeId')}"
+                property="youTubeId" />
+            <label
+                class="form-label"
+                for="youTubeId">
+                <foundation:translate id="contact:youTubeId" />
+            </label>
+        </div>
+    </f:section>
 </html>

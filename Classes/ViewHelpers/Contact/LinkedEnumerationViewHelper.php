@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -14,8 +15,8 @@ use JsonException;
 use PSBits\ContactBook\Utility\ContactUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -50,8 +51,9 @@ class LinkedEnumerationViewHelper extends AbstractViewHelper
      */
     public function render(): string
     {
-        $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
-        $this->uriBuilder->setRequest($request);
+        if ($this->renderingContext->hasAttribute(RequestInterface::class)) {
+            $this->uriBuilder->setRequest($this->renderingContext->getAttribute(RequestInterface::class));
+        }
 
         return ContactUtility::createEnumeration($this->arguments['contacts'], $this->uriBuilder);
     }

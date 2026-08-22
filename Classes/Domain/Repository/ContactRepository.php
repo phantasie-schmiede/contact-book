@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -26,12 +27,15 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 class ContactRepository extends Repository
 {
     /**
+     * @param ContactDemand $demand
+     *
+     * @return Contact[]|QueryResultInterface<int, Contact>
      * @throws InvalidQueryException
      */
     public function findByDemand(ContactDemand $demand): array|QueryResultInterface
     {
         $constraints = [];
-        $query = $this->createQuery();
+        $query       = $this->createQuery();
         $query->getQuerySettings()
             ->setRespectStoragePage($demand->getRespectStoragePage());
 

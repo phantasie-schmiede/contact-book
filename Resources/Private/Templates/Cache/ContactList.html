@@ -3,103 +3,103 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
-<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/contactList.xlf" />
+    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/contactList.xlf" />
 
-<f:if condition="{contacts}">
-    <f:then>
-        <ul class="list-group list-group-flush">
+    <f:if condition="{contacts}">
+        <f:then>
+            <ul class="list-group list-group-flush">
+                <f:for
+                    as="contact"
+                    each="{contacts}">
+                    <li
+                        class="d-flex js-contact-list-item list-group-item list-group-item-action p-0"
+                        data-search-terms="{contact.searchTerms}">
+                        <f:render
+                            arguments="{class: 'd-block flex-grow-1 p-2 text-decoration-none text-reset', contact: contact}"
+                            partial="Link/Contact" />
+
+                        <f:render
+                            arguments="{property: 'websites', records: contact.websites, uid: contact.uid}"
+                            section="Details" />
+                        <f:render
+                            arguments="{property: 'eMails', records: contact.eMails, uid: contact.uid}"
+                            section="Details" />
+                        <f:render
+                            arguments="{property: 'addresses', records: contact.addresses, uid: contact.uid}"
+                            section="Details" />
+                        <f:render
+                            arguments="{property: 'phoneNumbers', records: contact.phoneNumbers, uid: contact.uid}"
+                            section="Details" />
+                    </li>
+                </f:for>
+            </ul>
+
             <f:for
                 as="contact"
                 each="{contacts}">
-                <li
-                    class="d-flex js-contact-list-item list-group-item list-group-item-action p-0"
-                    data-search-terms="{contact.searchTerms}">
-                    <f:render
-                        arguments="{class: 'd-block flex-grow-1 p-2 text-decoration-none text-reset', contact: contact}"
-                        partial="Link/Contact" />
-
-                    <f:render
-                        arguments="{property: 'websites', records: contact.websites, uid: contact.uid}"
-                        section="Details" />
-                    <f:render
-                        arguments="{property: 'eMails', records: contact.eMails, uid: contact.uid}"
-                        section="Details" />
-                    <f:render
-                        arguments="{property: 'addresses', records: contact.addresses, uid: contact.uid}"
-                        section="Details" />
-                    <f:render
-                        arguments="{property: 'phoneNumbers', records: contact.phoneNumbers, uid: contact.uid}"
-                        section="Details" />
-                </li>
+                <f:render
+                    arguments="{property: 'websites', records: contact.websites, uid: contact.uid}"
+                    section="Modal" />
+                <f:render
+                    arguments="{property: 'eMails', records: contact.eMails, uid: contact.uid}"
+                    section="Modal" />
+                <f:render
+                    arguments="{property: 'addresses', records: contact.addresses, uid: contact.uid}"
+                    section="Modal" />
+                <f:render
+                    arguments="{property: 'phoneNumbers', records: contact.phoneNumbers, uid: contact.uid}"
+                    section="Modal" />
             </f:for>
-        </ul>
-
-        <f:for
-            as="contact"
-            each="{contacts}">
-            <f:render
-                arguments="{property: 'websites', records: contact.websites, uid: contact.uid}"
-                section="Modal" />
-            <f:render
-                arguments="{property: 'eMails', records: contact.eMails, uid: contact.uid}"
-                section="Modal" />
-            <f:render
-                arguments="{property: 'addresses', records: contact.addresses, uid: contact.uid}"
-                section="Modal" />
-            <f:render
-                arguments="{property: 'phoneNumbers', records: contact.phoneNumbers, uid: contact.uid}"
-                section="Modal" />
-        </f:for>
-    </f:then>
-    <f:else>
-        <foundation:translate id="contactList:noContacts" />
-    </f:else>
-</f:if>
-
-<f:section name="Details">
-    <f:if condition="{records}">
-        <f:then>
-            <f:if condition="1 == {records -> f:count()}">
-                <f:then>
-                    <a
-                        class="my-auto p-2"
-                        href="{records.0.link}"
-                        target="_blank">
-                        <core:icon
-                            identifier="templates-{records.0.actionIconIdentifier}"
-                            size="small" />
-                    </a>
-                </f:then>
-                <f:else>
-                    <f:render
-                        arguments="{
-                            classes: 'bg-transparent border-0 p-2',
-                            modalId: 'contact-{uid}-{property}-modal',
-                            text: '{templates:svgIcon(identifier: \'templates-{records.0.actionIconIdentifier}\')}'
-                        }"
-                        partial="Component/Modal/Toggle" />
-                </f:else>
-            </f:if>
         </f:then>
         <f:else>
-            <span style="width: 32px;"></span>
+            <foundation:translate id="contactList:noContacts" />
         </f:else>
     </f:if>
-</f:section>
 
-<f:section name="Modal">
-    <f:if condition="1 < {records -> f:count()}">
-        <f:render
-            arguments="{
-                classes: 'modal-dialog-centered',
-                id: 'contact-{uid}-{property}-modal'
-            }"
-            contentAs="body"
-            partial="Component/Modal/Dialog">
+    <f:section name="Details">
+        <f:if condition="{records}">
+            <f:then>
+                <f:if condition="1 == {records -> f:count()}">
+                    <f:then>
+                        <a
+                            class="my-auto p-2"
+                            href="{records.0.link}"
+                            target="_blank">
+                            <core:icon
+                                identifier="templates-{records.0.actionIconIdentifier}"
+                                size="small" />
+                        </a>
+                    </f:then>
+                    <f:else>
+                        <f:render
+                            arguments="{
+                                classes: 'bg-transparent border-0 p-2',
+                                modalId: 'contact-{uid}-{property}-modal',
+                                text: '{templates:svgIcon(identifier: \'templates-{records.0.actionIconIdentifier}\')}'
+                            }"
+                            partial="Component/Modal/Toggle" />
+                    </f:else>
+                </f:if>
+            </f:then>
+            <f:else>
+                <span style="width: 32px"></span>
+            </f:else>
+        </f:if>
+    </f:section>
+
+    <f:section name="Modal">
+        <f:if condition="1 < {records -> f:count()}">
             <f:render
-                arguments="{records: records}"
-                partial="LinkedRelations" />
-        </f:render>
-    </f:if>
-</f:section>
+                arguments="{
+                    classes: 'modal-dialog-centered',
+                    id: 'contact-{uid}-{property}-modal'
+                }"
+                contentAs="body"
+                partial="Component/Modal/Dialog">
+                <f:render
+                    arguments="{records: records}"
+                    partial="LinkedRelations" />
+            </f:render>
+        </f:if>
+    </f:section>
 </html>

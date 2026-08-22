@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -26,12 +27,13 @@ readonly class EventService
     }
 
     /**
+     * @return int[]
      * @throws Exception
      */
     public function getAllEventUidsForCurrentFrontendUser(): array
     {
         $contactBooks = $this->contactBookRepository->findByOwner();
-        $eventUids = [];
+        $eventUids    = [];
 
         foreach ($contactBooks as $contactBook) {
             foreach ($contactBook->getContacts() as $contact) {

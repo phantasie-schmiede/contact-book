@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -21,11 +22,13 @@ interface ContactRelationInterface
 {
     public function addContact(Contact $contact): self;
 
+    /** @return ObjectStorage<Contact> */
     public function getContacts(): ObjectStorage;
 
     public function removeAllContacts(): self;
 
     public function removeContact(Contact $contact): self;
 
+    /** @param ObjectStorage<Contact> $contacts */
     public function setContacts(ObjectStorage $contacts): self;
 }

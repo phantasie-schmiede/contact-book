@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -10,11 +11,11 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Domain\Repository;
 
-use Exception;
 use PSBits\ContactBook\Domain\Model\ContactBook;
 use PSBits\Foundation\Service\GlobalVariableService;
 use PSBits\FrontendUsers\Domain\Model\Typo3\FrontendUser;
 use PSBits\FrontendUsers\Service\GlobalVariableProviders\FrontendUserProvider;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
@@ -28,6 +29,9 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 class ContactBookRepository extends Repository
 {
     /**
+     * @param FrontendUser|null $frontendUser
+     *
+     * @return QueryResultInterface<int, ContactBook>
      * @throws Exception
      */
     public function findByOwner(?FrontendUser $frontendUser = null): QueryResultInterface
@@ -36,7 +40,7 @@ class ContactBookRepository extends Repository
             $frontendUser = GlobalVariableService::get(FrontendUserProvider::class . '.user');
         }
 
-        /** @var Query $query */
+        /** @var Query<ContactBook> $query */
         $query = $this->createQuery();
         $query->getQuerySettings()
             ->setRespectStoragePage(false);

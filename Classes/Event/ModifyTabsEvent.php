@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -12,6 +13,7 @@ namespace PSBits\ContactBook\Event;
 
 use PSBits\ContactBook\Domain\Model\Contact;
 use Psr\Http\Message\ServerRequestInterface;
+
 use function count;
 
 /**
@@ -23,13 +25,20 @@ class ModifyTabsEvent
 {
     protected Contact                $contact;
     protected ServerRequestInterface $request;
-    protected array                  $tabs = [];
 
+    /** @var array<int, array<string, mixed>> */
+    protected array $tabs = [];
+
+    /**
+     * @param Contact                          $contact
+     * @param ServerRequestInterface           $request
+     * @param array<int, array<string, mixed>> $tabs
+     */
     public function __construct(Contact $contact, ServerRequestInterface $request, array $tabs = [])
     {
         $this->contact = $contact;
         $this->request = $request;
-        $this->tabs = $tabs;
+        $this->tabs    = $tabs;
     }
 
     public function addTab(
@@ -65,11 +74,13 @@ class ModifyTabsEvent
         return $this->request;
     }
 
+    /** @return array<int, array<string, mixed>> */
     public function getTabs(): array
     {
         return $this->tabs;
     }
 
+    /** @param array<int, array<string, mixed>> $tabs */
     public function setTabs(array $tabs): static
     {
         $this->tabs = $tabs;

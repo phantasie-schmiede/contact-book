@@ -3,86 +3,86 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
-<foundation:translation.registerLanguageFile
-    file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
-    name="modal" />
-
-<div class="row">
-    <div class="col-12">
-        <h1 class="d-flex justify-content-between">
-            {contactGroup.name}
-            <f:render partial="ExportModal/Toggle" />
-        </h1>
-        <f:render
-            arguments="{
-                list: list,
-                pluginUid: pluginUid,
-                refreshUrl: '{f:uri.action(action: \'refreshList\', arguments: {contactGroup: contactGroup}, controller: \'ContactGroup\', pageType: 1749246027, pluginName: \'ContactListAjaxRefresh\')}',
-                totalCount: totalCount
-            }"
-            partial="SearchableContactList" />
-    </div>
-</div>
-
-<div class="d-flex mt-3">
-    <templates:component.button
-        additionalClasses="bg-secondary-subtle"
-        href="{f:uri.action(action: 'list')}"
-        iconIdentifier="templates-arrow-left"
-        label="{foundation:translate(id: 'backToList')}"
-        spinnerText="{foundation:translate(id: 'backToList')}"
-        tag="a" />
-    <templates:component.button
-        additionalClasses="bg-primary-subtle ms-2"
-        href="{f:uri.action(action: 'edit', arguments: '{contactGroup: contactGroup}')}"
-        iconIdentifier="templates-pencil"
-        label="{foundation:translate(id: 'edit')}"
-        spinnerText="{foundation:translate(id: 'edit')}"
-        tag="a" />
-
-    <f:render
-        arguments="{
-            classes: 'bg-danger btn ms-auto',
-            modalId: 'delete-contactGroup-{contactGroup.uid}-modal',
-            text: '{templates:svgIcon(identifier: \'templates-trash\')}',
-            title: '{foundation:translate(id: \'delete\')}'
-        }"
-        partial="Component/Modal/Toggle" />
-</div>
-
-<f:render
-    arguments="{
-        body: '{foundation:translate(arguments: {name: contactGroup.name}, id: \'modal:body\')}',
-        id: 'delete-contactGroup-{contactGroup.uid}-modal',
-        title: '{foundation:translate(id: \'modal:title\')}'
-    }"
-    contentAs="footer"
-    partial="Component/Modal/Dialog">
-    <f:render
-        arguments="{contactGroup: contactGroup}"
-        section="ModalFooter" />
-</f:render>
-
-<f:render
-    arguments="{contactGroup: contactGroup}"
-    partial="ExportModal/Dialog" />
-
-<f:section name="ModalFooter">
     <foundation:translation.registerLanguageFile
         file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
         name="modal" />
 
-    <button
-        class="bg-secondary-subtle btn"
-        data-bs-dismiss="modal"
-        type="button">
-        <foundation:translate id="modal:cancel" />
-    </button>
-    <f:link.action
-        action="delete"
+    <div class="row">
+        <div class="col-12">
+            <h1 class="d-flex justify-content-between">
+                {contactGroup.name}
+                <f:render partial="ExportModal/Toggle" />
+            </h1>
+            <f:render
+                arguments="{
+                    list: list,
+                    pluginUid: pluginUid,
+                    refreshUrl: '{f:uri.action(action: \'refreshList\', arguments: {contactGroup: contactGroup}, controller: \'ContactGroup\', pageType: 1749246027, pluginName: \'ContactListAjaxRefresh\')}',
+                    totalCount: totalCount
+                }"
+                partial="SearchableContactList" />
+        </div>
+    </div>
+
+    <div class="d-flex mt-3">
+        <templates:component.button
+            additionalClasses="bg-secondary-subtle"
+            href="{f:uri.action(action: 'list')}"
+            iconIdentifier="templates-arrow-left"
+            label="{foundation:translate(id: 'backToList')}"
+            spinnerText="{foundation:translate(id: 'backToList')}"
+            tag="a" />
+        <templates:component.button
+            additionalClasses="bg-primary-subtle ms-2"
+            href="{f:uri.action(action: 'edit', arguments: '{contactGroup: contactGroup}')}"
+            iconIdentifier="templates-pencil"
+            label="{foundation:translate(id: 'edit')}"
+            spinnerText="{foundation:translate(id: 'edit')}"
+            tag="a" />
+
+        <f:render
+            arguments="{
+                classes: 'bg-danger btn ms-auto',
+                modalId: 'delete-contactGroup-{contactGroup.uid}-modal',
+                text: '{templates:svgIcon(identifier: \'templates-trash\')}',
+                title: '{foundation:translate(id: \'delete\')}'
+            }"
+            partial="Component/Modal/Toggle" />
+    </div>
+
+    <f:render
+        arguments="{
+            body: '{foundation:translate(arguments: {name: contactGroup.name}, id: \'modal:body\')}',
+            id: 'delete-contactGroup-{contactGroup.uid}-modal',
+            title: '{foundation:translate(id: \'modal:title\')}'
+        }"
+        contentAs="footer"
+        partial="Component/Modal/Dialog">
+        <f:render
+            arguments="{contactGroup: contactGroup}"
+            section="ModalFooter" />
+    </f:render>
+
+    <f:render
         arguments="{contactGroup: contactGroup}"
-        class="btn btn-danger">
-        <foundation:translate id="modal:delete" />
-    </f:link.action>
-</f:section>
+        partial="ExportModal/Dialog" />
+
+    <f:section name="ModalFooter">
+        <foundation:translation.registerLanguageFile
+            file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
+            name="modal" />
+
+        <button
+            class="bg-secondary-subtle btn"
+            data-bs-dismiss="modal"
+            type="button">
+            <foundation:translate id="modal:cancel" />
+        </button>
+        <f:link.action
+            action="delete"
+            arguments="{contactGroup: contactGroup}"
+            class="btn btn-danger">
+            <foundation:translate id="modal:delete" />
+        </f:link.action>
+    </f:section>
 </html>

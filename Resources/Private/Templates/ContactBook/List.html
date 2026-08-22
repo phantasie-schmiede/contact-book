@@ -2,98 +2,94 @@
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
-<f:if condition="{contactBooks}">
-    <f:then>
-        <div class="g-3 mb-3 row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4">
-            <f:for
-                as="contactBook"
-                each="{contactBooks}">
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">
-                                {contactBook.name}
-                            </h5>
-                            <p class="card-text">
-                                <core:icon
-                                    identifier="templates-person-fill"
-                                    size="small" />
-                                <foundation:translate
-                                    arguments="{quantity: '{contactBook.contacts -> f:count()}'}"
-                                    id="contacts" />
-                                <br/>
-                                <core:icon
-                                    identifier="templates-people-fill"
-                                    size="small" />
-                                <foundation:translate
-                                    arguments="{quantity: '{contactBook.contactGroups -> f:count()}'}"
-                                    id="contactGroups" />
-                            </p>
-
-                            <f:if condition="{contactBook.notes}">
+    <f:if condition="{contactBooks}">
+        <f:then>
+            <div class="g-3 mb-3 row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4">
+                <f:for
+                    as="contactBook"
+                    each="{contactBooks}">
+                    <div class="col">
+                        <div class="card h-100">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">{contactBook.name}</h5>
                                 <p class="card-text">
-                                    {contactBook.notes -> f:format.nl2br()}
+                                    <core:icon
+                                        identifier="templates-person-fill"
+                                        size="small" />
+                                    <foundation:translate
+                                        arguments="{quantity: '{contactBook.contacts -> f:count()}'}"
+                                        id="contacts" />
+                                    <br />
+                                    <core:icon
+                                        identifier="templates-people-fill"
+                                        size="small" />
+                                    <foundation:translate
+                                        arguments="{quantity: '{contactBook.contactGroups -> f:count()}'}"
+                                        id="contactGroups" />
                                 </p>
-                            </f:if>
 
-                            <f:if condition="{contactBook.otherOwners}">
-                                <strong>
-                                    <foundation:translate id="sharedWith" />
-                                </strong>
-                                <ul class="list-unstyled mb-3">
-                                    <f:for
-                                        as="owner"
-                                        each="{contactBook.otherOwners}">
-                                        <li class="list-group-item p-0">
-                                            <core:icon
-                                                identifier="templates-person-circle"
-                                                size="small" />
-                                            {owner.fullName}
-                                        </li>
-                                    </f:for>
-                                </ul>
-                            </f:if>
+                                <f:if condition="{contactBook.notes}">
+                                    <p class="card-text">{contactBook.notes -> f:format.nl2br()}</p>
+                                </f:if>
 
-                            <f:if condition="{contactBook.active}">
-                                <span class="align-self-start badge bg-success mb-3">
-                                    <foundation:translate id="active" />
-                                </span>
-                            </f:if>
+                                <f:if condition="{contactBook.otherOwners}">
+                                    <strong>
+                                        <foundation:translate id="sharedWith" />
+                                    </strong>
+                                    <ul class="list-unstyled mb-3">
+                                        <f:for
+                                            as="owner"
+                                            each="{contactBook.otherOwners}">
+                                            <li class="list-group-item p-0">
+                                                <core:icon
+                                                    identifier="templates-person-circle"
+                                                    size="small" />
+                                                {owner.fullName}
+                                            </li>
+                                        </f:for>
+                                    </ul>
+                                </f:if>
 
-                            <f:if condition="!{contactBook.active}">
+                                <f:if condition="{contactBook.active}">
+                                    <span class="align-self-start badge bg-success mb-3">
+                                        <foundation:translate id="active" />
+                                    </span>
+                                </f:if>
+
+                                <f:if condition="!{contactBook.active}">
+                                    <f:link.action
+                                        action="select"
+                                        arguments="{contactBook: contactBook}"
+                                        class="bg-success-subtle btn mt-auto">
+                                        <foundation:translate id="select" />
+                                    </f:link.action>
+                                </f:if>
+
                                 <f:link.action
-                                    action="select"
+                                    action="edit"
                                     arguments="{contactBook: contactBook}"
-                                    class="bg-success-subtle btn mt-auto">
-                                    <foundation:translate id="select" />
+                                    class="bg-secondary-subtle btn {f:if(condition: contactBook.active, then: 'mt-auto', else: 'mt-2')}">
+                                    <foundation:translate id="edit" />
                                 </f:link.action>
-                            </f:if>
-
-                            <f:link.action
-                                action="edit"
-                                arguments="{contactBook: contactBook}"
-                                class="bg-secondary-subtle btn {f:if(condition: contactBook.active, then: 'mt-auto', else: 'mt-2')}">
-                                <foundation:translate id="edit" />
-                            </f:link.action>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </f:for>
-        </div>
-    </f:then>
-    <f:else>
-        <div class="alert alert-info mb-3">
-            <foundation:translate id="noContactBooks" />
-        </div>
-    </f:else>
-</f:if>
+                </f:for>
+            </div>
+        </f:then>
+        <f:else>
+            <div class="alert alert-info mb-3">
+                <foundation:translate id="noContactBooks" />
+            </div>
+        </f:else>
+    </f:if>
 
-<f:link.action
-    action="new"
-    class="bg-primary-subtle btn">
-    <core:icon
-        identifier="templates-plus-lg"
-        size="small" />
-    <foundation:translate id="createContactBook.{f:if(condition: contactBooks, then: 'additional', else: 'first')}" />
-</f:link.action>
+    <f:link.action
+        action="new"
+        class="bg-primary-subtle btn">
+        <core:icon
+            identifier="templates-plus-lg"
+            size="small" />
+        <foundation:translate id="createContactBook.{f:if(condition: contactBooks, then: 'additional', else: 'first')}" />
+    </f:link.action>
 </html>

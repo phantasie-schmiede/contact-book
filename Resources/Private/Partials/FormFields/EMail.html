@@ -1,97 +1,94 @@
 <html
     data-namespace-typo3-fluid="true"
-    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:contactBook="http://typo3.org/ns/PSBits/ContactBook/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
-<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/eMail.xlf" />
-<foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/Contact/edit.xlf" />
+    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/eMail.xlf" />
+    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/Contact/edit.xlf" />
 
-<f:if condition="{record}">
-    <f:then>
-        <f:variable
-            name="postponed"
-            value="" />
-        <f:variable
-            name="uid"
-            value="{record.uid}" />
-    </f:then>
-    <f:else>
-        <f:variable
-            name="defaultGeneralType"
-            value="{contactType.generalRelationType.value}" />
-        <f:variable
-            name="postponed"
-            value="1" />
-        <f:variable
-            name="uid"
-            value="###uid###" />
-    </f:else>
-</f:if>
+    <f:if condition="{record}">
+        <f:then>
+            <f:variable
+                name="postponed"
+                value="" />
+            <f:variable
+                name="uid"
+                value="{record.uid}" />
+        </f:then>
+        <f:else>
+            <f:variable
+                name="defaultGeneralType"
+                value="{contactType.generalRelationType.value}" />
+            <f:variable
+                name="postponed"
+                value="1" />
+            <f:variable
+                name="uid"
+                value="###uid###" />
+        </f:else>
+    </f:if>
 
-<div class="form-floating mb-3">
-    <f:form.select
-        class="form-select"
-        name="eMail[{uid}][type]"
-        value="{record.type.value -> f:or(alternative: defaultGeneralType)}">
-        <f:for
-            as="label"
-            each="{generalTypes}"
-            key="value">
-            <f:form.select.option value="{value}">
-                <foundation:translate id="eMail:type.{value}" />
-            </f:form.select.option>
-        </f:for>
-    </f:form.select>
-    <label
-        class="form-label">
-        <foundation:translate id="eMail:type" />
-    </label>
-</div>
-<div class="form-floating mb-3">
-    <f:form.textfield
-        class="form-control"
-        name="eMail[{uid}][eMailAddress]"
-        placeholder="{foundation:translate(id: 'eMail:eMailAddress')}"
-        type="email"
-        value="{record.eMailAddress}" />
-    <label
-        class="form-label">
-        <foundation:translate id="eMail:eMailAddress" />
-    </label>
-</div>
-<div class="form-floating mb-3">
-    <f:render
-        arguments="{
-            altValueField: 1,
-            filterOptions: {
-                itemSearchField: 'searchTerms',
-                preferText: 1,
-            },
-            id: 'e-mail-contacts-{uid}',
-            label: '{foundation:translate(id: \'edit:additionalContacts.eMail\')}',
-            listClass: 'js-autocomplete-contacts',
-            multiple: 1,
-            name: 'eMail[{uid}][contacts]',
-            postponed: postponed,
-            preselection: record.contactUidsAsJson
-        }"
-        partial="Component/InputAutocomplete" />
-</div>
-<div class="form-floating mb-3">
-    <f:form.textarea
-        class="form-control psbits-auto-size"
-        name="eMail[{uid}][notes]"
-        placeholder="{foundation:translate(id: 'eMail:notes')}"
-        value="{record.notes}" />
-    <label
-        class="form-label">
-        <foundation:translate id="eMail:notes" />
-    </label>
-</div>
-<div
-    class="btn btn-danger"
-    data-psbits-delete-mode="closest"
-    data-psbits-delete-target=".accordion-item">
-    <foundation:translate id="edit:remove" />
-</div>
+    <div class="form-floating mb-3">
+        <f:form.select
+            class="form-select"
+            name="eMail[{uid}][type]"
+            value="{record.type.value -> f:or(alternative: defaultGeneralType)}">
+            <f:for
+                as="label"
+                each="{generalTypes}"
+                key="value">
+                <f:form.select.option value="{value}">
+                    <foundation:translate id="eMail:type.{value}" />
+                </f:form.select.option>
+            </f:for>
+        </f:form.select>
+        <label class="form-label">
+            <foundation:translate id="eMail:type" />
+        </label>
+    </div>
+    <div class="form-floating mb-3">
+        <f:form.textfield
+            class="form-control"
+            name="eMail[{uid}][eMailAddress]"
+            placeholder="{foundation:translate(id: 'eMail:eMailAddress')}"
+            type="email"
+            value="{record.eMailAddress}" />
+        <label class="form-label">
+            <foundation:translate id="eMail:eMailAddress" />
+        </label>
+    </div>
+    <div class="form-floating mb-3">
+        <f:render
+            arguments="{
+                altValueField: 1,
+                filterOptions: {
+                    itemSearchField: 'searchTerms',
+                    preferText: 1,
+                },
+                id: 'e-mail-contacts-{uid}',
+                label: '{foundation:translate(id: \'edit:additionalContacts.eMail\')}',
+                listClass: 'js-autocomplete-contacts',
+                multiple: 1,
+                name: 'eMail[{uid}][contacts]',
+                postponed: postponed,
+                preselection: record.contactUidsAsJson
+            }"
+            partial="Component/InputAutocomplete" />
+    </div>
+    <div class="form-floating mb-3">
+        <f:form.textarea
+            class="form-control psbits-auto-size"
+            name="eMail[{uid}][notes]"
+            placeholder="{foundation:translate(id: 'eMail:notes')}"
+            value="{record.notes}" />
+        <label class="form-label">
+            <foundation:translate id="eMail:notes" />
+        </label>
+    </div>
+    <div
+        class="btn btn-danger"
+        data-psbits-delete-mode="closest"
+        data-psbits-delete-target=".accordion-item">
+        <foundation:translate id="edit:remove" />
+    </div>
 </html>

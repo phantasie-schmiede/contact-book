@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -103,9 +104,9 @@ class BankAccount extends AbstractContactRelatedEntity
             $short_name = $additionalBankInformation['short_name'];
 
             if (isset($additionalBankInformation['city']) && !str_contains(
-                    $short_name,
-                    $additionalBankInformation['city']
-                )) {
+                $short_name,
+                $additionalBankInformation['city']
+            )) {
                 $short_name .= ' (' . $additionalBankInformation['city'] . ')';
             }
 

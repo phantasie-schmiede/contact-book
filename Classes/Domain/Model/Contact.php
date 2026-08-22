@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -43,7 +44,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 #[Ctrl(label        : 'lastName', labelAlt: [
     'firstName',
     'companyName',
-],     labelAltForce: true, searchFields: [
+], labelAltForce: true, searchFields: [
     'companyName',
     'firstName',
     'lastName',
@@ -80,7 +81,6 @@ class Contact extends AbstractEntity
             '.' => '-',
         ],
     ];
-
     public const string URL_PREFIX_FACEBOOK  = 'https://www.facebook.com/';
     public const string URL_PREFIX_INSTAGRAM = 'https://www.instagram.com/';
     public const string URL_PREFIX_LINKEDIN  = 'https://www.linkedin.com/in/';
@@ -214,7 +214,7 @@ class Contact extends AbstractEntity
     #[Select(items   : [
         'Company' => 'company',
         'Person'  => 'person',
-    ],       minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM_MANDATORY_STRING)]
+    ], minItems: 1, prependItem: Select::EMPTY_DEFAULT_ITEM_MANDATORY_STRING)]
     protected ContactType $type = ContactType::Person;
 
     #[Column(position: 'after:slug', readOnly: true)]
@@ -308,7 +308,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
-    public function addJobs(Contact ...$jobs): static
+    public function addJobs(Job ...$jobs): static
     {
         foreach ($jobs as $job) {
             if (!$this->jobs->contains($job)) {
@@ -378,7 +378,8 @@ class Contact extends AbstractEntity
         }
 
         throw new InvalidArgumentException(
-            __CLASS__ . ': Bank account with UID ' . $uid . ' was not found!', 1758549763
+            __CLASS__ . ': Bank account with UID ' . $uid . ' was not found!',
+            1758549763
         );
     }
 
@@ -398,6 +399,7 @@ class Contact extends AbstractEntity
         return $this->birthName;
     }
 
+    /** @return ObjectStorage<SysCategory> */
     public function getCategories(): ObjectStorage
     {
         return $this->categories;
@@ -413,7 +415,7 @@ class Contact extends AbstractEntity
         return $this->contactBook;
     }
 
-    public function getContactGroupByUid(int $uid): EMail
+    public function getContactGroupByUid(int $uid): ContactGroup
     {
         foreach ($this->contactGroups as $contactGroup) {
             if ($uid === $contactGroup->getUid()) {
@@ -422,7 +424,8 @@ class Contact extends AbstractEntity
         }
 
         throw new InvalidArgumentException(
-            __CLASS__ . ': Contact group with UID ' . $uid . ' was not found!', 1728419001
+            __CLASS__ . ': Contact group with UID ' . $uid . ' was not found!',
+            1728419001
         );
     }
 
@@ -457,6 +460,7 @@ class Contact extends AbstractEntity
         return $this->documents;
     }
 
+    /** @return Document[] */
     public function getDocumentsWithoutImages(): array
     {
         $documents = [];
@@ -530,25 +534,25 @@ class Contact extends AbstractEntity
         usort(
             $events,
             static function(Event $eventA, Event $eventB) use ($birthYear) {
-            $dateA = $eventA->getDate(true);
-            $dateB = $eventB->getDate(true);
+                $dateA = $eventA->getDate(true);
+                $dateB = $eventB->getDate(true);
 
-            if (null !== $birthYear) {
-                if (null === $eventA->getYear()) {
-                    $eventA->setYear($birthYear + 1);
-                    $dateA = $eventA->getDate(true);
-                    $eventA->setYear(null);
+                if (null !== $birthYear) {
+                    if (null === $eventA->getYear()) {
+                        $eventA->setYear($birthYear + 1);
+                        $dateA = $eventA->getDate(true);
+                        $eventA->setYear(null);
+                    }
+
+                    if (null === $eventB->getYear()) {
+                        $eventB->setYear($birthYear + 1);
+                        $dateB = $eventB->getDate(true);
+                        $eventB->setYear(null);
+                    }
                 }
 
-                if (null === $eventB->getYear()) {
-                    $eventB->setYear($birthYear + 1);
-                    $dateB = $eventB->getDate(true);
-                    $eventB->setYear(null);
-                }
+                return $dateB <=> $dateA;
             }
-
-            return $dateB <=> $dateA;
-        }
         );
 
         return $events;
@@ -618,6 +622,7 @@ class Contact extends AbstractEntity
         return NameUtility::getGenitiveForm($name);
     }
 
+    /** @return Document[] */
     public function getImages(): array
     {
         $images = [];
@@ -760,7 +765,8 @@ class Contact extends AbstractEntity
         }
 
         throw new InvalidArgumentException(
-            __CLASS__ . ': Phone number with UID ' . $uid . ' was not found!', 1724164856
+            __CLASS__ . ': Phone number with UID ' . $uid . ' was not found!',
+            1724164856
         );
     }
 
@@ -896,15 +902,15 @@ class Contact extends AbstractEntity
         usort(
             $jobs,
             static fn(Job $a, Job $b) => strnatcasecmp(
-            NameUtility::getCompareString(
-                $a->getContact()
+                NameUtility::getCompareString(
+                    $a->getContact()
                     ->getListName()
-            ),
-            NameUtility::getCompareString(
-                $b->getContact()
+                ),
+                NameUtility::getCompareString(
+                    $b->getContact()
                     ->getListName()
+                )
             )
-        )
         );
 
         return $jobs;
@@ -936,6 +942,7 @@ class Contact extends AbstractEntity
         throw new InvalidArgumentException(__CLASS__ . ': Website with UID ' . $uid . ' was not found!', 1724164873);
     }
 
+    /** @return ObjectStorage<Website> */
     public function getWebsites(): ObjectStorage
     {
         return $this->websites;
@@ -990,17 +997,17 @@ class Contact extends AbstractEntity
 
     public function initializeObject(): void
     {
-        $this->addresses = new ObjectStorage();
-        $this->bankAccounts = new ObjectStorage();
-        $this->categories = new ObjectStorage();
+        $this->addresses     = new ObjectStorage();
+        $this->bankAccounts  = new ObjectStorage();
+        $this->categories    = new ObjectStorage();
         $this->contactGroups = new ObjectStorage();
-        $this->documents = new ObjectStorage();
-        $this->eMails = new ObjectStorage();
-        $this->employments = new ObjectStorage();
-        $this->events = new ObjectStorage();
-        $this->jobs = new ObjectStorage();
-        $this->phoneNumbers = new ObjectStorage();
-        $this->websites = new ObjectStorage();
+        $this->documents     = new ObjectStorage();
+        $this->eMails        = new ObjectStorage();
+        $this->employments   = new ObjectStorage();
+        $this->events        = new ObjectStorage();
+        $this->jobs          = new ObjectStorage();
+        $this->phoneNumbers  = new ObjectStorage();
+        $this->websites      = new ObjectStorage();
     }
 
     public function isAlive(): bool
@@ -1087,6 +1094,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<Address> $addresses */
     public function setAddresses(ObjectStorage $addresses): static
     {
         $this->addresses = $addresses;
@@ -1094,6 +1102,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<BankAccount> $bankAccounts */
     public function setBankAccounts(ObjectStorage $bankAccounts): static
     {
         $this->bankAccounts = $bankAccounts;
@@ -1108,6 +1117,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<SysCategory> $categories */
     public function setCategories(ObjectStorage $categories): static
     {
         $this->categories = $categories;
@@ -1129,6 +1139,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<ContactGroup> $contactGroups */
     public function setContactGroups(ObjectStorage $contactGroups): static
     {
         $this->contactGroups = $contactGroups;
@@ -1136,6 +1147,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<EMail> $eMails */
     public function setEMails(ObjectStorage $eMails): static
     {
         $this->eMails = $eMails;
@@ -1143,6 +1155,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<Job> $employments */
     public function setEmployments(ObjectStorage $employments): static
     {
         $this->employments = $employments;
@@ -1150,6 +1163,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<Event> $events */
     public function setEvents(ObjectStorage $events): static
     {
         $this->events = $events;
@@ -1178,6 +1192,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<Job> $jobs */
     public function setJobs(ObjectStorage $jobs): static
     {
         $this->jobs = $jobs;
@@ -1227,6 +1242,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<PhoneNumber> $phoneNumbers */
     public function setPhoneNumbers(ObjectStorage $phoneNumbers): static
     {
         $this->phoneNumbers = $phoneNumbers;
@@ -1280,6 +1296,7 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /** @param ObjectStorage<Website> $websites */
     public function setWebsites(ObjectStorage $websites): static
     {
         $this->websites = $websites;

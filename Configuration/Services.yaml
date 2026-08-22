@@ -6,8 +6,8 @@ services:
 
   cache.contacts_list:
     class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
-    factory: [ '@TYPO3\CMS\Core\Cache\CacheManager', 'getCache' ]
-    arguments: [ 'contacts_list' ]
+    factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
+    arguments: ['contacts_list']
 
   PSBits\ContactBook\:
     resource: '../Classes/*'

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -19,6 +20,7 @@ use PSBits\ContactBook\Domain\Model\Event;
 use PSBits\ContactBook\Domain\Repository\ContactBookRepository;
 use PSBits\ContactBook\Domain\Repository\EventRepository;
 use PSBits\Foundation\Attribute\PluginAction;
+use PSBits\FrontendUsers\Service\ValidationService;
 use PSBits\Templates\Utility\StringUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -26,6 +28,7 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
+
 use function count;
 
 /**
@@ -38,8 +41,9 @@ class EventWidgetController extends AbstractAccessController
     public function __construct(
         ContactBookRepository              $contactBookRepository,
         protected readonly EventRepository $eventRepository,
+        ValidationService                  $validationService,
     ) {
-        parent::__construct($contactBookRepository);
+        parent::__construct($contactBookRepository, $validationService);
     }
 
     /**
@@ -65,9 +69,9 @@ class EventWidgetController extends AbstractAccessController
 
         $allEvents = $this->eventRepository->findByDemand($eventDemand)
             ->toArray();
-        $today = (new DateTime())->format('m-d');
-        $currentYear = (int)date('Y');
-        $nextYear = $currentYear + 1;
+        $today           = (new DateTime())->format('m-d');
+        $currentYear     = (int)date('Y');
+        $nextYear        = $currentYear + 1;
         $allEventsSorted = [];
 
         /** @var Event $event */
@@ -101,8 +105,8 @@ class EventWidgetController extends AbstractAccessController
              * if set.
              */
             if ((isset($minDate) || isset($maxEvents)) && (!isset($minDate) || $date >= $minDate) && (!isset($maxEvents) || count(
-                        $events
-                    ) >= $maxEvents)) {
+                $events
+            ) >= $maxEvents)) {
                 break;
             }
 

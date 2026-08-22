@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -19,9 +20,11 @@ use PSBits\ContactBook\Service\ContactService;
 use PSBits\Foundation\Attribute\PluginAction;
 use PSBits\Foundation\Utility\Configuration\FilePathUtility;
 use PSBits\Foundation\Utility\LocalizationUtility;
+use PSBits\FrontendUsers\Service\ValidationService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
+use ReflectionException;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 
@@ -38,8 +41,9 @@ class ContactGroupWidgetController extends AbstractAccessController
         protected readonly ContactGroupRepository $contactGroupRepository,
         protected readonly ContactService         $contactService,
         protected readonly ExtensionInformation   $extensionInformation,
+        ValidationService                         $validationService,
     ) {
-        parent::__construct($contactBookRepository);
+        parent::__construct($contactBookRepository, $validationService);
     }
 
     /**
@@ -47,14 +51,15 @@ class ContactGroupWidgetController extends AbstractAccessController
      * @throws ContainerExceptionInterface
      * @throws JsonException
      * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     #[PluginAction]
     public function displayAction(): ResponseInterface
     {
-        $contactGroup = $this->contactGroupRepository->findByUid($this->settings['contactGroup']);
+        $contactGroup     = $this->contactGroupRepository->findByUid($this->settings['contactGroup']);
         $languageFilePath = FilePathUtility::getLanguageFilePath(
-                $this->extensionInformation
-            ) . 'Frontend/ContactGroupWidget/display.xlf:error.';
+            $this->extensionInformation
+        ) . 'Frontend/ContactGroupWidget/display.xlf:error.';
 
         if (null === $contactGroup) {
             $this->addFlashMessage(

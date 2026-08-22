@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -24,10 +25,11 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class WebsiteRepository extends Repository
 {
+    /** @return QueryResultInterface<int, Website> */
     public function findByDemand(WebsiteDemand $demand): QueryResultInterface
     {
         $constraints = [];
-        $query = $this->createQuery();
+        $query       = $this->createQuery();
 
         if ('' !== $demand->getUrl()) {
             $constraints[] = $query->equals('url', $demand->getUrl());
