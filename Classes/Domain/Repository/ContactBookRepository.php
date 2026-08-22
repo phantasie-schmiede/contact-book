@@ -28,6 +28,18 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class ContactBookRepository extends Repository
 {
+    public function findByUidWithoutStoragePage(int $uid): ?ContactBook
+    {
+        /** @var Query<ContactBook> $query */
+        $query = $this->createQuery();
+        $query->getQuerySettings()
+            ->setRespectStoragePage(false);
+        $query->matching($query->equals('uid', $uid));
+
+        return $query->execute()
+            ->getFirst();
+    }
+
     /**
      * @param FrontendUser|null $frontendUser
      *
