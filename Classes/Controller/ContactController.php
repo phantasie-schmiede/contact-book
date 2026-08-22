@@ -180,7 +180,7 @@ class ContactController extends AbstractAccessController
 
         if ($contact instanceof Contact) {
             $fileName = $contact->getFullName();
-            $vCards[] = $this->vCardService->getVCard($contact, $version ?? VCardVersion::V4_0);
+            $vCards[] = $this->vCardService->getVCard($contact, $version ?? VCardVersion::V3_0);
         } else {
             $contactDemand = new ContactDemand();
             $contactDemand->setOnlyExportRelevantInformation(true);
@@ -190,7 +190,7 @@ class ContactController extends AbstractAccessController
             );
 
             foreach ($allContacts as $singleContact) {
-                $vCards[] = $this->vCardService->getVCard($singleContact, $version ?? VCardVersion::V4_0);
+                $vCards[] = $this->vCardService->getVCard($singleContact, $version ?? VCardVersion::V3_0);
             }
         }
 

@@ -117,7 +117,7 @@ class ContactGroupController extends AbstractAccessController
         $vCards = [];
 
         foreach ($contactGroup->getContacts() as $contact) {
-            $vCards[] = $this->vCardService->getVCard($contact, $version ?? VCardVersion::V4_0);
+            $vCards[] = $this->vCardService->getVCard($contact, $version ?? VCardVersion::V3_0);
         }
 
         FileUtility::initiateDownload(
