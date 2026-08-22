@@ -15,7 +15,6 @@ use PSBits\ContactBook\Domain\Demand\ContactDemand;
 use PSBits\ContactBook\Domain\Model\Contact;
 use PSBits\Foundation\Utility\QueryUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
-use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
@@ -29,30 +28,22 @@ class ContactRepository extends Repository
 {
     public function findByContactBookAndUuid(int $contactBookUid, string $uuid): ?Contact
     {
-        /** @var Query<Contact> $query */
-        $query = $this->createQuery();
-        $query->getQuerySettings()
-            ->setRespectStoragePage(false);
-        $query->matching(
-            $query->logicalAnd(
-                $query->equals('contactBook', $contactBookUid),
-                $query->equals('uuid', $uuid)
-            )
-        );
+        $demand = (new ContactDemand())
+            ->setContactBookUid($contactBookUid)
+            ->setRespectStoragePage(false)
+            ->setUuid($uuid);
 
-        return $query->execute()
+        return $this->findByDemand($demand)
             ->getFirst();
     }
 
     public function findByUuid(string $uuid): ?Contact
     {
-        /** @var Query<Contact> $query */
-        $query = $this->createQuery();
-        $query->getQuerySettings()
-            ->setRespectStoragePage(false);
-        $query->matching($query->equals('uuid', $uuid));
+        $demand = (new ContactDemand())
+            ->setRespectStoragePage(false)
+            ->setUuid($uuid);
 
-        return $query->execute()
+        return $this->findByDemand($demand)
             ->getFirst();
     }
 
@@ -111,6 +102,10 @@ class ContactRepository extends Repository
             }
 
             $constraints[] = $query->logicalOr(...$orConstraints);
+        }
+
+        if ('' !== $demand->getUuid()) {
+            $constraints[] = $query->equals('uuid', $demand->getUuid());
         }
 
         QueryUtility::applyConstraints($constraints, $query);

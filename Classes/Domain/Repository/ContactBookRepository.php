@@ -11,12 +11,12 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Domain\Repository;
 
+use PSBits\ContactBook\Domain\Demand\ContactBookDemand;
 use PSBits\ContactBook\Domain\Model\ContactBook;
 use PSBits\Foundation\Service\GlobalVariableService;
+use PSBits\Foundation\Utility\QueryUtility;
 use PSBits\FrontendUsers\Domain\Model\Typo3\FrontendUser;
 use PSBits\FrontendUsers\Service\GlobalVariableProviders\FrontendUserProvider;
-use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
-use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
@@ -30,13 +30,11 @@ class ContactBookRepository extends Repository
 {
     public function findByUidWithoutStoragePage(int $uid): ?ContactBook
     {
-        /** @var Query<ContactBook> $query */
-        $query = $this->createQuery();
-        $query->getQuerySettings()
-            ->setRespectStoragePage(false);
-        $query->matching($query->equals('uid', $uid));
+        $demand = (new ContactBookDemand())
+            ->setRespectStoragePage(false)
+            ->setUid($uid);
 
-        return $query->execute()
+        return $this->findByDemand($demand)
             ->getFirst();
     }
 
@@ -44,7 +42,6 @@ class ContactBookRepository extends Repository
      * @param FrontendUser|null $frontendUser
      *
      * @return QueryResultInterface<int, ContactBook>
-     * @throws Exception
      */
     public function findByOwner(?FrontendUser $frontendUser = null): QueryResultInterface
     {
@@ -52,11 +49,30 @@ class ContactBookRepository extends Repository
             $frontendUser = GlobalVariableService::get(FrontendUserProvider::class . '.user');
         }
 
-        /** @var Query<ContactBook> $query */
+        $demand = (new ContactBookDemand())
+            ->setOwner($frontendUser)
+            ->setRespectStoragePage(false);
+
+        return $this->findByDemand($demand);
+    }
+
+    /** @return QueryResultInterface<int, ContactBook> */
+    public function findByDemand(ContactBookDemand $demand): QueryResultInterface
+    {
+        $constraints = [];
         $query = $this->createQuery();
         $query->getQuerySettings()
-            ->setRespectStoragePage(false);
-        $query->matching($query->contains('owners', $frontendUser));
+            ->setRespectStoragePage($demand->getRespectStoragePage());
+
+        if ($demand->getOwner() instanceof FrontendUser) {
+            $constraints[] = $query->contains('owners', $demand->getOwner());
+        }
+
+        if (0 < $demand->getUid()) {
+            $constraints[] = $query->equals('uid', $demand->getUid());
+        }
+
+        QueryUtility::applyConstraints($constraints, $query);
 
         return $query->execute();
     }
