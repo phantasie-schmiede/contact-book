@@ -13,6 +13,10 @@ namespace PSBits\ContactBook\CardDav;
 
 use DOMDocument;
 use DOMXPath;
+use PSBits\ContactBook\CardDav\Dto\AuthenticationResult;
+use PSBits\ContactBook\CardDav\Dto\CardDavResource;
+use PSBits\ContactBook\CardDav\Dto\CardDavResourceType;
+use PSBits\ContactBook\CardDav\Dto\SyncTokenState;
 use PSBits\ContactBook\Domain\Model\Contact;
 use PSBits\ContactBook\Domain\Model\ContactBook;
 use PSBits\ContactBook\Domain\Repository\ContactBookRepository;
@@ -20,6 +24,7 @@ use PSBits\ContactBook\Domain\Repository\ContactRepository;
 use PSBits\ContactBook\Service\Enum\VCardVersion;
 use PSBits\ContactBook\Service\ImportService;
 use PSBits\ContactBook\Service\VCardService;
+use PSBits\Foundation\Utility\Xml\XmlUtility;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -76,7 +81,7 @@ readonly class CardDavHandler
     ];
 
     private const string DAV_HEADER = '1, 2, addressbook, extended-mkcol, sync-collection';
-    private const string MULTISTATUS_XML_NAMESPACES = 'xmlns:d="DAV:" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cs="http://calendarserver.org/ns/"';
+    private const string HTTP_STATUS_OK = 'HTTP/1.1 200 OK';
 
     public function __construct(
         private ConnectionPool $connectionPool,
@@ -124,14 +129,19 @@ readonly class CardDavHandler
             ]);
         }
 
-        $authResult = $this->authenticate($request);
+        $authenticationResult = $this->authenticate($request);
 
-        if (null !== $authResult['response']) {
-            return $authResult['response'];
+        if ($authenticationResult->getResponse() instanceof ResponseInterface) {
+            return $authenticationResult->getResponse();
         }
 
-        $username = $authResult['username'];
-        $frontendUser = $authResult['user'];
+        $username = $authenticationResult->getUsername();
+        $frontendUser = $authenticationResult->getUser();
+
+        if (!is_array($frontendUser) || !isset($frontendUser['uid'])) {
+            return $this->textResponse(401, 'Invalid credentials.');
+        }
+
         $contactBookUid = $this->resolveOwnedContactBookUid((int)$frontendUser['uid']);
 
         if (null === $contactBookUid) {
@@ -157,10 +167,7 @@ readonly class CardDavHandler
         return $this->handleDelete($request, $path, $username, $contactBookUid);
     }
 
-    /**
-     * @return array{response: ResponseInterface|null, username: string, user: array<string, mixed>|null}
-     */
-    private function authenticate(ServerRequestInterface $request): array
+    private function authenticate(ServerRequestInterface $request): AuthenticationResult
     {
         $authorizationHeader = $request->getHeaderLine('Authorization');
 
@@ -204,22 +211,23 @@ readonly class CardDavHandler
             return $this->deniedAuthenticationResult('Invalid credentials.');
         }
 
-        return [
-            'response' => null,
-            'username' => $username,
-            'user'     => $user,
-        ];
+        return new AuthenticationResult(
+            response: null,
+            username: $username,
+            user: $user,
+        );
     }
 
     private function handleDelete(ServerRequestInterface $request, string $path, string $username, int $contactBookUid): ResponseInterface
     {
         $resource = $this->parseResource($path, $username);
 
-        if (!is_array($resource) || 'card' !== $resource['type']) {
+        if (!$resource instanceof CardDavResource || CardDavResourceType::Card !== $resource->getType()) {
             return $this->textResponse(404, 'Resource not found.');
         }
 
-        $contact = $this->contactRepository->findByContactBookAndUuid($contactBookUid, $resource['uuid']);
+        $contactUuid = (string)$resource->getUuid();
+        $contact = $this->contactRepository->findByContactBookAndUuid($contactBookUid, $contactUuid);
 
         if (!$contact instanceof Contact) {
             return $this->textResponse(404, 'Contact not found.');
@@ -228,7 +236,7 @@ readonly class CardDavHandler
         $ifMatch = trim($request->getHeaderLine('If-Match'));
 
         if ('' !== $ifMatch && '*' !== $ifMatch) {
-            $currentEtag = $this->getContactEtag($contactBookUid, $resource['uuid']);
+            $currentEtag = $this->getContactEtag($contactBookUid, $contactUuid);
 
             if ($ifMatch !== $currentEtag) {
                 return $this->textResponse(412, 'ETag mismatch.');
@@ -236,7 +244,7 @@ readonly class CardDavHandler
         }
 
         try {
-            $this->insertTombstone($contactBookUid, $resource['uuid']);
+            $this->insertTombstone($contactBookUid, $contactUuid);
             $this->contactRepository->remove($contact);
             $this->persistenceManager->persistAll();
         } catch (IllegalObjectTypeException|UnknownObjectException $exception) {
@@ -254,36 +262,36 @@ readonly class CardDavHandler
     ): ResponseInterface {
         $resource = $this->parseResource($path, $username);
 
-        if (!is_array($resource)) {
+        if (!$resource instanceof CardDavResource) {
             return $this->textResponse(404, 'Resource not found.');
         }
 
-        if ('home' === $resource['type'] || 'root' === $resource['type'] || 'principal' === $resource['type']) {
+        if (in_array($resource->getType(), [CardDavResourceType::Home, CardDavResourceType::Principal, CardDavResourceType::Root], true)) {
             return $this->textResponse(200, 'CardDAV endpoint available.');
         }
 
-        if ('collection' === $resource['type']) {
+        if (CardDavResourceType::Collection === $resource->getType()) {
             $href = $this->collectionHref($username);
 
             return $this->multistatusResponse([
                 $this->buildPropResponse(
                     $href,
                     [
-                        '<d:displayname>Contacts</d:displayname>',
-                        '<cs:getctag>' . $this->xmlEscape($this->getCollectionToken($contactBookUid)) . '</cs:getctag>',
+                        'cs:getctag' => $this->xmlEscape($this->getCollectionToken($contactBookUid)),
+                        'd:displayname' => 'Contacts',
                     ]
                 ),
             ]);
         }
 
-        $contact = $this->contactRepository->findByContactBookAndUuid($contactBookUid, $resource['uuid']);
+        $contact = $this->contactRepository->findByContactBookAndUuid($contactBookUid, (string)$resource->getUuid());
 
         if (!$contact instanceof Contact) {
             return $this->textResponse(404, 'Contact not found.');
         }
 
         $vCard = $this->vCardService->getVCard($contact, $this->detectVCardVersion($request->getHeaderLine('User-Agent')));
-        $etag = $this->getContactEtag($contactBookUid, $resource['uuid']);
+        $etag = $this->getContactEtag($contactBookUid, (string)$resource->getUuid());
 
         return $this->bodyResponse(200, 'text/vcard; charset=utf-8', $vCard, [
             'ETag' => $etag,
@@ -294,19 +302,23 @@ readonly class CardDavHandler
     {
         $resource = $this->parseResource($path, $username);
 
-        if (!is_array($resource)) {
+        if (!$resource instanceof CardDavResource) {
             return $this->textResponse(404, 'Resource not found.');
         }
 
         $depth = (int)($request->getHeaderLine('Depth') ?: '0');
         $responses = [];
 
-        if ('root' === $resource['type']) {
+        if (CardDavResourceType::Root === $resource->getType()) {
             $responses[] = $this->buildPropResponse(
                 '/carddav/',
                 [
-                    '<d:resourcetype><d:collection/></d:resourcetype>',
-                    '<d:current-user-principal><d:href>' . $this->xmlEscape($this->principalHref($username)) . '</d:href></d:current-user-principal>',
+                    'd:current-user-principal' => [
+                        'd:href' => $this->xmlNode($this->xmlEscape($this->principalHref($username)), 0),
+                    ],
+                    'd:resourcetype' => [
+                        'd:collection' => $this->xmlEmptyNode(0),
+                    ],
                 ]
             );
 
@@ -314,25 +326,35 @@ readonly class CardDavHandler
                 $responses[] = $this->buildPropResponse(
                     $this->principalHref($username),
                     [
-                        '<d:resourcetype><d:principal/></d:resourcetype>',
-                        '<card:addressbook-home-set><d:href>' . $this->xmlEscape($this->addressBookHomeHref($username)) . '</d:href></card:addressbook-home-set>',
+                        'card:addressbook-home-set' => [
+                            'd:href' => $this->xmlNode($this->xmlEscape($this->addressBookHomeHref($username)), 0),
+                        ],
+                        'd:resourcetype' => [
+                            'd:principal' => $this->xmlEmptyNode(0),
+                        ],
                     ]
                 );
             }
-        } elseif ('principal' === $resource['type']) {
+        } elseif (CardDavResourceType::Principal === $resource->getType()) {
             $responses[] = $this->buildPropResponse(
                 $this->principalHref($username),
                 [
-                    '<d:displayname>' . $this->xmlEscape($username) . '</d:displayname>',
-                    '<d:resourcetype><d:principal/></d:resourcetype>',
-                    '<card:addressbook-home-set><d:href>' . $this->xmlEscape($this->addressBookHomeHref($username)) . '</d:href></card:addressbook-home-set>',
+                    'card:addressbook-home-set' => [
+                        'd:href' => $this->xmlNode($this->xmlEscape($this->addressBookHomeHref($username)), 0),
+                    ],
+                    'd:displayname' => $this->xmlEscape($username),
+                    'd:resourcetype' => [
+                        'd:principal' => $this->xmlEmptyNode(0),
+                    ],
                 ]
             );
-        } elseif ('home' === $resource['type']) {
+        } elseif (CardDavResourceType::Home === $resource->getType()) {
             $responses[] = $this->buildPropResponse(
                 $this->addressBookHomeHref($username),
                 [
-                    '<d:resourcetype><d:collection/></d:resourcetype>',
+                    'd:resourcetype' => [
+                        'd:collection' => $this->xmlEmptyNode(0),
+                    ],
                 ]
             );
 
@@ -340,20 +362,35 @@ readonly class CardDavHandler
                 $responses[] = $this->buildPropResponse(
                     $this->collectionHref($username),
                     [
-                        '<d:displayname>Contacts</d:displayname>',
-                        '<d:resourcetype><d:collection/><card:addressbook/></d:resourcetype>',
+                        'd:displayname' => 'Contacts',
+                        'd:resourcetype' => [
+                            'card:addressbook' => $this->xmlEmptyNode(0),
+                            'd:collection' => $this->xmlEmptyNode(1),
+                        ],
                     ]
                 );
             }
-        } elseif ('collection' === $resource['type']) {
+        } elseif (CardDavResourceType::Collection === $resource->getType()) {
             $responses[] = $this->buildPropResponse(
                 $this->collectionHref($username),
                 [
-                    '<d:displayname>Contacts</d:displayname>',
-                    '<d:resourcetype><d:collection/><card:addressbook/></d:resourcetype>',
-                    '<cs:getctag>' . $this->xmlEscape($this->getCollectionToken($contactBookUid)) . '</cs:getctag>',
-                    '<d:sync-token>' . $this->xmlEscape($this->getCollectionToken($contactBookUid)) . '</d:sync-token>',
-                    '<card:supported-address-data><card:address-data-type content-type="text/vcard" version="3.0"/></card:supported-address-data>',
+                    'card:supported-address-data' => [
+                        'card:address-data-type' => [
+                            XmlUtility::SPECIAL_ARRAY_KEYS['ATTRIBUTES'] => [
+                                'content-type' => 'text/vcard',
+                                'version' => '3.0',
+                            ],
+                            XmlUtility::SPECIAL_ARRAY_KEYS['NODE_VALUE'] => '',
+                            XmlUtility::SPECIAL_ARRAY_KEYS['POSITION'] => 0,
+                        ],
+                    ],
+                    'cs:getctag' => $this->xmlEscape($this->getCollectionToken($contactBookUid)),
+                    'd:displayname' => 'Contacts',
+                    'd:resourcetype' => [
+                        'card:addressbook' => $this->xmlEmptyNode(0),
+                        'd:collection' => $this->xmlEmptyNode(1),
+                    ],
+                    'd:sync-token' => $this->xmlEscape($this->getCollectionToken($contactBookUid)),
                 ]
             );
 
@@ -363,20 +400,20 @@ readonly class CardDavHandler
                     $responses[] = $this->buildPropResponse(
                         $this->cardHref($username, $uuid),
                         [
-                            '<d:getcontenttype>text/vcard; charset=utf-8</d:getcontenttype>',
-                            '<d:getetag>' . $this->xmlEscape($this->getContactEtag($contactBookUid, $uuid, (int)$contactRow['tstamp'])) . '</d:getetag>',
-                            '<d:resourcetype/>',
+                            'd:getcontenttype' => 'text/vcard; charset=utf-8',
+                            'd:getetag' => $this->xmlEscape($this->getContactEtag($contactBookUid, $uuid, (int)$contactRow['tstamp'])),
+                            'd:resourcetype' => $this->xmlEmptyNode(0),
                         ]
                     );
                 }
             }
         } else {
             $responses[] = $this->buildPropResponse(
-                $this->cardHref($username, $resource['uuid']),
+                $this->cardHref($username, (string)$resource->getUuid()),
                 [
-                    '<d:getcontenttype>text/vcard; charset=utf-8</d:getcontenttype>',
-                    '<d:getetag>' . $this->xmlEscape($this->getContactEtag($contactBookUid, $resource['uuid'])) . '</d:getetag>',
-                    '<d:resourcetype/>',
+                    'd:getcontenttype' => 'text/vcard; charset=utf-8',
+                    'd:getetag' => $this->xmlEscape($this->getContactEtag($contactBookUid, (string)$resource->getUuid())),
+                    'd:resourcetype' => $this->xmlEmptyNode(0),
                 ]
             );
         }
@@ -388,11 +425,12 @@ readonly class CardDavHandler
     {
         $resource = $this->parseResource($path, $username);
 
-        if (!is_array($resource) || 'card' !== $resource['type']) {
+        if (!$resource instanceof CardDavResource || CardDavResourceType::Card !== $resource->getType()) {
             return $this->textResponse(404, 'Resource not found.');
         }
 
-        $existingContact = $this->contactRepository->findByContactBookAndUuid($contactBookUid, $resource['uuid']);
+        $contactUuid = (string)$resource->getUuid();
+        $existingContact = $this->contactRepository->findByContactBookAndUuid($contactBookUid, $contactUuid);
         $ifMatch = trim($request->getHeaderLine('If-Match'));
         $ifNoneMatch = trim($request->getHeaderLine('If-None-Match'));
 
@@ -401,7 +439,7 @@ readonly class CardDavHandler
         }
 
         if ('' !== $ifMatch && '*' !== $ifMatch && $existingContact instanceof Contact) {
-            $currentEtag = $this->getContactEtag($contactBookUid, $resource['uuid']);
+            $currentEtag = $this->getContactEtag($contactBookUid, $contactUuid);
 
             if ($ifMatch !== $currentEtag) {
                 return $this->textResponse(412, 'ETag mismatch.');
@@ -420,7 +458,7 @@ readonly class CardDavHandler
             return $this->textResponse(500, 'Contact book not found.');
         }
 
-        $content = $this->forceUid($content, $resource['uuid']);
+        $content = $this->forceUid($content, $contactUuid);
 
         try {
             $this->importService->upsertSingleVCardContent($content, $contactBook);
@@ -430,7 +468,7 @@ readonly class CardDavHandler
             return $this->textResponse(400, 'Invalid vCard payload.');
         }
 
-        $etag = $this->getContactEtag($contactBookUid, $resource['uuid']);
+        $etag = $this->getContactEtag($contactBookUid, $contactUuid);
         $statusCode = $existingContact instanceof Contact ? 204 : 201;
 
         return $this->textResponse($statusCode, '', [
@@ -442,7 +480,7 @@ readonly class CardDavHandler
     {
         $resource = $this->parseResource($path, $username);
 
-        if (!is_array($resource) || 'collection' !== $resource['type']) {
+        if (!$resource instanceof CardDavResource || CardDavResourceType::Collection !== $resource->getType()) {
             return $this->textResponse(404, 'Collection not found.');
         }
 
@@ -483,29 +521,29 @@ readonly class CardDavHandler
         $this->appendAddressDataResponsesFromContactRows($responses, $changes, $username, $request->getHeaderLine('User-Agent'), $contactBookUid);
 
         foreach ($deletedUuids as $deletedUuid) {
-            $responses[] =
-                '<d:response>' .
-                    '<d:href>' . $this->xmlEscape($this->cardHref($username, $deletedUuid)) . '</d:href>' .
-                    '<d:status>HTTP/1.1 404 Not Found</d:status>' .
-                '</d:response>';
+            $responses[] = $this->buildNotFoundResponse($this->cardHref($username, $deletedUuid));
         }
 
         return $this->multistatusResponse($responses, $currentToken);
     }
 
-    private function buildAddressDataResponse(string $href, string $vCard, string $etag): string
+    /**
+     * @return array<string, mixed>
+     */
+    private function buildAddressDataResponse(string $href, string $vCard, string $etag): array
     {
-        return
-            '<d:response>' .
-                '<d:href>' . $this->xmlEscape($href) . '</d:href>' .
-                '<d:propstat>' .
-                    '<d:prop>' .
-                        '<d:getetag>' . $this->xmlEscape($etag) . '</d:getetag>' .
-                        '<card:address-data>' . $this->xmlEscape($vCard) . '</card:address-data>' .
-                    '</d:prop>' .
-                    '<d:status>HTTP/1.1 200 OK</d:status>' .
-                '</d:propstat>' .
-            '</d:response>';
+        return [
+            'd:href' => $this->xmlNode($this->xmlEscape($href), 0),
+            'd:propstat' => [
+                'd:prop' => [
+                    'card:address-data' => $this->xmlNode($this->xmlEscape($vCard), 0),
+                    'd:getetag' => $this->xmlNode($this->xmlEscape($etag), 1),
+                    XmlUtility::SPECIAL_ARRAY_KEYS['POSITION'] => 0,
+                ],
+                'd:status' => $this->xmlNode(self::HTTP_STATUS_OK, 1),
+                XmlUtility::SPECIAL_ARRAY_KEYS['POSITION'] => 1,
+            ],
+        ];
     }
 
     /** @return array<int, array<string, mixed>> */
@@ -515,12 +553,8 @@ readonly class CardDavHandler
             return $this->getContactRows($contactBookUid);
         }
 
-        [
-            $maxContactTimestamp,
-            $maxTombstoneTimestamp,
-        ] = $this->decodeToken($previousToken);
-
-        $minTimestamp = max($maxContactTimestamp, $maxTombstoneTimestamp);
+        $syncTokenState = $this->decodeToken($previousToken);
+        $minTimestamp = max($syncTokenState->getMaxContactTimestamp(), $syncTokenState->getMaxTombstoneTimestamp());
 
         if (0 >= $minTimestamp) {
             return $this->getContactRows($contactBookUid);
@@ -547,12 +581,8 @@ readonly class CardDavHandler
             return [];
         }
 
-        [
-            $maxContactTimestamp,
-            $maxTombstoneTimestamp,
-        ] = $this->decodeToken($previousToken);
-
-        $minTimestamp = max($maxContactTimestamp, $maxTombstoneTimestamp);
+        $syncTokenState = $this->decodeToken($previousToken);
+        $minTimestamp = max($syncTokenState->getMaxContactTimestamp(), $syncTokenState->getMaxTombstoneTimestamp());
 
         if (0 >= $minTimestamp) {
             return [];
@@ -575,18 +605,17 @@ readonly class CardDavHandler
         );
     }
 
-    /** @return array{0: int, 1: int} */
-    private function decodeToken(string $token): array
+    private function decodeToken(string $token): SyncTokenState
     {
         if (!preg_match('/^(\d+):(\d+):/u', $token, $matches)) {
-            return [0, 0];
+            return new SyncTokenState(0, 0);
         }
 
         if (!array_key_exists(1, $matches) || !array_key_exists(2, $matches) || !ctype_digit($matches[1]) || !ctype_digit($matches[2])) {
-            return [0, 0];
+            return new SyncTokenState(0, 0);
         }
 
-        return [(int)$matches[1], (int)$matches[2]];
+        return new SyncTokenState((int)$matches[1], (int)$matches[2]);
     }
 
     private function getCollectionToken(int $contactBookUid): string
@@ -680,16 +709,39 @@ readonly class CardDavHandler
         return '' === trim($syncToken) ? null : trim($syncToken);
     }
 
-    private function buildPropResponse(string $href, array $properties): string
+    /**
+     * @param array<string, array<string, mixed>|string> $properties
+     *
+     * @return array<string, mixed>
+     */
+    private function buildPropResponse(string $href, array $properties): array
     {
-        return
-            '<d:response>' .
-                '<d:href>' . $this->xmlEscape($href) . '</d:href>' .
-                '<d:propstat>' .
-                    '<d:prop>' . implode('', $properties) . '</d:prop>' .
-                    '<d:status>HTTP/1.1 200 OK</d:status>' .
-                '</d:propstat>' .
-            '</d:response>';
+        $position = 0;
+        $prop = [XmlUtility::SPECIAL_ARRAY_KEYS['POSITION'] => 0];
+
+        foreach ($properties as $propertyName => $propertyValue) {
+            if (is_string($propertyValue)) {
+                $prop[$propertyName] = $this->xmlNode($propertyValue, $position++);
+
+                continue;
+            }
+
+            if (!isset($propertyValue[XmlUtility::SPECIAL_ARRAY_KEYS['POSITION']])) {
+                $propertyValue[XmlUtility::SPECIAL_ARRAY_KEYS['POSITION']] = $position;
+            }
+
+            $prop[$propertyName] = $propertyValue;
+            $position++;
+        }
+
+        return [
+            'd:href' => $this->xmlNode($this->xmlEscape($href), 0),
+            'd:propstat' => [
+                'd:prop' => $prop,
+                'd:status' => $this->xmlNode(self::HTTP_STATUS_OK, 1),
+                XmlUtility::SPECIAL_ARRAY_KEYS['POSITION'] => 1,
+            ],
+        ];
     }
 
     private function addressBookHomeHref(string $username): string
@@ -766,32 +818,31 @@ readonly class CardDavHandler
         return '/' . trim($path, '/');
     }
 
-    /** @return array{type: string, uuid?: string}|null */
-    private function parseResource(string $path, string $username): ?array
+    private function parseResource(string $path, string $username): ?CardDavResource
     {
         $encodedUsername = urlencode($username);
 
         if ('/carddav' === $path) {
-            return ['type' => 'root'];
+            return new CardDavResource(CardDavResourceType::Root);
         }
 
         if ('/carddav/principals/' . $encodedUsername === $path) {
-            return ['type' => 'principal'];
+            return new CardDavResource(CardDavResourceType::Principal);
         }
 
         if ('/carddav/addressbooks/' . $encodedUsername === $path) {
-            return ['type' => 'home'];
+            return new CardDavResource(CardDavResourceType::Home);
         }
 
         if ('/carddav/addressbooks/' . $encodedUsername . '/default' === $path) {
-            return ['type' => 'collection'];
+            return new CardDavResource(CardDavResourceType::Collection);
         }
 
         if (preg_match('#^/carddav/addressbooks/' . preg_quote($encodedUsername, '#') . '/default/([^/]+)\.vcf$#u', $path, $matches)) {
-            return [
-                'type' => 'card',
-                'uuid' => $matches[1],
-            ];
+            return new CardDavResource(
+                type: CardDavResourceType::Card,
+                uuid: $matches[1],
+            );
         }
 
         return null;
@@ -802,19 +853,17 @@ readonly class CardDavHandler
         return '/carddav/principals/' . urlencode($username) . '/';
     }
 
-    private function deniedAuthenticationResult(string $message): array
+    private function deniedAuthenticationResult(string $message): AuthenticationResult
     {
-        return [
-            'response' => $this->textResponse(401, $message, [
+        return new AuthenticationResult(
+            response: $this->textResponse(401, $message, [
                 'WWW-Authenticate' => self::AUTHENTICATE_HEADER,
             ]),
-            'username' => '',
-            'user'     => null,
-        ];
+        );
     }
 
     /**
-     * @param array<int, string>              $responses
+     * @param array<int, array<string, mixed>> $responses
      * @param array<int, array<string, mixed>> $contactRows
      */
     private function appendAddressDataResponsesFromContactRows(
@@ -843,21 +892,63 @@ readonly class CardDavHandler
     }
 
     /**
-     * @param array<int, string> $responses
+     * @param array<int, array<string, mixed>> $responses
      */
     private function multistatusResponse(array $responses, ?string $syncToken = null): ResponseInterface
     {
-        $xml = '<?xml version="1.0" encoding="UTF-8"?>' .
-            '<d:multistatus ' . self::MULTISTATUS_XML_NAMESPACES . '>' .
-            implode('', $responses);
+        $multistatusNode = [
+            'd:response' => $responses,
+            XmlUtility::SPECIAL_ARRAY_KEYS['NAMESPACES'] => [
+                'card' => 'urn:ietf:params:xml:ns:carddav',
+                'cs' => 'http://calendarserver.org/ns/',
+                'd' => 'DAV:',
+            ],
+        ];
 
         if (null !== $syncToken) {
-            $xml .= '<d:sync-token>' . $this->xmlEscape($syncToken) . '</d:sync-token>';
+            $multistatusNode['d:sync-token'] = $this->xmlNode($this->xmlEscape($syncToken), count($responses));
         }
 
-        $xml .= '</d:multistatus>';
+        $xml = XmlUtility::convertToXml(
+            ['d:multistatus' => $multistatusNode],
+            XmlUtility::XML_HEADER,
+            false
+        );
 
         return $this->xmlResponse(207, $xml);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function buildNotFoundResponse(string $href): array
+    {
+        return [
+            'd:href' => $this->xmlNode($this->xmlEscape($href), 0),
+            'd:status' => $this->xmlNode('HTTP/1.1 404 Not Found', 1),
+        ];
+    }
+
+    /**
+     * @return array<string, int|string>
+     */
+    private function xmlEmptyNode(int $position): array
+    {
+        return [
+            XmlUtility::SPECIAL_ARRAY_KEYS['NODE_VALUE'] => '',
+            XmlUtility::SPECIAL_ARRAY_KEYS['POSITION'] => $position,
+        ];
+    }
+
+    /**
+     * @return array<string, int|string>
+     */
+    private function xmlNode(string $value, int $position): array
+    {
+        return [
+            XmlUtility::SPECIAL_ARRAY_KEYS['NODE_VALUE'] => $value,
+            XmlUtility::SPECIAL_ARRAY_KEYS['POSITION'] => $position,
+        ];
     }
 
     private function redirectResponse(string $location): ResponseInterface
