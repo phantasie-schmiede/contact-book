@@ -64,6 +64,8 @@ use function urlencode;
 
 readonly class CardDavHandler
 {
+    private const string AUTHENTICATE_HEADER = 'Basic realm="ContactBook CardDAV"';
+
     private const array CARDDAV_METHODS = [
         'DELETE',
         'GET',
@@ -74,6 +76,7 @@ readonly class CardDavHandler
     ];
 
     private const string DAV_HEADER = '1, 2, addressbook, extended-mkcol, sync-collection';
+    private const string MULTISTATUS_XML_NAMESPACES = 'xmlns:d="DAV:" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cs="http://calendarserver.org/ns/"';
 
     public function __construct(
         private ConnectionPool $connectionPool,
@@ -93,6 +96,7 @@ readonly class CardDavHandler
         $path = $this->normalizePath($request->getUri()->getPath());
 
         if ('/.well-known/carddav' === $path) {
+            // Discovery endpoints are commonly probed by clients before they know the actual DAV base path.
             return $this->redirectResponse('/carddav/');
         }
 
@@ -161,25 +165,13 @@ readonly class CardDavHandler
         $authorizationHeader = $request->getHeaderLine('Authorization');
 
         if (!str_starts_with(strtolower($authorizationHeader), 'basic ')) {
-            return [
-                'response' => $this->textResponse(401, 'Authentication required.', [
-                    'WWW-Authenticate' => 'Basic realm="ContactBook CardDAV"',
-                ]),
-                'username' => '',
-                'user'     => null,
-            ];
+            return $this->deniedAuthenticationResult('Authentication required.');
         }
 
         $decodedCredentials = base64_decode(substr($authorizationHeader, 6), true);
 
         if (!is_string($decodedCredentials) || !str_contains($decodedCredentials, ':')) {
-            return [
-                'response' => $this->textResponse(401, 'Invalid authentication.', [
-                    'WWW-Authenticate' => 'Basic realm="ContactBook CardDAV"',
-                ]),
-                'username' => '',
-                'user'     => null,
-            ];
+            return $this->deniedAuthenticationResult('Invalid authentication.');
         }
 
         [
@@ -200,13 +192,7 @@ readonly class CardDavHandler
         if (!is_array($user) || (int)$user['deleted'] || (int)$user['disable']) {
             $this->logger->warning('CardDAV authentication failed for unknown or disabled user.', ['username' => $username]);
 
-            return [
-                'response' => $this->textResponse(401, 'Invalid credentials.', [
-                    'WWW-Authenticate' => 'Basic realm="ContactBook CardDAV"',
-                ]),
-                'username' => '',
-                'user'     => null,
-            ];
+            return $this->deniedAuthenticationResult('Invalid credentials.');
         }
 
         $hashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
@@ -215,13 +201,7 @@ readonly class CardDavHandler
         if (!$hashInstance->checkPassword($password, (string)$user['password'])) {
             $this->logger->warning('CardDAV authentication failed.', ['username' => $username]);
 
-            return [
-                'response' => $this->textResponse(401, 'Invalid credentials.', [
-                    'WWW-Authenticate' => 'Basic realm="ContactBook CardDAV"',
-                ]),
-                'username' => '',
-                'user'     => null,
-            ];
+            return $this->deniedAuthenticationResult('Invalid credentials.');
         }
 
         return [
@@ -284,18 +264,16 @@ readonly class CardDavHandler
 
         if ('collection' === $resource['type']) {
             $href = $this->collectionHref($username);
-            $xml = '<?xml version="1.0" encoding="UTF-8"?>' .
-                '<d:multistatus xmlns:d="DAV:" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cs="http://calendarserver.org/ns/">' .
+
+            return $this->multistatusResponse([
                 $this->buildPropResponse(
                     $href,
                     [
                         '<d:displayname>Contacts</d:displayname>',
                         '<cs:getctag>' . $this->xmlEscape($this->getCollectionToken($contactBookUid)) . '</cs:getctag>',
                     ]
-                ) .
-                '</d:multistatus>';
-
-            return $this->xmlResponse(207, $xml);
+                ),
+            ]);
         }
 
         $contact = $this->contactRepository->findByContactBookAndUuid($contactBookUid, $resource['uuid']);
@@ -403,12 +381,7 @@ readonly class CardDavHandler
             );
         }
 
-        $xml = '<?xml version="1.0" encoding="UTF-8"?>' .
-            '<d:multistatus xmlns:d="DAV:" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cs="http://calendarserver.org/ns/">' .
-            implode('', $responses) .
-            '</d:multistatus>';
-
-        return $this->xmlResponse(207, $xml);
+        return $this->multistatusResponse($responses);
     }
 
     private function handlePut(ServerRequestInterface $request, string $path, string $username, int $contactBookUid): ResponseInterface
@@ -490,28 +463,9 @@ readonly class CardDavHandler
         }
 
         $responses = [];
+        $this->appendAddressDataResponsesFromContactRows($responses, $contactRows, $username, $request->getHeaderLine('User-Agent'), $contactBookUid);
 
-        foreach ($contactRows as $contactRow) {
-            $uuid = (string)$contactRow['uuid'];
-            $contact = $this->contactRepository->findByContactBookAndUuid($contactBookUid, $uuid);
-
-            if (!$contact instanceof Contact) {
-                continue;
-            }
-
-            $responses[] = $this->buildAddressDataResponse(
-                $this->cardHref($username, $uuid),
-                $this->vCardService->getVCard($contact, $this->detectVCardVersion($request->getHeaderLine('User-Agent'))),
-                $this->getContactEtag($contactBookUid, $uuid, (int)$contactRow['tstamp'])
-            );
-        }
-
-        $xml = '<?xml version="1.0" encoding="UTF-8"?>' .
-            '<d:multistatus xmlns:d="DAV:" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cs="http://calendarserver.org/ns/">' .
-            implode('', $responses) .
-            '</d:multistatus>';
-
-        return $this->xmlResponse(207, $xml);
+        return $this->multistatusResponse($responses);
     }
 
     private function handleSyncCollectionReport(
@@ -526,20 +480,7 @@ readonly class CardDavHandler
         $deletedUuids = $this->getDeletedUuids($contactBookUid, $previousToken);
         $responses = [];
 
-        foreach ($changes as $contactRow) {
-            $uuid = (string)$contactRow['uuid'];
-            $contact = $this->contactRepository->findByContactBookAndUuid($contactBookUid, $uuid);
-
-            if (!$contact instanceof Contact) {
-                continue;
-            }
-
-            $responses[] = $this->buildAddressDataResponse(
-                $this->cardHref($username, $uuid),
-                $this->vCardService->getVCard($contact, $this->detectVCardVersion($request->getHeaderLine('User-Agent'))),
-                $this->getContactEtag($contactBookUid, $uuid, (int)$contactRow['tstamp'])
-            );
-        }
+        $this->appendAddressDataResponsesFromContactRows($responses, $changes, $username, $request->getHeaderLine('User-Agent'), $contactBookUid);
 
         foreach ($deletedUuids as $deletedUuid) {
             $responses[] =
@@ -549,13 +490,7 @@ readonly class CardDavHandler
                 '</d:response>';
         }
 
-        $xml = '<?xml version="1.0" encoding="UTF-8"?>' .
-            '<d:multistatus xmlns:d="DAV:" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cs="http://calendarserver.org/ns/">' .
-            implode('', $responses) .
-            '<d:sync-token>' . $this->xmlEscape($currentToken) . '</d:sync-token>' .
-            '</d:multistatus>';
-
-        return $this->xmlResponse(207, $xml);
+        return $this->multistatusResponse($responses, $currentToken);
     }
 
     private function buildAddressDataResponse(string $href, string $vCard, string $etag): string
@@ -656,6 +591,7 @@ readonly class CardDavHandler
 
     private function getCollectionToken(int $contactBookUid): string
     {
+        // The token combines contact and tombstone state so clients can detect both updates and deletions.
         $contactQueryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_contactbook_domain_model_contact');
         $contactStats = $contactQueryBuilder->selectLiteral('MAX(tstamp) AS max_tstamp', 'COUNT(uid) AS total')
             ->from('tx_contactbook_domain_model_contact')
@@ -789,6 +725,7 @@ readonly class CardDavHandler
 
     private function forceUid(string $content, string $uuid): string
     {
+        // CardDAV object URLs and the card UID must stay in sync, otherwise clients create duplicates.
         if (preg_match('/^UID:/mi', $content)) {
             return (string)preg_replace('/^UID:.*$/mi', 'UID:' . $uuid, $content);
         }
@@ -863,6 +800,64 @@ readonly class CardDavHandler
     private function principalHref(string $username): string
     {
         return '/carddav/principals/' . urlencode($username) . '/';
+    }
+
+    private function deniedAuthenticationResult(string $message): array
+    {
+        return [
+            'response' => $this->textResponse(401, $message, [
+                'WWW-Authenticate' => self::AUTHENTICATE_HEADER,
+            ]),
+            'username' => '',
+            'user'     => null,
+        ];
+    }
+
+    /**
+     * @param array<int, string>              $responses
+     * @param array<int, array<string, mixed>> $contactRows
+     */
+    private function appendAddressDataResponsesFromContactRows(
+        array &$responses,
+        array $contactRows,
+        string $username,
+        string $userAgent,
+        int $contactBookUid,
+    ): void {
+        $vCardVersion = $this->detectVCardVersion($userAgent);
+
+        foreach ($contactRows as $contactRow) {
+            $uuid = (string)$contactRow['uuid'];
+            $contact = $this->contactRepository->findByContactBookAndUuid($contactBookUid, $uuid);
+
+            if (!$contact instanceof Contact) {
+                continue;
+            }
+
+            $responses[] = $this->buildAddressDataResponse(
+                $this->cardHref($username, $uuid),
+                $this->vCardService->getVCard($contact, $vCardVersion),
+                $this->getContactEtag($contactBookUid, $uuid, (int)$contactRow['tstamp'])
+            );
+        }
+    }
+
+    /**
+     * @param array<int, string> $responses
+     */
+    private function multistatusResponse(array $responses, ?string $syncToken = null): ResponseInterface
+    {
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>' .
+            '<d:multistatus ' . self::MULTISTATUS_XML_NAMESPACES . '>' .
+            implode('', $responses);
+
+        if (null !== $syncToken) {
+            $xml .= '<d:sync-token>' . $this->xmlEscape($syncToken) . '</d:sync-token>';
+        }
+
+        $xml .= '</d:multistatus>';
+
+        return $this->xmlResponse(207, $xml);
     }
 
     private function redirectResponse(string $location): ResponseInterface
