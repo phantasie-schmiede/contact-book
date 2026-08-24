@@ -11,17 +11,20 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\CardDav\Dto;
 
+use PSBits\FrontendUsers\Domain\Model\Typo3\FrontendUser;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Class AuthenticationResult
+ *
+ * @package PSBits\ContactBook\CardDav\Dto
+ */
 readonly class AuthenticationResult
 {
-    /**
-     * @param array<string, mixed>|null $user
-     */
     public function __construct(
         private ?ResponseInterface $response = null,
-        private string $username = '',
-        private ?array $user = null,
+        private string             $username = '',
+        private ?FrontendUser      $user = null,
     ) {
     }
 
@@ -30,10 +33,7 @@ readonly class AuthenticationResult
         return $this->response;
     }
 
-    /**
-     * @return array<string, mixed>|null
-     */
-    public function getUser(): ?array
+    public function getUser(): ?FrontendUser
     {
         return $this->user;
     }

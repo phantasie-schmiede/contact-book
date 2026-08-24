@@ -18,10 +18,3 @@ $GLOBALS['TYPO3_CONF_VARS']['LOG']['PSBits']['ContactBook']['Service']['writerCo
 
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['contacts_list'] ??= [];
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['contacts_list']['backend'] ??= Typo3DatabaseBackend::class;
-
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['middlewares']['contact-book/carddav'] = [
-    'after'  => [
-        'typo3/cms-core/normalized-params-attribute',
-    ],
-    'target' => CardDavMiddleware::class,
-];

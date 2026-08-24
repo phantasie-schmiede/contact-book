@@ -11,6 +11,11 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\CardDav\Dto;
 
+/**
+ * Class SyncTokenState
+ *
+ * @package PSBits\ContactBook\CardDav\Dto
+ */
 readonly class SyncTokenState
 {
     public function __construct(

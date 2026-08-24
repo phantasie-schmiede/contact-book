@@ -37,6 +37,7 @@ use PSBits\ContactBook\Utility\AddressUtility;
 use PSBits\ContactBook\Utility\PhoneNumberUtility;
 use PSBits\Foundation\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -73,6 +74,7 @@ readonly class ImportService
 
     /**
      * @throws IllegalObjectTypeException
+     * @throws InvalidQueryException
      * @throws UnknownObjectException
      */
     public function parseVCardContent(string $content, ?ContactBook $contactBook = null): void
@@ -84,6 +86,7 @@ readonly class ImportService
 
     /**
      * @throws IllegalObjectTypeException
+     * @throws InvalidQueryException
      * @throws UnknownObjectException
      */
     public function upsertSingleVCardContent(string $content, ContactBook $contactBook): Contact
@@ -369,8 +372,14 @@ readonly class ImportService
         }
     }
 
+    /**
+     * @template TEntity of object
+     * @param TEntity ...$objects
+     * @return ObjectStorage<TEntity>
+     */
     private function toObjectStorage(object ...$objects): ObjectStorage
     {
+        /** @var ObjectStorage<TEntity> $storage */
         $storage = new ObjectStorage();
 
         foreach ($objects as $object) {
@@ -382,6 +391,7 @@ readonly class ImportService
 
     /**
      * @throws IllegalObjectTypeException
+     * @throws InvalidQueryException
      * @throws UnknownObjectException
      */
     private function upsertContact(Contact $contact, ?ContactBook $contactBook = null, bool $replace = false): Contact
@@ -389,7 +399,7 @@ readonly class ImportService
         $existingContact = null;
 
         if ($contactBook instanceof ContactBook) {
-            $existingContact = $this->contactRepository->findByContactBookAndUuid($contactBook->getUid(), $contact->getUuid());
+            $existingContact = $this->contactRepository->findByContactBookAndUuid($contactBook, $contact->getUuid());
         } elseif ('' !== $contact->getUuid()) {
             $existingContact = $this->contactRepository->findByUuid($contact->getUuid());
         }

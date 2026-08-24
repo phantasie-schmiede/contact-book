@@ -13,11 +13,15 @@ namespace PSBits\ContactBook\Domain\Demand;
 
 use PSBits\FrontendUsers\Domain\Model\Typo3\FrontendUser;
 
+/**
+ * Class ContactBookDemand
+ *
+ * @package PSBits\ContactBook\Domain\Demand
+ */
 class ContactBookDemand
 {
-    protected ?FrontendUser $owner             = null;
+    protected ?FrontendUser $owner              = null;
     protected bool          $respectStoragePage = true;
-    protected int           $uid               = 0;
 
     public function getOwner(): ?FrontendUser
     {
@@ -27,11 +31,6 @@ class ContactBookDemand
     public function getRespectStoragePage(): bool
     {
         return $this->respectStoragePage;
-    }
-
-    public function getUid(): int
-    {
-        return $this->uid;
     }
 
     public function setOwner(?FrontendUser $owner): static
@@ -44,13 +43,6 @@ class ContactBookDemand
     public function setRespectStoragePage(bool $respectStoragePage): static
     {
         $this->respectStoragePage = $respectStoragePage;
-
-        return $this;
-    }
-
-    public function setUid(int $uid): static
-    {
-        $this->uid = $uid;
 
         return $this;
     }

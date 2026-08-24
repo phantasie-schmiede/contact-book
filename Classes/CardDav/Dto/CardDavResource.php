@@ -11,11 +11,16 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\CardDav\Dto;
 
+/**
+ * Class CardDavResource
+ *
+ * @package PSBits\ContactBook\CardDav\Dto
+ */
 readonly class CardDavResource
 {
     public function __construct(
         private CardDavResourceType $type,
-        private ?string $uuid = null,
+        private ?string             $uuid = null,
     ) {
     }
 

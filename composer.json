@@ -45,8 +45,9 @@
 		}
 	],
 	"require": {
+		"ext-dom": "*",
 		"php": "^8.3",
-		"psbits/foundation": "@dev",
+		"psbits/foundation": "^3.3",
 		"psbits/frontend-users": "@dev",
 		"psbits/templates": "@dev",
 		"ramsey/uuid": "^4.7",
@@ -86,12 +87,18 @@
 		"lint:typoscript": "typoscript-lint --config=Build/Quality/typoscript-lint.yml --ansi Configuration/TypoScript",
 		"lint:yaml": "bash -lc 'command -v yamllint >/dev/null 2>&1 || sudo apt install -y yamllint; yamllint -c Build/Quality/.yamllint.yml Build/Quality Configuration'",
 		"post-install-cmd": [
-			"npm install",
-			"cp Build/GitHooks/pre-commit .git/hooks/pre-commit"
+			"@qa:setup"
+		],
+		"post-update-cmd": [
+			"@qa:setup"
 		],
 		"qa": [
 			"@fix:all",
 			"@lint:all"
+		],
+		"qa:setup": [
+			"npm install",
+			"cp Build/GitHooks/pre-commit .git/hooks/pre-commit"
 		],
 		"validate:composer": "composer validate --no-check-publish"
 	},

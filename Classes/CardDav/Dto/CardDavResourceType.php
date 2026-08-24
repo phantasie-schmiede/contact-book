@@ -11,11 +11,16 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\CardDav\Dto;
 
+/**
+ * Class CardDavResourceType
+ *
+ * @package PSBits\ContactBook\CardDav\Dto
+ */
 enum CardDavResourceType: string
 {
-    case Card = 'card';
+    case Card       = 'card';
     case Collection = 'collection';
-    case Home = 'home';
-    case Principal = 'principal';
-    case Root = 'root';
+    case Home       = 'home';
+    case Principal  = 'principal';
+    case Root       = 'root';
 }

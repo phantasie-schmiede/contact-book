@@ -165,6 +165,13 @@ class ContactDemand
         return $this;
     }
 
+    public function setContactBookUid(int $contactBookUid): static
+    {
+        $this->contactBookUid = $contactBookUid;
+
+        return $this;
+    }
+
     public function setContactGroupUid(int $contactGroupUid): static
     {
         $this->contactGroupUid = $contactGroupUid;

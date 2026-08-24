@@ -12,6 +12,9 @@ services:
   PSBits\ContactBook\:
     resource: '../Classes/*'
 
+  PSBits\ContactBook\CardDav\CardDavHandler:
+    public: true
+
   PSBits\ContactBook\Service\ContactService:
     arguments:
       $frontendCache: '@cache.contacts_list'

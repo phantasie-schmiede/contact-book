@@ -13,6 +13,7 @@ namespace PSBits\ContactBook\Domain\Repository;
 
 use PSBits\ContactBook\Domain\Demand\ContactDemand;
 use PSBits\ContactBook\Domain\Model\Contact;
+use PSBits\ContactBook\Domain\Model\ContactBook;
 use PSBits\Foundation\Utility\QueryUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -26,10 +27,10 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class ContactRepository extends Repository
 {
-    public function findByContactBookAndUuid(int $contactBookUid, string $uuid): ?Contact
+    public function findByContactBookAndUuid(ContactBook $contactBook, string $uuid): ?Contact
     {
         $demand = (new ContactDemand())
-            ->setContactBookUid($contactBookUid)
+            ->setContactBookUid($contactBook->getUid())
             ->setRespectStoragePage(false)
             ->setUuid($uuid);
 
