@@ -38,7 +38,7 @@ class ContactBookRepository extends Repository
         $constraints = [];
         $query       = $this->createQuery();
         $query->getQuerySettings()
-            ->setRespectStoragePage($demand->getRespectStoragePage());
+            ->setRespectStoragePage($demand->isRespectStoragePage());
 
         if ($demand->getOwner() instanceof FrontendUser) {
             $constraints[] = $query->contains('owners', $demand->getOwner());
@@ -50,9 +50,8 @@ class ContactBookRepository extends Repository
     }
 
     /**
-     * @param FrontendUser|null $frontendUser
-     *
      * @return QueryResultInterface<int, ContactBook>
+     * @throws InvalidQueryException
      */
     public function findByOwner(?FrontendUser $frontendUser = null): QueryResultInterface
     {

@@ -241,7 +241,8 @@ readonly class CardDavHandler
             $password,
         ] = explode(':', $decodedCredentials, 2);
 
-        $userDemand = (new FrontendUserDemand())->setUsername($username);
+        $userDemand = (new FrontendUserDemand())->setRespectStoragePage(false)
+            ->setUsername($username);
         $user       = $this->frontendUserRepository->findOneByDemand($userDemand);
 
         if (!$user instanceof FrontendUser) {
@@ -1121,7 +1122,7 @@ readonly class CardDavHandler
     private function resolveOwnedContactBook(FrontendUser $frontendUser): ?ContactBook
     {
         // CardDAV currently exposes the first contact book owned by the authenticated frontend user.
-        $contactBookDemand = (new ContactBookDemand())->setOwner($frontendUser);
+        $contactBookDemand = (new ContactBookDemand())->setOwner($frontendUser)->setRespectStoragePage(false);
 
         return $this->contactBookRepository->findOneByDemand($contactBookDemand);
     }

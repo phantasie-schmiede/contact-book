@@ -1,0 +1,478 @@
+{
+  "info": {
+    "name": "CardDAV Handler Tests",
+    "description": "Postman collection for testing the CardDAV handler in `CardDavHandler.php`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{username}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{password}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://example.test"
+    },
+    {
+      "key": "username",
+      "value": ""
+    },
+    {
+      "key": "password",
+      "value": ""
+    },
+    {
+      "key": "cardUuid",
+      "value": "postman-card-001"
+    },
+    {
+      "key": "etag",
+      "value": ""
+    },
+    {
+      "key": "syncToken",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "01 - OPTIONS /carddav",
+      "request": {
+        "method": "OPTIONS",
+        "header": [
+          {
+            "key": "X-Forwarded-Proto",
+            "value": "https"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/carddav",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "carddav"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "02 - PROPFIND Root (Depth 1)",
+      "request": {
+        "method": "PROPFIND",
+        "header": [
+          {
+            "key": "Depth",
+            "value": "1"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/xml; charset=utf-8"
+          },
+          {
+            "key": "X-Forwarded-Proto",
+            "value": "https"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<d:propfind xmlns:d=\"DAV:\">\n  <d:allprop/>\n</d:propfind>"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/carddav",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "carddav"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "03 - PROPFIND Principal",
+      "request": {
+        "method": "PROPFIND",
+        "header": [
+          {
+            "key": "Depth",
+            "value": "0"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/xml; charset=utf-8"
+          },
+          {
+            "key": "X-Forwarded-Proto",
+            "value": "https"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<d:propfind xmlns:d=\"DAV:\">\n  <d:allprop/>\n</d:propfind>"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/carddav/principals/{{username}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "carddav",
+            "principals",
+            "{{username}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "04 - PROPFIND Home (Depth 1)",
+      "request": {
+        "method": "PROPFIND",
+        "header": [
+          {
+            "key": "Depth",
+            "value": "1"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/xml; charset=utf-8"
+          },
+          {
+            "key": "X-Forwarded-Proto",
+            "value": "https"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<d:propfind xmlns:d=\"DAV:\">\n  <d:allprop/>\n</d:propfind>"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/carddav/addressbooks/{{username}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "carddav",
+            "addressbooks",
+            "{{username}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "05 - PROPFIND Collection (Depth 1)",
+      "request": {
+        "method": "PROPFIND",
+        "header": [
+          {
+            "key": "Depth",
+            "value": "1"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/xml; charset=utf-8"
+          },
+          {
+            "key": "X-Forwarded-Proto",
+            "value": "https"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<d:propfind xmlns:d=\"DAV:\">\n  <d:allprop/>\n</d:propfind>"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/carddav/addressbooks/{{username}}/default",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "carddav",
+            "addressbooks",
+            "{{username}}",
+            "default"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const xml = pm.response.text();",
+              "const match = xml.match(/<d:sync-token>([^<]+)<\\/d:sync-token>/);",
+              "if (match && match[1]) {",
+              "  pm.collectionVariables.set('syncToken', match[1]);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "response": []
+    },
+    {
+      "name": "06 - REPORT Sync Collection",
+      "request": {
+        "method": "REPORT",
+        "header": [
+          {
+            "key": "Depth",
+            "value": "1"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/xml; charset=utf-8"
+          },
+          {
+            "key": "X-Forwarded-Proto",
+            "value": "https"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<d:sync-collection xmlns:d=\"DAV:\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\">\n  <d:sync-token>{{syncToken}}</d:sync-token>\n  <d:sync-level>1</d:sync-level>\n  <d:prop>\n    <d:getetag/>\n    <card:address-data/>\n  </d:prop>\n</d:sync-collection>"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/carddav/addressbooks/{{username}}/default",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "carddav",
+            "addressbooks",
+            "{{username}}",
+            "default"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const xml = pm.response.text();",
+              "const match = xml.match(/<d:sync-token>([^<]+)<\\/d:sync-token>/);",
+              "if (match && match[1]) {",
+              "  pm.collectionVariables.set('syncToken', match[1]);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "response": []
+    },
+    {
+      "name": "07 - PUT Card (Create or Update)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "text/vcard; charset=utf-8"
+          },
+          {
+            "key": "If-None-Match",
+            "value": "*"
+          },
+          {
+            "key": "X-Forwarded-Proto",
+            "value": "https"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "BEGIN:VCARD\nVERSION:3.0\nFN:Postman Test Contact\nN:Test Contact;Postman;;;\nEMAIL;TYPE=INTERNET:postman-test@example.test\nTEL;TYPE=CELL:+49123456789\nEND:VCARD\n"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/carddav/addressbooks/{{username}}/default/{{cardUuid}}.vcf",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "carddav",
+            "addressbooks",
+            "{{username}}",
+            "default",
+            "{{cardUuid}}.vcf"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const etag = pm.response.headers.get('ETag');",
+              "if (etag) {",
+              "  pm.collectionVariables.set('etag', etag);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "response": []
+    },
+    {
+      "name": "08 - GET Card",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Forwarded-Proto",
+            "value": "https"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/carddav/addressbooks/{{username}}/default/{{cardUuid}}.vcf",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "carddav",
+            "addressbooks",
+            "{{username}}",
+            "default",
+            "{{cardUuid}}.vcf"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const etag = pm.response.headers.get('ETag');",
+              "if (etag) {",
+              "  pm.collectionVariables.set('etag', etag);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "response": []
+    },
+    {
+      "name": "09 - REPORT Addressbook Multiget",
+      "request": {
+        "method": "REPORT",
+        "header": [
+          {
+            "key": "Depth",
+            "value": "1"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/xml; charset=utf-8"
+          },
+          {
+            "key": "X-Forwarded-Proto",
+            "value": "https"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<card:addressbook-multiget xmlns:d=\"DAV:\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\">\n  <d:prop>\n    <d:getetag/>\n    <card:address-data/>\n  </d:prop>\n  <d:href>/carddav/addressbooks/{{username}}/default/{{cardUuid}}.vcf</d:href>\n</card:addressbook-multiget>"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/carddav/addressbooks/{{username}}/default",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "carddav",
+            "addressbooks",
+            "{{username}}",
+            "default"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "10 - DELETE Card",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "If-Match",
+            "value": "{{etag}}"
+          },
+          {
+            "key": "X-Forwarded-Proto",
+            "value": "https"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/carddav/addressbooks/{{username}}/default/{{cardUuid}}.vcf",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "carddav",
+            "addressbooks",
+            "{{username}}",
+            "default",
+            "{{cardUuid}}.vcf"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "11 - REPORT Sync Collection (After Delete)",
+      "request": {
+        "method": "REPORT",
+        "header": [
+          {
+            "key": "Depth",
+            "value": "1"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/xml; charset=utf-8"
+          },
+          {
+            "key": "X-Forwarded-Proto",
+            "value": "https"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<d:sync-collection xmlns:d=\"DAV:\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\">\n  <d:sync-token>{{syncToken}}</d:sync-token>\n  <d:sync-level>1</d:sync-level>\n  <d:prop>\n    <d:getetag/>\n    <card:address-data/>\n  </d:prop>\n</d:sync-collection>"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/carddav/addressbooks/{{username}}/default",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "carddav",
+            "addressbooks",
+            "{{username}}",
+            "default"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

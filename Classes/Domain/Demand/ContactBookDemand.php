@@ -28,7 +28,7 @@ class ContactBookDemand
         return $this->owner;
     }
 
-    public function getRespectStoragePage(): bool
+    public function isRespectStoragePage(): bool
     {
         return $this->respectStoragePage;
     }
