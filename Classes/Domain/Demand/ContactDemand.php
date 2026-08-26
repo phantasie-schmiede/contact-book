@@ -38,6 +38,7 @@ class ContactDemand
     protected string $lastName                      = '';
     protected bool   $onlyExportRelevantInformation = false;
     protected bool   $respectStoragePage            = false;
+    protected string $uuid                          = '';
 
     /** @var ContactType[] */
     protected array $types = [];
@@ -145,6 +146,11 @@ class ContactDemand
         return $this->types;
     }
 
+    public function getUuid(): string
+    {
+        return $this->uuid;
+    }
+
     public function setCategoryUids(int ...$categoryUids): static
     {
         $this->categoryUids = $categoryUids;
@@ -155,6 +161,13 @@ class ContactDemand
     public function setCompanyName(string $companyName): static
     {
         $this->companyName = $companyName;
+
+        return $this;
+    }
+
+    public function setContactBookUid(int $contactBookUid): static
+    {
+        $this->contactBookUid = $contactBookUid;
 
         return $this;
     }
@@ -197,6 +210,13 @@ class ContactDemand
     public function setRespectStoragePage(bool $respectStoragePage): static
     {
         $this->respectStoragePage = $respectStoragePage;
+
+        return $this;
+    }
+
+    public function setUuid(string $uuid): static
+    {
+        $this->uuid = $uuid;
 
         return $this;
     }

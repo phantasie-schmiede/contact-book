@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use Psr\Log\LogLevel;
+use PSBits\ContactBook\CardDav\CardDavMiddleware;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Log\Writer\DatabaseWriter;
 

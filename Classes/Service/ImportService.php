@@ -23,6 +23,7 @@ use PSBits\ContactBook\Domain\Enum\GeneralType;
 use PSBits\ContactBook\Domain\Enum\PhoneNumberType;
 use PSBits\ContactBook\Domain\Model\Address;
 use PSBits\ContactBook\Domain\Model\Contact;
+use PSBits\ContactBook\Domain\Model\ContactBook;
 use PSBits\ContactBook\Domain\Model\EMail;
 use PSBits\ContactBook\Domain\Model\Event;
 use PSBits\ContactBook\Domain\Model\Job;
@@ -36,8 +37,10 @@ use PSBits\ContactBook\Utility\AddressUtility;
 use PSBits\ContactBook\Utility\PhoneNumberUtility;
 use PSBits\Foundation\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 use function count;
 use function in_array;
@@ -65,11 +68,66 @@ readonly class ImportService
      */
     public function parseVCardFile(string $file): void
     {
-        $contact     = null;
         $fileContent = file_get_contents($file);
-        $lines       = StringUtility::explodeByLineBreaks($fileContent);
+        $this->parseVCardContent((string)$fileContent);
+    }
+
+    /**
+     * @throws IllegalObjectTypeException
+     * @throws InvalidQueryException
+     * @throws UnknownObjectException
+     */
+    public function parseVCardContent(string $content, ?ContactBook $contactBook = null): void
+    {
+        foreach ($this->extractContacts($content) as $contact) {
+            $this->upsertContact($contact, $contactBook);
+        }
+    }
+
+    /**
+     * @throws IllegalObjectTypeException
+     * @throws InvalidQueryException
+     * @throws UnknownObjectException
+     */
+    public function upsertSingleVCardContent(string $content, ContactBook $contactBook): Contact
+    {
+        $contacts = $this->extractContacts($content);
+        $contact  = array_shift($contacts);
+
+        if (!$contact instanceof Contact) {
+            throw new UnknownObjectException(__CLASS__ . ': Could not parse vCard content.', 1755852605);
+        }
+
+        return $this->upsertContact($contact, $contactBook, true);
+    }
+
+    /**
+     * @return Contact[]
+     */
+    private function extractContacts(string $content): array
+    {
+        $contact       = null;
+        $contacts      = [];
+        $preparedLines = [];
+        $lines         = StringUtility::explodeByLineBreaks($content);
 
         foreach ($lines as $line) {
+            $line = rtrim($line);
+
+            if (str_starts_with($line, ' ') || str_starts_with($line, "\t")) {
+                $lastLineIndex = count($preparedLines) - 1;
+
+                if (0 <= $lastLineIndex) {
+                    $preparedLines[$lastLineIndex] .= ltrim($line);
+                }
+
+                continue;
+            }
+
+            $preparedLines[] = $line;
+        }
+
+        foreach ($preparedLines as $line) {
             $line = trim($line);
 
             if (empty($line)) {
@@ -80,20 +138,7 @@ readonly class ImportService
                 $contact = new Contact();
             } elseif (str_starts_with($line, 'END:VCARD')) {
                 if ($contact instanceof Contact) {
-                    $contactDemand = new ContactDemand();
-                    $contactDemand->setFirstName($contact->getFirstName())
-                        ->setLastName($contact->getLastName());
-                    $existingContact = $this->contactRepository->findByDemand($contactDemand)
-                        ->getFirst();
-
-                    if ($existingContact instanceof Contact) {
-                        $this->addProperties($contact, $existingContact);
-                        $this->contactRepository->update($existingContact);
-                    } else {
-                        $this->contactRepository->add($contact);
-                    }
-
-                    $this->persistenceManager->persistAll();
+                    $contacts[] = $contact;
                 }
 
                 $contact = null;
@@ -101,6 +146,8 @@ readonly class ImportService
                 $this->parseVCardLine($line, $contact);
             }
         }
+
+        return $contacts;
     }
 
     private function addProperties(Contact $contact, Contact $existingContact): void
@@ -121,6 +168,23 @@ readonly class ImportService
         $existingContact->addNote($contact->getNotes());
         $existingContact->addPhoneNumbers(...$contact->getPhoneNumbers());
         $existingContact->addWebsites(...$contact->getWebsites());
+    }
+
+    private function replaceProperties(Contact $sourceContact, Contact $targetContact): void
+    {
+        $targetContact->setAddresses($this->toObjectStorage(...$sourceContact->getAddresses()));
+        $targetContact->setBirthName($sourceContact->getBirthName());
+        $targetContact->setCompanyName($sourceContact->getCompanyName());
+        $targetContact->setEMails($this->toObjectStorage(...$sourceContact->getEMails()));
+        $targetContact->setEvents($this->toObjectStorage(...$sourceContact->getEvents()));
+        $targetContact->setFirstName($sourceContact->getFirstName());
+        $targetContact->setLastName($sourceContact->getLastName());
+        $targetContact->setMiddleNames($sourceContact->getMiddleNames());
+        $targetContact->setNickname($sourceContact->getNickname());
+        $targetContact->setNotes($sourceContact->getNotes());
+        $targetContact->setPhoneNumbers($this->toObjectStorage(...$sourceContact->getPhoneNumbers()));
+        $targetContact->setType($sourceContact->getType());
+        $targetContact->setWebsites($this->toObjectStorage(...$sourceContact->getWebsites()));
     }
 
     private function parseVCardLine(string $line, Contact $contact): void
@@ -246,6 +310,14 @@ readonly class ImportService
                 $contact->addNote($value);
 
                 break;
+            case 'UID':
+                $uuid = str_replace(['urn:uuid:', 'URN:UUID:'], '', $value);
+
+                if ('' !== trim($uuid)) {
+                    $contact->setUuidValue($uuid);
+                }
+
+                break;
             case 'ORG':
                 $value         = str_replace(' - ', ' ', trim($value, ';'));
                 $contactDemand = new ContactDemand();
@@ -298,5 +370,72 @@ readonly class ImportService
 
                 break;
         }
+    }
+
+    /**
+     * @template TEntity of object
+     * @param TEntity ...$objects
+     * @return ObjectStorage<TEntity>
+     */
+    private function toObjectStorage(object ...$objects): ObjectStorage
+    {
+        /** @var ObjectStorage<TEntity> $storage */
+        $storage = new ObjectStorage();
+
+        foreach ($objects as $object) {
+            $storage->attach($object);
+        }
+
+        return $storage;
+    }
+
+    /**
+     * @throws IllegalObjectTypeException
+     * @throws InvalidQueryException
+     * @throws UnknownObjectException
+     */
+    private function upsertContact(Contact $contact, ?ContactBook $contactBook = null, bool $replace = false): Contact
+    {
+        $existingContact = null;
+
+        if ($contactBook instanceof ContactBook) {
+            $existingContact = $this->contactRepository->findByContactBookAndUuid($contactBook, $contact->getUuid());
+        } elseif ('' !== $contact->getUuid()) {
+            $existingContact = $this->contactRepository->findByUuid($contact->getUuid());
+        }
+
+        if (!$existingContact instanceof Contact) {
+            $contactDemand = new ContactDemand();
+            $contactDemand->setFirstName($contact->getFirstName())
+                ->setLastName($contact->getLastName());
+            $existingContact = $this->contactRepository->findByDemand($contactDemand)
+                ->getFirst();
+        }
+
+        if ($existingContact instanceof Contact) {
+            if ($replace) {
+                $this->replaceProperties($contact, $existingContact);
+            } else {
+                $this->addProperties($contact, $existingContact);
+            }
+
+            if ($contactBook instanceof ContactBook) {
+                $existingContact->setContactBook($contactBook);
+            }
+
+            $this->contactRepository->update($existingContact);
+            $this->persistenceManager->persistAll();
+
+            return $existingContact;
+        }
+
+        if ($contactBook instanceof ContactBook) {
+            $contact->setContactBook($contactBook);
+        }
+
+        $this->contactRepository->add($contact);
+        $this->persistenceManager->persistAll();
+
+        return $contact;
     }
 }

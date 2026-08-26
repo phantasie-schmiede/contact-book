@@ -1296,6 +1296,17 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    public function setUuidValue(string $uuid): static
+    {
+        if ('' === trim($uuid)) {
+            throw new RuntimeException(__CLASS__ . ': UUID must not be empty.', 1755850446);
+        }
+
+        $this->uuid = $uuid;
+
+        return $this;
+    }
+
     /** @param ObjectStorage<Website> $websites */
     public function setWebsites(ObjectStorage $websites): static
     {

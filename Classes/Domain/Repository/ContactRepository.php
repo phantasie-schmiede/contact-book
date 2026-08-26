@@ -13,6 +13,7 @@ namespace PSBits\ContactBook\Domain\Repository;
 
 use PSBits\ContactBook\Domain\Demand\ContactDemand;
 use PSBits\ContactBook\Domain\Model\Contact;
+use PSBits\ContactBook\Domain\Model\ContactBook;
 use PSBits\Foundation\Utility\QueryUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -26,6 +27,27 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class ContactRepository extends Repository
 {
+    public function findByContactBookAndUuid(ContactBook $contactBook, string $uuid): ?Contact
+    {
+        $demand = (new ContactDemand())
+            ->setContactBookUid($contactBook->getUid())
+            ->setRespectStoragePage(false)
+            ->setUuid($uuid);
+
+        return $this->findByDemand($demand)
+            ->getFirst();
+    }
+
+    public function findByUuid(string $uuid): ?Contact
+    {
+        $demand = (new ContactDemand())
+            ->setRespectStoragePage(false)
+            ->setUuid($uuid);
+
+        return $this->findByDemand($demand)
+            ->getFirst();
+    }
+
     /**
      * @param ContactDemand $demand
      *
@@ -81,6 +103,10 @@ class ContactRepository extends Repository
             }
 
             $constraints[] = $query->logicalOr(...$orConstraints);
+        }
+
+        if ('' !== $demand->getUuid()) {
+            $constraints[] = $query->equals('uuid', $demand->getUuid());
         }
 
         QueryUtility::applyConstraints($constraints, $query);

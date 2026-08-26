@@ -11,12 +11,13 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Domain\Repository;
 
+use PSBits\ContactBook\Domain\Demand\ContactBookDemand;
 use PSBits\ContactBook\Domain\Model\ContactBook;
 use PSBits\Foundation\Service\GlobalVariableService;
+use PSBits\Foundation\Utility\QueryUtility;
 use PSBits\FrontendUsers\Domain\Model\Typo3\FrontendUser;
 use PSBits\FrontendUsers\Service\GlobalVariableProviders\FrontendUserProvider;
-use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
-use TYPO3\CMS\Extbase\Persistence\Generic\Query;
+use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
@@ -29,10 +30,28 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 class ContactBookRepository extends Repository
 {
     /**
-     * @param FrontendUser|null $frontendUser
-     *
      * @return QueryResultInterface<int, ContactBook>
-     * @throws Exception
+     * @throws InvalidQueryException
+     */
+    public function findByDemand(ContactBookDemand $demand): QueryResultInterface
+    {
+        $constraints = [];
+        $query       = $this->createQuery();
+        $query->getQuerySettings()
+            ->setRespectStoragePage($demand->isRespectStoragePage());
+
+        if ($demand->getOwner() instanceof FrontendUser) {
+            $constraints[] = $query->contains('owners', $demand->getOwner());
+        }
+
+        QueryUtility::applyConstraints($constraints, $query);
+
+        return $query->execute();
+    }
+
+    /**
+     * @return QueryResultInterface<int, ContactBook>
+     * @throws InvalidQueryException
      */
     public function findByOwner(?FrontendUser $frontendUser = null): QueryResultInterface
     {
@@ -40,12 +59,18 @@ class ContactBookRepository extends Repository
             $frontendUser = GlobalVariableService::get(FrontendUserProvider::class . '.user');
         }
 
-        /** @var Query<ContactBook> $query */
-        $query = $this->createQuery();
-        $query->getQuerySettings()
+        $demand = (new ContactBookDemand())->setOwner($frontendUser)
             ->setRespectStoragePage(false);
-        $query->matching($query->contains('owners', $frontendUser));
 
-        return $query->execute();
+        return $this->findByDemand($demand);
+    }
+
+    /**
+     * @throws InvalidQueryException
+     */
+    public function findOneByDemand(ContactBookDemand $contactBookDemand): ?ContactBook
+    {
+        return $this->findByDemand($contactBookDemand)
+            ->getFirst();
     }
 }

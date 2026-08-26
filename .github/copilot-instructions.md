@@ -56,6 +56,6 @@ unless asked.
 ## Onboarding run notes (errors/workarounds)
 
 - Running QA locally requires installed dependencies (`composer install` / `composer update`, plus npm dependencies via
-  Composer post-install).
+  Composer post-install/post-update).
 - In restricted environments, Composer dependency installation may fail if GitHub authentication for dist downloads is
   unavailable.

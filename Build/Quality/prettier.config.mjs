@@ -1,19 +1,23 @@
 /** @type {import("prettier").Config} */
 const config = {
-    attributeGroups: ["$DEFAULT"],
-    attributeSort: "ASC",
+    attributeGroups: [
+        '^data-namespace-typo3-fluid$',
+        '^xmlns:',
+        '$DEFAULT'
+    ],
+    attributeSort: 'ASC',
     bracketSameLine: true,
-    htmlWhitespaceSensitivity: "ignore",
+    htmlWhitespaceSensitivity: 'ignore',
     overrides: [
         {
-            files: ["*.xml", "*.xlf"],
+            files: ['*.xml', '*.xlf'],
             options: {
-                parser: "xml",
+                parser: 'xml',
                 xmlSortAttributesByKey: true
             }
         }
     ],
-    plugins: ["prettier-plugin-organize-attributes", "@prettier/plugin-xml"],
+    plugins: ['prettier-plugin-organize-attributes', '@prettier/plugin-xml'],
     singleAttributePerLine: true,
     tabWidth: 4,
 };

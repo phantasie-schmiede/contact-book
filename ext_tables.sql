@@ -29,3 +29,21 @@ CREATE TABLE tx_contactbook_log
     PRIMARY KEY uid (uid),
     KEY request (request_id)
 );
+
+#
+# Table structure for table 'tx_contactbook_carddav_tombstone'
+#
+CREATE TABLE tx_contactbook_carddav_tombstone
+(
+    uid int(11) unsigned NOT NULL auto_increment,
+    pid int(11) DEFAULT '0' NOT NULL,
+    tstamp int(11) unsigned DEFAULT '0' NOT NULL,
+    crdate int(11) unsigned DEFAULT '0' NOT NULL,
+    deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
+    contact_book int(11) unsigned DEFAULT '0' NOT NULL,
+    contact_uuid varchar(40) DEFAULT '' NOT NULL,
+
+    PRIMARY KEY uid (uid),
+    KEY contact_book (contact_book),
+    KEY contact_uuid (contact_uuid)
+);
