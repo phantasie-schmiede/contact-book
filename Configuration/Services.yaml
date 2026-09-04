@@ -10,6 +10,7 @@ services:
     arguments: ['contacts_list']
 
   PSBits\ContactBook\:
+    exclude: '../Classes/Domain/Model/*'
     resource: '../Classes/*'
 
   PSBits\ContactBook\Service\ContactService:

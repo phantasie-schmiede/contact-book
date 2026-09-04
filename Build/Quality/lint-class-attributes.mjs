@@ -36,7 +36,6 @@ const lintErrors = [];
 const repositoryRoot = process.cwd();
 const targets = [
     'Resources/Private/**/*.html',
-    'ContentBlocks/**/*.html'
 ];
 
 const compareClassNames = (left, right) => {

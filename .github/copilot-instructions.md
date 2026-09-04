@@ -51,7 +51,7 @@ unless asked.
 - Primary local QA command:
     - `composer lint:all`
     - Runs: `audit:composer`, `validate:composer`, `lint:php`, `analyze:php`, `lint:typoscript`, `lint:classes`,
-      `lint:htmlxml`, `lint:js`, `lint:scss`, `lint:yaml`
+      `lint:htmlxml`, `lint:yaml`
 
 ## Onboarding run notes (errors/workarounds)
 
