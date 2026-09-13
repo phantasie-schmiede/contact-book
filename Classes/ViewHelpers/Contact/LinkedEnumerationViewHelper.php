@@ -51,10 +51,13 @@ class LinkedEnumerationViewHelper extends AbstractViewHelper
      */
     public function render(): string
     {
+        $uriBuilder = null;
+
         if ($this->renderingContext->hasAttribute(RequestInterface::class)) {
             $this->uriBuilder->setRequest($this->renderingContext->getAttribute(RequestInterface::class));
+            $uriBuilder = $this->uriBuilder;
         }
 
-        return ContactUtility::createEnumeration($this->arguments['contacts'], $this->uriBuilder);
+        return ContactUtility::createEnumeration($this->arguments['contacts'], $uriBuilder);
     }
 }
