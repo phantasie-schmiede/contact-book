@@ -31,7 +31,7 @@ use function sprintf;
 class ContactUtility
 {
     /**
-     * @param Contact[] $contacts
+     * @param Contact[]       $contacts
      * @param UriBuilder|null $uriBuilder
      *
      * @return string
@@ -93,15 +93,13 @@ class ContactUtility
     }
 
     /**
-     * @param Contact[] $contacts
-     *
      * @return Contact[]
      */
-    public static function sortByListName(array $contacts): array
+    public static function sortByListName(Contact ...$contacts): array
     {
         usort(
             $contacts,
-            static fn(Contact $a, Contact $b) => strnatcasecmp(
+            static fn($a, $b) => strnatcasecmp(
                 NameUtility::getCompareString($a->getListName()),
                 NameUtility::getCompareString($b->getListName())
             )

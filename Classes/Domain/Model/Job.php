@@ -78,7 +78,7 @@ class Job extends AbstractContactRelatedEntity
             }
         }
 
-        return ContactUtility::sortByListName($colleagues);
+        return ContactUtility::sortByListName(...$colleagues);
     }
 
     public function getCompactValue(): string

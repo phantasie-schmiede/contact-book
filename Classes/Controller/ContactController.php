@@ -71,6 +71,7 @@ use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
@@ -204,7 +205,10 @@ class ContactController extends AbstractAccessController
     }
 
     /**
+     * @throws ContainerExceptionInterface
      * @throws JsonException
+     * @throws NotFoundExceptionInterface
+     * @throws InvalidQueryException
      */
     #[PluginAction(uncached: true)]
     public function getAutoCompleteListAction(bool $companies = false, Contact $contact = null): ResponseInterface
@@ -220,7 +224,7 @@ class ContactController extends AbstractAccessController
         }
 
         $contacts = ContactUtility::sortByListName(
-            $this->contactRepository->findByDemand($demand)
+            ...$this->contactRepository->findByDemand($demand)
                 ->toArray()
         );
 
@@ -360,13 +364,16 @@ class ContactController extends AbstractAccessController
     }
 
     /**
+     * @throws ContainerExceptionInterface
+     * @throws InvalidQueryException
      * @throws JsonException
+     * @throws NotFoundExceptionInterface
      */
     private function getList(): string
     {
         // Find all contacts.
         $contacts = ContactUtility::sortByListName(
-            $this->contactRepository->findByDemand(new ContactDemand())
+            ...$this->contactRepository->findByDemand(new ContactDemand())
                 ->toArray()
         );
 

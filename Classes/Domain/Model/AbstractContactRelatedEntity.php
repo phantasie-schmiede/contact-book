@@ -70,7 +70,7 @@ abstract class AbstractContactRelatedEntity extends AbstractEntity implements Co
     /** @return Contact[] */
     public function getContactsSorted(): array
     {
-        return ContactUtility::sortByListName($this->contacts->toArray());
+        return ContactUtility::sortByListName(...$this->contacts->toArray());
     }
 
     public function getNotes(): string
