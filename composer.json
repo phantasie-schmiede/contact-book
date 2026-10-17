@@ -46,11 +46,11 @@
     ],
     "require": {
         "php": "^8.3",
-        "psbits/foundation": "@dev",
+        "psbits/foundation": "^4.0",
         "psbits/frontend-users": "@dev",
         "psbits/templates": "@dev",
         "ramsey/uuid": "^4.7",
-        "typo3/cms-core": "^13.4"
+        "typo3/cms-core": "^13.4 || ^14.3"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.95",
