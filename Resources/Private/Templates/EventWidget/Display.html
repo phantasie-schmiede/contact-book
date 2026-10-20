@@ -1,11 +1,12 @@
 <html
-    data-namespace-typo3-fluid="true"
     xmlns:contactBook="http://typo3.org/ns/PSBits/ContactBook/ViewHelpers"
+    data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:psbvh="http://typo3.org/ns/PSBits/ViewHelpers/ViewHelpers"
     xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
-    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/eventType.xlf" />
+    <foundation:translation.registerLanguageFile
+        file="EXT:contact_book/Resources/Private/Language/Frontend/eventType.xlf" />
 
     <f:if condition="{events}">
         <f:then>
@@ -15,7 +16,9 @@
                     each="{events}"
                     key="date">
                     <li class="list-group-item">
-                        <div class="fw-bold">{date -> f:format.date(format: 'd.m.Y')}</div>
+                        <div class="fw-bold">
+                            {date -> f:format.date(format: 'd.m.Y')}
+                        </div>
                         <ul class="list-group list-group-flush">
                             <f:for
                                 as="event"
@@ -45,8 +48,10 @@
                                             name="persons"
                                             value="{contactBook:contact.linkedEnumeration(contacts: event.contactsAsArray)}" />
 
-                                        <f:if condition="{event.nextAnniversary}">
-                                            <f:if condition="{event.deceasedContact}">
+                                        <f:if
+                                            condition="{event.nextAnniversary}">
+                                            <f:if
+                                                condition="{event.deceasedContact}">
                                                 <f:then>
                                                     <f:variable
                                                         name="labelId"

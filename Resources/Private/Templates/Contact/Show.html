@@ -1,6 +1,6 @@
 <html
-    data-namespace-typo3-fluid="true"
     xmlns:contactBook="http://typo3.org/ns/PSBits/ContactBook/ViewHelpers"
+    data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:psbvh="http://typo3.org/ns/PSBits/ViewHelpers/ViewHelpers"
@@ -239,10 +239,13 @@
                 as="bankAccount"
                 each="{contact.bankAccounts}"
                 iteration="bankAccountIterator">
-                <div class="card{f:if(condition: bankAccountIterator.isLast, else: ' mb-3')}">
+                <div
+                    class="card{f:if(condition: bankAccountIterator.isLast, else: ' mb-3')}">
                     <div class="card-body">
                         <f:if condition="{bankAccount.bankName}">
-                            <h4 class="card-title h5">{bankAccount.bankName}</h4>
+                            <h4 class="card-title h5">
+                                {bankAccount.bankName}
+                            </h4>
                         </f:if>
 
                         <f:render
@@ -266,7 +269,9 @@
                         </f:render>
 
                         <f:if condition="{bankAccount.notes}">
-                            <p class="card-text mt-3 text-muted">{bankAccount.notes -> f:format.nl2br()}</p>
+                            <p class="card-text mt-3 text-muted">
+                                {bankAccount.notes -> f:format.nl2br()}
+                            </p>
                         </f:if>
                     </div>
                 </div>
@@ -297,7 +302,8 @@
 
         <f:if condition="{contact.documentsWithoutImages}">
             <h2 class="{f:if(condition: contact.images, then: 'mt-3')}">
-                <foundation:translate id="{f:if(condition: contact.images, then: 'otherDocuments', else: 'documents')}" />
+                <foundation:translate
+                    id="{f:if(condition: contact.images, then: 'otherDocuments', else: 'documents')}" />
             </h2>
             <f:render
                 arguments="{documents: contact.documentsWithoutImages}"
@@ -310,7 +316,8 @@
             as="document"
             each="{documents}"
             iteration="documentIterator">
-            <div class="card{f:if(condition: documentIterator.isFirst, else: ' mt-3')}">
+            <div
+                class="card{f:if(condition: documentIterator.isFirst, else: ' mt-3')}">
                 <div class="d-flex">
                     <f:image
                         class="img-fluid object-fit-cover rounded-start"
@@ -319,8 +326,14 @@
                         width="120c" />
 
                     <div class="card-body">
-                        <h4 class="card-title h5 mb-1">{psbvh:fallback(values: {0: document.title, 1: document.file.originalResource.originalFile.name})}</h4>
-                        <p class="card-text mb-2 text-muted">{foundation:translate(arguments: {size: document.file.size}, id: 'fileSize')}</p>
+                        <h4 class="card-title h5 mb-1">
+                            {psbvh:fallback(values: {0: document.title, 1:
+                            document.file.originalResource.originalFile.name})}
+                        </h4>
+                        <p class="card-text mb-2 text-muted">
+                            {foundation:translate(arguments: {size:
+                            document.file.size}, id: 'fileSize')}
+                        </p>
                     </div>
 
                     <div class="d-flex flex-column gap-2 p-2">
@@ -331,7 +344,8 @@
                             <foundation:translate id="showFile" />
                         </a>
 
-                        <f:if condition="{isImage} && !{document.useAsProfileImage}}">
+                        <f:if
+                            condition="{isImage} && !{document.useAsProfileImage}}">
                             <templates:component.button
                                 additionalClasses="bg-primary-subtle"
                                 href="{f:uri.action(action: 'setProfileImage', arguments: {contact: contact, document: document})}"
@@ -369,17 +383,20 @@
                             <!-- The wrapping element is needed for correct formatting of the text inside the d-flex container. -->
                         </f:comment>
                         <div>
-                            <f:if condition="!{event.year} && {event.monthAndDayGiven}">
+                            <f:if
+                                condition="!{event.year} && {event.monthAndDayGiven}">
                                 <f:then>{event.label}</f:then>
                                 <f:else>{event.type.label}</f:else>
                             </f:if>
 
-                            <f:if condition="('divorce' == {event.type.value} || 'wedding' == {event.type.value}) && {event.contacts}">
+                            <f:if
+                                condition="('divorce' == {event.type.value} || 'wedding' == {event.type.value}) && {event.contacts}">
                                 <f:variable
                                     name="spouse"
                                     value="{contactBook:event.otherContacts(contact: contact, event: event, returnFirst: 'true')}" />
 
-                                <foundation:translate id="dyn.event.otherContactPreposition.{event.type.value}" />
+                                <foundation:translate
+                                    id="dyn.event.otherContactPreposition.{event.type.value}" />
 
                                 <f:if condition="{spouse.birthName}">
                                     <f:then>
@@ -397,13 +414,19 @@
                                     </f:else>
                                 </f:if>
 
-                                {name -> f:link.action(action: 'show', arguments: {contact: spouse}, class: 'text-decoration-none')}
+                                {name -> f:link.action(action: 'show',
+                                arguments: {contact: spouse}, class:
+                                'text-decoration-none')}
                             </f:if>
 
-                            <f:if condition="{event.location}">in {event.location}</f:if>
+                            <f:if condition="{event.location}">
+                                in {event.location}
+                            </f:if>
 
                             <f:if condition="{event.notes}">
-                                <div class="mt-1 small text-muted">{event.notes -> f:format.nl2br()}</div>
+                                <div class="mt-1 small text-muted">
+                                    {event.notes -> f:format.nl2br()}
+                                </div>
                             </f:if>
                         </div>
 
@@ -448,7 +471,8 @@
     </f:section>
 
     <f:section name="TabOtherContent">
-        <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+        <foundation:translation.registerLanguageFile
+            file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
 
         <f:if condition="{contact.notes}">
             <h3>
@@ -480,13 +504,16 @@
             as="phoneNumber"
             each="{records}"
             iteration="phoneNumberIterator">
-            <div class="card{f:if(condition: phoneNumberIterator.isLast, else: ' mb-3')}">
-                <div class="card-body{f:if(condition: phoneNumber.notes, else: ' pb-2')}">
+            <div
+                class="card{f:if(condition: phoneNumberIterator.isLast, else: ' mb-3')}">
+                <div
+                    class="card-body{f:if(condition: phoneNumber.notes, else: ' pb-2')}">
                     <h4 class="card-title h5 mb-0">
                         <templates:svgIcon
                             additionalClasses="me-1"
                             identifier="templates-{phoneNumber.generalType.iconIdentifier}" />
-                        <templates:svgIcon identifier="templates-{phoneNumber.phoneNumberType.iconIdentifier}" />
+                        <templates:svgIcon
+                            identifier="templates-{phoneNumber.phoneNumberType.iconIdentifier}" />
                         {phoneNumber.compactValue}
                     </h4>
 
@@ -498,13 +525,16 @@
                             <a
                                 class="link-underline link-underline-opacity-0 p-2"
                                 href="{href}">
-                                <templates:svgIcon identifier="templates-{actionIconIdentifier}" />
+                                <templates:svgIcon
+                                    identifier="templates-{actionIconIdentifier}" />
                             </a>
                         </f:for>
                     </div>
 
                     <f:if condition="{phoneNumber.notes}">
-                        <p class="card-text text-muted">{phoneNumber.notes -> f:format.nl2br()}</p>
+                        <p class="card-text text-muted">
+                            {phoneNumber.notes -> f:format.nl2br()}
+                        </p>
                     </f:if>
                 </div>
             </div>
@@ -516,7 +546,8 @@
             arguments="{linkTarget: '_blank', records: contact.websites}"
             section="TabLinkedRelationsContent" />
 
-        <f:if condition="{contact.linkedinUrl} || {contact.xingUrl} || {contact.twitterUrl} || {contact.facebookUrl} || {contact.instagramUrl}">
+        <f:if
+            condition="{contact.linkedinUrl} || {contact.xingUrl} || {contact.twitterUrl} || {contact.facebookUrl} || {contact.instagramUrl}">
             <div class="d-flex flex-wrap gap-2 justify-content-end">
                 <f:if condition="{contact.linkedInUrl}">
                     <templates:component.button
@@ -563,7 +594,8 @@
     </f:section>
 
     <f:section name="TabWorkContent">
-        <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+        <foundation:translation.registerLanguageFile
+            file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
 
         <f:variable
             name="records"
@@ -571,7 +603,8 @@
 
         <f:if condition="{records}">
             <h3 class="mb-3">
-                <foundation:translate id="{f:if(condition: contact.ofTypePerson, then: 'contact:jobs', else: 'contact.employments')}" />
+                <foundation:translate
+                    id="{f:if(condition: contact.ofTypePerson, then: 'contact:jobs', else: 'contact.employments')}" />
             </h3>
             <f:for
                 as="job"
@@ -623,19 +656,29 @@
                     </f:else>
                 </f:if>
 
-                <div class="card{f:if(condition: jobIterator.isLast, else: ' mb-3')}">
+                <div
+                    class="card{f:if(condition: jobIterator.isLast, else: ' mb-3')}">
                     <div class="card-body">
                         <f:if condition="{cardTitle}">
-                            <h4 class="card-title h5{f:if(condition: '!{cardSubtitle} && !{job.notes}', then: ' mb-0')}">{cardTitle -> f:format.raw()}</h4>
+                            <h4
+                                class="card-title h5{f:if(condition: '!{cardSubtitle} && !{job.notes}', then: ' mb-0')}">
+                                {cardTitle -> f:format.raw()}
+                            </h4>
                         </f:if>
 
                         <f:if condition="{cardSubtitle}">
-                            <h5 class="card-subtitle h6 text-body-secondary{f:if(condition: job.notes, then: ' mb-2')}">{cardSubtitle}</h5>
+                            <h5
+                                class="card-subtitle h6 text-body-secondary{f:if(condition: job.notes, then: ' mb-2')}">
+                                {cardSubtitle}
+                            </h5>
                         </f:if>
 
-                        <f:if condition="{job.notes}">{job.notes -> f:format.nl2br()}</f:if>
+                        <f:if condition="{job.notes}">
+                            {job.notes -> f:format.nl2br()}
+                        </f:if>
 
-                        <f:if condition="{contact.ofTypePerson} && {job.colleagues}">
+                        <f:if
+                            condition="{contact.ofTypePerson} && {job.colleagues}">
                             <f:render
                                 arguments="{job: job}"
                                 section="Colleagues" />

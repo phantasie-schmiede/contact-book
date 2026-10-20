@@ -4,7 +4,8 @@
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
     <f:if condition="{contactBooks}">
         <f:then>
-            <div class="g-3 mb-3 row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4">
+            <div
+                class="g-3 mb-3 row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4">
                 <f:for
                     as="contactBook"
                     each="{contactBooks}">
@@ -29,7 +30,9 @@
                                 </p>
 
                                 <f:if condition="{contactBook.notes}">
-                                    <p class="card-text">{contactBook.notes -> f:format.nl2br()}</p>
+                                    <p class="card-text">
+                                        {contactBook.notes -> f:format.nl2br()}
+                                    </p>
                                 </f:if>
 
                                 <f:if condition="{contactBook.otherOwners}">
@@ -51,7 +54,8 @@
                                 </f:if>
 
                                 <f:if condition="{contactBook.active}">
-                                    <span class="align-self-start badge bg-success mb-3">
+                                    <span
+                                        class="align-self-start badge bg-success mb-3">
                                         <foundation:translate id="active" />
                                     </span>
                                 </f:if>
@@ -90,6 +94,7 @@
         <core:icon
             identifier="templates-plus-lg"
             size="small" />
-        <foundation:translate id="createContactBook.{f:if(condition: contactBooks, then: 'additional', else: 'first')}" />
+        <foundation:translate
+            id="createContactBook.{f:if(condition: contactBooks, then: 'additional', else: 'first')}" />
     </f:link.action>
 </html>

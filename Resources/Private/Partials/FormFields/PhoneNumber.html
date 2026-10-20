@@ -1,11 +1,13 @@
 <html
-    data-namespace-typo3-fluid="true"
     xmlns:contactBook="http://typo3.org/ns/PSBits/ContactBook/ViewHelpers"
+    data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:viewHelpers="http://typo3.org/ns/PSBits/ViewHelpers/ViewHelpers">
-    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/phoneNumber.xlf" />
-    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/Contact/edit.xlf" />
+    <foundation:translation.registerLanguageFile
+        file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/phoneNumber.xlf" />
+    <foundation:translation.registerLanguageFile
+        file="EXT:contact_book/Resources/Private/Language/Frontend/Contact/edit.xlf" />
 
     <f:if condition="{record}">
         <f:then>
@@ -40,7 +42,8 @@
                 each="{generalTypes}"
                 key="value">
                 <f:form.select.option value="{value}">
-                    <foundation:translate id="phoneNumber:generalType.{value}" />
+                    <foundation:translate
+                        id="phoneNumber:generalType.{value}" />
                 </f:form.select.option>
             </f:for>
         </f:form.select>
@@ -61,7 +64,8 @@
                 each="{phoneNumberTypes}"
                 key="value">
                 <f:form.select.option value="{value}">
-                    <foundation:translate id="phoneNumber:phoneNumberType.{value}" />
+                    <foundation:translate
+                        id="phoneNumber:phoneNumberType.{value}" />
                 </f:form.select.option>
             </f:for>
         </f:form.select>

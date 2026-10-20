@@ -3,8 +3,10 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
-    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/ContactGroup/show.xlf" />
-    <foundation:translation.registerLanguageFile file="EXT:templates/Resources/Private/Language/Frontend/Component/loadingSpinner.xlf" />
+    <foundation:translation.registerLanguageFile
+        file="EXT:contact_book/Resources/Private/Language/Frontend/ContactGroup/show.xlf" />
+    <foundation:translation.registerLanguageFile
+        file="EXT:templates/Resources/Private/Language/Frontend/Component/loadingSpinner.xlf" />
 
     <div class="h-100 position-relative">
         <div class="d-flex flex-column h-100 pb-5">
@@ -26,7 +28,8 @@
             </f:if>
         </div>
 
-        <div class="bg-white bottom-0 d-flex end-0 position-absolute pt-3 start-0 z-1">
+        <div
+            class="bg-white bottom-0 d-flex end-0 position-absolute pt-3 start-0 z-1">
             <templates:component.button
                 additionalClasses="bg-primary-subtle flex-grow-1"
                 href="{f:uri.action(action: 'list', controller: 'Contact', pluginName: 'ContactList')}"

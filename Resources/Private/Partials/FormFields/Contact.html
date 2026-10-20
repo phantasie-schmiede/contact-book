@@ -1,9 +1,10 @@
 <html
-    data-namespace-typo3-fluid="true"
     xmlns:contactBook="http://typo3.org/ns/PSBits/ContactBook/ViewHelpers"
+    data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
-    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+    <foundation:translation.registerLanguageFile
+        file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
 
     <f:asset.script
         identifier="copyContent"
@@ -151,7 +152,8 @@
         partial="Component/Tabs" />
 
     <f:section name="Accordion">
-        <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/Contact/edit.xlf" />
+        <foundation:translation.registerLanguageFile
+            file="EXT:contact_book/Resources/Private/Language/Frontend/Contact/edit.xlf" />
 
         <div
             class="accordion accordion-flush mb-3"
@@ -202,7 +204,8 @@
     </f:section>
 
     <f:section name="TabBankAccountsContent">
-        <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+        <foundation:translation.registerLanguageFile
+            file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
 
         <f:render
             arguments="{contact: contact, recordType: 'BankAccount', records: contact.bankAccounts}"
@@ -223,7 +226,8 @@
     </f:section>
 
     <f:section name="TabNameContent">
-        <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+        <foundation:translation.registerLanguageFile
+            file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
 
         <div
             class="form-floating mb-3{f:if(condition: 'company != {contact.type.value}', then: ' visually-hidden')}"
@@ -327,7 +331,8 @@
     </f:section>
 
     <f:section name="TabOtherContent">
-        <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+        <foundation:translation.registerLanguageFile
+            file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
 
         <div class="form-floating mb-3">
             <f:form.textarea
@@ -361,7 +366,8 @@
     </f:section>
 
     <f:section name="TabWebsitesContent">
-        <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
+        <foundation:translation.registerLanguageFile
+            file="EXT:contact_book/Resources/Private/Language/Backend/Configuration/TCA/contact.xlf" />
 
         <f:render
             arguments="{contact: contact, generalTypes: generalTypes, recordType: 'Website', records: contact.websites}"

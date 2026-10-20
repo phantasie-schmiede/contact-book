@@ -2,7 +2,8 @@
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
-    <foundation:translation.registerLanguageFile file="EXT:contact_book/Resources/Private/Language/Frontend/contactList.xlf" />
+    <foundation:translation.registerLanguageFile
+        file="EXT:contact_book/Resources/Private/Language/Frontend/contactList.xlf" />
 
     <f:asset.script
         identifier="ajaxContent"
@@ -32,7 +33,8 @@
             class="form-text"
             id="filter-count-{pluginUid}">
             <span data-psbits-filter-count-number>{totalCount}</span>
-            <span data-psbits-filter-count-text="{foundation:translate(arguments: '{number: totalCount}', id: 'contactList:totalNumberOfContacts')}">
+            <span
+                data-psbits-filter-count-text="{foundation:translate(arguments: '{number: totalCount}', id: 'contactList:totalNumberOfContacts')}">
                 <foundation:translate
                     arguments="{number: totalCount}"
                     id="contactList:contacts" />
