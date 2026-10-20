@@ -148,8 +148,8 @@ class CleanupService implements LoggerAwareInterface
 
     /**
      * @template T of AbstractContactRelatedEntity
-     * @param Repository<T>          $repository
-     * @param array<int, string>     $data
+     * @param Repository<T>      $repository
+     * @param array<int, string> $data
      * @param-out array<int, string> $data
      *
      * @throws IllegalObjectTypeException
