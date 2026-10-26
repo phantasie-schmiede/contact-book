@@ -16,21 +16,54 @@ use PSBits\ContactBook\Utility\PhoneNumberUtility;
 
 final class PhoneNumberUtilityTest extends TestCase
 {
-    public function testParsesALandlineNumber(): void
+    public function testFallsBackToTheNextFourDigitsForUnknownAreaCodes(): void
     {
-        $phoneNumber = PhoneNumberUtility::getPhoneNumberFromString('+493012345678');
+        $phoneNumber = PhoneNumberUtility::getPhoneNumberFromString('+499999123456');
 
         self::assertSame('49', $phoneNumber->getInternationalDiallingCode());
-        self::assertSame('3012', $phoneNumber->getAreaCode());
-        self::assertSame('345678', $phoneNumber->getConnectionIdentifier());
+        self::assertSame('9999', $phoneNumber->getAreaCode());
+        self::assertSame('123456', $phoneNumber->getConnectionIdentifier());
     }
 
     public function testIgnoresWhitespaces(): void
     {
         $phoneNumber = PhoneNumberUtility::getPhoneNumberFromString('+49 30 12345678');
 
-        self::assertSame('3012', $phoneNumber->getAreaCode());
-        self::assertSame('345678', $phoneNumber->getConnectionIdentifier());
+        self::assertSame('30', $phoneNumber->getAreaCode());
+        self::assertSame('12345678', $phoneNumber->getConnectionIdentifier());
+    }
+
+    public function testParsesALandlineNumber(): void
+    {
+        $phoneNumber = PhoneNumberUtility::getPhoneNumberFromString('+493012345678');
+
+        self::assertSame('49', $phoneNumber->getInternationalDiallingCode());
+        self::assertSame('30', $phoneNumber->getAreaCode());
+        self::assertSame('12345678', $phoneNumber->getConnectionIdentifier());
+    }
+
+    public function testParsesALandlineNumberWithAThreeDigitAreaCode(): void
+    {
+        $phoneNumber = PhoneNumberUtility::getPhoneNumberFromString('+492011234567');
+
+        self::assertSame('201', $phoneNumber->getAreaCode());
+        self::assertSame('1234567', $phoneNumber->getConnectionIdentifier());
+    }
+
+    public function testParsesALandlineNumberWithAFourDigitAreaCode(): void
+    {
+        $phoneNumber = PhoneNumberUtility::getPhoneNumberFromString('+49216112345');
+
+        self::assertSame('2161', $phoneNumber->getAreaCode());
+        self::assertSame('12345', $phoneNumber->getConnectionIdentifier());
+    }
+
+    public function testParsesALandlineNumberWithAFiveDigitAreaCode(): void
+    {
+        $phoneNumber = PhoneNumberUtility::getPhoneNumberFromString('+493477912345');
+
+        self::assertSame('34779', $phoneNumber->getAreaCode());
+        self::assertSame('12345', $phoneNumber->getConnectionIdentifier());
     }
 
     public function testParsesAMobileNumber(): void
@@ -55,5 +88,16 @@ final class PhoneNumberUtilityTest extends TestCase
 
         self::assertSame('700', $phoneNumber->getAreaCode());
         self::assertSame('1234567', $phoneNumber->getConnectionIdentifier());
+    }
+
+    public function testPrefersTheLongestMatchingAreaCode(): void
+    {
+        $shorterAreaCode = PhoneNumberUtility::getPhoneNumberFromString('+49212123456');
+        $longerAreaCode  = PhoneNumberUtility::getPhoneNumberFromString('+49212912345');
+
+        self::assertSame('212', $shorterAreaCode->getAreaCode());
+        self::assertSame('123456', $shorterAreaCode->getConnectionIdentifier());
+        self::assertSame('2129', $longerAreaCode->getAreaCode());
+        self::assertSame('12345', $longerAreaCode->getConnectionIdentifier());
     }
 }

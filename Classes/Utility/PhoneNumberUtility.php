@@ -27,7 +27,7 @@ class PhoneNumberUtility
 
         $pattern = '/\+(?<internationalDiallingCode>49)(?<areaCode>' . implode(
             '|',
-            array_merge(NumberBlockUtility::getGermanMobileServicesWithoutLeadingZero(), ['\d{4}'])
+            array_merge(NumberBlockUtility::getGermanNumberBlocksWithoutLeadingZero(), ['\d{4}'])
         ) . ')(?<connectionIdentifier>.*)/';
         preg_match($pattern, $phoneNumber, $matches);
 

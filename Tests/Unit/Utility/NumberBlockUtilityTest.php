@@ -16,10 +16,34 @@ use PSBits\ContactBook\Utility\NumberBlockUtility;
 
 final class NumberBlockUtilityTest extends TestCase
 {
-    public function testStripsTheLeadingZero(): void
+    public function testContainsAllNumberBlocks(): void
     {
-        foreach (NumberBlockUtility::getGermanMobileServicesWithoutLeadingZero() as $numberBlock) {
-            self::assertStringStartsNotWith('0', $numberBlock);
+        $numberBlocks = NumberBlockUtility::getGermanNumberBlocksWithoutLeadingZero();
+
+        foreach ([
+            '171',
+            '30',
+            '800',
+        ] as $numberBlock) {
+            self::assertContains($numberBlock, $numberBlocks);
+        }
+    }
+
+    public function testContainsTheLandlineAreaCodes(): void
+    {
+        $areaCodes = NumberBlockUtility::getGermanLandlineAreaCodesWithoutLeadingZero();
+
+        foreach ([
+            '30',
+            '40',
+            '69',
+            '89',
+            '201',
+            '2161',
+            '2129',
+            '34779',
+        ] as $areaCode) {
+            self::assertContains($areaCode, $areaCodes);
         }
     }
 
@@ -49,6 +73,37 @@ final class NumberBlockUtilityTest extends TestCase
             '900',
         ] as $numberBlock) {
             self::assertContains($numberBlock, $numberBlocks);
+        }
+    }
+
+    public function testNumberBlocksAreSortedByLengthDescending(): void
+    {
+        $numberBlocks = NumberBlockUtility::getGermanNumberBlocksWithoutLeadingZero();
+        $lengths      = array_map('strlen', $numberBlocks);
+        $sorted       = $lengths;
+
+        rsort($sorted);
+
+        self::assertSame($sorted, $lengths);
+    }
+
+    public function testNumberBlocksContainNoDuplicates(): void
+    {
+        $numberBlocks = NumberBlockUtility::getGermanNumberBlocksWithoutLeadingZero();
+
+        self::assertCount(count($numberBlocks), array_unique($numberBlocks));
+    }
+
+    public function testStripsTheLeadingZero(): void
+    {
+        foreach ([
+            NumberBlockUtility::getGermanLandlineAreaCodesWithoutLeadingZero(),
+            NumberBlockUtility::getGermanMobileServicesWithoutLeadingZero(),
+            NumberBlockUtility::getGermanNumberBlocksWithoutLeadingZero(),
+        ] as $numberBlocks) {
+            foreach ($numberBlocks as $numberBlock) {
+                self::assertStringStartsNotWith('0', $numberBlock);
+            }
         }
     }
 }
