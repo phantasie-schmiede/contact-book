@@ -44,29 +44,13 @@ class NumberBlockUtility
     /** @var array<string, string[]> */
     private static array $numberBlocks = [];
 
-    /** @return string[] */
-    public static function getGermanLandlineAreaCodesWithoutLeadingZero(): array
-    {
-        return self::stripLeadingZero(self::loadNumberBlocks(self::BLOCK_LANDLINE_AREA_CODES, 'Germany'));
-    }
-
-    /** @return string[] */
-    public static function getGermanMobileServicesWithoutLeadingZero(): array
-    {
-        return self::stripLeadingZero(
-            array_merge(
-                self::loadNumberBlocks(self::BLOCK_MOBILE_SERVICES, 'Germany'),
-                self::loadNumberBlocks(self::BLOCK_SERVICES, 'Germany')
-            )
-        );
-    }
-
     /**
      * Returns all German number blocks (landline area codes, mobile services
      * and services) without the leading zero, sorted by length (longest
      * first) and alphabetically, so that the longest matching block wins.
      *
      * @return string[]
+     * @throws JsonException
      */
     public static function getGermanNumberBlocksWithoutLeadingZero(): array
     {
@@ -96,7 +80,7 @@ class NumberBlockUtility
 
         if (!isset(self::$numberBlocks[$key])) {
             $file         = dirname(__DIR__, 2) . '/Resources/Private/Json/' . $block . '/' . $country . '.json';
-            $numberBlocks = json_decode((string) file_get_contents($file), true, 512, JSON_THROW_ON_ERROR);
+            $numberBlocks = json_decode((string)file_get_contents($file), true, 512, JSON_THROW_ON_ERROR);
 
             if (!is_array($numberBlocks)) {
                 throw new LogicException(sprintf('Invalid number block data in %s.', $file));

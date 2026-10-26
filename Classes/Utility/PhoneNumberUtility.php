@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Utility;
 
+use JsonException;
 use PSBits\ContactBook\Domain\Model\PhoneNumber;
 
 /**
@@ -20,6 +21,9 @@ use PSBits\ContactBook\Domain\Model\PhoneNumber;
  */
 class PhoneNumberUtility
 {
+    /**
+     * @throws JsonException
+     */
     public static function getPhoneNumberFromString(string $phoneNumber): PhoneNumber
     {
         // Remove all whitespaces.

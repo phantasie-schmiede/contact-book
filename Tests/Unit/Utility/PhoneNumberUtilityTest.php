@@ -11,11 +11,15 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Tests\Unit\Utility;
 
+use JsonException;
 use PHPUnit\Framework\TestCase;
 use PSBits\ContactBook\Utility\PhoneNumberUtility;
 
 final class PhoneNumberUtilityTest extends TestCase
 {
+    /**
+     * @throws JsonException
+     */
     public function testFallsBackToTheNextFourDigitsForUnknownAreaCodes(): void
     {
         $phoneNumber = PhoneNumberUtility::getPhoneNumberFromString('+499999123456');
@@ -25,6 +29,9 @@ final class PhoneNumberUtilityTest extends TestCase
         self::assertSame('123456', $phoneNumber->getConnectionIdentifier());
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testIgnoresWhitespaces(): void
     {
         $phoneNumber = PhoneNumberUtility::getPhoneNumberFromString('+49 30 12345678');
@@ -33,6 +40,9 @@ final class PhoneNumberUtilityTest extends TestCase
         self::assertSame('12345678', $phoneNumber->getConnectionIdentifier());
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testParsesALandlineNumber(): void
     {
         $phoneNumber = PhoneNumberUtility::getPhoneNumberFromString('+493012345678');
@@ -42,6 +52,9 @@ final class PhoneNumberUtilityTest extends TestCase
         self::assertSame('12345678', $phoneNumber->getConnectionIdentifier());
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testParsesALandlineNumberWithAThreeDigitAreaCode(): void
     {
         $phoneNumber = PhoneNumberUtility::getPhoneNumberFromString('+492011234567');
@@ -50,6 +63,9 @@ final class PhoneNumberUtilityTest extends TestCase
         self::assertSame('1234567', $phoneNumber->getConnectionIdentifier());
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testParsesALandlineNumberWithAFourDigitAreaCode(): void
     {
         $phoneNumber = PhoneNumberUtility::getPhoneNumberFromString('+49216112345');
@@ -58,6 +74,9 @@ final class PhoneNumberUtilityTest extends TestCase
         self::assertSame('12345', $phoneNumber->getConnectionIdentifier());
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testParsesALandlineNumberWithAFiveDigitAreaCode(): void
     {
         $phoneNumber = PhoneNumberUtility::getPhoneNumberFromString('+493477912345');
@@ -66,6 +85,9 @@ final class PhoneNumberUtilityTest extends TestCase
         self::assertSame('12345', $phoneNumber->getConnectionIdentifier());
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testParsesAMobileNumber(): void
     {
         $phoneNumber = PhoneNumberUtility::getPhoneNumberFromString('+491712345678');
@@ -74,6 +96,9 @@ final class PhoneNumberUtilityTest extends TestCase
         self::assertSame('2345678', $phoneNumber->getConnectionIdentifier());
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testParsesAMobileNumberWithALongerNumberBlock(): void
     {
         $phoneNumber = PhoneNumberUtility::getPhoneNumberFromString('+491501912345');
@@ -82,6 +107,9 @@ final class PhoneNumberUtilityTest extends TestCase
         self::assertSame('12345', $phoneNumber->getConnectionIdentifier());
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testParsesAServiceNumber(): void
     {
         $phoneNumber = PhoneNumberUtility::getPhoneNumberFromString('+497001234567');
@@ -90,6 +118,9 @@ final class PhoneNumberUtilityTest extends TestCase
         self::assertSame('1234567', $phoneNumber->getConnectionIdentifier());
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testPrefersTheLongestMatchingAreaCode(): void
     {
         $shorterAreaCode = PhoneNumberUtility::getPhoneNumberFromString('+49212123456');

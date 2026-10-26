@@ -11,11 +11,15 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Tests\Unit\Utility;
 
+use JsonException;
 use PHPUnit\Framework\TestCase;
 use PSBits\ContactBook\Utility\NumberBlockUtility;
 
 final class NumberBlockUtilityTest extends TestCase
 {
+    /**
+     * @throws JsonException
+     */
     public function testContainsAllNumberBlocks(): void
     {
         $numberBlocks = NumberBlockUtility::getGermanNumberBlocksWithoutLeadingZero();
@@ -29,9 +33,12 @@ final class NumberBlockUtilityTest extends TestCase
         }
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testContainsTheLandlineAreaCodes(): void
     {
-        $areaCodes = NumberBlockUtility::getGermanLandlineAreaCodesWithoutLeadingZero();
+        $areaCodes = NumberBlockUtility::getGermanNumberBlocksWithoutLeadingZero();
 
         foreach ([
             '30',
@@ -47,9 +54,12 @@ final class NumberBlockUtilityTest extends TestCase
         }
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testContainsTheMobileNumberBlocks(): void
     {
-        $numberBlocks = NumberBlockUtility::getGermanMobileServicesWithoutLeadingZero();
+        $numberBlocks = NumberBlockUtility::getGermanNumberBlocksWithoutLeadingZero();
 
         foreach ([
             '15019',
@@ -63,9 +73,12 @@ final class NumberBlockUtilityTest extends TestCase
         }
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testContainsTheServiceNumberBlocks(): void
     {
-        $numberBlocks = NumberBlockUtility::getGermanMobileServicesWithoutLeadingZero();
+        $numberBlocks = NumberBlockUtility::getGermanNumberBlocksWithoutLeadingZero();
 
         foreach ([
             '700',
@@ -76,6 +89,9 @@ final class NumberBlockUtilityTest extends TestCase
         }
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testNumberBlocksAreSortedByLengthDescending(): void
     {
         $numberBlocks = NumberBlockUtility::getGermanNumberBlocksWithoutLeadingZero();
@@ -87,6 +103,9 @@ final class NumberBlockUtilityTest extends TestCase
         self::assertSame($sorted, $lengths);
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testNumberBlocksContainNoDuplicates(): void
     {
         $numberBlocks = NumberBlockUtility::getGermanNumberBlocksWithoutLeadingZero();
@@ -94,16 +113,13 @@ final class NumberBlockUtilityTest extends TestCase
         self::assertCount(count($numberBlocks), array_unique($numberBlocks));
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testStripsTheLeadingZero(): void
     {
-        foreach ([
-            NumberBlockUtility::getGermanLandlineAreaCodesWithoutLeadingZero(),
-            NumberBlockUtility::getGermanMobileServicesWithoutLeadingZero(),
-            NumberBlockUtility::getGermanNumberBlocksWithoutLeadingZero(),
-        ] as $numberBlocks) {
-            foreach ($numberBlocks as $numberBlock) {
-                self::assertStringStartsNotWith('0', $numberBlock);
-            }
+        foreach (NumberBlockUtility::getGermanNumberBlocksWithoutLeadingZero() as $numberBlock) {
+            self::assertStringStartsNotWith('0', $numberBlock);
         }
     }
 }
