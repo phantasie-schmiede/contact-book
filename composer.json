@@ -38,7 +38,7 @@
         "php": "^8.3",
         "psbits/foundation": "^4.0",
         "psbits/frontend-users": "@dev",
-        "psbits/templates": "@dev",
+        "psbits/frontend-templates": "@dev",
         "psbits/view-helpers": "@dev",
         "ramsey/uuid": "^4.7",
         "typo3/cms-core": "^13.4 || ^14.3"
@@ -60,7 +60,7 @@
         },
         {
             "type": "vcs",
-            "url": "git@github.com:phantasie-schmiede/templates.git"
+            "url": "git@github.com:phantasie-schmiede/frontend-templates.git"
         }
     ],
     "scripts": {

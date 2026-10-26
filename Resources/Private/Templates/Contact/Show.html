@@ -4,7 +4,7 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:psbvh="http://typo3.org/ns/PSBits/ViewHelpers/ViewHelpers"
-    xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
+    xmlns:frontendTemplates="http://typo3.org/ns/PSBits/FrontendTemplates/ViewHelpers">
     <f:layout name="Default" />
 
     <f:section name="Main">
@@ -172,7 +172,7 @@
                 arguments="{
                     classes: 'bg-danger btn ms-auto',
                     modalId: 'delete-contact-{contact.uid}-modal',
-                    text: '{templates:svgIcon(identifier: \'templates-trash\')}',
+                    text: '{frontendTemplates:svgIcon(identifier: \'templates-trash\')}',
                     title: '{foundation:translate(id: \'delete\')}'
                 }"
                 partial="Component/Modal/Toggle" />
@@ -704,7 +704,7 @@
             arguments="{
                 classes: 'badge border-1 d-block mt-3 position-relative rounded-pill text-bg-light z-2',
                 modalId: modalId,
-                text: '{templates:svgIcon(identifier: iconIdentifier)} {foundation:translate(arguments: {quantity: numberOfColleagues}, id: \'colleagues\')}',
+                text: '{frontendTemplates:svgIcon(identifier: iconIdentifier)} {foundation:translate(arguments: {quantity: numberOfColleagues}, id: \'colleagues\')}',
                 title: 'Kollegen anzeigen'
             }"
             partial="Component/Modal/Toggle" />

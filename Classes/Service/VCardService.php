@@ -22,7 +22,7 @@ use PSBits\ContactBook\Domain\Model\PhoneNumber;
 use PSBits\ContactBook\Domain\Model\Website;
 use PSBits\ContactBook\Service\Enum\VCardVersion;
 use PSBits\ContactBook\Utility\ContactUtility;
-use PSBits\Templates\Service\CountryNamesService;
+use PSBits\FrontendTemplates\Service\CountryNamesService;
 use RuntimeException;
 
 use function strlen;

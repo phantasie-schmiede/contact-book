@@ -22,7 +22,7 @@ use PSBits\Foundation\Service\GlobalVariableService;
 use PSBits\FrontendUsers\Domain\Model\Typo3\FrontendUser;
 use PSBits\FrontendUsers\Domain\Repository\Typo3\FrontendUserRepository;
 use PSBits\FrontendUsers\Service\GlobalVariableProviders\FrontendUserProvider;
-use PSBits\Templates\Utility\SlugUtility;
+use PSBits\FrontendTemplates\Utility\SlugUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use ReflectionException;

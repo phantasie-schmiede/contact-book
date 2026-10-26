@@ -21,7 +21,7 @@ use PSBits\ContactBook\Domain\Repository\ContactBookRepository;
 use PSBits\ContactBook\Domain\Repository\EventRepository;
 use PSBits\Foundation\Attribute\PluginAction;
 use PSBits\FrontendUsers\Service\ValidationService;
-use PSBits\Templates\Utility\StringUtility;
+use PSBits\FrontendTemplates\Utility\StringUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;

@@ -16,7 +16,7 @@ use PSBits\ContactBook\Controller\ContactGroupController;
 use PSBits\ContactBook\Domain\Model\ContactGroup;
 use PSBits\ContactBook\Domain\Repository\ContactGroupRepository;
 use PSBits\Foundation\Service\Configuration\TcaService;
-use PSBits\Templates\Utility\SlugUtility;
+use PSBits\FrontendTemplates\Utility\SlugUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use ReflectionException;

@@ -15,7 +15,7 @@ use JsonException;
 use PSBits\ContactBook\Domain\Enum\EventType;
 use PSBits\ContactBook\Domain\Model\Contact;
 use PSBits\ContactBook\Domain\Model\Event;
-use PSBits\Templates\Utility\StringUtility;
+use PSBits\FrontendTemplates\Utility\StringUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;

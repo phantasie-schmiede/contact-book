@@ -13,7 +13,7 @@ namespace PSBits\ContactBook\Event;
 
 use InvalidArgumentException;
 use PSBits\ContactBook\Domain\Model\Contact;
-use PSBits\Templates\Event\AbstractAdditionalContentEvent;
+use PSBits\FrontendTemplates\Event\AbstractAdditionalContentEvent;
 
 /**
  * Class AdditionalContactContentEvent
