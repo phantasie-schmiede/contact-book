@@ -41,7 +41,7 @@
     "name": "psbits/contact-book",
     "require": {
         "php": "^8.3",
-        "psbits/foundation": "^4.0",
+        "psbits/foundation": "^4.2.2",
         "psbits/frontend-users": "@dev",
         "psbits/frontend-templates": "@dev",
         "psbits/view-helpers": "@dev",
