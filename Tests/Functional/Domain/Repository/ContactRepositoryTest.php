@@ -20,11 +20,11 @@ use PSBits\ContactBook\Domain\Repository\ContactRepository;
 use PSBits\Foundation\Service\GlobalVariableService;
 use PSBits\FrontendUsers\Domain\Model\Typo3\FrontendUser;
 use PSBits\FrontendUsers\Service\GlobalVariableProviders\FrontendUserProvider;
+use PSBits\Qa\Testing\Support\PersistenceSupportTrait;
 use PHPUnit\Framework\Attributes\Test;
 use ReflectionException;
 use ReflectionProperty;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -34,6 +34,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class ContactRepositoryTest extends FunctionalTestCase
 {
+    use PersistenceSupportTrait;
+
     protected array $testExtensionsToLoad = [
         'typo3/sysext/fluid_styled_content',
         'typo3conf/ext/friendsoftypo3/content-blocks',
@@ -44,15 +46,6 @@ class ContactRepositoryTest extends FunctionalTestCase
         'typo3conf/ext/psbits/view-helpers',
         'typo3conf/ext/wapplersystems/ws-scss',
     ];
-
-    private PersistenceManager $persistenceManager;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->persistenceManager = $this->get(PersistenceManager::class);
-    }
 
     #[Test]
     public function contactsMatchingTheDemandAreReturned(): void
@@ -163,19 +156,6 @@ class ContactRepositoryTest extends FunctionalTestCase
                 'user'      => $user,
             ],
         ]);
-    }
-
-    /**
-     * @param object[] $objects
-     */
-    private function persistAll(object ...$objects): void
-    {
-        foreach ($objects as $object) {
-            $this->persistenceManager->add($object);
-        }
-
-        $this->persistenceManager->persistAll();
-        $this->persistenceManager->clearState();
     }
 
     /**

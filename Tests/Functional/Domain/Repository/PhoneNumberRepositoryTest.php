@@ -14,9 +14,9 @@ namespace PSBits\ContactBook\Tests\Functional\Domain\Repository;
 use PSBits\ContactBook\Domain\Demand\PhoneNumberDemand;
 use PSBits\ContactBook\Domain\Model\PhoneNumber;
 use PSBits\ContactBook\Domain\Repository\PhoneNumberRepository;
+use PSBits\Qa\Testing\Support\PersistenceSupportTrait;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -26,6 +26,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class PhoneNumberRepositoryTest extends FunctionalTestCase
 {
+    use PersistenceSupportTrait;
+
     protected array $testExtensionsToLoad = [
         'typo3/sysext/fluid_styled_content',
         'typo3conf/ext/friendsoftypo3/content-blocks',
@@ -81,20 +83,6 @@ class PhoneNumberRepositoryTest extends FunctionalTestCase
             ->setConnectionIdentifier($connectionIdentifier);
 
         return $phoneNumber;
-    }
-
-    /**
-     * @param object[] $objects
-     */
-    private function persistAll(object ...$objects): void
-    {
-        $persistenceManager = $this->get(PersistenceManager::class);
-        foreach ($objects as $object) {
-            $persistenceManager->add($object);
-        }
-
-        $persistenceManager->persistAll();
-        $persistenceManager->clearState();
     }
 
     /**

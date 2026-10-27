@@ -12,18 +12,11 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Tests\Unit\Domain\Model;
 
 use DateTime;
-use PSBits\Foundation\Utility\Typo3VersionUtility;
 use PSBits\ContactBook\Domain\Enum\EventType;
 use PSBits\ContactBook\Domain\Model\Contact;
 use PSBits\ContactBook\Domain\Model\Event;
-use PSBits\ContactBook\Tests\Unit\Fixtures\FakeLanguageServiceFactory;
+use PSBits\Qa\Testing\Support\LanguageStackSeeder;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Localization\Locale;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -33,6 +26,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class EventTest extends UnitTestCase
 {
+    use LanguageStackSeeder;
+
     // The language service factory is a pre-seeded singleton, which must not leak between tests.
     protected bool $resetSingletonInstances = true;
 
@@ -42,11 +37,8 @@ class EventTest extends UnitTestCase
 
         /*
          * The labels come from the extension language file, which the core language stack cannot load in unit tests.
-         * A pre-seeded language service factory serves them instead.
+         * The seeder pre-seeds a language service factory that serves them instead.
          */
-        $languageService = $this->createMock(LanguageService::class);
-        $languageService->method('getLocale')
-            ->willReturn(new Locale('en'));
         $labels = static function (string $key): string {
             $position = strrpos($key, ':');
             $key      = false === $position ? $key : substr($key, $position + 1);
@@ -60,37 +52,7 @@ class EventTest extends UnitTestCase
                 default                => $key,
             };
         };
-        $languageService->method('sL')
-            ->willReturnCallback($labels);
-
-        /*
-         * On v14, the language service serves labels through `translate()`; the method does not exist on v13.
-         */
-        if (Typo3VersionUtility::isAtLeast('14.0')) {
-            $languageService->method('translate')
-                ->willReturnCallback($labels);
-        }
-
-        GeneralUtility::setSingletonInstance(
-            LanguageServiceFactory::class,
-            new FakeLanguageServiceFactory($languageService)
-        );
-
-        /*
-         * On v13, the core keeps the language service in the runtime cache between lookups, which is not configured
-         * in unit tests. A stubbed cache manager serves the pre-seeded language service instead.
-         */
-        if (false === Typo3VersionUtility::isAtLeast('14.0')) {
-            $cache = $this->createMock(FrontendInterface::class);
-            $cache->method('get')
-                ->willReturn($languageService);
-
-            $cacheManager = $this->createMock(CacheManager::class);
-            $cacheManager->method('getCache')
-                ->willReturn($cache);
-
-            GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
-        }
+        $this->seedLanguageStack($labels);
     }
 
     #[Test]
