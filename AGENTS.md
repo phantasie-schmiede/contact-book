@@ -73,6 +73,26 @@ PHP namespace: `PSBits\ContactBook\`.
 - `Resources/Private/Templates|Partials|Layouts/` — Fluid templates.
 - `ext_localconf.php` — general configuration like caching.
 
+## Foundation integration
+
+This extension builds on `psbits/foundation`, so it deliberately deviates from the standard TYPO3
+layout. Full conventions: `psbits-foundation` skill (`.opencode/skills/psbits-foundation/SKILL.md`).
+
+- The TCA of the own domain models is generated at boot from the `#[Ctrl]`/`#[Column]` attributes -
+  there are no `Configuration/TCA/<table>.php` files for own models; do not create them. The
+  exception is `Configuration/TCA/Overrides/tx_contactbook_domain_model_document.php`, a manual TCA
+  override on purpose.
+- `ext_tables.sql` defines only the auxiliary tables `tx_contactbook_bank_data` and
+  `tx_contactbook_log`; the domain model tables are derived from the TCA attributes.
+- Plugins and backend modules are registered in `Classes/Data/ExtensionInformation.php`;
+  `Configuration/Backend/Modules.php` is a thin wrapper - never add logic there.
+- `ext_localconf.php` exists on purpose: it configures the log writer and the `contacts_list`
+  cache configuration (not plugin registration).
+- FlexForms in `Configuration/FlexForms/` are auto-registered; their labels belong in
+  `Resources/Private/Language/Backend/Configuration/FlexForms/[formName].xlf`.
+- Default TCA labels belong in `Resources/Private/Language/Backend/Configuration/TCA/[modelName].xlf`
+  (keys: `ctrl.title`, `<property>`, `<property>.description`, `palette.*`, `tab.*`).
+
 ## Architecture and conventions
 
 - Strongly typed PHP (`declare(strict_types=1);`) is standard for classes.
@@ -103,7 +123,8 @@ inconsistencies between the codebase and these instructions, mention them - don'
 
 ## Validation
 
-Repository quality checks are defined in `composer.json`, `package.json`, and `.github/workflows/quality.yml`.
+Repository quality checks are defined in `composer.json`, `package.json`, and the shared `CI`
+GitHub Actions workflow (`.github/workflows/ci.yml`).
 Quality configuration files are centralized in `Build/Quality/` and referenced by Composer/NPM scripts and CI.
 
 - Primary local QA command: `composer lint:all` (runs `audit:composer`, `validate:composer`, `lint:php`,
