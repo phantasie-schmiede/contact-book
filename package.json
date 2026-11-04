@@ -1,6 +1,6 @@
 {
   "name": "contact-book",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Comprehensive contact management",
   "scripts": {
     "fix:classes": "node .Build/vendor/psbits/qa/Resources/Quality/lint-class-attributes.mjs",
