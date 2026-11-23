@@ -21,17 +21,14 @@ use PSBits\Foundation\Enum\SelectRenderType;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 use function sprintf;
+use function trim;
 
 /**
- * Class PhoneNumber
- *
  * Number formats:
  *  - 0<area code> <connection identifier>
  *  - 0<area code> <connection identifier>-<extension>
  *  - +<international dialling code> <area code> <connection identifier>
  *  - +<international dialling code> <area code> <connection identifier>-<extension>
- *
- * @package PSBits\ContactBook\Domain\Model
  */
 #[Ctrl(label        : 'internationalDiallingCode', labelAlt: [
     'areaCode',
@@ -67,6 +64,7 @@ class PhoneNumber extends AbstractContactRelatedEntity
     protected string $extension = '';
 
     #[Select(items   : [
+        // PSBits/alphabetical_array_keys=off
         'Private'  => 'private',
         'Business' => 'business',
         'Other'    => 'other',
@@ -77,6 +75,7 @@ class PhoneNumber extends AbstractContactRelatedEntity
     protected string $internationalDiallingCode = '';
 
     #[Select(items   : [
+        // PSBits/alphabetical_array_keys=off
         'Landline' => 'landline',
         'Mobile'   => 'mobile',
         'Fax'      => 'fax',

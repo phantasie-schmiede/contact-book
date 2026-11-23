@@ -16,11 +16,6 @@ use Psr\Http\Message\ServerRequestInterface;
 
 use function count;
 
-/**
- * Class ModifyTabsEvent
- *
- * @package PSBits\ContactBook\Event
- */
 class ModifyTabsEvent
 {
     protected Contact                $contact;
@@ -30,8 +25,6 @@ class ModifyTabsEvent
     protected array $tabs = [];
 
     /**
-     * @param Contact                          $contact
-     * @param ServerRequestInterface           $request
      * @param array<int, array<string, mixed>> $tabs
      */
     public function __construct(Contact $contact, ServerRequestInterface $request, array $tabs = [])

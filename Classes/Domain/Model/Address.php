@@ -21,11 +21,6 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 use function sprintf;
 
-/**
- * Class Address
- *
- * @package PSBits\ContactBook\Domain\Model
- */
 #[Ctrl(label        : 'city', labelAlt: [
     'street',
     'houseNumber',
@@ -67,6 +62,7 @@ class Address extends AbstractContactRelatedEntity
 
     #[Column(required: true)]
     #[Select(items   : [
+        // PSBits/alphabetical_array_keys=off
         'Private'  => 'private',
         'Business' => 'business',
         'Other'    => 'other',

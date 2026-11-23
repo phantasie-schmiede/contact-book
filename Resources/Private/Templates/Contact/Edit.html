@@ -2,12 +2,12 @@
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
-    xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
+    xmlns:frontendTemplates="http://typo3.org/ns/PSBits/FrontendTemplates/ViewHelpers">
     <f:layout name="Default" />
 
     <f:section name="Main">
         <foundation:translation.registerLanguageFile
-            file="EXT:templates/Resources/Private/Language/Frontend/form.xlf" />
+            file="EXT:frontend_templates/Resources/Private/Language/Frontend/form.xlf" />
 
         <f:render
             arguments="{contact: contact, loadCompanies: true, loadContacts: true}"
@@ -25,7 +25,7 @@
 
             <f:variable
                 name="buttonLabel"
-                value="{templates:svgIcon(additionalClasses: 'me-2', identifier: 'templates-x-lg')}{foundation:translate(id: 'form:cancel')}" />
+                value="{frontendTemplates:svgIcon(additionalClasses: 'me-2', identifier: 'templates-x-lg')}{foundation:translate(id: 'form:cancel')}" />
 
             <f:render
                 contentAs="buttons"

@@ -15,10 +15,7 @@ use PSBits\ContactBook\Domain\Model\Document;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
- * Class DocumentRepository
- *
  * @extends Repository<Document>
- * @package PSBits\ContactBook\Domain\Repository
  */
 class DocumentRepository extends Repository
 {

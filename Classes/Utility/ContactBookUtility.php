@@ -17,15 +17,9 @@ use PSBits\Foundation\Service\GlobalVariableService;
 use PSBits\FrontendUsers\Domain\Model\Typo3\FrontendUser;
 use PSBits\FrontendUsers\Service\GlobalVariableProviders\FrontendUserProvider;
 
-/**
- * Class ContactBookUtility
- *
- * @package PSBits\ContactBook\Utility
- */
 class ContactBookUtility
 {
     /**
-     * @return int|null
      * @throws Exception
      * @throws JsonException
      */

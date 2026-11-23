@@ -11,11 +11,6 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Domain\Demand;
 
-/**
- * Class EMailDemand
- *
- * @package PSBits\ContactBook\Domain\Demand
- */
 class EMailDemand
 {
     protected string $eMailAddress = '';

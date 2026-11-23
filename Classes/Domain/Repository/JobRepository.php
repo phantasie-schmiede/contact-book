@@ -15,10 +15,7 @@ use PSBits\ContactBook\Domain\Model\Job;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
- * Class JobRepository
- *
  * @extends Repository<Job>
- * @package PSBits\ContactBook\Domain\Repository
  */
 class JobRepository extends Repository
 {

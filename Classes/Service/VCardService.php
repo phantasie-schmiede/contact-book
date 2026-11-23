@@ -22,16 +22,17 @@ use PSBits\ContactBook\Domain\Model\PhoneNumber;
 use PSBits\ContactBook\Domain\Model\Website;
 use PSBits\ContactBook\Service\Enum\VCardVersion;
 use PSBits\ContactBook\Utility\ContactUtility;
-use PSBits\Templates\Service\CountryNamesService;
+use PSBits\FrontendTemplates\Service\CountryNamesService;
 use RuntimeException;
+use Symfony\Component\Intl\Exception\MissingResourceException;
+use ValueError;
 
+use function array_map;
+use function implode;
+use function str_replace;
 use function strlen;
+use function substr;
 
-/**
- * Class VCardService
- *
- * @package PSBits\ContactBook\Service
- */
 class VCardService
 {
     private const string VCARD_EOL = "\r\n";
@@ -43,6 +44,11 @@ class VCardService
     ) {
     }
 
+    /**
+     * @throws MissingResourceException
+     * @throws RuntimeException
+     * @throws ValueError
+     */
     public function getVCard(Contact $contact, VCardVersion $version): string
     {
         $vCard         = '';
@@ -68,6 +74,9 @@ class VCardService
         return mb_convert_encoding($vCard, 'UTF-8', 'auto');
     }
 
+    /**
+     * @throws MissingResourceException
+     */
     private function addAddresses(Contact $contact, string &$vCard): void
     {
         if (0 === $contact->getAddresses()
@@ -93,6 +102,9 @@ class VCardService
         }
     }
 
+    /**
+     * @throws ValueError
+     */
     private function addBirthday(Contact $contact, string &$vCard): void
     {
         $birthEvent = ContactUtility::getBirthEvent($contact);
@@ -154,6 +166,9 @@ class VCardService
         }
     }
 
+    /**
+     * @throws ValueError
+     */
     private function addIndividualInformation(Contact $contact, string &$vCard): void
     {
         $this->addBirthday($contact, $vCard);
@@ -225,6 +240,37 @@ class VCardService
         }
     }
 
+    /**
+     * @param string[] $values
+     */
+    private function addStructuredTextLine(string $property, array $values, string &$vCard): void
+    {
+        $line = $property . ':' . implode(
+            ';',
+            array_map(
+                fn(string $value) => $this->escapeTextValue($value),
+                $values
+            )
+        );
+        $this->addLine($line, $vCard);
+    }
+
+    private function addTextLine(
+        string $property,
+        string $value,
+        string &$vCard,
+        bool $escapeComma = true,
+        bool $escapeSemicolon = true
+    ): void {
+        $this->addLine(
+            $property . ':' . $this->escapeTextValue($value, $escapeComma, $escapeSemicolon),
+            $vCard
+        );
+    }
+
+    /**
+     * @throws RuntimeException
+     */
     private function addUid(Contact $contact, string &$vCard): void
     {
         if ('' === $contact->getUuid()) {
@@ -261,34 +307,6 @@ class VCardService
                 false
             );
         }
-    }
-
-    /**
-     * @param string[] $values
-     */
-    private function addStructuredTextLine(string $property, array $values, string &$vCard): void
-    {
-        $line = $property . ':' . implode(
-            ';',
-            array_map(
-                fn(string $value) => $this->escapeTextValue($value),
-                $values
-            )
-        );
-        $this->addLine($line, $vCard);
-    }
-
-    private function addTextLine(
-        string $property,
-        string $value,
-        string &$vCard,
-        bool $escapeComma = true,
-        bool $escapeSemicolon = true
-    ): void {
-        $this->addLine(
-            $property . ':' . $this->escapeTextValue($value, $escapeComma, $escapeSemicolon),
-            $vCard
-        );
     }
 
     private function escapeTextValue(string $value, bool $escapeComma = true, bool $escapeSemicolon = true): string

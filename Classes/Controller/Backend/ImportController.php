@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Controller\Backend;
 
+use Exception;
+use InvalidArgumentException;
 use JsonException;
 use PSBits\ContactBook\Data\ExtensionInformation;
 use PSBits\ContactBook\Service\ImportService;
@@ -19,20 +21,14 @@ use PSBits\Foundation\Controller\Backend\AbstractModuleController;
 use PSBits\Foundation\Utility\Configuration\FilePathUtility;
 use PSBits\Foundation\Utility\LocalizationUtility;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
+use ReflectionException;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Http\UploadedFile;
-use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
-use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
+use ValueError;
 
-/**
- * Class ImportController
- *
- * @package PSBits\ContactBook\Controller\Backend
- */
 #[AsController]
 class ImportController extends AbstractModuleController
 {
@@ -47,10 +43,11 @@ class ImportController extends AbstractModuleController
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
-     * @throws IllegalObjectTypeException
+     * @throws Exception
+     * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
-     * @throws UnknownObjectException
+     * @throws ReflectionException
+     * @throws ValueError
      */
     #[ModuleAction]
     public function importAction(): ResponseInterface

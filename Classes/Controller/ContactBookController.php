@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Controller;
 
 use Doctrine\DBAL\Exception;
+use Exception as GlobalException;
+use InvalidArgumentException;
 use JsonException;
 use PSBits\ContactBook\Domain\Model\ContactBook;
 use PSBits\ContactBook\Domain\Repository\ContactBookRepository;
@@ -23,7 +25,6 @@ use PSBits\FrontendUsers\Domain\Model\Typo3\FrontendUser;
 use PSBits\FrontendUsers\Domain\Repository\Typo3\FrontendUserRepository;
 use PSBits\FrontendUsers\Service\GlobalVariableProviders\FrontendUserProvider;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use ReflectionException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -32,11 +33,8 @@ use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
-/**
- * Class ContactBookController
- *
- * @package PSBits\ContactBook\Controller
- */
+use function json_decode;
+
 class ContactBookController extends ActionController
 {
     use ControllerCacheTrait;
@@ -52,13 +50,13 @@ class ContactBookController extends ActionController
     /**
      * @throws ContainerExceptionInterface
      * @throws Exception
+     * @throws GlobalException
      * @throws IllegalObjectTypeException
+     * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
      * @throws ReflectionException
      * @throws SiteNotFoundException
      * @throws UnknownObjectException
-     * @throws \Exception
      */
     #[PluginAction(uncached: true)]
     public function createAction(ContactBook $contactBook): ResponseInterface
@@ -77,10 +75,8 @@ class ContactBookController extends ActionController
     }
 
     /**
+     * @throws GlobalException
      * @throws IllegalObjectTypeException
-     * @throws JsonException
-     * @throws UnknownObjectException
-     * @throws \Exception
      */
     #[PluginAction(uncached: true)]
     public function deleteAction(ContactBook $contactBook): ResponseInterface
@@ -109,7 +105,7 @@ class ContactBookController extends ActionController
     }
 
     /**
-     * @throws \Exception
+     * @throws GlobalException
      */
     #[PluginAction(default: true, uncached: true)]
     public function listAction(): ResponseInterface
@@ -120,7 +116,7 @@ class ContactBookController extends ActionController
     }
 
     /**
-     * @throws \Exception
+     * @throws GlobalException
      */
     #[PluginAction(uncached: true)]
     public function newAction(?ContactBook $contactBook = null): ResponseInterface
@@ -136,9 +132,7 @@ class ContactBookController extends ActionController
     }
 
     /**
-     * @throws IllegalObjectTypeException
-     * @throws JsonException
-     * @throws UnknownObjectException
+     * @throws GlobalException
      */
     #[PluginAction(uncached: true)]
     public function selectAction(ContactBook $contactBook): ResponseInterface
@@ -152,8 +146,8 @@ class ContactBookController extends ActionController
      * @throws ContainerExceptionInterface
      * @throws Exception
      * @throws IllegalObjectTypeException
+     * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
      * @throws ReflectionException
      * @throws SiteNotFoundException
      * @throws UnknownObjectException

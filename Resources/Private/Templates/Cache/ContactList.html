@@ -2,7 +2,7 @@
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
-    xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
+    xmlns:frontendTemplates="http://typo3.org/ns/PSBits/FrontendTemplates/ViewHelpers">
     <foundation:translation.registerLanguageFile
         file="EXT:contact_book/Resources/Private/Language/Frontend/contactList.xlf" />
 
@@ -76,7 +76,7 @@
                             arguments="{
                                 classes: 'bg-transparent border-0 p-2',
                                 modalId: 'contact-{uid}-{property}-modal',
-                                text: '{templates:svgIcon(identifier: \'templates-{records.0.actionIconIdentifier}\')}'
+                                text: '{frontendTemplates:svgIcon(identifier: \'templates-{records.0.actionIconIdentifier}\')}'
                             }"
                             partial="Component/Modal/Toggle" />
                     </f:else>

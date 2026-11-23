@@ -18,13 +18,9 @@ use PSBits\Foundation\Attribute\TCA\ColumnType\Input;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Select;
 use PSBits\Foundation\Attribute\TCA\Ctrl;
 
+use function implode;
 use function in_array;
 
-/**
- * Class EMail
- *
- * @package PSBits\ContactBook\Domain\Model
- */
 #[Ctrl(label: 'company', labelAlt: 'position, role', labelAltForce: true, searchFields: [
     'company.name',
     'notes',

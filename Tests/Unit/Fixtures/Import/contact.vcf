@@ -1,0 +1,13 @@
+BEGIN:VCARD
+VERSION:3.0
+FN:Max Philipp Mustermann
+NICKNAME:Maxi
+ADR:;;Hauptstraße 12;Berlin;Berlin;10115;Germany
+BDAY:19900515
+EMAIL;TYPE=HOME:max@example.com
+TEL;TYPE=CELL:+49 30 1234567
+ORG:Acme GmbH
+item1.URL:https://example.com
+NOTE:Test note
+TITLE:Dr.
+END:VCARD

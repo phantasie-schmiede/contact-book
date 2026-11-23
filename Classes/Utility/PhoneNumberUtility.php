@@ -11,15 +11,19 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Utility;
 
+use JsonException;
+use LogicException;
 use PSBits\ContactBook\Domain\Model\PhoneNumber;
 
-/**
- * Class PhoneNumberUtility
- *
- * @package PSBits\ContactBook\Utility
- */
+use function array_merge;
+use function implode;
+
 class PhoneNumberUtility
 {
+    /**
+     * @throws JsonException
+     * @throws LogicException
+     */
     public static function getPhoneNumberFromString(string $phoneNumber): PhoneNumber
     {
         // Remove all whitespaces.
@@ -27,7 +31,7 @@ class PhoneNumberUtility
 
         $pattern = '/\+(?<internationalDiallingCode>49)(?<areaCode>' . implode(
             '|',
-            array_merge(NumberBlockUtility::getGermanMobileServicesWithoutLeadingZero(), ['\d{4}'])
+            array_merge(NumberBlockUtility::getGermanNumberBlocksWithoutLeadingZero(), ['\d{4}'])
         ) . ')(?<connectionIdentifier>.*)/';
         preg_match($pattern, $phoneNumber, $matches);
 

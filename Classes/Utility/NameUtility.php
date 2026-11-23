@@ -14,12 +14,11 @@ namespace PSBits\ContactBook\Utility;
 use PSBits\Foundation\Utility\StringUtility;
 
 use function in_array;
+use function mb_strtolower;
+use function str_replace;
+use function strtolower;
+use function substr;
 
-/**
- * Class NameUtility
- *
- * @package PSBits\ContactBook\Utility
- */
 class NameUtility
 {
     /*

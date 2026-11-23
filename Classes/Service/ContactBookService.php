@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Service;
 
 use Doctrine\DBAL\Exception;
+use Exception as GlobalException;
+use InvalidArgumentException;
 use JsonException;
 use PSBits\ContactBook\Controller\ContactController;
 use PSBits\ContactBook\Domain\Model\ContactBook;
@@ -19,12 +21,11 @@ use PSBits\ContactBook\Domain\Repository\ContactBookRepository;
 use PSBits\ContactBook\Utility\ContactBookUtility;
 use PSBits\Foundation\Service\Configuration\TcaService;
 use PSBits\Foundation\Service\GlobalVariableService;
+use PSBits\FrontendTemplates\Utility\SlugUtility;
 use PSBits\FrontendUsers\Domain\Model\Typo3\FrontendUser;
 use PSBits\FrontendUsers\Domain\Repository\Typo3\FrontendUserRepository;
 use PSBits\FrontendUsers\Service\GlobalVariableProviders\FrontendUserProvider;
-use PSBits\Templates\Utility\SlugUtility;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use ReflectionException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
@@ -32,11 +33,6 @@ use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use UnexpectedValueException;
 
-/**
- * Class ContactBookService
- *
- * @package PSBits\ContactBook\Service
- */
 readonly class ContactBookService
 {
     public function __construct(
@@ -48,10 +44,8 @@ readonly class ContactBookService
     }
 
     /**
-     * @throws IllegalObjectTypeException
-     * @throws JsonException
-     * @throws UnknownObjectException
-     * @throws \Exception
+     * @throws GlobalException
+     * @throws UnexpectedValueException
      */
     public function getActiveContactBookForCurrentUser(): ContactBook
     {
@@ -78,7 +72,7 @@ readonly class ContactBookService
     }
 
     /**
-     * @throws JsonException
+     * @throws GlobalException
      */
     public function getCacheEntryIdentifier(): string
     {
@@ -86,10 +80,10 @@ readonly class ContactBookService
     }
 
     /**
+     * @throws GlobalException
      * @throws IllegalObjectTypeException
      * @throws JsonException
      * @throws UnknownObjectException
-     * @throws \Exception
      */
     public function setActiveContactBookForCurrentUser(ContactBook $contactBook): void
     {
@@ -104,7 +98,7 @@ readonly class ContactBookService
      * @throws ContainerExceptionInterface
      * @throws Exception
      * @throws IllegalObjectTypeException
-     * @throws NotFoundExceptionInterface
+     * @throws InvalidArgumentException
      * @throws ReflectionException
      * @throws SiteNotFoundException
      * @throws UnknownObjectException

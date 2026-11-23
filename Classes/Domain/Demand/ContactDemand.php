@@ -11,16 +11,11 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Domain\Demand;
 
-use JsonException;
+use Exception;
 use PSBits\ContactBook\Domain\Enum\ContactType;
 use PSBits\ContactBook\Domain\Model\Contact;
 use PSBits\ContactBook\Utility\ContactBookUtility;
 
-/**
- * Class ContactDemand
- *
- * @package PSBits\ContactBook\Domain\Demand
- */
 class ContactDemand
 {
     /** @var int[] */
@@ -43,7 +38,7 @@ class ContactDemand
     protected array $types = [];
 
     /**
-     * @throws JsonException
+     * @throws Exception
      */
     public function __construct()
     {

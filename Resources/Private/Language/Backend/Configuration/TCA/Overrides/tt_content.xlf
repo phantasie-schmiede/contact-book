@@ -13,14 +13,14 @@
             <trans-unit id="plugin.contactCards.title">
                 <source>Contact cards</source>
             </trans-unit>
-            <trans-unit id="plugin.contactList.title">
-                <source>Contact list</source>
+            <trans-unit id="plugin.contactGroups.title">
+                <source>Contact groups</source>
             </trans-unit>
             <trans-unit id="plugin.contactGroupWidget.title">
                 <source>Contact group widget</source>
             </trans-unit>
-            <trans-unit id="plugin.contactGroups.title">
-                <source>Contact groups</source>
+            <trans-unit id="plugin.contactList.title">
+                <source>Contact list</source>
             </trans-unit>
             <trans-unit id="plugin.eventWidget.title">
                 <source>Event widget</source>

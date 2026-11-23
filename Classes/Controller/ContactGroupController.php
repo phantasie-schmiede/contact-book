@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Controller;
 
 use Doctrine\DBAL\Exception;
+use Exception as GlobalException;
+use InvalidArgumentException;
 use JsonException;
 use PSBits\ContactBook\Data\ExtensionInformation;
 use PSBits\ContactBook\Domain\Model\ContactGroup;
@@ -28,20 +30,19 @@ use PSBits\Foundation\Traits\ControllerCacheTrait;
 use PSBits\Foundation\Utility\FileUtility;
 use PSBits\FrontendUsers\Service\ValidationService;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use ReflectionException;
+use RuntimeException;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use ValueError;
 
-/**
- * Class ContactGroupController
- *
- * @package PSBits\ContactBook\Controller
- */
+use function implode;
+use function json_encode;
+
 class ContactGroupController extends AbstractAccessController
 {
     use ControllerCacheTrait;
@@ -66,10 +67,11 @@ class ContactGroupController extends AbstractAccessController
     /**
      * @throws ContainerExceptionInterface
      * @throws Exception
+     * @throws GlobalException
      * @throws IllegalObjectTypeException
+     * @throws InvalidArgumentException
      * @throws JsonException
      * @throws NoSuchCacheGroupException
-     * @throws NotFoundExceptionInterface
      * @throws ReflectionException
      * @throws SiteNotFoundException
      * @throws UnknownObjectException
@@ -111,6 +113,10 @@ class ContactGroupController extends AbstractAccessController
         return $this->htmlResponse();
     }
 
+    /**
+     * @throws RuntimeException
+     * @throws ValueError
+     */
     #[PluginAction(uncached: true)]
     public function exportAction(ContactGroup $contactGroup, ?VCardVersion $version = null): void
     {
@@ -130,7 +136,7 @@ class ContactGroupController extends AbstractAccessController
     }
 
     /**
-     * @throws JsonException
+     * @throws GlobalException
      */
     #[PluginAction(default: true)]
     public function listAction(): ResponseInterface
@@ -150,7 +156,7 @@ class ContactGroupController extends AbstractAccessController
     /**
      * @throws ContainerExceptionInterface
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     #[PluginAction(uncached: true)]
     public function refreshListAction(ContactGroup $contactGroup): ResponseInterface
@@ -164,6 +170,11 @@ class ContactGroupController extends AbstractAccessController
         return $this->jsonResponse(json_encode(['html' => $list], JSON_THROW_ON_ERROR));
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws JsonException
+     * @throws ReflectionException
+     */
     #[PluginAction(uncached: true)]
     public function showAction(ContactGroup $contactGroup): ResponseInterface
     {
@@ -176,9 +187,9 @@ class ContactGroupController extends AbstractAccessController
      * @throws ContainerExceptionInterface
      * @throws Exception
      * @throws IllegalObjectTypeException
+     * @throws InvalidArgumentException
      * @throws JsonException
      * @throws NoSuchCacheGroupException
-     * @throws NotFoundExceptionInterface
      * @throws ReflectionException
      * @throws SiteNotFoundException
      * @throws UnknownObjectException

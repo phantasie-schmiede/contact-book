@@ -16,17 +16,17 @@
                 <source>Contact cards</source>
                 <target>Visitenkarten</target>
             </trans-unit>
-            <trans-unit id="plugin.contactList.title">
-                <source>Contact list</source>
-                <target>Kontaktliste</target>
+            <trans-unit id="plugin.contactGroups.title">
+                <source>Contact groups</source>
+                <target>Kontaktgruppen</target>
             </trans-unit>
             <trans-unit id="plugin.contactGroupWidget.title">
                 <source>Contact group widget</source>
                 <target>Kontaktgruppen-Widget</target>
             </trans-unit>
-            <trans-unit id="plugin.contactGroups.title">
-                <source>Contact groups</source>
-                <target>Kontaktgruppen</target>
+            <trans-unit id="plugin.contactList.title">
+                <source>Contact list</source>
+                <target>Kontaktliste</target>
             </trans-unit>
             <trans-unit id="plugin.eventWidget.title">
                 <source>Event widget</source>

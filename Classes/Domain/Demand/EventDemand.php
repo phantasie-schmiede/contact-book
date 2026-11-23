@@ -14,11 +14,6 @@ namespace PSBits\ContactBook\Domain\Demand;
 use DateTime;
 use PSBits\ContactBook\Domain\Enum\EventType;
 
-/**
- * Class EventDemand
- *
- * @package PSBits\ContactBook\Domain\Demand
- */
 class EventDemand
 {
     protected ?DateTime $minDate           = null;

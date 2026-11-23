@@ -11,20 +11,16 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\ViewHelpers\Contact;
 
+use InvalidArgumentException;
 use JsonException;
 use PSBits\ContactBook\Utility\ContactUtility;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use ReflectionException;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-/**
- * Class LinkedEnumerationViewHelper
- *
- * @package PSBits\ContactBook\ViewHelpers\Contact
- */
 class LinkedEnumerationViewHelper extends AbstractViewHelper
 {
     public function __construct(
@@ -46,8 +42,9 @@ class LinkedEnumerationViewHelper extends AbstractViewHelper
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     public function render(): string
     {

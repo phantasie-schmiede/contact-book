@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Domain\Model;
 
 use Doctrine\DBAL\Exception;
+use InvalidArgumentException;
 use PSBits\ContactBook\Utility\BankingAccountUtility;
 use PSBits\Foundation\Attribute\TCA\Column;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Input;
@@ -20,11 +21,10 @@ use PSBits\Foundation\Attribute\TCA\Ctrl;
 use PSBits\Foundation\Enum\SelectRenderType;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
-/**
- * Class BankAccount
- *
- * @package PSBits\ContactBook\Domain\Model
- */
+use function str_contains;
+use function str_replace;
+use function trim;
+
 #[Ctrl(label: 'iban', searchFields: [
     'bankName',
     'bic',
@@ -89,6 +89,7 @@ class BankAccount extends AbstractContactRelatedEntity
 
     /**
      * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function setIban(string $iban): self
     {

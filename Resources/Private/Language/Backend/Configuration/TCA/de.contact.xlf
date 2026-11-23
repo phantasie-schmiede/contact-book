@@ -112,13 +112,13 @@
                 <source>Documents</source>
                 <target>Dokumente</target>
             </trans-unit>
-            <trans-unit id="tab.e_mail_addresses.label">
-                <source>E-mail addresses</source>
-                <target>E-Mail-Adressen</target>
-            </trans-unit>
             <trans-unit id="tab.events.label">
                 <source>Events</source>
                 <target>Ereignisse</target>
+            </trans-unit>
+            <trans-unit id="tab.e_mail_addresses.label">
+                <source>E-mail addresses</source>
+                <target>E-Mail-Adressen</target>
             </trans-unit>
             <trans-unit id="tab.finance.label">
                 <source>Finance</source>

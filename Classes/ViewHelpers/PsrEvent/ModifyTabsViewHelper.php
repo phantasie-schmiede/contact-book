@@ -17,11 +17,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-/**
- * Class ModifyTabsViewHelper
- *
- * @package PSBits\ContactBook\ViewHelpers\PsrEvent
- */
 class ModifyTabsViewHelper extends AbstractViewHelper
 {
     public function __construct(

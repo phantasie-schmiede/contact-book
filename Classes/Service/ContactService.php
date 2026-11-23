@@ -12,16 +12,16 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Service;
 
 use Doctrine\DBAL\Exception;
+use InvalidArgumentException;
 use JsonException;
 use PSBits\ContactBook\Data\ExtensionInformation;
 use PSBits\ContactBook\Domain\Model\Contact;
 use PSBits\ContactBook\Domain\Model\ContactRelationInterface;
 use PSBits\ContactBook\Domain\Repository\ContactRepository;
 use PSBits\Foundation\Service\Configuration\TcaService;
-use PSBits\Templates\Service\ViewService;
-use PSBits\Templates\Utility\SlugUtility;
+use PSBits\FrontendTemplates\Service\ViewService;
+use PSBits\FrontendTemplates\Utility\SlugUtility;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use ReflectionException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -30,13 +30,10 @@ use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
+use function array_map;
 use function is_string;
+use function json_decode;
 
-/**
- * Class ContactService
- *
- * @package PSBits\ContactBook\Service
- */
 readonly class ContactService
 {
     public function __construct(
@@ -55,13 +52,10 @@ readonly class ContactService
     }
 
     /**
-     * @param Contact[]        $contacts
-     * @param RequestInterface $request
-     *
-     * @return string
+     * @param Contact[] $contacts
      * @throws ContainerExceptionInterface
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     public function renderAutocompleteList(
         array            $contacts,
@@ -78,14 +72,10 @@ readonly class ContactService
     }
 
     /**
-     * @param string           $cacheEntryIdentifier
-     * @param Contact[]        $contacts
-     * @param RequestInterface $request
-     *
-     * @return string
+     * @param Contact[] $contacts
      * @throws ContainerExceptionInterface
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     public function renderListAndUpdateCache(
         string           $cacheEntryIdentifier,
@@ -102,10 +92,7 @@ readonly class ContactService
     }
 
     /**
-     * @param ContactRelationInterface $entity
-     * @param Contact|null             $contact
-     * @param int[]|string             $additionalContacts
-     *
+     * @param int[]|string $additionalContacts
      * @throws JsonException
      */
     public function setContactsOfRelatedEntity(
@@ -143,7 +130,7 @@ readonly class ContactService
      * @throws ContainerExceptionInterface
      * @throws Exception
      * @throws IllegalObjectTypeException
-     * @throws NotFoundExceptionInterface
+     * @throws InvalidArgumentException
      * @throws ReflectionException
      * @throws SiteNotFoundException
      * @throws UnknownObjectException

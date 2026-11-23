@@ -11,11 +11,6 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Trait;
 
-/**
- * Trait EnumToArrayTrait
- *
- * @package PSBits\ContactBook\Trait
- */
 trait EnumToArrayTrait
 {
     /** @return array<int|string, string> */

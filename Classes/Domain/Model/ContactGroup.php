@@ -20,11 +20,6 @@ use PSBits\Foundation\Enum\SelectRenderType;
 use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
-/**
- * Class ContactGroup
- *
- * @package PSBits\ContactBook\Domain\Model
- */
 #[Ctrl(label: 'name', searchFields: [
     'name',
     'notes',
@@ -38,8 +33,8 @@ class ContactGroup extends AbstractContactRelatedEntity
         'prefixParentPageSlug' => true,
         'replacements'         => [
             ' ' => '-',
-            '/' => '',
             '.' => '-',
+            '/' => '',
         ],
     ];
 

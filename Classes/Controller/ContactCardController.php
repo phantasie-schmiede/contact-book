@@ -11,20 +11,18 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Controller;
 
-use JsonException;
+use InvalidArgumentException;
 use PSBits\ContactBook\Domain\Demand\ContactDemand;
 use PSBits\ContactBook\Domain\Enum\FilterMode;
 use PSBits\ContactBook\Domain\Repository\ContactRepository;
 use PSBits\Foundation\Attribute\PluginAction;
 use Psr\Http\Message\ResponseInterface;
+use TypeError;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
+use ValueError;
 
-/**
- * Class ContactCardController
- *
- * @package PSBits\ContactBook\Controller
- */
 class ContactCardController extends ActionController
 {
     public function __construct(
@@ -33,7 +31,10 @@ class ContactCardController extends ActionController
     }
 
     /**
-     * @throws JsonException
+     * @throws InvalidArgumentException
+     * @throws InvalidQueryException
+     * @throws TypeError
+     * @throws ValueError
      */
     #[PluginAction(default: true, uncached: true)]
     public function displayAction(): ResponseInterface
