@@ -11,11 +11,6 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Domain\Demand;
 
-/**
- * Class PhoneNumberDemand
- *
- * @package PSBits\ContactBook\Domain\Demand
- */
 class PhoneNumberDemand
 {
     protected string $areaCode                  = '';

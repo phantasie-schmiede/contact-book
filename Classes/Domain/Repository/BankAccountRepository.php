@@ -15,10 +15,7 @@ use PSBits\ContactBook\Domain\Model\BankAccount;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
- * Class BankAccountRepository
- *
  * @extends Repository<BankAccount>
- * @package PSBits\ContactBook\Domain\Repository
  */
 class BankAccountRepository extends Repository
 {

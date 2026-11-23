@@ -14,11 +14,8 @@ namespace PSBits\ContactBook\Utility;
 use JsonException;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
-/**
- * Class JsonUtility
- *
- * @package PSBits\ContactBook\Utility
- */
+use function json_encode;
+
 class JsonUtility
 {
     /**

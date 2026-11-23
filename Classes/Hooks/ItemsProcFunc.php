@@ -13,11 +13,8 @@ namespace PSBits\ContactBook\Hooks;
 
 use PSBits\ContactBook\Domain\Enum\EventType;
 
-/**
- * Class ItemsProcFunc
- *
- * @package PSBits\ContactBook\Hooks
- */
+use function strtolower;
+
 class ItemsProcFunc
 {
     /** @param array<string, mixed> $params */

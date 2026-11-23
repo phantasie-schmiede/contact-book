@@ -20,11 +20,8 @@ use ReflectionClass;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
-/**
- * Class AbstractContactRelatedEntity
- *
- * @package PSBits\ContactBook\Domain\Model
- */
+use function trim;
+
 abstract class AbstractContactRelatedEntity extends AbstractEntity implements ContactRelationInterface
 {
     /* Override this constant in your concrete class. */
@@ -53,14 +50,6 @@ abstract class AbstractContactRelatedEntity extends AbstractEntity implements Co
         return static::ACTION_ICON_IDENTIFIER;
     }
 
-    /**
-     * @throws JsonException
-     */
-    public function getContactUidsAsJson(): false|string
-    {
-        return JsonUtility::getUidsAsJsonArray(...$this->getContactsSorted());
-    }
-
     /** @return ObjectStorage<Contact> */
     public function getContacts(): ObjectStorage
     {
@@ -71,6 +60,14 @@ abstract class AbstractContactRelatedEntity extends AbstractEntity implements Co
     public function getContactsSorted(): array
     {
         return ContactUtility::sortByListName(...$this->contacts->toArray());
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function getContactUidsAsJson(): false|string
+    {
+        return JsonUtility::getUidsAsJsonArray(...$this->getContactsSorted());
     }
 
     public function getNotes(): string

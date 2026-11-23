@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Data;
 
+use InvalidArgumentException;
 use PSBits\ContactBook\Controller\Backend\ImportController;
 use PSBits\ContactBook\Controller\ContactBookController;
 use PSBits\ContactBook\Controller\ContactCardController;
@@ -24,13 +25,11 @@ use PSBits\Foundation\Data\ModuleConfiguration;
 use PSBits\Foundation\Data\PluginConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * Class ExtensionInformation
- *
- * @package PSBits\ContactBook\Data
- */
 class ExtensionInformation extends AbstractExtensionInformation
 {
+    /**
+     * @throws InvalidArgumentException
+     */
     public function __construct()
     {
         parent::__construct();

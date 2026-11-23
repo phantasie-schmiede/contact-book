@@ -18,6 +18,7 @@ use function array_map;
 use function array_merge;
 use function dirname;
 use function file_get_contents;
+use function is_array;
 use function json_decode;
 use function sprintf;
 use function strcmp;
@@ -26,14 +27,10 @@ use function substr;
 use function usort;
 
 /**
- * Class NumberBlockUtility
- *
  * The number blocks are stored as JSON files below Resources/Private/Json with
  * one directory per block type and one file per country. The German landline
  * area codes are based on the "Vorwahlverzeichnis" of the Bundesnetzagentur
  * (Stand: 2022-07-27, https://www.bundesnetzagentur.de/DE/Fachthemen/Telekommunikation/Nummerierung/ONRufnr/Einteilung_ONB/artikel.html).
- *
- * @package PSBits\ContactBook\Utility
  */
 class NumberBlockUtility
 {
@@ -51,6 +48,7 @@ class NumberBlockUtility
      *
      * @return string[]
      * @throws JsonException
+     * @throws LogicException
      */
     public static function getGermanNumberBlocksWithoutLeadingZero(): array
     {
@@ -69,10 +67,9 @@ class NumberBlockUtility
     }
 
     /**
+     * @return string[]
      * @throws JsonException
      * @throws LogicException
-     *
-     * @return string[]
      */
     private static function loadNumberBlocks(string $block, string $country): array
     {
@@ -94,7 +91,6 @@ class NumberBlockUtility
 
     /**
      * @param string[] $numberBlocks
-     *
      * @return string[]
      */
     private static function stripLeadingZero(array $numberBlocks): array

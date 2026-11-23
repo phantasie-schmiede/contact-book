@@ -35,12 +35,15 @@ use TYPO3\CMS\Extbase\Domain\Model\Category as SysCategory;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use ValueError;
 
-/**
- * Class Contact
- *
- * @package PSBits\ContactBook\Domain\Model
- */
+use function array_unique;
+use function implode;
+use function str_replace;
+use function str_starts_with;
+use function trim;
+use function usort;
+
 #[Ctrl(label        : 'lastName', labelAlt: [
     'firstName',
     'companyName',
@@ -77,8 +80,8 @@ class Contact extends AbstractEntity
         'prefixParentPageSlug' => true,
         'replacements'         => [
             ' ' => '-',
-            '/' => '',
             '.' => '-',
+            '/' => '',
         ],
     ];
     public const string URL_PREFIX_FACEBOOK  = 'https://www.facebook.com/';
@@ -185,8 +188,6 @@ class Contact extends AbstractEntity
      * "@var" is needed for the PropertyMapper!
      * Otherwise, array is assumed because of an existing add*-method...
      * Blame symfony's ReflectionExtractor for this!
-     *
-     * @var string $notes
      */
     #[Column(position: 'after:categories')]
     #[Text]
@@ -235,6 +236,9 @@ class Contact extends AbstractEntity
     #[Input]
     protected string $youTubeId = '';
 
+    /**
+     * @throws RuntimeException
+     */
     public function __construct()
     {
         if ('' === $this->uuid) {
@@ -284,6 +288,9 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /**
+     * @throws ValueError
+     */
     public function addEvents(Event ...$events): static
     {
         foreach ($events as $event) {
@@ -352,6 +359,9 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function getAddressByUid(int $uid): Address
     {
         foreach ($this->addresses as $address) {
@@ -369,6 +379,9 @@ class Contact extends AbstractEntity
         return $this->addresses;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function getBankAccountByUid(int $uid): BankAccount
     {
         foreach ($this->bankAccounts as $bankAccount) {
@@ -415,6 +428,9 @@ class Contact extends AbstractEntity
         return $this->contactBook;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function getContactGroupByUid(int $uid): ContactGroup
     {
         foreach ($this->contactGroups as $contactGroup) {
@@ -429,6 +445,12 @@ class Contact extends AbstractEntity
         );
     }
 
+    /** @return ObjectStorage<ContactGroup> */
+    public function getContactGroups(): ObjectStorage
+    {
+        return $this->contactGroups;
+    }
+
     /**
      * @throws JsonException
      */
@@ -437,12 +459,9 @@ class Contact extends AbstractEntity
         return JsonUtility::getUidsAsJsonArray(...$this->getContactGroups());
     }
 
-    /** @return ObjectStorage<ContactGroup> */
-    public function getContactGroups(): ObjectStorage
-    {
-        return $this->contactGroups;
-    }
-
+    /**
+     * @throws InvalidArgumentException
+     */
     public function getDocumentByUid(int $uid): Document
     {
         foreach ($this->documents as $document) {
@@ -479,6 +498,9 @@ class Contact extends AbstractEntity
         return $documents;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function getEMailByUid(int $uid): EMail
     {
         foreach ($this->eMails as $eMail) {
@@ -502,6 +524,9 @@ class Contact extends AbstractEntity
         return $this->employments;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function getEventByUid(int $uid): Event
     {
         foreach ($this->events as $event) {
@@ -524,6 +549,7 @@ class Contact extends AbstractEntity
      * list.
      *
      * @return Event[]
+     * @throws ValueError
      */
     public function getEventsInDescendingOrder(): array
     {
@@ -655,6 +681,9 @@ class Contact extends AbstractEntity
         return self::URL_PREFIX_INSTAGRAM . $this->instagramId;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function getJobByUid(int $uid): Job
     {
         foreach ($this->jobs as $job) {
@@ -756,6 +785,9 @@ class Contact extends AbstractEntity
         return self::URL_PREFIX_PAYPAL . $this->payPalId;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function getPhoneNumberByUid(int $uid): PhoneNumber
     {
         foreach ($this->phoneNumbers as $phoneNumber) {
@@ -931,6 +963,9 @@ class Contact extends AbstractEntity
         return $this->uuid;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function getWebsiteByUid(int $uid): Website
     {
         foreach ($this->websites as $website) {
@@ -1284,6 +1319,9 @@ class Contact extends AbstractEntity
         return $this;
     }
 
+    /**
+     * @throws RuntimeException
+     */
     public function setUuid(): static
     {
         if ('' !== $this->uuid) {

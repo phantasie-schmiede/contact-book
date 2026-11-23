@@ -11,17 +11,13 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Utility;
 
-/**
- * Class AddressUtility
- *
- * @package PSBits\ContactBook\Utility
- */
+use function explode;
+use function implode;
+
 class AddressUtility
 {
     /**
-     * @param string $streetAndHouseNumber
-     *
-     * @return array{street: string, houseNumber: string}
+     * @return array{houseNumber: string, street: string}
      */
     public static function splitStreetAndHouseNumber(string $streetAndHouseNumber): array
     {
@@ -37,8 +33,8 @@ class AddressUtility
         $street = implode(' ', $streetAndHouseNumberParts);
 
         return [
-            'street'      => $street,
             'houseNumber' => $houseNumber,
+            'street'      => $street,
         ];
     }
 }

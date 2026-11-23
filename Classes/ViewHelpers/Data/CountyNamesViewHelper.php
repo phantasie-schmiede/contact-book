@@ -13,15 +13,14 @@ namespace PSBits\ContactBook\ViewHelpers\Data;
 
 use PSBits\ContactBook\Utility\CountyUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use ValueError;
 
-/**
- * Class CountyNamesViewHelper
- *
- * @package PSBits\ContactBook\ViewHelpers\Data
- */
 class CountyNamesViewHelper extends AbstractViewHelper
 {
-    /** @return array<string, string> */
+    /**
+     * @return array<string, string>
+     * @throws ValueError
+     */
     public function render(): array
     {
         return array_combine(CountyUtility::getGermanCounties(), CountyUtility::getGermanCounties());

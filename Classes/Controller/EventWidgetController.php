@@ -13,6 +13,8 @@ namespace PSBits\ContactBook\Controller;
 
 use DateMalformedStringException;
 use DateTime;
+use Exception;
+use InvalidArgumentException;
 use JsonException;
 use PSBits\ContactBook\Domain\Demand\EventDemand;
 use PSBits\ContactBook\Domain\Enum\EventType;
@@ -23,19 +25,17 @@ use PSBits\Foundation\Attribute\PluginAction;
 use PSBits\FrontendTemplates\Utility\StringUtility;
 use PSBits\FrontendUsers\Service\ValidationService;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
+use ReflectionException;
+use TypeError;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
+use ValueError;
 
+use function array_map;
 use function count;
+use function ksort;
 
-/**
- * Class EventWidgetController
- *
- * @package PSBits\ContactBook\Controller
- */
 class EventWidgetController extends AbstractAccessController
 {
     public function __construct(
@@ -50,9 +50,12 @@ class EventWidgetController extends AbstractAccessController
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
      * @throws DateMalformedStringException
-     * @throws InvalidQueryException
+     * @throws Exception
+     * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     * @throws TypeError
+     * @throws ValueError
      */
     #[PluginAction(uncached: true)]
     public function displayAction(): ResponseInterface

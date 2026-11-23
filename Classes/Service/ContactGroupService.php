@@ -12,13 +12,14 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Service;
 
 use Doctrine\DBAL\Exception;
+use InvalidArgumentException;
+use JsonException;
 use PSBits\ContactBook\Controller\ContactGroupController;
 use PSBits\ContactBook\Domain\Model\ContactGroup;
 use PSBits\ContactBook\Domain\Repository\ContactGroupRepository;
 use PSBits\Foundation\Service\Configuration\TcaService;
 use PSBits\FrontendTemplates\Utility\SlugUtility;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use ReflectionException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\View\ViewInterface;
@@ -27,11 +28,6 @@ use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
-/**
- * Class ContactGroupService
- *
- * @package PSBits\ContactBook\Service
- */
 readonly class ContactGroupService
 {
     public function __construct(
@@ -47,6 +43,11 @@ readonly class ContactGroupService
         return ContactGroupController::CACHE_TAG . '_' . $contactGroup->getUid();
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws JsonException
+     * @throws ReflectionException
+     */
     public function prepareView(ContactGroup $contactGroup, RequestInterface $request, ViewInterface $view): void
     {
         $list = $this->contactService->getCachedList(
@@ -72,12 +73,12 @@ readonly class ContactGroupService
 
     /**
      * @throws ContainerExceptionInterface
+     * @throws Exception
      * @throws IllegalObjectTypeException
-     * @throws NotFoundExceptionInterface
+     * @throws InvalidArgumentException
      * @throws ReflectionException
      * @throws SiteNotFoundException
      * @throws UnknownObjectException
-     * @throws Exception
      */
     public function updateSlug(ContactGroup $contactGroup): void
     {

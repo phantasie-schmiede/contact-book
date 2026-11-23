@@ -11,11 +11,6 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Service\Enum;
 
-/**
- * Class VCardVersion
- *
- * @package PSBits\ContactBook\Service\Enum
- */
 enum VCardVersion: string
 {
     case Apple = 'Apple';

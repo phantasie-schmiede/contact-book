@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Controller;
 
+use InvalidArgumentException;
 use JsonException;
 use PSBits\ContactBook\Data\ExtensionInformation;
 use PSBits\ContactBook\Domain\Repository\ContactBookRepository;
@@ -22,17 +23,11 @@ use PSBits\Foundation\Utility\Configuration\FilePathUtility;
 use PSBits\Foundation\Utility\LocalizationUtility;
 use PSBits\FrontendUsers\Service\ValidationService;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use ReflectionException;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 
-/**
- * Class ContactGroupWidgetController
- *
- * @package PSBits\ContactBook\Controller
- */
 class ContactGroupWidgetController extends AbstractAccessController
 {
     public function __construct(
@@ -49,8 +44,8 @@ class ContactGroupWidgetController extends AbstractAccessController
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
      * @throws ReflectionException
      */
     #[PluginAction]

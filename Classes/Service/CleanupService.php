@@ -30,12 +30,8 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 
 use function count;
 use function is_string;
+use function method_exists;
 
-/**
- * Class CleanupService
- *
- * @package PSBits\ContactBook\Service
- */
 class CleanupService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
@@ -147,11 +143,10 @@ class CleanupService implements LoggerAwareInterface
     }
 
     /**
-     * @template T of AbstractContactRelatedEntity
      * @param Repository<T>      $repository
      * @param array<int, string> $data
      * @param-out array<int, string> $data
-     *
+     * @template T of AbstractContactRelatedEntity
      * @throws IllegalObjectTypeException
      */
     private function deleteOrphanedRecords(Repository $repository, array &$data): int

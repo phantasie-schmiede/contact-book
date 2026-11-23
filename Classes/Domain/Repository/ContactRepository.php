@@ -19,16 +19,11 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
- * Class ContactRepository
- *
  * @extends Repository<Contact>
- * @package PSBits\ContactBook\Domain\Repository
  */
 class ContactRepository extends Repository
 {
     /**
-     * @param ContactDemand $demand
-     *
      * @return Contact[]|QueryResultInterface<int, Contact>
      * @throws InvalidQueryException
      */

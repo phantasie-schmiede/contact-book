@@ -21,11 +21,6 @@ use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
-/**
- * Class EMail
- *
- * @package PSBits\ContactBook\Domain\Model
- */
 #[Ctrl(label: 'notes', searchFields: [
     'notes',
 ])]

@@ -12,6 +12,9 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Service;
 
 use DateTime;
+use Exception;
+use JsonException;
+use LogicException;
 use PSBits\ContactBook\Domain\Demand\AddressDemand;
 use PSBits\ContactBook\Domain\Demand\ContactDemand;
 use PSBits\ContactBook\Domain\Demand\EMailDemand;
@@ -35,18 +38,24 @@ use PSBits\ContactBook\Domain\Repository\WebsiteRepository;
 use PSBits\ContactBook\Utility\AddressUtility;
 use PSBits\ContactBook\Utility\PhoneNumberUtility;
 use PSBits\Foundation\Utility\StringUtility;
+use RuntimeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use ValueError;
 
 use function count;
+use function explode;
+use function file_get_contents;
+use function implode;
 use function in_array;
+use function str_contains;
+use function str_replace;
+use function str_starts_with;
+use function substr;
+use function trim;
 
-/**
- * Class ImportService
- *
- * @package PSBits\ContactBook\Service
- */
 readonly class ImportService
 {
     public function __construct(
@@ -60,8 +69,12 @@ readonly class ImportService
     }
 
     /**
+     * @throws Exception
      * @throws IllegalObjectTypeException
+     * @throws InvalidQueryException
+     * @throws RuntimeException
      * @throws UnknownObjectException
+     * @throws ValueError
      */
     public function parseVCardFile(string $file): void
     {
@@ -103,6 +116,9 @@ readonly class ImportService
         }
     }
 
+    /**
+     * @throws ValueError
+     */
     private function addProperties(Contact $contact, Contact $existingContact): void
     {
         $existingContact->addAddresses(...$contact->getAddresses());
@@ -123,6 +139,14 @@ readonly class ImportService
         $existingContact->addWebsites(...$contact->getWebsites());
     }
 
+    /**
+     * @throws Exception
+     * @throws InvalidQueryException
+     * @throws JsonException
+     * @throws LogicException
+     * @throws RuntimeException
+     * @throws ValueError
+     */
     private function parseVCardLine(string $line, Contact $contact): void
     {
         $parts = explode(':', $line, 2);

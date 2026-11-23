@@ -15,11 +15,6 @@ use PSBits\ContactBook\Domain\Model\Contact;
 use PSBits\ContactBook\Domain\Model\Event;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-/**
- * Class OtherContactsViewHelper
- *
- * @package PSBits\ContactBook\ViewHelpers\Event
- */
 class OtherContactsViewHelper extends AbstractViewHelper
 {
     public function initializeArguments(): void

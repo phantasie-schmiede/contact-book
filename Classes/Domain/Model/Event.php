@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Domain\Model;
 
 use DateTime;
+use InvalidArgumentException;
 use JsonException;
 use PSBits\ContactBook\Domain\Enum\EventType;
 use PSBits\ContactBook\Utility\ContactUtility;
@@ -24,17 +25,14 @@ use PSBits\Foundation\Attribute\TCA\Ctrl;
 use PSBits\Foundation\Enum\SelectRenderType;
 use PSBits\Foundation\Utility\StringUtility;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use ReflectionException;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use ValueError;
 
+use function implode;
 use function sprintf;
 
-/**
- * Class Event
- *
- * @package PSBits\ContactBook\Domain\Model
- */
 #[Ctrl(label        : 'year', labelAlt: [
     'type',
     'contacts',
@@ -66,6 +64,7 @@ class Event extends AbstractContactRelatedEntity
     protected bool $showInCalendar = false;
 
     #[Select(items   : [
+        // PSBits/alphabetical_array_keys=off
         'Baptism'          => 'baptism',
         'Birthday'         => 'birthday',
         'Confirmation'     => 'confirmation',
@@ -99,8 +98,10 @@ class Event extends AbstractContactRelatedEntity
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     * @throws ValueError
      */
     public function getCompactValue(): string
     {
@@ -116,14 +117,18 @@ class Event extends AbstractContactRelatedEntity
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     public function getContactsAsEnumeration(): string
     {
         return ContactUtility::createEnumeration($this->contacts->toArray());
     }
 
+    /**
+     * @throws ValueError
+     */
     public function getDate(bool $useFallbacks = false): ?DateTime
     {
         if (!$useFallbacks && !$this->isDateComplete()) {
@@ -135,6 +140,9 @@ class Event extends AbstractContactRelatedEntity
         return DateTime::createFromFormat('Y-m-d', $dateString);
     }
 
+    /**
+     * @throws ValueError
+     */
     public function getDateFormatted(): ?string
     {
         if ($this->isDateComplete()) {
@@ -177,8 +185,9 @@ class Event extends AbstractContactRelatedEntity
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     public function getLabel(?int $year = null): string
     {

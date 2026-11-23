@@ -13,11 +13,6 @@ namespace PSBits\ContactBook\Domain\Enum;
 
 use PSBits\ContactBook\Trait\EnumToArrayTrait;
 
-/**
- * Class ContactType
- *
- * @package PSBits\ContactBook\Domain\Enum
- */
 enum ContactType: string
 {
     use EnumToArrayTrait;

@@ -31,10 +31,10 @@ use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
+use function trim;
+
 /**
  * Class ContactGroup
- *
- * @package PSBits\ContactBook\Domain\Model
  */
 #[Ctrl(label: 'name', searchFields: [
     'name',
@@ -49,8 +49,8 @@ class ContactBook extends AbstractEntity
         'prefixParentPageSlug' => true,
         'replacements'         => [
             ' ' => '-',
-            '/' => '',
             '.' => '-',
+            '/' => '',
         ],
     ];
 
@@ -136,18 +136,18 @@ class ContactBook extends AbstractEntity
         return $owners;
     }
 
+    /** @return ObjectStorage<FrontendUser> */
+    public function getOwners(): ObjectStorage
+    {
+        return $this->owners;
+    }
+
     /**
      * @throws JsonException
      */
     public function getOwnerUidsAsJson(): false|string
     {
         return JsonUtility::getUidsAsJsonArray(...$this->getOwners());
-    }
-
-    /** @return ObjectStorage<FrontendUser> */
-    public function getOwners(): ObjectStorage
-    {
-        return $this->owners;
     }
 
     public function getSlug(): string
@@ -163,7 +163,7 @@ class ContactBook extends AbstractEntity
     }
 
     /**
-     * @throws JsonException
+     * @throws Exception
      */
     public function isActive(): bool
     {

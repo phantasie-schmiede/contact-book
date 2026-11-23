@@ -11,22 +11,15 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Controller;
 
-use JsonException;
+use Exception;
+use InvalidArgumentException;
 use PSBits\ContactBook\Domain\Repository\ContactBookRepository;
 use PSBits\FrontendUsers\Service\ValidationService;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
-use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Persistence\Generic\Exception as ExtbaseException;
 
-/**
- * Class AbstractAccessController
- *
- * @package PSBits\ContactBook\Controller
- */
 abstract class AbstractAccessController extends ActionController
 {
     public function __construct(
@@ -36,11 +29,9 @@ abstract class AbstractAccessController extends ActionController
     }
 
     /**
-     * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
-     * @throws ExtbaseException
-     * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws Exception
+     * @throws InvalidArgumentException
      * @throws PropagateResponseException
      */
     protected function initializeAction(): void

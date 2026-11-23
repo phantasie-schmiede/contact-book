@@ -13,11 +13,6 @@ namespace PSBits\ContactBook\Domain\Model;
 
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
-/**
- * Interface ContactRelationInterface
- *
- * @package PSBits\ContactBook\Domain\Model
- */
 interface ContactRelationInterface
 {
     public function addContact(Contact $contact): self;

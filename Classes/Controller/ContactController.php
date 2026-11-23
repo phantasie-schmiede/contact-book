@@ -13,6 +13,7 @@ namespace PSBits\ContactBook\Controller;
 
 use Doctrine\DBAL\Exception as DbalException;
 use Exception;
+use InvalidArgumentException;
 use JsonException;
 use PSBits\ContactBook\Data\ExtensionInformation;
 use PSBits\ContactBook\Domain\Demand\ContactDemand;
@@ -60,13 +61,13 @@ use PSBits\Foundation\Utility\LocalizationUtility;
 use PSBits\FrontendUsers\Service\GlobalVariableProviders\FrontendUserProvider;
 use PSBits\FrontendUsers\Service\ValidationService;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use ReflectionException;
+use RuntimeException;
+use TypeError;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
@@ -75,15 +76,14 @@ use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
+use ValueError;
 
+use function implode;
 use function in_array;
 use function is_array;
+use function json_decode;
+use function json_encode;
 
-/**
- * Class ContactController
- *
- * @package PSBits\ContactBook\Controller
- */
 class ContactController extends AbstractAccessController
 {
     use ControllerCacheTrait;
@@ -117,18 +117,17 @@ class ContactController extends AbstractAccessController
     }
 
     /**
-     * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
      * @throws DbalException
+     * @throws Exception
      * @throws IllegalObjectTypeException
-     * @throws JsonException
-     * @throws MisconfiguredTcaException
+     * @throws InvalidArgumentException
      * @throws NoSuchCacheGroupException
-     * @throws NotFoundExceptionInterface
-     * @throws PropertyNotAccessibleException
      * @throws ReflectionException
      * @throws SiteNotFoundException
+     * @throws TypeError
      * @throws UnknownObjectException
+     * @throws ValueError
      */
     #[PluginAction(uncached: true)]
     public function createAction(Contact $contact): ResponseInterface
@@ -171,8 +170,13 @@ class ContactController extends AbstractAccessController
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws InvalidQueryException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     * @throws RuntimeException
+     * @throws ValueError
      */
     #[PluginAction(uncached: true)]
     public function exportAction(?Contact $contact = null, ?VCardVersion $version = null): void
@@ -206,9 +210,10 @@ class ContactController extends AbstractAccessController
 
     /**
      * @throws ContainerExceptionInterface
-     * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws Exception
      * @throws InvalidQueryException
+     * @throws JsonException
+     * @throws ReflectionException
      */
     #[PluginAction(uncached: true)]
     public function getAutoCompleteListAction(bool $companies = false, Contact $contact = null): ResponseInterface
@@ -237,8 +242,9 @@ class ContactController extends AbstractAccessController
     }
 
     /**
+     * @throws ContainerExceptionInterface
      * @throws Exception
-     * @throws JsonException
+     * @throws InvalidQueryException
      */
     #[PluginAction(default: true, uncached: true)]
     public function listAction(): ResponseInterface
@@ -268,6 +274,8 @@ class ContactController extends AbstractAccessController
     }
 
     /**
+     * @throws ContainerExceptionInterface
+     * @throws Exception
      * @throws JsonException
      */
     #[PluginAction(uncached: true)]
@@ -278,6 +286,7 @@ class ContactController extends AbstractAccessController
 
     /**
      * @throws IllegalObjectTypeException
+     * @throws InvalidArgumentException
      * @throws UnknownObjectException
      */
     #[PluginAction(uncached: true)]
@@ -299,18 +308,17 @@ class ContactController extends AbstractAccessController
     }
 
     /**
-     * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
      * @throws DbalException
+     * @throws Exception
      * @throws IllegalObjectTypeException
-     * @throws JsonException
-     * @throws MisconfiguredTcaException
+     * @throws InvalidArgumentException
      * @throws NoSuchCacheGroupException
-     * @throws NotFoundExceptionInterface
-     * @throws PropertyNotAccessibleException
      * @throws ReflectionException
      * @throws SiteNotFoundException
+     * @throws TypeError
      * @throws UnknownObjectException
+     * @throws ValueError
      */
     #[PluginAction(uncached: true)]
     public function updateAction(Contact $contact): ResponseInterface
@@ -331,7 +339,9 @@ class ContactController extends AbstractAccessController
     /**
      * Check, if user is allowed to view or perform operations on requested contact.
      *
-     * @throws PropagateResponseException
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws RuntimeException
      */
     protected function initializeAction(): void
     {
@@ -358,16 +368,17 @@ class ContactController extends AbstractAccessController
                 ->toArray()) ?? [];
 
             if (!in_array(GlobalVariableService::get(FrontendUserProvider::class . '.user'), $owners, true)) {
-                throw new \RuntimeException('Access denied.', 1758284184);
+                throw new RuntimeException('Access denied.', 1758284184);
             }
         }
     }
 
     /**
      * @throws ContainerExceptionInterface
+     * @throws Exception
      * @throws InvalidQueryException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     private function getList(): string
     {
@@ -399,13 +410,17 @@ class ContactController extends AbstractAccessController
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws DbalException
      * @throws Exception
      * @throws IllegalObjectTypeException
+     * @throws InvalidArgumentException
      * @throws JsonException
      * @throws MisconfiguredTcaException
-     * @throws NotFoundExceptionInterface
      * @throws PropertyNotAccessibleException
      * @throws ReflectionException
+     * @throws TypeError
+     * @throws UnknownObjectException
+     * @throws ValueError
      */
     private function processRelations(Contact $contact): void
     {
@@ -568,8 +583,9 @@ class ContactController extends AbstractAccessController
     }
 
     /**
-     * @param Address              $address
      * @param array<string, mixed> $entityData
+     * @throws TypeError
+     * @throws ValueError
      */
     private function updateAddressProperties(Address $address, array $entityData): void
     {
@@ -584,10 +600,9 @@ class ContactController extends AbstractAccessController
     }
 
     /**
-     * @param BankAccount          $bankAccount
      * @param array<string, mixed> $entityData
-     *
      * @throws DbalException
+     * @throws InvalidArgumentException
      */
     private function updateBankAccountProperties(BankAccount $bankAccount, array $entityData): void
     {
@@ -596,14 +611,11 @@ class ContactController extends AbstractAccessController
     }
 
     /**
-     * @param Document             $document
      * @param array<string, mixed> $entityData
-     * @param int|null             $tempUid
-     *
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
      * @throws MisconfiguredTcaException
-     * @throws NotFoundExceptionInterface
      * @throws PropertyNotAccessibleException
      * @throws ReflectionException
      */
@@ -628,8 +640,9 @@ class ContactController extends AbstractAccessController
     }
 
     /**
-     * @param EMail                $eMail
      * @param array<string, mixed> $entityData
+     * @throws TypeError
+     * @throws ValueError
      */
     private function updateEMailProperties(EMail $eMail, array $entityData): void
     {
@@ -639,19 +652,17 @@ class ContactController extends AbstractAccessController
     }
 
     /**
-     * @param Contact                  $contact
-     * @param ContactRelationInterface $entity
-     * @param array<string, mixed>     $entityData
-     * @param int|null                 $tempUid
-     *
+     * @param array<string, mixed> $entityData
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
      * @throws DbalException
+     * @throws InvalidArgumentException
      * @throws JsonException
      * @throws MisconfiguredTcaException
-     * @throws NotFoundExceptionInterface
      * @throws PropertyNotAccessibleException
      * @throws ReflectionException
+     * @throws TypeError
+     * @throws ValueError
      */
     private function updateEntityProperties(
         Contact                  $contact,
@@ -698,8 +709,9 @@ class ContactController extends AbstractAccessController
     }
 
     /**
-     * @param Event                $event
      * @param array<string, mixed> $entityData
+     * @throws TypeError
+     * @throws ValueError
      */
     private function updateEventProperties(Event $event, array $entityData): void
     {
@@ -714,7 +726,6 @@ class ContactController extends AbstractAccessController
     }
 
     /**
-     * @param Job                  $job
      * @param array<string, mixed> $entityData
      */
     private function updateJobProperties(Job $job, array $entityData): void
@@ -727,6 +738,8 @@ class ContactController extends AbstractAccessController
 
     /**
      * @param array<string, mixed> $entityData
+     * @throws TypeError
+     * @throws ValueError
      */
     private function updatePhoneNumberProperties(PhoneNumber $phoneNumber, array $entityData): void
     {
@@ -743,8 +756,9 @@ class ContactController extends AbstractAccessController
     }
 
     /**
-     * @param Website              $website
      * @param array<string, mixed> $entityData
+     * @throws TypeError
+     * @throws ValueError
      */
     private function updateWebsiteProperties(Website $website, array $entityData): void
     {

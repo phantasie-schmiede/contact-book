@@ -13,11 +13,6 @@ namespace PSBits\ContactBook\Domain\Enum;
 
 use PSBits\ContactBook\Trait\EnumToArrayTrait;
 
-/**
- * Class PhoneNumberType
- *
- * @package PSBits\ContactBook\Domain\Enum
- */
 enum PhoneNumberType: string
 {
     use EnumToArrayTrait;

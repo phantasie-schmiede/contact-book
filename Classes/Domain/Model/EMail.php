@@ -18,11 +18,6 @@ use PSBits\Foundation\Attribute\TCA\Ctrl;
 use PSBits\Foundation\Enum\SelectRenderType;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
-/**
- * Class EMail
- *
- * @package PSBits\ContactBook\Domain\Model
- */
 #[Ctrl(label: 'eMailAddress', searchFields: [
     'eMailAddress',
     'notes',
@@ -39,6 +34,7 @@ class EMail extends AbstractContactRelatedEntity
     protected string $eMailAddress = '';
 
     #[Select(items   : [
+        // PSBits/alphabetical_array_keys=off
         'Private'  => 'private',
         'Business' => 'business',
         'Other'    => 'other',

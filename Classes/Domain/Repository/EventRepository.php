@@ -21,10 +21,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
- * Class EventRepository
- *
  * @extends Repository<Event>
- * @package PSBits\ContactBook\Domain\Repository
  */
 class EventRepository extends Repository
 {
@@ -35,8 +32,6 @@ class EventRepository extends Repository
     }
 
     /**
-     * @param EventDemand $demand
-     *
      * @return QueryResultInterface<int, Event>
      * @throws Exception
      * @throws InvalidQueryException

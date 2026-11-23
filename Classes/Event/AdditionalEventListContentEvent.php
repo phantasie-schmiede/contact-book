@@ -15,11 +15,6 @@ use InvalidArgumentException;
 use PSBits\ContactBook\Domain\Model\Event;
 use PSBits\FrontendTemplates\Event\AbstractAdditionalContentEvent;
 
-/**
- * Class AdditionalEventListContentEvent
- *
- * @package PSBits\ContactBook\Event
- */
 class AdditionalEventListContentEvent extends AbstractAdditionalContentEvent
 {
     protected Event $event;
@@ -29,6 +24,9 @@ class AdditionalEventListContentEvent extends AbstractAdditionalContentEvent
         return $this->event;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function setParameters(array $parameters): static
     {
         if (!isset($parameters['event']) || !$parameters['event'] instanceof Event) {

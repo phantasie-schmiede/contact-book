@@ -12,17 +12,17 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Utility;
 
 use JsonException;
+use LogicException;
 use PSBits\ContactBook\Domain\Model\PhoneNumber;
 
-/**
- * Class PhoneNumberUtility
- *
- * @package PSBits\ContactBook\Utility
- */
+use function array_merge;
+use function implode;
+
 class PhoneNumberUtility
 {
     /**
      * @throws JsonException
+     * @throws LogicException
      */
     public static function getPhoneNumberFromString(string $phoneNumber): PhoneNumber
     {

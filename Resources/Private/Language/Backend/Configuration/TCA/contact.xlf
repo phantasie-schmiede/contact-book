@@ -85,11 +85,11 @@
             <trans-unit id="tab.documents.label">
                 <source>Documents</source>
             </trans-unit>
-            <trans-unit id="tab.e_mail_addresses.label">
-                <source>E-mail addresses</source>
-            </trans-unit>
             <trans-unit id="tab.events.label">
                 <source>Events</source>
+            </trans-unit>
+            <trans-unit id="tab.e_mail_addresses.label">
+                <source>E-mail addresses</source>
             </trans-unit>
             <trans-unit id="tab.finance.label">
                 <source>Finance</source>

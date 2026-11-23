@@ -14,11 +14,8 @@ namespace PSBits\ContactBook\Service;
 use Exception;
 use PSBits\ContactBook\Domain\Repository\ContactBookRepository;
 
-/**
- * Class EventService
- *
- * @package PSBits\ContactBook\Service
- */
+use function array_unique;
+
 readonly class EventService
 {
     public function __construct(

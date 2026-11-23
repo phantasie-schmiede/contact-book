@@ -20,8 +20,8 @@ final class AddressUtilityTest extends TestCase
     {
         self::assertSame(
             [
-                'street'      => 'Musterstraße',
                 'houseNumber' => '12',
+                'street'      => 'Musterstraße',
             ],
             AddressUtility::splitStreetAndHouseNumber('Musterstraße 12')
         );
@@ -31,8 +31,8 @@ final class AddressUtilityTest extends TestCase
     {
         self::assertSame(
             [
-                'street'      => 'Berliner Straße',
                 'houseNumber' => '12',
+                'street'      => 'Berliner Straße',
             ],
             AddressUtility::splitStreetAndHouseNumber('Berliner Straße 12')
         );
@@ -42,8 +42,8 @@ final class AddressUtilityTest extends TestCase
     {
         self::assertSame(
             [
-                'street'      => 'Hauptstraße',
                 'houseNumber' => '12a',
+                'street'      => 'Hauptstraße',
             ],
             AddressUtility::splitStreetAndHouseNumber('Hauptstraße 12a')
         );
@@ -53,8 +53,8 @@ final class AddressUtilityTest extends TestCase
     {
         self::assertSame(
             [
-                'street'      => 'Musterstraße',
                 'houseNumber' => '',
+                'street'      => 'Musterstraße',
             ],
             AddressUtility::splitStreetAndHouseNumber('Musterstraße')
         );
@@ -64,8 +64,8 @@ final class AddressUtilityTest extends TestCase
     {
         self::assertSame(
             [
-                'street'      => 'Gartenweg 3 b',
                 'houseNumber' => '',
+                'street'      => 'Gartenweg 3 b',
             ],
             AddressUtility::splitStreetAndHouseNumber('Gartenweg 3 b')
         );

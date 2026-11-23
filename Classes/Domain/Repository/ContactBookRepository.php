@@ -11,28 +11,27 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Domain\Repository;
 
+use Exception as GlobalException;
 use PSBits\ContactBook\Domain\Model\ContactBook;
 use PSBits\Foundation\Service\GlobalVariableService;
 use PSBits\FrontendUsers\Domain\Model\Typo3\FrontendUser;
 use PSBits\FrontendUsers\Service\GlobalVariableProviders\FrontendUserProvider;
+use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
- * Class ContactBookRepository
- *
  * @extends Repository<ContactBook>
- * @package PSBits\ContactBook\Domain\Repository
  */
 class ContactBookRepository extends Repository
 {
     /**
-     * @param FrontendUser|null $frontendUser
-     *
      * @return QueryResultInterface<int, ContactBook>
-     * @throws Exception
+     * @throws Exception // t3:13
+     * @throws GlobalException
+     * @throws InvalidQueryException
      */
     public function findByOwner(?FrontendUser $frontendUser = null): QueryResultInterface
     {

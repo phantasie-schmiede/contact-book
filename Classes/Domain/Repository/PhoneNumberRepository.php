@@ -18,10 +18,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
- * Class PhoneNumberRepository
- *
  * @extends Repository<PhoneNumber>
- * @package PSBits\ContactBook\Domain\Repository
  */
 class PhoneNumberRepository extends Repository
 {

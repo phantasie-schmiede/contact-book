@@ -11,14 +11,9 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Utility;
 
-/**
- * Class CountyUtility
- *
- * @package PSBits\ContactBook\Utility
- */
 class CountyUtility
 {
-    public const COUNTIES = [
+    public const array COUNTIES = [
         'GERMANY' => [
             'Baden-Württemberg',
             'Bayern',

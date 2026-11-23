@@ -11,23 +11,20 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Domain\Repository;
 
-use JsonException;
+use Exception;
 use PSBits\ContactBook\Domain\Model\ContactGroup;
 use PSBits\ContactBook\Utility\ContactBookUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
- * Class ContactGroupRepository
- *
  * @extends Repository<ContactGroup>
- * @package PSBits\ContactBook\Domain\Repository
  */
 class ContactGroupRepository extends Repository
 {
     /**
      * @return QueryResultInterface<int, ContactGroup>
-     * @throws JsonException
+     * @throws Exception
      */
     public function findAllOfActiveContactBook(): QueryResultInterface
     {

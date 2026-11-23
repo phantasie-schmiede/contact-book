@@ -11,11 +11,6 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Domain\Enum;
 
-/**
- * Class FilterMode
- *
- * @package PSBits\ContactBook\Domain\Enum
- */
 enum FilterMode: string
 {
     case Categories   = 'categories';

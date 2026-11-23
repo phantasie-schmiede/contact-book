@@ -11,11 +11,6 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Domain\Demand;
 
-/**
- * Class AddressDemand
- *
- * @package PSBits\ContactBook\Domain\Demand
- */
 class AddressDemand
 {
     protected string $city        = '';

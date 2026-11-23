@@ -11,34 +11,29 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Utility;
 
+use InvalidArgumentException;
 use JsonException;
 use PSBits\ContactBook\Domain\Enum\EventType;
 use PSBits\ContactBook\Domain\Model\Contact;
 use PSBits\ContactBook\Domain\Model\Event;
 use PSBits\FrontendTemplates\Utility\StringUtility;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use ReflectionException;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 use function sprintf;
+use function usort;
 
-/**
- * Class ContactUtility
- *
- * @package PSBits\ContactBook\Utility
- */
 class ContactUtility
 {
     /**
-     * @param Contact[]       $contacts
-     * @param UriBuilder|null $uriBuilder
-     *
-     * @return string
+     * @param Contact[] $contacts
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     public static function createEnumeration(array $contacts, ?UriBuilder $uriBuilder = null): string
     {

@@ -12,15 +12,13 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Utility;
 
 use Doctrine\DBAL\Exception;
+use InvalidArgumentException;
 use PSBits\ContactBook\Data\ExtensionInformation;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * Class BankingAccountUtility
- *
- * @package PSBits\ContactBook\Utility
- */
+use function substr;
+
 readonly class BankingAccountUtility
 {
     public const string DATA_TABLE = 'tx_contactbook_bank_data';
@@ -31,8 +29,9 @@ readonly class BankingAccountUtility
     }
 
     /**
-     * @throws Exception
      * @return array{bic?: string, city?: string, short_name?: string}
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public static function getBankInformationFromIban(string $iban): array
     {
