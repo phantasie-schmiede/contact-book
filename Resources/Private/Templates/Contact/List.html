@@ -13,11 +13,11 @@
             <div class="col-12 d-flex justify-content-end">
                 <f:render partial="ExportModal/Toggle" />
 
-                <templates:component.button
+                <frontendTemplates:component.button
                     additionalAttributes="{title: '{foundation:translate(id: \'addNewContact\')}'}"
                     additionalClasses="bg-primary-subtle ms-2"
                     href="{f:uri.action(action: 'new')}"
-                    iconIdentifier="templates-person-add"
+                    iconIdentifier="frontend-templates-person-add"
                     label="{foundation:translate(id: 'showAll')}"
                     spinnerTextHidden="{foundation:translate(id: 'loadingSpinner:pageLoading')}"
                     tag="a" />

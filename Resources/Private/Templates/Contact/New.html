@@ -26,16 +26,16 @@
             <f:render
                 contentAs="buttons"
                 partial="Component/ButtonRow">
-                <templates:component.button
+                <frontendTemplates:component.button
                     additionalClasses="bg-secondary-subtle"
                     href="{f:uri.action(action: 'list')}"
-                    iconIdentifier="templates-x-lg"
+                    iconIdentifier="frontend-templates-x-lg"
                     label="{foundation:translate(id: 'form:cancel')}"
                     spinnerText="{foundation:translate(id: 'form:cancel')}"
                     tag="a" />
-                <templates:component.button
+                <frontendTemplates:component.button
                     additionalClasses="bg-primary-subtle ms-2"
-                    iconIdentifier="templates-floppy"
+                    iconIdentifier="frontend-templates-floppy"
                     label="{foundation:translate(id: 'form:save')}"
                     spinnerText="{foundation:translate(id: 'form:submit.loadingSpinner')}"
                     type="submit" />

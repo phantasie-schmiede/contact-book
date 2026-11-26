@@ -15,14 +15,14 @@
                                 <h5 class="card-title">{contactBook.name}</h5>
                                 <p class="card-text">
                                     <core:icon
-                                        identifier="templates-person-fill"
+                                        identifier="frontend-templates-person-fill"
                                         size="small" />
                                     <foundation:translate
                                         arguments="{quantity: '{contactBook.contacts -> f:count()}'}"
                                         id="contacts" />
                                     <br />
                                     <core:icon
-                                        identifier="templates-people-fill"
+                                        identifier="frontend-templates-people-fill"
                                         size="small" />
                                     <foundation:translate
                                         arguments="{quantity: '{contactBook.contactGroups -> f:count()}'}"
@@ -45,7 +45,7 @@
                                             each="{contactBook.otherOwners}">
                                             <li class="list-group-item p-0">
                                                 <core:icon
-                                                    identifier="templates-person-circle"
+                                                    identifier="frontend-templates-person-circle"
                                                     size="small" />
                                                 {owner.fullName}
                                             </li>
@@ -92,7 +92,7 @@
         action="new"
         class="bg-primary-subtle btn">
         <core:icon
-            identifier="templates-plus-lg"
+            identifier="frontend-templates-plus-lg"
             size="small" />
         <foundation:translate
             id="createContactBook.{f:if(condition: contactBooks, then: 'additional', else: 'first')}" />

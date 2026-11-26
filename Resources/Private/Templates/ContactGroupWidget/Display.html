@@ -30,7 +30,7 @@
 
         <div
             class="bg-white bottom-0 d-flex end-0 position-absolute pt-3 start-0 z-1">
-            <templates:component.button
+            <frontendTemplates:component.button
                 additionalClasses="bg-primary-subtle flex-grow-1"
                 href="{f:uri.action(action: 'list', controller: 'Contact', pluginName: 'ContactList')}"
                 label="{foundation:translate(id: 'showAll')}"
@@ -38,10 +38,10 @@
                 tag="a" />
 
             <f:if condition="{contactGroup}">
-                <templates:component.button
+                <frontendTemplates:component.button
                     additionalClasses="bg-secondary-subtle ms-2"
                     href="{f:uri.action(action: 'edit', arguments: '{contactGroup: contactGroup}', controller: 'ContactGroup', pluginName: 'ContactGroups')}"
-                    iconIdentifier="templates-pencil"
+                    iconIdentifier="frontend-templates-pencil"
                     label="{foundation:translate(id: 'show:edit')}"
                     spinnerText="{foundation:translate(id: 'show:edit')}"
                     tag="a" />
