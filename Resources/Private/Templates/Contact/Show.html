@@ -146,24 +146,24 @@
                     }"
                     partial="Component/Tabs" />
 
-                <templates:event.additionalContent
+                <frontendTemplates:event.additionalContent
                     eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalContactContentEvent::class')}"
                     parameters="{contact: contact}" />
             </div>
         </div>
 
         <div class="d-flex mt-3">
-            <templates:component.button
+            <frontendTemplates:component.button
                 additionalClasses="bg-secondary-subtle"
                 href="{f:uri.action(action: 'list')}"
-                iconIdentifier="templates-arrow-left"
+                iconIdentifier="frontend-templates-arrow-left"
                 label="{foundation:translate(id: 'backToList')}"
                 spinnerText="{foundation:translate(id: 'backToList')}"
                 tag="a" />
-            <templates:component.button
+            <frontendTemplates:component.button
                 additionalClasses="bg-primary-subtle ms-2"
                 href="{f:uri.action(action: 'edit', arguments: '{contact: contact}')}"
-                iconIdentifier="templates-pencil"
+                iconIdentifier="frontend-templates-pencil"
                 label="{foundation:translate(id: 'edit')}"
                 spinnerText="{foundation:translate(id: 'edit')}"
                 tag="a" />
@@ -172,7 +172,7 @@
                 arguments="{
                     classes: 'bg-danger btn ms-auto',
                     modalId: 'delete-contact-{contact.uid}-modal',
-                    text: '{frontendTemplates:svgIcon(identifier: \'templates-trash\')}',
+                    text: '{frontendTemplates:svgIcon(identifier: \'frontend-templates-trash\')}',
                     title: '{foundation:translate(id: \'delete\')}'
                 }"
                 partial="Component/Modal/Toggle" />
@@ -210,7 +210,7 @@
 
     <f:section name="Icon">
         <core:icon
-            identifier="templates-{identifier}"
+            identifier="frontend-templates-{identifier}"
             size="medium" />
     </f:section>
 
@@ -280,11 +280,11 @@
 
         <f:if condition="{contact.payPalUrl}">
             <div class="d-flex justify-content-end">
-                <templates:component.button
+                <frontendTemplates:component.button
                     additionalClasses="btn-outline-primary justify-self-start"
                     externalLink="1"
                     href="{contact.payPalUrl}"
-                    iconIdentifier="templates-paypal"
+                    iconIdentifier="frontend-templates-paypal"
                     label="PayPal" />
             </div>
         </f:if>
@@ -346,7 +346,7 @@
 
                         <f:if
                             condition="{isImage} && !{document.useAsProfileImage}}">
-                            <templates:component.button
+                            <frontendTemplates:component.button
                                 additionalClasses="bg-primary-subtle"
                                 href="{f:uri.action(action: 'setProfileImage', arguments: {contact: contact, document: document})}"
                                 label="{foundation:translate(id: 'setAsProfileImage')}"
@@ -430,7 +430,7 @@
                             </f:if>
                         </div>
 
-                        <templates:event.additionalContent
+                        <frontendTemplates:event.additionalContent
                             eventClass="{psbvh:variable.convertString(string: 'PSBits\ContactBook\Event\AdditionalEventListContentEvent::class')}"
                             parameters="{event: event}" />
                     </f:render>
@@ -509,11 +509,11 @@
                 <div
                     class="card-body{f:if(condition: phoneNumber.notes, else: ' pb-2')}">
                     <h4 class="card-title h5 mb-0">
-                        <templates:svgIcon
+                        <frontendTemplates:svgIcon
                             additionalClasses="me-1"
-                            identifier="templates-{phoneNumber.generalType.iconIdentifier}" />
-                        <templates:svgIcon
-                            identifier="templates-{phoneNumber.phoneNumberType.iconIdentifier}" />
+                            identifier="frontend-templates-{phoneNumber.generalType.iconIdentifier}" />
+                        <frontendTemplates:svgIcon
+                            identifier="frontend-templates-{phoneNumber.phoneNumberType.iconIdentifier}" />
                         {phoneNumber.compactValue}
                     </h4>
 
@@ -525,8 +525,8 @@
                             <a
                                 class="link-underline link-underline-opacity-0 p-2"
                                 href="{href}">
-                                <templates:svgIcon
-                                    identifier="templates-{actionIconIdentifier}" />
+                                <frontendTemplates:svgIcon
+                                    identifier="frontend-templates-{actionIconIdentifier}" />
                             </a>
                         </f:for>
                     </div>
@@ -550,43 +550,43 @@
             condition="{contact.linkedinUrl} || {contact.xingUrl} || {contact.twitterUrl} || {contact.facebookUrl} || {contact.instagramUrl}">
             <div class="d-flex flex-wrap gap-2 justify-content-end">
                 <f:if condition="{contact.linkedInUrl}">
-                    <templates:component.button
+                    <frontendTemplates:component.button
                         additionalClasses="btn-outline-primary"
                         externalLink="1"
                         href="{contact.linkedInUrl}"
-                        iconIdentifier="templates-linkedin"
+                        iconIdentifier="frontend-templates-linkedin"
                         label="LinkedIn" />
                 </f:if>
                 <f:if condition="{contact.facebookUrl}">
-                    <templates:component.button
+                    <frontendTemplates:component.button
                         additionalClasses="btn-outline-primary"
                         externalLink="1"
                         href="{contact.facebookUrl}"
-                        iconIdentifier="templates-facebook"
+                        iconIdentifier="frontend-templates-facebook"
                         label="Facebook" />
                 </f:if>
                 <f:if condition="{contact.instagramUrl}">
-                    <templates:component.button
+                    <frontendTemplates:component.button
                         additionalClasses="btn-outline-primary"
                         externalLink="1"
                         href="{contact.instagramUrl}"
-                        iconIdentifier="templates-instagram"
+                        iconIdentifier="frontend-templates-instagram"
                         label="Instagram" />
                 </f:if>
                 <f:if condition="{contact.xingUrl}">
-                    <templates:component.button
+                    <frontendTemplates:component.button
                         additionalClasses="btn-outline-primary"
                         externalLink="1"
                         href="{contact.xingUrl}"
-                        iconIdentifier="templates-xing"
+                        iconIdentifier="frontend-templates-xing"
                         label="Xing" />
                 </f:if>
                 <f:if condition="{contact.youTubeUrl}">
-                    <templates:component.button
+                    <frontendTemplates:component.button
                         additionalClasses="btn-outline-primary"
                         externalLink="1"
                         href="{contact.youTubeUrl}"
-                        iconIdentifier="templates-youtube"
+                        iconIdentifier="frontend-templates-youtube"
                         label="YouTube" />
                 </f:if>
             </div>

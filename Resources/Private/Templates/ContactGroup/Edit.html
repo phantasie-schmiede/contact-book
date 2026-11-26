@@ -20,16 +20,16 @@
             partial="FormFields/ContactGroup" />
 
         <div class="col-12 d-flex mt-3">
-            <templates:component.button
+            <frontendTemplates:component.button
                 additionalClasses="bg-secondary-subtle"
                 href="{f:uri.action(action: 'show', arguments: '{contactGroup: contactGroup}')}"
-                iconIdentifier="templates-arrow-left"
+                iconIdentifier="frontend-templates-arrow-left"
                 label="{foundation:translate(id: 'form:cancel')}"
                 spinnerText="{foundation:translate(id: 'form:cancel')}"
                 tag="a" />
-            <templates:component.button
+            <frontendTemplates:component.button
                 additionalClasses="bg-primary-subtle ms-2"
-                iconIdentifier="templates-floppy"
+                iconIdentifier="frontend-templates-floppy"
                 label="{foundation:translate(id: 'form:save')}"
                 spinnerText="{foundation:translate(id: 'form:submit.loadingSpinner')}"
                 type="submit" />

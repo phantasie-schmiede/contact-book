@@ -25,17 +25,17 @@
     </div>
 
     <div class="d-flex mt-3">
-        <templates:component.button
+        <frontendTemplates:component.button
             additionalClasses="bg-secondary-subtle"
             href="{f:uri.action(action: 'list')}"
-            iconIdentifier="templates-arrow-left"
+            iconIdentifier="frontend-templates-arrow-left"
             label="{foundation:translate(id: 'backToList')}"
             spinnerText="{foundation:translate(id: 'backToList')}"
             tag="a" />
-        <templates:component.button
+        <frontendTemplates:component.button
             additionalClasses="bg-primary-subtle ms-2"
             href="{f:uri.action(action: 'edit', arguments: '{contactGroup: contactGroup}')}"
-            iconIdentifier="templates-pencil"
+            iconIdentifier="frontend-templates-pencil"
             label="{foundation:translate(id: 'edit')}"
             spinnerText="{foundation:translate(id: 'edit')}"
             tag="a" />
@@ -44,7 +44,7 @@
             arguments="{
                 classes: 'bg-danger btn ms-auto',
                 modalId: 'delete-contactGroup-{contactGroup.uid}-modal',
-                text: '{frontendTemplates:svgIcon(identifier: \'templates-trash\')}',
+                text: '{frontendTemplates:svgIcon(identifier: \'frontend-templates-trash\')}',
                 title: '{foundation:translate(id: \'delete\')}'
             }"
             partial="Component/Modal/Toggle" />

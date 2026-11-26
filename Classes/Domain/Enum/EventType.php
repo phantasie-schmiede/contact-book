@@ -11,13 +11,11 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Domain\Enum;
 
-use InvalidArgumentException;
-use JsonException;
+use Error;
+use Exception;
 use PSBits\ContactBook\Trait\EnumToArrayTrait;
 use PSBits\Foundation\Utility\LocalizationUtility;
 use Psr\Container\ContainerExceptionInterface;
-use ReflectionException;
-use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 
 enum EventType: string
 {
@@ -33,11 +31,9 @@ enum EventType: string
     case Wedding          = 'wedding';
 
     /**
-     * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
-     * @throws InvalidArgumentException
-     * @throws JsonException
-     * @throws ReflectionException
+     * @throws Error
+     * @throws Exception
      */
     public function getLabel(string $subType = ''): string
     {

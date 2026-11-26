@@ -13,6 +13,7 @@ namespace PSBits\ContactBook\Controller;
 
 use DateMalformedStringException;
 use DateTime;
+use Error;
 use Exception;
 use InvalidArgumentException;
 use JsonException;
@@ -50,6 +51,7 @@ class EventWidgetController extends AbstractAccessController
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
      * @throws DateMalformedStringException
+     * @throws Error
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws JsonException

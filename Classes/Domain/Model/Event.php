@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace PSBits\ContactBook\Domain\Model;
 
 use DateTime;
+use Error;
+use Exception;
 use InvalidArgumentException;
 use JsonException;
 use PSBits\ContactBook\Domain\Enum\EventType;
@@ -96,11 +98,9 @@ class Event extends AbstractContactRelatedEntity
     }
 
     /**
-     * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
-     * @throws InvalidArgumentException
-     * @throws JsonException
-     * @throws ReflectionException
+     * @throws Error
+     * @throws Exception
      * @throws ValueError
      */
     public function getCompactValue(): string
@@ -183,11 +183,9 @@ class Event extends AbstractContactRelatedEntity
     }
 
     /**
-     * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
-     * @throws InvalidArgumentException
-     * @throws JsonException
-     * @throws ReflectionException
+     * @throws Error
+     * @throws Exception
      */
     public function getLabel(?int $year = null): string
     {

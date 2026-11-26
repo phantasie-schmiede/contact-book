@@ -14,22 +14,22 @@
                         <f:if condition="{record.phoneNumberType}">
                             <f:then>
                                 <core:icon
-                                    identifier="templates-{record.generalType.iconIdentifier}"
+                                    identifier="frontend-templates-{record.generalType.iconIdentifier}"
                                     size="small" />
                                 <span class="ms-1">
                                     <core:icon
-                                        identifier="templates-{record.phoneNumberType.iconIdentifier}"
+                                        identifier="frontend-templates-{record.phoneNumberType.iconIdentifier}"
                                         size="small" />
                                 </span>
                             </f:then>
                             <f:else if="{record.typeIconIdentifier}">
                                 <core:icon
-                                    identifier="templates-{record.typeIconIdentifier}"
+                                    identifier="frontend-templates-{record.typeIconIdentifier}"
                                     size="small" />
                             </f:else>
                             <f:else>
                                 <core:icon
-                                    identifier="templates-{record.type.iconIdentifier}"
+                                    identifier="frontend-templates-{record.type.iconIdentifier}"
                                     size="small" />
                             </f:else>
                         </f:if>
@@ -56,7 +56,7 @@
                         href="{record.link}"
                         target="{linkTarget}">
                         <core:icon
-                            identifier="templates-{record.actionIconIdentifier}"
+                            identifier="frontend-templates-{record.actionIconIdentifier}"
                             size="small" />
                     </a>
                 </f:if>

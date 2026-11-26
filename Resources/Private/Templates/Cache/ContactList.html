@@ -67,7 +67,7 @@
                             href="{records.0.link}"
                             target="_blank">
                             <core:icon
-                                identifier="templates-{records.0.actionIconIdentifier}"
+                                identifier="frontend-templates-{records.0.actionIconIdentifier}"
                                 size="small" />
                         </a>
                     </f:then>
@@ -76,7 +76,7 @@
                             arguments="{
                                 classes: 'bg-transparent border-0 p-2',
                                 modalId: 'contact-{uid}-{property}-modal',
-                                text: '{frontendTemplates:svgIcon(identifier: \'templates-{records.0.actionIconIdentifier}\')}'
+                                text: '{frontendTemplates:svgIcon(identifier: \'frontend-templates-{records.0.actionIconIdentifier}\')}'
                             }"
                             partial="Component/Modal/Toggle" />
                     </f:else>
