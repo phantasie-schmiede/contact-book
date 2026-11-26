@@ -127,7 +127,6 @@ readonly class ContactService
     }
 
     /**
-     * @throws ContainerExceptionInterface
      * @throws Exception
      * @throws IllegalObjectTypeException
      * @throws InvalidArgumentException

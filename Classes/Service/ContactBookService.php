@@ -25,7 +25,6 @@ use PSBits\FrontendTemplates\Utility\SlugUtility;
 use PSBits\FrontendUsers\Domain\Model\Typo3\FrontendUser;
 use PSBits\FrontendUsers\Domain\Repository\Typo3\FrontendUserRepository;
 use PSBits\FrontendUsers\Service\GlobalVariableProviders\FrontendUserProvider;
-use Psr\Container\ContainerExceptionInterface;
 use ReflectionException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
@@ -95,7 +94,6 @@ readonly class ContactBookService
     }
 
     /**
-     * @throws ContainerExceptionInterface
      * @throws Exception
      * @throws IllegalObjectTypeException
      * @throws InvalidArgumentException

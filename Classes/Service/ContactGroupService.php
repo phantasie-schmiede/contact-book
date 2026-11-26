@@ -72,7 +72,6 @@ readonly class ContactGroupService
     }
 
     /**
-     * @throws ContainerExceptionInterface
      * @throws Exception
      * @throws IllegalObjectTypeException
      * @throws InvalidArgumentException

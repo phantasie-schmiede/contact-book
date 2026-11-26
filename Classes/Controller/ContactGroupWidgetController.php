@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Controller;
 
+use Error;
+use Exception;
 use InvalidArgumentException;
 use JsonException;
 use PSBits\ContactBook\Data\ExtensionInformation;
@@ -25,7 +27,6 @@ use PSBits\FrontendUsers\Service\ValidationService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use ReflectionException;
-use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 
 class ContactGroupWidgetController extends AbstractAccessController
@@ -42,8 +43,9 @@ class ContactGroupWidgetController extends AbstractAccessController
     }
 
     /**
-     * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws Error
+     * @throws Exception
      * @throws InvalidArgumentException
      * @throws JsonException
      * @throws ReflectionException

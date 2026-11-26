@@ -11,7 +11,10 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Controller;
 
+use ArgumentCountError;
+use DivisionByZeroError;
 use Doctrine\DBAL\Exception as DbalException;
+use Error;
 use Exception;
 use InvalidArgumentException;
 use JsonException;
@@ -51,7 +54,6 @@ use PSBits\ContactBook\Service\Enum\VCardVersion;
 use PSBits\ContactBook\Service\VCardService;
 use PSBits\ContactBook\Utility\ContactUtility;
 use PSBits\Foundation\Attribute\PluginAction;
-use PSBits\Foundation\Exceptions\MisconfiguredTcaException;
 use PSBits\Foundation\Service\GlobalVariableProviders\RequestParameterProvider;
 use PSBits\Foundation\Service\GlobalVariableService;
 use PSBits\Foundation\Service\UploadService;
@@ -66,7 +68,6 @@ use ReflectionException;
 use RuntimeException;
 use TypeError;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
-use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
@@ -75,7 +76,6 @@ use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
-use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
 use ValueError;
 
 use function implode;
@@ -119,6 +119,7 @@ class ContactController extends AbstractAccessController
     /**
      * @throws ContainerExceptionInterface
      * @throws DbalException
+     * @throws DivisionByZeroError
      * @throws Exception
      * @throws IllegalObjectTypeException
      * @throws InvalidArgumentException
@@ -168,13 +169,10 @@ class ContactController extends AbstractAccessController
     }
 
     /**
-     * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws Error
      * @throws Exception
-     * @throws InvalidArgumentException
      * @throws InvalidQueryException
-     * @throws JsonException
-     * @throws ReflectionException
      * @throws RuntimeException
      * @throws ValueError
      */
@@ -310,6 +308,7 @@ class ContactController extends AbstractAccessController
     /**
      * @throws ContainerExceptionInterface
      * @throws DbalException
+     * @throws DivisionByZeroError
      * @throws Exception
      * @throws IllegalObjectTypeException
      * @throws InvalidArgumentException
@@ -408,16 +407,13 @@ class ContactController extends AbstractAccessController
     }
 
     /**
-     * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
      * @throws DbalException
+     * @throws DivisionByZeroError
      * @throws Exception
      * @throws IllegalObjectTypeException
      * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws MisconfiguredTcaException
-     * @throws PropertyNotAccessibleException
-     * @throws ReflectionException
      * @throws TypeError
      * @throws UnknownObjectException
      * @throws ValueError
@@ -612,12 +608,11 @@ class ContactController extends AbstractAccessController
 
     /**
      * @param array<string, mixed> $entityData
-     * @throws AspectNotFoundException
-     * @throws ContainerExceptionInterface
+     * @throws ArgumentCountError
+     * @throws DbalException
+     * @throws DivisionByZeroError
+     * @throws Exception
      * @throws InvalidArgumentException
-     * @throws MisconfiguredTcaException
-     * @throws PropertyNotAccessibleException
-     * @throws ReflectionException
      */
     private function updateDocumentProperties(Document $document, array $entityData, int $tempUid = null): void
     {
@@ -653,14 +648,13 @@ class ContactController extends AbstractAccessController
 
     /**
      * @param array<string, mixed> $entityData
-     * @throws AspectNotFoundException
+     * @throws ArgumentCountError
      * @throws ContainerExceptionInterface
      * @throws DbalException
+     * @throws DivisionByZeroError
+     * @throws Exception
      * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws MisconfiguredTcaException
-     * @throws PropertyNotAccessibleException
-     * @throws ReflectionException
      * @throws TypeError
      * @throws ValueError
      */

@@ -11,9 +11,9 @@ declare(strict_types=1);
 
 namespace PSBits\ContactBook\Controller\Backend;
 
+use Error;
 use Exception;
 use InvalidArgumentException;
-use JsonException;
 use PSBits\ContactBook\Data\ExtensionInformation;
 use PSBits\ContactBook\Service\ImportService;
 use PSBits\Foundation\Attribute\ModuleAction;
@@ -22,10 +22,8 @@ use PSBits\Foundation\Utility\Configuration\FilePathUtility;
 use PSBits\Foundation\Utility\LocalizationUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
-use ReflectionException;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use ValueError;
 
@@ -41,12 +39,10 @@ class ImportController extends AbstractModuleController
     }
 
     /**
-     * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws Error
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws JsonException
-     * @throws ReflectionException
      * @throws ValueError
      */
     #[ModuleAction]
