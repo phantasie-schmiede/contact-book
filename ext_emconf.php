@@ -18,5 +18,5 @@ $EM_CONF[$_EXTKEY] = [
     'description'      => 'Comprehensive contact management',
     'state'            => 'alpha',
     'title'            => 'PSBits | Contact Book',
-    'version'          => '0.1.0',
+    'version'          => '0.1.1',
 ];
